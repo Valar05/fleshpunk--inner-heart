@@ -1,0 +1,173 @@
+{
+  "rooms": [
+    {
+      "id": "bone_corridor",
+      "image": "res://bone_corridor.png",
+      "description": "bone-lined corridor",
+      "ui_text": {
+        "speaker": "Her",
+        "line_1": "I'm in a bone-lined corridor.",
+        "line_2": "What should I do?"
+      },
+      "event_data": {
+        "buttons": [
+          {
+            "label": "Fight the marrow sentinel",
+            "action": "combat"
+          },
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      },
+      "combat": {
+        "enemy_name": "Marrow Sentinel",
+        "damage": 6,
+        "armor": 1,
+        "shield": 4,
+        "health": 20,
+        "ambush_chance": 0.05,
+        "initiative": 0.45
+      }
+    },
+    {
+      "id": "egg_corridor",
+      "image": "res://egg_corridor.png",
+      "description": "corridor lined with swollen egg sacs",
+      "ui_text": {
+        "speaker": "Her",
+        "line_1": "I'm in a corridor lined with swollen egg sacs.",
+        "line_2": "What should I do?"
+      }
+    },
+    {
+      "id": "healing_pool",
+      "image": "res://Healing_pool.png",
+      "description": "chamber with a glowing healing pool",
+      "ui_text": {
+        "speaker": "Her",
+        "line_1": "I'm in a chamber with a glowing healing pool.",
+        "line_2": "What should I do?"
+      },
+      "event_data": {
+        "buttons": [
+          {
+            "label": "Drink from the pool",
+            "action": "drink_pool"
+          },
+          {
+            "label": "Study the fluid",
+            "action": "study_pool"
+          },
+          {
+            "label": "Back away slowly",
+            "action": "retreat"
+          }
+        ]
+      }
+    },
+    {
+      "id": "organ_chamber_red",
+      "image": "res://Organ-chamber-red.png",
+      "description": "red organ chamber with a hanging heart",
+      "ui_text": {
+        "speaker": "Her",
+        "line_1": "I'm in a red organ chamber with a hanging heart.",
+        "line_2": "What should I do?"
+      },
+      "event_data": {
+        "buttons": [
+          {
+            "label": "Cut down the heart keeper",
+            "action": "combat"
+          },
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      },
+      "combat": {
+        "enemy_name": "Heart Keeper",
+        "damage": 8,
+        "armor": 2,
+        "shield": 5,
+        "health": 24,
+        "ambush_chance": 0.1,
+        "initiative": 0.52
+      }
+    },
+    {
+      "id": "red_corridor",
+      "image": "res://red_corridor.png",
+      "description": "red fleshy corridor",
+      "ui_text": {
+        "speaker": "Her",
+        "line_1": "I'm in a red fleshy corridor.",
+        "line_2": "What should I do?"
+      }
+    },
+    {
+      "id": "spiked_red_corridor",
+      "image": "res://spiked_red_corridor.png",
+      "description": "spiked red corridor",
+      "ui_text": {
+        "speaker": "Her",
+        "line_1": "I'm in a spiked red corridor.",
+        "line_2": "What should I do?"
+      },
+      "event_data": {
+        "buttons": [
+          {
+            "label": "Fight through the stalker",
+            "action": "combat"
+          },
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      },
+      "combat": {
+        "enemy_name": "Spine Stalker",
+        "damage": 7,
+        "armor": 1,
+        "shield": 3,
+        "health": 22,
+        "ambush_chance": 0.2,
+        "initiative": 0.6
+      }
+    },
+    {
+      "id": "split_green_corridor",
+      "image": "res://Split_green_corridor.png",
+      "description": "green split corridor",
+      "ui_text": {
+        "speaker": "Her",
+        "line_1": "I'm in a green split corridor.",
+        "line_2": "What should I do?"
+      }
+    },
+    {
+      "id": "split_red_corridor",
+      "image": "res://split_red-corridor.png",
+      "description": "split red corridor",
+      "ui_text": {
+        "speaker": "Her",
+        "line_1": "I'm in a split red corridor.",
+        "line_2": "What should I do?"
+      }
+    },
+    {
+      "id": "amber_corridor",
+      "image": "res://file_0000000016c471fda5a910d81d99b88c.png",
+      "description": "amber-lit fleshy corridor",
+      "ui_text": {
+        "speaker": "Her",
+        "line_1": "I'm in an amber-lit fleshy corridor.",
+        "line_2": "What should I do?"
+      }
+    }
+  ]
+}

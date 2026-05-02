@@ -1,0 +1,52 @@
+{
+  "enemies": [
+    {
+      "id": "blood_hunter",
+      "name": "Blood Hunter",
+      "scene_path": "res://blood_hunter.tscn",
+      "damage": 7,
+      "armor": 1,
+      "shield": 4,
+      "health": 22,
+      "ambush_chance": 0.1,
+      "initiative": 0.5,
+      "biomass_reward": 10
+    },
+    {
+      "id": "marrow_sentinel",
+      "name": "Marrow Sentinel",
+      "scene_path": "res://blood_hunter.tscn",
+      "damage": 6,
+      "armor": 1,
+      "shield": 4,
+      "health": 20,
+      "ambush_chance": 0.05,
+      "initiative": 0.45,
+      "biomass_reward": 8
+    },
+    {
+      "id": "spine_stalker",
+      "name": "Spine Stalker",
+      "scene_path": "res://blood_hunter.tscn",
+      "damage": 7,
+      "armor": 1,
+      "shield": 3,
+      "health": 22,
+      "ambush_chance": 0.2,
+      "initiative": 0.6,
+      "biomass_reward": 10
+    },
+    {
+      "id": "heart_keeper",
+      "name": "Heart Keeper",
+      "scene_path": "res://blood_hunter.tscn",
+      "damage": 8,
+      "armor": 2,
+      "shield": 5,
+      "health": 24,
+      "ambush_chance": 0.1,
+      "initiative": 0.52,
+      "biomass_reward": 14
+    }
+  ]
+}

@@ -1,0 +1,615 @@
+{
+  "room_events": {
+    "red_corridor": [
+      {
+        "id": "symbiote_host_intro",
+        "type": "symbiote",
+        "speaker": "Her",
+        "line_1": "Contact. Host organism rooted in the lane. Stable. Waiting on me.",
+        "line_2": "It wants in. Clean bond window. Could be useful. Could be permanent.",
+        "scene_path": "res://symbiotehost.tscn",
+        "symbiote_id": "plate_growth_symbiote",
+        "symbiote_name": "Plate-Growth Symbiote",
+        "reactivate_on_reshuffle": false,
+        "buttons": [
+          {
+            "label": "Bond with it",
+            "action": "take_symbiote"
+          },
+          {
+            "label": "Leave it",
+            "action": "leave_symbiote"
+          }
+        ]
+      },
+      {
+        "id": "mutation_egg_intro",
+        "type": "mutation",
+        "speaker": "Her",
+        "line_1": "Movement. Mutation egg. Thin shell. Still twitching.",
+        "line_2": "Something inside wants out. I can claim it first... or walk past.",
+        "scene_path": "res://mutation.tscn",
+        "spawn_animation": "idle",
+        "mutation_id": "lean_muscle",
+        "reactivate_on_reshuffle": false,
+        "buttons": [
+          {
+            "label": "Take the mutation",
+            "action": "take_mutation"
+          },
+          {
+            "label": "Leave it",
+            "action": "leave_mutation"
+          }
+        ]
+      },
+      {
+        "id": "red_corridor_wall_breathing",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Wall on my left is breathing out of sync with the rest of the corridor.",
+        "line_2": "Could be a cache. Could be a mouth. I can cut it, tap it, or keep moving.",
+        "buttons": [
+          {
+            "label": "Cut the wall open",
+            "action": "cut_red_wall"
+          },
+          {
+            "label": "Tap and listen",
+            "action": "listen_red_wall"
+          },
+          {
+            "label": "Move on",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "red_corridor_old_signs",
+        "type": "narrative",
+        "speaker": "Her",
+        "line_1": "Tracks in the membrane. Human stride. Old, but not ancient.",
+        "line_2": "Somebody else made this walk and didn't clean up after.",
+        "buttons": [
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "red_corridor_quiet",
+        "type": "narrative",
+        "speaker": "Her",
+        "line_1": "Lane stays quiet. Heat steady. No movement worth spending blood on.",
+        "line_2": "I keep pushing.",
+        "buttons": [
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      }
+    ],
+    "amber_corridor": [
+      {
+        "id": "amber_corridor_resin_choice",
+        "type": "amber",
+        "speaker": "Her",
+        "line_1": "Amber sacs under the wall skin. Fresh. Pressurized.",
+        "line_2": "I can cut one free, seal myself with it, or leave the whole mess alone.",
+        "buttons": [
+          {
+            "label": "Cut out the amber",
+            "action": "siphon_amber"
+          },
+          {
+            "label": "Seal myself with it",
+            "action": "seal_amber_wound"
+          },
+          {
+            "label": "Leave it",
+            "action": "leave_amber"
+          }
+        ]
+      },
+      {
+        "id": "amber_corridor_trapped_organ",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Something hard is set inside the amber. Tool shape. Maybe bone. Maybe metal.",
+        "line_2": "I can crack it out now... or keep my hands clean.",
+        "buttons": [
+          {
+            "label": "Break the amber",
+            "action": "break_amber_cache"
+          },
+          {
+            "label": "Test the shell",
+            "action": "probe_amber_cache"
+          },
+          {
+            "label": "Leave it",
+            "action": "leave_amber"
+          }
+        ]
+      },
+      {
+        "id": "amber_corridor_heat_bleed",
+        "type": "narrative",
+        "speaker": "Her",
+        "line_1": "Heat's climbing. Resin's cooking in the walls.",
+        "line_2": "Good place to get stuck. Bad place to slow down.",
+        "buttons": [
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "amber_corridor_quiet",
+        "type": "narrative",
+        "speaker": "Her",
+        "line_1": "No rupture. No harvest. Just slow pulses under the skin.",
+        "line_2": "I move.",
+        "buttons": [
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      }
+    ],
+    "split_green_corridor": [
+      {
+        "id": "split_green_corridor_paths",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Split ahead. Left branch is soft and warm. Right branch is green spine and hard shell.",
+        "line_2": "One path feeds growth. One path fights back. Both want something.",
+        "buttons": [
+          {
+            "label": "Take the soft tunnel",
+            "action": "take_green_tunnel"
+          },
+          {
+            "label": "Cut the green spine",
+            "action": "cut_green_spine"
+          },
+          {
+            "label": "Wait and listen",
+            "action": "listen_at_green_split"
+          }
+        ]
+      },
+      {
+        "id": "split_green_corridor_spore_drift",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Spores drifting low through the branch mouths. Fine enough to miss if I'm sloppy.",
+        "line_2": "I can hold breath and move, stir them on purpose, or back off and reassess.",
+        "buttons": [
+          {
+            "label": "Move through clean",
+            "action": "slip_green_spores"
+          },
+          {
+            "label": "Disturb the spores",
+            "action": "disturb_green_spores"
+          },
+          {
+            "label": "Reassess",
+            "action": "listen_at_green_split"
+          }
+        ]
+      },
+      {
+        "id": "split_green_corridor_branch",
+        "type": "narrative",
+        "speaker": "Her",
+        "line_1": "The green holds. No rupture yet.",
+        "line_2": "I pick a line and keep pressure on it.",
+        "buttons": [
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      }
+    ],
+    "split_red_corridor": [
+      {
+        "id": "split_red_corridor_paths",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Fork around a swollen artery and a dry cracking lane.",
+        "line_2": "One spills if I open it. One tears if I force it. Both cost.",
+        "buttons": [
+          {
+            "label": "Open the artery",
+            "action": "open_red_artery"
+          },
+          {
+            "label": "Brace through the dry lane",
+            "action": "brace_through_red_split"
+          },
+          {
+            "label": "Mark the branch",
+            "action": "mark_red_branch"
+          }
+        ]
+      },
+      {
+        "id": "split_red_corridor_pressure_rise",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Pressure climbing in the walls. Whole split feels ready to burst.",
+        "line_2": "I can move fast, cut a vent, or get clear before it chooses for me.",
+        "buttons": [
+          {
+            "label": "Rush through",
+            "action": "rush_red_split"
+          },
+          {
+            "label": "Cut a vent",
+            "action": "vent_red_split"
+          },
+          {
+            "label": "Fall back",
+            "action": "mark_red_branch"
+          }
+        ]
+      },
+      {
+        "id": "split_red_corridor_branch",
+        "type": "narrative",
+        "speaker": "Her",
+        "line_1": "No collapse. Not yet.",
+        "line_2": "I commit and keep moving.",
+        "buttons": [
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      }
+    ],
+    "bone_corridor": [
+      {
+        "id": "marrow_sentinel_encounter",
+        "type": "combat",
+        "speaker": "Her",
+        "line_1": "Contact. Marrow sentinel in the lane. Still enough bone here to build an army.",
+        "line_2": "If I want what it guards, I cut it down.",
+        "enemy_id": "marrow_sentinel",
+        "buttons": [
+          {
+            "label": "Fight the marrow sentinel",
+            "action": "combat"
+          },
+          {
+            "label": "Bypass the heap",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "bone_corridor_scavenge",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Bone piles stacked waist high. Some of it human. Some of it definitely not.",
+        "line_2": "There might be gear under the rot. There might be company.",
+        "buttons": [
+          {
+            "label": "Scavenge the pile",
+            "action": "scavenge_bones"
+          },
+          {
+            "label": "Probe with the tail",
+            "action": "probe_bones"
+          },
+          {
+            "label": "Leave it alone",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "bone_corridor_quiet",
+        "type": "narrative",
+        "speaker": "Her",
+        "line_1": "Bone underfoot. Bone in the walls. Bone in the air.",
+        "line_2": "Somebody fed this place well.",
+        "buttons": [
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      }
+    ],
+    "spiked_red_corridor": [
+      {
+        "id": "spiked_red_corridor_pressure",
+        "type": "corruption",
+        "speaker": "Her",
+        "line_1": "Spikes forcing up through the floor and walls. Lane's closing while I watch.",
+        "line_2": "I can push through, break a lane, or back off before I get pinned.",
+        "damage": 8,
+        "buttons": [
+          {
+            "label": "Push through the spikes",
+            "action": "push_through_spikes"
+          },
+          {
+            "label": "Break a path",
+            "action": "break_spike_lane"
+          },
+          {
+            "label": "Back off",
+            "action": "retreat"
+          }
+        ]
+      },
+      {
+        "id": "spiked_red_corridor_quiet",
+        "type": "narrative",
+        "speaker": "Her",
+        "line_1": "Spines everywhere. No clean route. Just a least-worst one.",
+        "line_2": "I keep my center low and move.",
+        "buttons": [
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      }
+    ],
+    "organ_chamber_red": [
+      {
+        "id": "heart_keeper_encounter",
+        "type": "combat",
+        "speaker": "Her",
+        "line_1": "Visual on the chamber core. Heart suspended center-mass. Keeper between me and it.",
+        "line_2": "If I want the chamber open, the keeper dies first.",
+        "enemy_id": "heart_keeper",
+        "buttons": [
+          {
+            "label": "Cut down the heart keeper",
+            "action": "combat"
+          },
+          {
+            "label": "Circle the chamber",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "organ_chamber_pulse_sync",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Chamber pulse is syncing to my breathing. I don't like that.",
+        "line_2": "I can steady up, cut the hanging cords, or get clear before it learns me.",
+        "buttons": [
+          {
+            "label": "Steady and observe",
+            "action": "observe_organ_chamber"
+          },
+          {
+            "label": "Cut the cords",
+            "action": "cut_heart_cords"
+          },
+          {
+            "label": "Back off",
+            "action": "retreat"
+          }
+        ]
+      },
+      {
+        "id": "organ_chamber_quiet",
+        "type": "narrative",
+        "speaker": "Her",
+        "line_1": "Core's still beating. Whole room listens when it does.",
+        "line_2": "I move before it decides I'm part of it.",
+        "buttons": [
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      }
+    ],
+    "healing_pool": [
+      {
+        "id": "healing_pool_offer",
+        "type": "healing",
+        "speaker": "Her",
+        "line_1": "Pool ahead. Smells clean. Wrong kind of clean.",
+        "line_2": "I can drink, test it, or back off before it gets inside me.",
+        "buttons": [
+          {
+            "label": "Drink from the pool",
+            "action": "drink_pool"
+          },
+          {
+            "label": "Study the fluid",
+            "action": "study_pool"
+          },
+          {
+            "label": "Back away",
+            "action": "retreat"
+          }
+        ]
+      },
+      {
+        "id": "healing_pool_surface_motion",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Surface moved before I touched it. Something under there. Maybe reacting. Maybe waiting.",
+        "line_2": "I can break the skin, sample the edge, or leave it still.",
+        "buttons": [
+          {
+            "label": "Break the surface",
+            "action": "disturb_pool"
+          },
+          {
+            "label": "Sample the edge",
+            "action": "study_pool"
+          },
+          {
+            "label": "Leave it alone",
+            "action": "retreat"
+          }
+        ]
+      },
+      {
+        "id": "healing_pool_quiet",
+        "type": "narrative",
+        "speaker": "Her",
+        "line_1": "No splash. No movement. Glow stays steady.",
+        "line_2": "I mark the chamber and keep moving.",
+        "buttons": [
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      }
+    ],
+    "egg_corridor": [
+      {
+        "id": "egg_corridor_nest_choice",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Egg line both sides. Full sacs. One already open.",
+        "line_2": "I can harvest, burn a lane, or slip through before the nest wakes up.",
+        "buttons": [
+          {
+            "label": "Harvest the sacs",
+            "action": "harvest_eggs"
+          },
+          {
+            "label": "Burn a lane through",
+            "action": "cauterize_eggs"
+          },
+          {
+            "label": "Slip between them",
+            "action": "slip_between_eggs"
+          }
+        ]
+      },
+      {
+        "id": "egg_corridor_cracked_shell",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Cracked shell on the right. Whatever hatched left fluid and drag marks.",
+        "line_2": "I can check the shell, track the hatchling, or move before it circles back.",
+        "buttons": [
+          {
+            "label": "Check the shell",
+            "action": "inspect_cracked_egg"
+          },
+          {
+            "label": "Follow the drag marks",
+            "action": "track_hatchling"
+          },
+          {
+            "label": "Move on",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "egg_corridor_quiet",
+        "type": "narrative",
+        "speaker": "Her",
+        "line_1": "Nest stays still. That's worse than noise.",
+        "line_2": "I keep my steps light and get through.",
+        "buttons": [
+          {
+            "label": "Proceed.",
+            "action": "proceed"
+          }
+        ]
+      }
+    ]
+  },
+  "special_events": {
+    "corruption_spike_room": {
+      "id": "corruption_spike_room",
+      "type": "corruption",
+      "speaker": "Her",
+      "line_1": "Spikes breaching ahead. Bone pressure's rising fast.",
+      "line_2": "If I push through, I pay for it in blood.",
+      "damage": 8,
+      "buttons": [
+        {
+          "label": "Push through the spikes",
+          "action": "push_through_spikes"
+        }
+      ]
+    },
+    "symbiote_host_offer": {
+      "id": "symbiote_host_offer",
+      "type": "symbiote",
+      "speaker": "Her",
+      "line_1": "Host organism separated from the wall. Mobile enough to bond. Quiet enough to trust. Maybe.",
+      "line_2": "Decision point. Let it in... or keep my body mine.",
+      "scene_path": "res://symbiotehost.tscn",
+      "buttons": [
+        {
+          "label": "Bond with it",
+          "action": "take_symbiote"
+        },
+        {
+          "label": "Leave it",
+          "action": "leave_symbiote"
+        }
+      ]
+    },
+    "merchant_arrival": {
+      "id": "merchant_arrival",
+      "type": "merchant",
+      "speaker": "Merchant",
+      "line_1": "Five chambers down and you still look profitable.",
+      "line_2": "Browse... or keep pretending you don't need me.",
+      "buttons": [
+        {
+          "label": "Browse wares",
+          "action": "browse_wares"
+        },
+        {
+          "label": "Leave",
+          "action": "leave_merchant"
+        }
+      ]
+    },
+    "danger_spike_notice": {
+      "id": "danger_spike_notice",
+      "type": "danger",
+      "speaker": "Her",
+      "line_1": "Adrenaline climbing. Corridor's reacting to it. I'm getting louder to this place.",
+      "line_2": "Next contact will come faster. So will I.",
+      "buttons": [
+        {
+          "label": "Proceed.",
+          "action": "proceed"
+        }
+      ]
+    },
+    "floor_transition": {
+      "id": "floor_transition",
+      "type": "narrative",
+      "speaker": "Her",
+      "line_1": "Layer break. Pressure changed. Smell changed. Rules probably changed too.",
+      "line_2": "I reset my breathing and keep moving.",
+      "buttons": [
+        {
+          "label": "Descend.",
+          "action": "proceed"
+        }
+      ]
+    }
+  }
+}

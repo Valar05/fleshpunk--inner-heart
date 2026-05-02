@@ -1,0 +1,30 @@
+{
+  "symbiotes": [
+    {
+      "id": "plate_growth_symbiote",
+      "name": "Plate-Growth Symbiote",
+      "description": "Adds 5 shields. Cannot be used again for 3 rooms. If the shield is fully consumed, the symbiote takes 1 damage. 3 health.",
+      "max_health": 3,
+      "cooldown_rooms": 3
+    },
+    {
+      "id": "regenerative_graft",
+      "name": "Regenerative Graft",
+      "description": "Heals 1 per room for 5 rooms. If you are not at full health at the end, it takes 1 damage. 5 health.",
+      "max_health": 5,
+      "duration_rooms": 5
+    },
+    {
+      "id": "doppleganger",
+      "name": "Doppleganger",
+      "description": "Doubles your first action in combat when activated. If the enemy damages you, the symbiote takes damage. 3 health.",
+      "max_health": 3
+    },
+    {
+      "id": "mitosis_symbiote",
+      "name": "Mitosis Symbiote",
+      "description": "Saves you from dying one time, then dies.",
+      "max_health": 1
+    }
+  ]
+}

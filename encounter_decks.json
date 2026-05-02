@@ -1,0 +1,61 @@
+{
+  "base_bpm": 20.0,
+  "corruption_spike_threshold": 3,
+  "danger_notice_threshold": 2,
+  "danger_bpm_step": 5.0,
+  "symbiote_every": 3,
+  "merchant_every": 5,
+  "opening_room_id": "red_corridor",
+  "opening_event_id": "symbiote_host_intro",
+  "base_player_stats": {
+    "damage": 8,
+    "armor": 2,
+    "shield": 6,
+    "health": 30,
+    "ambush_chance": 0.15,
+    "initiative": 0.6
+  },
+  "starter_rooms": [
+    "red_corridor"
+  ],
+  "draw_rules": [
+    {
+      "pool": "red_straight",
+      "count": 1
+    },
+    {
+      "pool": "branch",
+      "count": 1
+    },
+    {
+      "pool": "healing",
+      "count": 1
+    },
+    {
+      "pool": "random_non_special",
+      "count": 1
+    }
+  ],
+  "room_pools": {
+    "red_straight": [
+      "red_corridor",
+      "amber_corridor"
+    ],
+    "branch": [
+      "split_green_corridor",
+      "split_red_corridor"
+    ],
+    "healing": [
+      "healing_pool"
+    ],
+    "random_non_special": [
+      "bone_corridor",
+      "red_corridor",
+      "amber_corridor",
+      "split_green_corridor",
+      "split_red_corridor",
+      "healing_pool",
+      "organ_chamber_red"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://citveed2hbd2"]
+
+[ext_resource type="Texture2D" uid="uid://d17j40qwk88v8" path="res://SymbioteHost.png" id="1_obrqi"]
+
+[node name="Symbiotehost" type="Node2D"]
+position = Vector2(0, -15)
+
+[node name="SymbioteHost" type="Sprite2D" parent="."]
+position = Vector2(3, -12)
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("1_obrqi")

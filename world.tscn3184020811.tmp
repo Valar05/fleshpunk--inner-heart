@@ -1,0 +1,128 @@
+[gd_scene load_steps=10 format=3 uid="uid://mfsmn5wqj0pf"]
+
+[ext_resource type="Shader" uid="uid://b5d1b3kk0njao" path="res://RoomPulse.gdshader" id="1_aqk2v"]
+[ext_resource type="Texture2D" uid="uid://chwovk6l7px4q" path="res://red_corridor.png" id="1_f3sb7"]
+[ext_resource type="Texture2D" uid="uid://do62t4oe4qwa6" path="res://Fleshpunk-dashboard.png" id="2_fj7yv"]
+[ext_resource type="PackedScene" uid="uid://bqu8qbvhurro6" path="res://hymn.tscn" id="3_tlwt5"]
+[ext_resource type="Script" uid="uid://b3wedvxuec884" path="res://world.gd" id="4_qmcvn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_036b0"]
+shader = ExtResource("1_aqk2v")
+shader_parameter/progress = 0.0
+shader_parameter/pulse_amount = 1.0
+shader_parameter/pulse_center = Vector2(0.5, 0.5)
+shader_parameter/max_radius = 0.52800002508
+shader_parameter/ring_width = 0.08800000418000001
+shader_parameter/stretch_strength = 0.0190000009025
+shader_parameter/band_curve = 1.00000004098023
+shader_parameter/pinch_width = 0.75
+shader_parameter/pinch_curve = 1.5
+
+[sub_resource type="Animation" id="Animation_036b0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RoomSprite:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RoomSprite:material:shader_parameter/pulse_amount")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("RoomSprite:material:shader_parameter/stretch_strength")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0190000009025]
+}
+
+[sub_resource type="Animation" id="Animation_aqk2v"]
+resource_name = "pulse"
+length = 0.33
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RoomSprite:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.33),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RoomSprite:material:shader_parameter/pulse_amount")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("RoomSprite:material:shader_parameter/stretch_strength")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0190000009025]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dwbse"]
+_data = {
+&"RESET": SubResource("Animation_036b0"),
+&"pulse": SubResource("Animation_aqk2v")
+}
+
+[node name="World" type="Node2D"]
+script = ExtResource("4_qmcvn")
+
+[node name="RoomSprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_036b0")
+position = Vector2(546.5, 814.25)
+scale = Vector2(1.0693359, 1.0693359)
+texture = ExtResource("1_f3sb7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="RoomSprite"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_dwbse")
+}
+
+[node name="FleshpunkDashboard" type="Sprite2D" parent="."]
+position = Vector2(542, 1681)
+scale = Vector2(1.0765766, 1.1328828)
+texture = ExtResource("2_fj7yv")
+
+[node name="Hymn" parent="." instance=ExtResource("3_tlwt5")]
+position = Vector2(399.5, 1000.3261)
