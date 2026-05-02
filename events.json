@@ -2,44 +2,46 @@
   "room_events": {
     "red_corridor": [
       {
-        "id": "symbiote_host_intro",
-        "type": "symbiote",
-        "speaker": "Her",
-        "line_1": "Contact. Host organism rooted in the lane. Stable. Waiting on me.",
-        "line_2": "It wants in. Clean bond window. Could be useful. Could be permanent.",
+      "id": "symbiote_host_intro",
+      "type": "symbiote",
+      "speaker": "Her",
+      "line_1": "Chorus, host down in the lane. Still alive enough to carry symbiotes.",
+      "line_2": "One bond makes one dependency. The rest crash with the host.",
         "scene_path": "res://symbiotehost.tscn",
-        "symbiote_id": "plate_growth_symbiote",
-        "symbiote_name": "Plate-Growth Symbiote",
+        "symbiote_choices": [
+          "impermeable_barrier",
+          "pheromones",
+          "mitosis_unit"
+        ],
         "reactivate_on_reshuffle": false,
         "buttons": [
           {
-            "label": "Bond with it",
-            "action": "take_symbiote"
-          },
-          {
-            "label": "Leave it",
+            "label": "Leave them",
             "action": "leave_symbiote"
           }
         ]
       },
       {
         "id": "mutation_egg_intro",
-        "type": "mutation",
+        "type": "choice",
         "speaker": "Her",
-        "line_1": "Movement. Mutation egg. Thin shell. Still twitching.",
-        "line_2": "Something inside wants out. I can claim it first... or walk past.",
+        "line_1": "Movement. Failed egg. Thin shell. Still twitching.",
+        "line_2": "Residue pays clean. Drag marks pay louder. Leaving it preserves time and loses the read.",
         "scene_path": "res://mutation.tscn",
         "spawn_animation": "idle",
-        "mutation_id": "lean_muscle",
         "reactivate_on_reshuffle": false,
         "buttons": [
           {
-            "label": "Take the mutation",
-            "action": "take_mutation"
+            "label": "Check the shell",
+            "action": "inspect_cracked_egg"
           },
           {
-            "label": "Leave it",
-            "action": "leave_mutation"
+            "label": "Track what hatched",
+            "action": "track_hatchling"
+          },
+          {
+            "label": "Preserve the route",
+            "action": "proceed"
           }
         ]
       },
@@ -48,7 +50,7 @@
         "type": "choice",
         "speaker": "Her",
         "line_1": "Wall on my left is breathing out of sync with the rest of the corridor.",
-        "line_2": "Could be a cache. Could be a mouth. I can cut it, tap it, or keep moving.",
+        "line_2": "The seam wants contact. Cutting pays biomass and tissue; listening may quiet the lane.",
         "buttons": [
           {
             "label": "Cut the wall open",
@@ -59,7 +61,7 @@
             "action": "listen_red_wall"
           },
           {
-            "label": "Move on",
+            "label": "Refuse the seam",
             "action": "proceed"
           }
         ]
@@ -69,10 +71,29 @@
         "type": "narrative",
         "speaker": "Her",
         "line_1": "Tracks in the membrane. Human stride. Old, but not ancient.",
-        "line_2": "Somebody else made this walk and didn't clean up after.",
+        "line_2": "Chorus, prior entry signs. I mark the gait and do not stop.",
         "buttons": [
           {
-            "label": "Proceed.",
+            "label": "Follow the old stride",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "red_corridor_blood_hunter",
+        "type": "combat",
+        "speaker": "Her",
+        "line_1": "Buzzing ahead. Low, wet, and getting closer.",
+        "line_2": "Blood hunter in the lane. Killing pays biomass. Slipping past teaches it my route.",
+        "enemy_id": "blood_hunter",
+        "scene_path": "res://blood_hunter.tscn",
+        "buttons": [
+          {
+            "label": "Fight the blood hunter",
+            "action": "combat"
+          },
+          {
+            "label": "Slip past",
             "action": "proceed"
           }
         ]
@@ -82,10 +103,10 @@
         "type": "narrative",
         "speaker": "Her",
         "line_1": "Lane stays quiet. Heat steady. No movement worth spending blood on.",
-        "line_2": "I keep pushing.",
+        "line_2": "Quiet is not safe. It is only unpriced so far.",
         "buttons": [
           {
-            "label": "Proceed.",
+            "label": "Carry the quiet forward",
             "action": "proceed"
           }
         ]
@@ -97,7 +118,7 @@
         "type": "amber",
         "speaker": "Her",
         "line_1": "Amber sacs under the wall skin. Fresh. Pressurized.",
-        "line_2": "I can cut one free, seal myself with it, or leave the whole mess alone.",
+        "line_2": "Harvest pays biomass. Sealing hardens me and invites residue. Refusal leaves the pressure intact.",
         "buttons": [
           {
             "label": "Cut out the amber",
@@ -108,7 +129,29 @@
             "action": "seal_amber_wound"
           },
           {
-            "label": "Leave it",
+            "label": "Leave the pressure sealed",
+            "action": "leave_amber"
+          }
+        ]
+      },
+      {
+        "id": "amber_corridor_resin_toll_script",
+        "type": "amber",
+        "speaker": "Her",
+        "line_1": "Amber plaque opens a slot the size of my palm. Rates flex under the skin.",
+        "line_2": "Chorus, accounting organ live. Slot open. Pay for quiet or carry noise.",
+        "biomass_cost": 5,
+        "buttons": [
+          {
+            "label": "Pay 5 biomass",
+            "action": "pay_resin_toll"
+          },
+          {
+            "label": "Skip the toll",
+            "action": "skip_resin_toll"
+          },
+          {
+            "label": "Leave the plaque",
             "action": "leave_amber"
           }
         ]
@@ -117,8 +160,8 @@
         "id": "amber_corridor_trapped_organ",
         "type": "choice",
         "speaker": "Her",
-        "line_1": "Something hard is set inside the amber. Tool shape. Maybe bone. Maybe metal.",
-        "line_2": "I can crack it out now... or keep my hands clean.",
+        "line_1": "Something hard is set inside the amber. Tool shape. Bone edge under old metal.",
+        "line_2": "Breaking it pays now and cuts back. Testing may find the quiet angle. Clean hands lose the cache.",
         "buttons": [
           {
             "label": "Break the amber",
@@ -129,7 +172,7 @@
             "action": "probe_amber_cache"
           },
           {
-            "label": "Leave it",
+            "label": "Lose the cache",
             "action": "leave_amber"
           }
         ]
@@ -139,10 +182,29 @@
         "type": "narrative",
         "speaker": "Her",
         "line_1": "Heat's climbing. Resin's cooking in the walls.",
-        "line_2": "Good place to get stuck. Bad place to slow down.",
+        "line_2": "The corridor wants hesitation. I give it none.",
         "buttons": [
           {
-            "label": "Proceed.",
+            "label": "Move before it sets",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "amber_corridor_resin_hunter",
+        "type": "combat",
+        "speaker": "Her",
+        "line_1": "Something is dragging itself through the resin seams.",
+        "line_2": "Blood hunter. Amber stuck to its legs. Still fast enough.",
+        "enemy_id": "blood_hunter",
+        "scene_path": "res://blood_hunter.tscn",
+        "buttons": [
+          {
+            "label": "Fight it",
+            "action": "combat"
+          },
+          {
+            "label": "Keep distance",
             "action": "proceed"
           }
         ]
@@ -152,10 +214,10 @@
         "type": "narrative",
         "speaker": "Her",
         "line_1": "No rupture. No harvest. Just slow pulses under the skin.",
-        "line_2": "I move.",
+        "line_2": "I leave the resin uncut. It keeps its pressure; I keep my scent lower.",
         "buttons": [
           {
-            "label": "Proceed.",
+            "label": "Leave the resin whole",
             "action": "proceed"
           }
         ]
@@ -167,7 +229,7 @@
         "type": "choice",
         "speaker": "Her",
         "line_1": "Split ahead. Left branch is soft and warm. Right branch is green spine and hard shell.",
-        "line_2": "One path feeds growth. One path fights back. Both want something.",
+        "line_2": "Soft growth mends and stains. Hard spine pays biomass and bites. Waiting lowers the lane's attention.",
         "buttons": [
           {
             "label": "Take the soft tunnel",
@@ -188,7 +250,7 @@
         "type": "choice",
         "speaker": "Her",
         "line_1": "Spores drifting low through the branch mouths. Fine enough to miss if I'm sloppy.",
-        "line_2": "I can hold breath and move, stir them on purpose, or back off and reassess.",
+        "line_2": "Clean passage lowers scent. Stirring them mends tissue and raises attention. Waiting buys a safer read.",
         "buttons": [
           {
             "label": "Move through clean",
@@ -205,14 +267,56 @@
         ]
       },
       {
+        "id": "split_green_corridor_baffle_maplet",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Chorus, baffle maplet in the wall. Lines show where breath goes when the wheel turns.",
+        "line_2": "Muting buys quiet and declares a habit. Breaking pays parts and noise. Honest air keeps the debt clean.",
+        "damage": 2,
+        "biomass": 3,
+        "buttons": [
+          {
+            "label": "Mute the lane",
+            "action": "turn_baffle"
+          },
+          {
+            "label": "Break the baffle",
+            "action": "break_baffle"
+          },
+          {
+            "label": "Leave the air honest",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "split_green_corridor_spore_hunter",
+        "type": "combat",
+        "speaker": "Her",
+        "line_1": "The spores split around a moving shape.",
+        "line_2": "Spine stalker. Green dust on its shell. If I break sight, danger carries forward.",
+        "enemy_id": "spine_stalker",
+        "scene_path": "res://blood_hunter.tscn",
+        "buttons": [
+          {
+            "label": "Fight the stalker",
+            "action": "combat"
+          },
+          {
+            "label": "Break sight",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
         "id": "split_green_corridor_branch",
         "type": "narrative",
         "speaker": "Her",
         "line_1": "The green holds. No rupture yet.",
-        "line_2": "I pick a line and keep pressure on it.",
+        "line_2": "No gift, no cut, no new claim. I keep the branch from learning more.",
         "buttons": [
           {
-            "label": "Proceed.",
+            "label": "Cross without teaching it",
             "action": "proceed"
           }
         ]
@@ -245,7 +349,7 @@
         "type": "choice",
         "speaker": "Her",
         "line_1": "Pressure climbing in the walls. Whole split feels ready to burst.",
-        "line_2": "I can move fast, cut a vent, or get clear before it chooses for me.",
+        "line_2": "Speed takes damage and noise. Venting pays biomass and lowers pressure. Falling back preserves the read.",
         "buttons": [
           {
             "label": "Rush through",
@@ -262,14 +366,33 @@
         ]
       },
       {
+        "id": "split_red_corridor_hunter",
+        "type": "combat",
+        "speaker": "Her",
+        "line_1": "The artery bulges, then something peels off it.",
+        "line_2": "Blood hunter. Fresh from the wall. No room to pretend it missed me.",
+        "enemy_id": "blood_hunter",
+        "scene_path": "res://blood_hunter.tscn",
+        "buttons": [
+          {
+            "label": "Fight the hunter",
+            "action": "combat"
+          },
+          {
+            "label": "Run the split",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
         "id": "split_red_corridor_branch",
         "type": "narrative",
         "speaker": "Her",
         "line_1": "No collapse. Not yet.",
-        "line_2": "I commit and keep moving.",
+        "line_2": "The split waits for a pattern. I give it distance instead.",
         "buttons": [
           {
-            "label": "Proceed.",
+            "label": "Leave before it chooses",
             "action": "proceed"
           }
         ]
@@ -283,6 +406,7 @@
         "line_1": "Contact. Marrow sentinel in the lane. Still enough bone here to build an army.",
         "line_2": "If I want what it guards, I cut it down.",
         "enemy_id": "marrow_sentinel",
+        "scene_path": "res://blood_hunter.tscn",
         "buttons": [
           {
             "label": "Fight the marrow sentinel",
@@ -299,7 +423,7 @@
         "type": "choice",
         "speaker": "Her",
         "line_1": "Bone piles stacked waist high. Some of it human. Some of it definitely not.",
-        "line_2": "There might be gear under the rot. There might be company.",
+        "line_2": "Scavenging pays biomass and wakes marrow nerves. Probing buys a quieter route. Refusal loses the pile.",
         "buttons": [
           {
             "label": "Scavenge the pile",
@@ -310,7 +434,29 @@
             "action": "probe_bones"
           },
           {
-            "label": "Leave it alone",
+            "label": "Leave the pile cold",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "bone_corridor_marked_plate_lane",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Chorus, marked path offered. Clean. Too clean. The floor shows me where it wants my feet.",
+        "line_2": "Following lowers danger and builds obedience. Breaking the mark costs blood and resets the pattern.",
+        "damage": 2,
+        "buttons": [
+          {
+            "label": "Follow the marks",
+            "action": "follow_marked_plates"
+          },
+          {
+            "label": "Break the pattern",
+            "action": "break_marked_pattern"
+          },
+          {
+            "label": "Leave the marks",
             "action": "proceed"
           }
         ]
@@ -320,11 +466,78 @@
         "type": "narrative",
         "speaker": "Her",
         "line_1": "Bone underfoot. Bone in the walls. Bone in the air.",
-        "line_2": "Somebody fed this place well.",
+        "line_2": "No fresh claim here. Only old intake and the route through it.",
         "buttons": [
           {
-            "label": "Proceed.",
+            "label": "Cross the old intake",
             "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "bone_corridor_plate_sprout",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "Lamella lifts; ward plate-buds click, hungry to fuse to my stride.",
+        "line_2": "Grafting aligns me with plate logic. Refusal wakes the aisle and keeps my gait mine.",
+        "symbiote_choices": [
+          "impermeable_barrier",
+          "pheromones",
+          "mitosis_unit"
+        ],
+        "enemy_id": "marrow_sentinel",
+        "buttons": [
+          {
+            "label": "Provoke the ward",
+            "action": "combat"
+          },
+          {
+            "label": "Leave them cold",
+            "action": "leave_symbiote"
+          }
+        ]
+      },
+      {
+        "id": "bone_corridor_ridge_lathe",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "A ridge-lathe shaves calcium, steady and clean.",
+        "line_2": "Stripping pays biomass. Probing keeps the lane quiet. Jamming it calls the guard function awake.",
+        "enemy_id": "spine_stalker",
+        "buttons": [
+          {
+            "label": "Strip the shavings",
+            "action": "scavenge_bones"
+          },
+          {
+            "label": "Jam the lathe",
+            "action": "combat"
+          },
+          {
+            "label": "Probe the mechanism",
+            "action": "probe_bones"
+          }
+        ]
+      },
+      {
+        "id": "bone_corridor_stricture_choke",
+        "type": "choice",
+        "speaker": "Her",
+        "line_1": "The shaft pinches; osteal barbs taste my heat.",
+        "line_2": "Forcing through pays blood. Calling the hunter buys control of the contact. Withdrawal carries danger.",
+        "enemy_id": "blood_hunter",
+        "buttons": [
+          {
+            "label": "Force through",
+            "action": "push_through_spikes"
+          },
+          {
+            "label": "Whistle the hunter",
+            "action": "combat"
+          },
+          {
+            "label": "Withdraw",
+            "action": "retreat"
           }
         ]
       }
@@ -334,9 +547,10 @@
         "id": "spiked_red_corridor_pressure",
         "type": "corruption",
         "speaker": "Her",
-        "line_1": "Spikes forcing up through the floor and walls. Lane's closing while I watch.",
-        "line_2": "I can push through, break a lane, or back off before I get pinned.",
+        "line_1": "Chorus, spikes forcing up through floor and wall. Lane is closing while I watch.",
+        "line_2": "Pushing through pays blood. Breaking a lane pays less cleanly. Withdrawal leaves the pressure behind me.",
         "damage": 8,
+        "break_damage": 5,
         "buttons": [
           {
             "label": "Push through the spikes",
@@ -347,7 +561,7 @@
             "action": "break_spike_lane"
           },
           {
-            "label": "Back off",
+            "label": "Withdraw and carry pressure",
             "action": "retreat"
           }
         ]
@@ -357,10 +571,10 @@
         "type": "narrative",
         "speaker": "Her",
         "line_1": "Spines everywhere. No clean route. Just a least-worst one.",
-        "line_2": "I keep my center low and move.",
+        "line_2": "I keep my center low and spend no extra blood.",
         "buttons": [
           {
-            "label": "Proceed.",
+            "label": "Thread the least-worst line",
             "action": "proceed"
           }
         ]
@@ -369,11 +583,12 @@
     "organ_chamber_red": [
       {
         "id": "heart_keeper_encounter",
-        "type": "combat",
+        "type": "boss",
         "speaker": "Her",
         "line_1": "Visual on the chamber core. Heart suspended center-mass. Keeper between me and it.",
         "line_2": "If I want the chamber open, the keeper dies first.",
         "enemy_id": "heart_keeper",
+        "scene_path": "res://blood_hunter.tscn",
         "buttons": [
           {
             "label": "Cut down the heart keeper",
@@ -390,7 +605,7 @@
         "type": "choice",
         "speaker": "Her",
         "line_1": "Chamber pulse is syncing to my breathing. I don't like that.",
-        "line_2": "I can steady up, cut the hanging cords, or get clear before it learns me.",
+        "line_2": "Observation lowers danger. Cutting pays biomass and corruption. Retreat keeps agency and raises pursuit.",
         "buttons": [
           {
             "label": "Steady and observe",
@@ -401,7 +616,7 @@
             "action": "cut_heart_cords"
           },
           {
-            "label": "Back off",
+            "label": "Break contact",
             "action": "retreat"
           }
         ]
@@ -411,10 +626,10 @@
         "type": "narrative",
         "speaker": "Her",
         "line_1": "Core's still beating. Whole room listens when it does.",
-        "line_2": "I move before it decides I'm part of it.",
+        "line_2": "I do not match breath to pulse. I leave before it can count me.",
         "buttons": [
           {
-            "label": "Proceed.",
+            "label": "Leave off-beat",
             "action": "proceed"
           }
         ]
@@ -426,7 +641,7 @@
         "type": "healing",
         "speaker": "Her",
         "line_1": "Pool ahead. Smells clean. Wrong kind of clean.",
-        "line_2": "I can drink, test it, or back off before it gets inside me.",
+        "line_2": "Drinking mends and stains. Studying cools corruption. Retreat preserves the boundary.",
         "buttons": [
           {
             "label": "Drink from the pool",
@@ -437,7 +652,7 @@
             "action": "study_pool"
           },
           {
-            "label": "Back away",
+            "label": "Preserve the boundary",
             "action": "retreat"
           }
         ]
@@ -446,8 +661,8 @@
         "id": "healing_pool_surface_motion",
         "type": "choice",
         "speaker": "Her",
-        "line_1": "Surface moved before I touched it. Something under there. Maybe reacting. Maybe waiting.",
-        "line_2": "I can break the skin, sample the edge, or leave it still.",
+        "line_1": "Surface moved before I touched it. Something under there reacts before contact.",
+        "line_2": "Breaking the skin lets it answer first. Sampling keeps distance. Leaving it still denies the invitation.",
         "buttons": [
           {
             "label": "Break the surface",
@@ -458,7 +673,7 @@
             "action": "study_pool"
           },
           {
-            "label": "Leave it alone",
+            "label": "Deny the pool",
             "action": "retreat"
           }
         ]
@@ -468,10 +683,10 @@
         "type": "narrative",
         "speaker": "Her",
         "line_1": "No splash. No movement. Glow stays steady.",
-        "line_2": "I mark the chamber and keep moving.",
+        "line_2": "Nothing asks, so I give it nothing.",
         "buttons": [
           {
-            "label": "Proceed.",
+            "label": "Pass without contact",
             "action": "proceed"
           }
         ]
@@ -483,7 +698,7 @@
         "type": "choice",
         "speaker": "Her",
         "line_1": "Egg line both sides. Full sacs. One already open.",
-        "line_2": "I can harvest, burn a lane, or slip through before the nest wakes up.",
+        "line_2": "Harvest feeds me and stains the run. Burning costs blood. Slipping through keeps the nest ignorant.",
         "buttons": [
           {
             "label": "Harvest the sacs",
@@ -504,7 +719,7 @@
         "type": "choice",
         "speaker": "Her",
         "line_1": "Cracked shell on the right. Whatever hatched left fluid and drag marks.",
-        "line_2": "I can check the shell, track the hatchling, or move before it circles back.",
+        "line_2": "Shell residue pays quiet biomass. Drag marks pay more and raise danger. Leaving loses the trail.",
         "buttons": [
           {
             "label": "Check the shell",
@@ -515,7 +730,26 @@
             "action": "track_hatchling"
           },
           {
-            "label": "Move on",
+            "label": "Lose the trail",
+            "action": "proceed"
+          }
+        ]
+      },
+      {
+        "id": "egg_corridor_hatchling_guard",
+        "type": "combat",
+        "speaker": "Her",
+        "line_1": "One egg opens wrong. The thing inside is already standing.",
+        "line_2": "Small spine stalker. Killing clears the nest for biomass. Slipping away leaves hunger behind me.",
+        "enemy_id": "spine_stalker",
+        "scene_path": "res://blood_hunter.tscn",
+        "buttons": [
+          {
+            "label": "Kill it",
+            "action": "combat"
+          },
+          {
+            "label": "Slip away",
             "action": "proceed"
           }
         ]
@@ -525,10 +759,10 @@
         "type": "narrative",
         "speaker": "Her",
         "line_1": "Nest stays still. That's worse than noise.",
-        "line_2": "I keep my steps light and get through.",
+        "line_2": "I keep my steps light. No shell breaks. No scent blooms.",
         "buttons": [
           {
-            "label": "Proceed.",
+            "label": "Cross without waking it",
             "action": "proceed"
           }
         ]
@@ -540,7 +774,7 @@
       "id": "corruption_spike_room",
       "type": "corruption",
       "speaker": "Her",
-      "line_1": "Spikes breaching ahead. Bone pressure's rising fast.",
+      "line_1": "Chorus, spikes breaching ahead. Bone pressure's rising fast.",
       "line_2": "If I push through, I pay for it in blood.",
       "damage": 8,
       "buttons": [
@@ -554,16 +788,13 @@
       "id": "symbiote_host_offer",
       "type": "symbiote",
       "speaker": "Her",
-      "line_1": "Host organism separated from the wall. Mobile enough to bond. Quiet enough to trust. Maybe.",
-      "line_2": "Decision point. Let it in... or keep my body mine.",
+      "line_1": "Chorus, another host down. Three symbiotes still clinging to it.",
+      "line_2": "One bond saves one tool. The rest die when the host crashes.",
       "scene_path": "res://symbiotehost.tscn",
+      "symbiote_choice_count": 3,
       "buttons": [
         {
-          "label": "Bond with it",
-          "action": "take_symbiote"
-        },
-        {
-          "label": "Leave it",
+          "label": "Leave them",
           "action": "leave_symbiote"
         }
       ]
@@ -571,16 +802,16 @@
     "merchant_arrival": {
       "id": "merchant_arrival",
       "type": "merchant",
-      "speaker": "Merchant",
-      "line_1": "Five chambers down and you still look profitable.",
-      "line_2": "Browse... or keep pretending you don't need me.",
+      "speaker": "Her",
+      "line_1": "Chorus, contact. Exchange interface present. Instruction?",
+      "line_2": "No reply. His scales are already open, prices wet on the weights.",
       "buttons": [
         {
-          "label": "Browse wares",
+          "label": "Approach the scales",
           "action": "browse_wares"
         },
         {
-          "label": "Leave",
+          "label": "Withdraw",
           "action": "leave_merchant"
         }
       ]
@@ -589,12 +820,193 @@
       "id": "danger_spike_notice",
       "type": "danger",
       "speaker": "Her",
-      "line_1": "Adrenaline climbing. Corridor's reacting to it. I'm getting louder to this place.",
+      "line_1": "Chorus, adrenaline climbing. Corridor's reacting to it. I'm getting louder to this place.",
       "line_2": "Next contact will come faster. So will I.",
       "buttons": [
         {
-          "label": "Proceed.",
+          "label": "Move under attention",
           "action": "proceed"
+        }
+      ]
+    },
+    "director_corruption_warning": {
+      "id": "director_corruption_warning",
+      "type": "corruption",
+      "speaker": "Her",
+      "line_1": "Chorus, the walls flex when I move now. Not away from me. With me.",
+      "line_2": "Gifts sit in me. The place is learning my tissue.",
+      "scene_path": "res://mutation.tscn",
+      "spawn_animation": "idle",
+      "buttons": [
+        {
+          "label": "Keep center",
+          "action": "proceed"
+        }
+      ]
+    },
+    "director_dependence_warning": {
+      "id": "director_dependence_warning",
+      "type": "corruption",
+      "speaker": "Her",
+      "line_1": "Chorus, something under my skin answers before I finish deciding.",
+      "line_2": "Useful. Bad sign. Dependence is learning my timing.",
+      "scene_path": "res://symbiotehost.tscn",
+      "buttons": [
+        {
+          "label": "Breathe it down",
+          "action": "proceed"
+        }
+      ]
+    },
+    "director_danger_warning": {
+      "id": "director_danger_warning",
+      "type": "danger",
+      "speaker": "Her",
+      "line_1": "Chorus, buzzing behind me. Same distance for three rooms.",
+      "line_2": "Avoiding teeth still leaves a trail. The debt is distance.",
+      "scene_path": "res://blood_hunter.tscn",
+      "buttons": [
+        {
+          "label": "Move carefully",
+          "action": "proceed"
+        }
+      ]
+    },
+    "director_greed_warning": {
+      "id": "director_greed_warning",
+      "type": "danger",
+      "speaker": "Her",
+      "line_1": "Chorus, harvest marks on my gloves. On my tail. In the air.",
+      "line_2": "The organism knows what I stop for. Appetite is becoming route data.",
+      "scene_path": "res://blood_hunter.tscn",
+      "buttons": [
+        {
+          "label": "Leave less scent",
+          "action": "proceed"
+        }
+      ]
+    },
+    "director_safety_warning": {
+      "id": "director_safety_warning",
+      "type": "danger",
+      "speaker": "Her",
+      "line_1": "Chorus, every quiet route is narrower than the last.",
+      "line_2": "The place is pricing caution in distance and sealed doors.",
+      "scene_path": "res://blood_hunter.tscn",
+      "buttons": [
+        {
+          "label": "Accept the narrowing",
+          "action": "proceed"
+        }
+      ]
+    },
+    "director_combat_warning": {
+      "id": "director_combat_warning",
+      "type": "danger",
+      "speaker": "Her",
+      "line_1": "Chorus, dead things behind me. Warm biomass ahead.",
+      "line_2": "Killing through every room is still noise.",
+      "scene_path": "res://blood_hunter.tscn",
+      "buttons": [
+        {
+          "label": "Keep moving",
+          "action": "proceed"
+        }
+      ]
+    },
+    "director_debt_warning": {
+      "id": "director_debt_warning",
+      "type": "merchant",
+      "speaker": "Her",
+      "line_1": "Chorus, resin clicks behind me. Not pursuit. Accounting.",
+      "line_2": "The merchant does not need to be in the room to keep a ledger. Refusal has a pulse.",
+      "buttons": [
+        {
+          "label": "Keep moving",
+          "action": "proceed"
+        }
+      ]
+    },
+    "smother_hunter_arrival": {
+      "id": "smother_hunter_arrival",
+      "type": "combat",
+      "speaker": "Her",
+      "line_1": "Air stops moving. My last quiet lane folds shut behind me.",
+      "line_2": "Smother hunter. It learned the places I muted.",
+      "enemy_id": "smother_hunter",
+      "scene_path": "res://blood_hunter.tscn",
+      "buttons": [
+        {
+          "label": "Fight the smother hunter",
+          "action": "combat"
+        },
+        {
+          "label": "Break away",
+          "action": "proceed"
+        }
+      ]
+    },
+    "plate_snare": {
+      "id": "plate_snare",
+      "type": "danger",
+      "speaker": "Her",
+      "line_1": "Chorus, the plate line remembers my stride. Floor and wall close in the same rhythm.",
+      "line_2": "I followed too clean. Now it wants to pin the route to my bones.",
+      "damage": 3,
+      "buttons": [
+        {
+          "label": "Force through",
+          "action": "push_through_spikes"
+        },
+        {
+          "label": "Break the pattern",
+          "action": "break_marked_pattern"
+        }
+      ]
+    },
+    "hunter_reckoning": {
+      "id": "hunter_reckoning",
+      "type": "danger",
+      "speaker": "Her",
+      "line_1": "Chorus, the buzzing stops chasing. It arrives.",
+      "line_2": "Blood hunter in the lane. This is the bill for all that distance.",
+      "enemy_id": "blood_hunter",
+      "scene_path": "res://blood_hunter.tscn",
+      "game_over_on_combat": true,
+      "buttons": [
+        {
+          "label": "Face the hunter",
+          "action": "combat"
+        }
+      ]
+    },
+    "corruption_claim": {
+      "id": "corruption_claim",
+      "type": "corruption",
+      "speaker": "Her",
+      "line_1": "Chorus, my hands open without asking me. The walls open back.",
+      "line_2": "Too much of this place fits me. I lose the boundary.",
+      "scene_path": "res://mutation.tscn",
+      "spawn_animation": "open",
+      "buttons": [
+        {
+          "label": "Wake again",
+          "action": "restart_run"
+        }
+      ]
+    },
+    "merchant_reckoning": {
+      "id": "merchant_reckoning",
+      "type": "merchant",
+      "speaker": "Her",
+      "line_1": "Chorus, the corridor opens into his scale room. No side paths. No bargain left.",
+      "line_2": "I ran from him too often. Now he wants all of me on the scale.",
+      "enemy_id": "merchant",
+      "game_over_on_combat": true,
+      "buttons": [
+        {
+          "label": "Face the merchant",
+          "action": "combat"
         }
       ]
     },

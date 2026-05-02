@@ -8,6 +8,7 @@ const DISSOLVE_PARAMETER := "dissolve_progress"
 @export var health := 30
 @export_range(0.0, 1.0, 0.01) var ambush_chance := 0.15
 @export_range(0.0, 1.0, 0.01) var initiative := 0.6
+@export_range(0.01, 5.0, 0.01) var speed := 1.0
 
 @onready var sprite: Sprite2D = $Sprite
 @onready var combat_sprite: Sprite2D = $CombatSprite
@@ -31,7 +32,8 @@ func get_combat_stats(overrides: Dictionary = {}) -> Dictionary:
 		"shield": shield,
 		"health": health,
 		"ambush_chance": ambush_chance,
-		"initiative": initiative
+		"initiative": initiative,
+		"speed": speed
 	}
 	for key in overrides.keys():
 		stats[key] = overrides[key]

@@ -13,6 +13,7 @@ const PULSE_TRANSITION := Tween.TRANS_SINE
 const PULSE_EASE := Tween.EASE_IN_OUT
 const ROOM_FADE_TRANSITION := Tween.TRANS_SINE
 const ROOM_FADE_EASE := Tween.EASE_IN_OUT
+const CombatSystemScript := preload("res://combat_system.gd")
 
 @export_range(0.01, 2.0, 0.01) var base_pulse_duration: float = 0.96
 @export_range(0.1, 1.0, 0.01) var pulse_occupancy: float = 0.72
@@ -177,13 +178,44 @@ func _on_console_option_selected(action_id: String, room_id: String) -> void:
 		return
 
 	if action_id == "combat":
+		var combat_encounter: Dictionary = run_manager.get_current_encounter()
 		run_manager.consume_current_event("combat")
-		_begin_room_combat(run_manager.get_current_encounter().get("enemy_data", {}))
+		_begin_room_combat(combat_encounter.get("enemy_data", {}), combat_encounter.get("event_data", {}))
+		return
+
+	if action_id == "restart_run":
+		_clear_encounter_scene()
+		_prepare_actors()
+		run_manager.start_new_run()
+		_pending_advance_after_ack = false
+		_present_encounter(run_manager.get_current_encounter())
 		return
 
 	if action_id == "browse_wares":
 		if dashboard.has_method("show_console"):
-			dashboard.call("show_console", ["Merchant:", "The wares are not implemented yet.", "Come back with sharper requirements."], [{"label": "Leave", "action": "leave_merchant"}], room_id)
+			var shop_offer: Dictionary = run_manager.call("get_merchant_shop_offer") if run_manager.has_method("get_merchant_shop_offer") else {}
+			dashboard.call("show_console", shop_offer.get("lines", ["The merchant's hands move, but I cannot read the scale."]), shop_offer.get("buttons", [{"label": "Leave", "action": "leave_merchant"}]), room_id)
+		return
+
+	if action_id.begins_with("buy_mutation:"):
+		if dashboard.has_method("show_console") and run_manager.has_method("buy_shop_mutation"):
+			var mutation_id := action_id.substr("buy_mutation:".length())
+			var purchase_result: Dictionary = run_manager.call("buy_shop_mutation", mutation_id)
+			dashboard.call("show_console", purchase_result.get("lines", []), purchase_result.get("buttons", [{"label": "Leave", "action": "leave_merchant"}]), room_id)
+		return
+
+	if action_id.begins_with("take_symbiote:"):
+		run_manager.consume_current_event(action_id)
+		var symbiote_result := _get_last_action_result(run_manager)
+		if not symbiote_result.is_empty():
+			_show_action_result(symbiote_result, room_id)
+		return
+
+	if action_id.begins_with("activate_symbiote:"):
+		if dashboard.has_method("show_console") and run_manager.has_method("activate_symbiote"):
+			var symbiote_id := action_id.substr("activate_symbiote:".length())
+			var activation_result: Dictionary = run_manager.call("activate_symbiote", symbiote_id)
+			dashboard.call("show_console", activation_result.get("lines", []), activation_result.get("buttons", [{"label": "Proceed.", "action": "proceed"}]), room_id)
 		return
 
 	run_manager.consume_current_event(action_id)
@@ -193,7 +225,7 @@ func _on_console_option_selected(action_id: String, room_id: String) -> void:
 		return
 
 	if dashboard.has_method("show_console"):
-		dashboard.call("show_console", ["Her:", "That interaction is not implemented yet.", "I'll move on."], [{"label": "Proceed.", "action": "proceed"}], room_id)
+		dashboard.call("show_console", ["That interaction is not implemented yet.", "I move on."], [{"label": "Proceed.", "action": "proceed"}], room_id)
 	_pending_advance_after_ack = true
 
 
@@ -223,14 +255,15 @@ func _finish_room_transition() -> void:
 	_is_room_transitioning = false
 
 
-func _begin_room_combat(enemy_stats: Dictionary) -> void:
+func _begin_room_combat(enemy_stats: Dictionary, event_data: Dictionary = {}) -> void:
 	_is_combat_resolving = true
 	_clear_encounter_scene()
 	if dashboard.has_method("show_console"):
 		dashboard.call("show_console", ["Combat engaged."], [], current_room_id)
 
-	var combat_result := CombatSystem.simulate_combat(_get_player_stats(), enemy_stats, _rng)
-	_play_combat_animation(combat_result, enemy_stats)
+	var prepared_enemy_stats := _get_enemy_stats(enemy_stats)
+	var combat_result := CombatSystemScript.simulate_combat(_get_player_stats(), prepared_enemy_stats, _rng)
+	_play_combat_animation(combat_result, prepared_enemy_stats, event_data)
 
 
 func _prepare_actors() -> void:
@@ -240,6 +273,8 @@ func _prepare_actors() -> void:
 	player_actor.position = player_home.position
 
 	if enemy_actor.has_method("reset_visuals"):
+		if enemy_actor.has_method("set_visual_scale_multiplier"):
+			enemy_actor.call("set_visual_scale_multiplier", 1.0)
 		enemy_actor.call("reset_visuals")
 	if enemy_actor.has_method("show_world_pose"):
 		enemy_actor.call("show_world_pose", true)
@@ -258,32 +293,43 @@ func _get_player_stats() -> Dictionary:
 	return base_stats
 
 
-func _play_combat_animation(combat_result: Dictionary, enemy_stats: Dictionary) -> void:
+func _get_enemy_stats(enemy_stats: Dictionary) -> Dictionary:
+	var run_manager := _get_run_manager()
+	if run_manager != null and run_manager.has_method("prepare_enemy_combat_stats"):
+		return run_manager.call("prepare_enemy_combat_stats", enemy_stats)
+	return enemy_stats
+
+
+func _play_combat_animation(combat_result: Dictionary, enemy_stats: Dictionary, event_data: Dictionary = {}) -> void:
 	if _combat_tween != null:
 		_combat_tween.kill()
 
+	var enemy_visual: Node2D = merchant_actor if str(enemy_stats.get("id", "")) == "merchant" else enemy_actor
 	player_actor.visible = true
-	enemy_actor.visible = true
+	enemy_actor.visible = enemy_visual == enemy_actor
+	merchant_actor.visible = enemy_visual == merchant_actor
+	if enemy_visual == enemy_actor and enemy_actor.has_method("set_visual_scale_multiplier"):
+		enemy_actor.call("set_visual_scale_multiplier", float(enemy_stats.get("visual_scale", 1.0)))
 	if player_actor.has_method("show_combat_pose"):
 		player_actor.call("show_combat_pose", false)
-	if enemy_actor.has_method("show_combat_pose"):
-		enemy_actor.call("show_combat_pose", true)
+	if enemy_visual.has_method("show_combat_pose"):
+		enemy_visual.call("show_combat_pose", true)
 
 	player_actor.position = player_home.position
-	enemy_actor.position = enemy_home.position
+	enemy_visual.position = enemy_home.position
 
 	var clash_point := (player_home.position + enemy_home.position) * 0.5
 	var player_clash_position := clash_point + Vector2(-90.0, 0.0)
 	var enemy_clash_position := clash_point + Vector2(90.0, 0.0)
-	var loser: Node2D = enemy_actor if bool(combat_result.get("player_won", false)) else player_actor
+	var loser: Node2D = enemy_visual if bool(combat_result.get("player_won", false)) else player_actor
 
 	_combat_tween = create_tween()
 	_combat_tween.parallel().tween_property(player_actor, "position", player_clash_position, CLASH_TRAVEL_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_combat_tween.parallel().tween_property(enemy_actor, "position", enemy_clash_position, CLASH_TRAVEL_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_combat_tween.parallel().tween_property(enemy_visual, "position", enemy_clash_position, CLASH_TRAVEL_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	_combat_tween.parallel().tween_method(_set_actor_dissolve.bind(loser), 0.0, 1.0, DISSOLVE_DURATION).set_delay(CLASH_TRAVEL_DURATION)
 	_combat_tween.parallel().tween_property(player_actor, "position", player_home.position, CLASH_RECOVER_DURATION).set_delay(CLASH_TRAVEL_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-	_combat_tween.parallel().tween_property(enemy_actor, "position", enemy_home.position, CLASH_RECOVER_DURATION).set_delay(CLASH_TRAVEL_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-	_combat_tween.tween_callback(_finalize_combat.bind(combat_result, enemy_stats))
+	_combat_tween.parallel().tween_property(enemy_visual, "position", enemy_home.position, CLASH_RECOVER_DURATION).set_delay(CLASH_TRAVEL_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	_combat_tween.tween_callback(_finalize_combat.bind(combat_result, enemy_stats, event_data))
 
 
 func _set_actor_dissolve(value: float, actor: Node2D) -> void:
@@ -291,31 +337,55 @@ func _set_actor_dissolve(value: float, actor: Node2D) -> void:
 		actor.call("set_dissolve_progress", value)
 
 
-func _finalize_combat(combat_result: Dictionary, enemy_stats: Dictionary) -> void:
+func _finalize_combat(combat_result: Dictionary, enemy_stats: Dictionary, event_data: Dictionary = {}) -> void:
 	var run_manager := _get_run_manager()
 	if run_manager != null:
-		run_manager.apply_combat_result(combat_result, enemy_stats)
+		combat_result = run_manager.apply_combat_result(combat_result, enemy_stats)
 	var enemy_name := str(enemy_stats.get("name", enemy_stats.get("enemy_name", "Enemy")))
+	var is_game_over_combat := bool(event_data.get("game_over_on_combat", enemy_stats.get("game_over_on_combat", false)))
 	var biomass_total := 0
 	if run_manager != null:
 		biomass_total = int(run_manager.biomass)
 	var lines: Array[String] = [
 		"Combat Result:",
-		"Damage to player: %d" % int(combat_result.get("player_damage_taken", 0)),
+		"Enemy tier: %d" % int(enemy_stats.get("tier", 1)),
+		"Health lost: %d" % int(combat_result.get("player_damage_taken", 0)),
 		"Shield lost: %d" % int(combat_result.get("player_shield_lost", 0)),
 		"Biomass: %d" % biomass_total
 	]
 
 	if bool(combat_result.get("player_won", false)):
 		lines.append("%s dissolved." % enemy_name)
+	elif bool(combat_result.get("mitosis_triggered", false)):
+		lines.append("The Mitosis Unit takes the death for me.")
+		lines.append("It is gone. I wake with one heartbeat left.")
 	else:
 		lines.append("The player was overwhelmed.")
 
+	if is_game_over_combat:
+		if str(enemy_stats.get("id", "")) == "merchant":
+			if bool(combat_result.get("player_won", false)):
+				lines.append("I beat him. The scale still closes.")
+			else:
+				lines.append("He takes me apart by weight.")
+			lines.append("The last signal I send is noise.")
+		elif str(enemy_stats.get("id", "")) == "blood_hunter":
+			if bool(combat_result.get("player_won", false)):
+				lines.append("I kill the hunter. The route still ends here.")
+			else:
+				lines.append("The hunter opens me and drinks the run dry.")
+			lines.append("The last signal I send is buzzing.")
+		else:
+			lines.append("This pressure claims the run.")
+
 	if dashboard.has_method("show_console"):
-		dashboard.call("show_console", lines, [{"label": "Proceed.", "action": "proceed"}], current_room_id)
+		var buttons := [{"label": "Proceed.", "action": "proceed"}]
+		if is_game_over_combat:
+			buttons = [{"label": "Wake again", "action": "restart_run"}]
+		dashboard.call("show_console", lines, buttons, current_room_id)
 
 	_prepare_actors()
-	_pending_advance_after_ack = true
+	_pending_advance_after_ack = not is_game_over_combat
 	_is_combat_resolving = false
 
 
@@ -325,7 +395,8 @@ func _present_encounter(encounter: Dictionary, faded: bool = false) -> void:
 
 	var room_id := str(encounter.get("room_id", current_room_id))
 	var room_data: Dictionary = encounter.get("room_data", {})
-	merchant_actor.visible = str(encounter.get("event_id", "")) == "merchant_arrival"
+	var event_data: Dictionary = encounter.get("event_data", {})
+	merchant_actor.visible = _encounter_shows_merchant(encounter, event_data)
 	if room_id != "" and not room_data.is_empty():
 		change_room(room_id, room_data)
 
@@ -334,7 +405,6 @@ func _present_encounter(encounter: Dictionary, faded: bool = false) -> void:
 
 	_clear_encounter_scene()
 	var scene_path := str(encounter.get("scene_path", ""))
-	var event_data: Dictionary = encounter.get("event_data", {})
 	if scene_path != "":
 		_show_encounter_scene(scene_path, str(event_data.get("spawn_animation", "")))
 
@@ -356,8 +426,11 @@ func _show_action_result(action_result: Dictionary, room_id: String) -> void:
 		_play_encounter_animation(animation_name)
 
 	var run_manager := _get_run_manager()
-	if run_manager != null and str(run_manager.get_current_encounter().get("event_id", "")) == "merchant_arrival":
-		merchant_actor.visible = false
+	if run_manager != null:
+		var encounter: Dictionary = run_manager.get_current_encounter()
+		var event_data: Dictionary = encounter.get("event_data", {})
+		if _encounter_shows_merchant(encounter, event_data):
+			merchant_actor.visible = false
 
 	var lines: Array[String] = []
 	var result_lines = action_result.get("lines", [])
@@ -366,17 +439,24 @@ func _show_action_result(action_result: Dictionary, room_id: String) -> void:
 			lines.append(str(line))
 
 	if lines.is_empty():
-		lines = ["Her:", "That interaction is not implemented yet.", "I'll move on."]
+		lines = ["That interaction is not implemented yet.", "I move on."]
 
 	_pending_advance_after_ack = bool(action_result.get("advance_after_ack", true))
 	if dashboard.has_method("show_console"):
-		dashboard.call("show_console", lines, [{"label": "Proceed.", "action": "proceed"}], room_id if room_id != "" else current_room_id)
+		var buttons: Array = action_result.get("buttons", [{"label": "Proceed.", "action": "proceed"}])
+		dashboard.call("show_console", lines, buttons, room_id if room_id != "" else current_room_id)
 
 
 func _get_last_action_result(run_manager: Node) -> Dictionary:
 	if run_manager != null and run_manager.has_method("get_last_action_result"):
 		return run_manager.call("get_last_action_result")
 	return {}
+
+
+func _encounter_shows_merchant(encounter: Dictionary, event_data: Dictionary) -> bool:
+	if str(event_data.get("type", "")) == "merchant":
+		return true
+	return str(encounter.get("event_id", "")) == "merchant_arrival"
 
 
 func _show_encounter_scene(scene_path: String, spawn_animation: String = "") -> void:

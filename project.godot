@@ -8,11 +8,15 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="Fleshpunk- Inner Heart"
 run/main_scene="res://world.tscn"
-config/features=PackedStringArray("4.5", "Mobile")
+config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -26,6 +30,7 @@ window/size/viewport_width=1080
 window/size/viewport_height=1920
 window/size/mode=3
 window/stretch/mode="viewport"
+window/handheld/orientation=1
 
 [rendering]
 

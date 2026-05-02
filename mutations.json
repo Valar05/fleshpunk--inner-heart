@@ -4,6 +4,7 @@
       "id": "lean_muscle",
       "name": "Lean Muscle",
       "description": "+25% speed, -1 max health",
+      "biomass_cost": 6,
       "effects": {
         "speed_multiplier": 1.25,
         "max_health_delta": -1
@@ -13,6 +14,7 @@
       "id": "bigger_scythe",
       "name": "Bigger Scythe",
       "description": "x1.5 damage, -1 initiative",
+      "biomass_cost": 8,
       "effects": {
         "damage_multiplier": 1.5,
         "initiative_delta": -1
@@ -22,6 +24,7 @@
       "id": "spring_sinew",
       "name": "Spring Sinew",
       "description": "+1 initiative, -25% speed for 3 turns",
+      "biomass_cost": 7,
       "effects": {
         "initiative_delta": 1,
         "timed_speed_multiplier": 0.75,
@@ -31,7 +34,8 @@
     {
       "id": "bone_plates",
       "name": "Bone Plates",
-      "description": "5 shield at start of battle. Damage done reduced by 1.",
+      "description": "5 armor at start of battle. Damage reduced by 1.",
+      "biomass_cost": 7,
       "effects": {
         "battle_start_shield": 5,
         "damage_delta": -1
@@ -41,6 +45,7 @@
       "id": "spiked_armor",
       "name": "Spiked Armor",
       "description": "3 contact damage.",
+      "biomass_cost": 9,
       "effects": {
         "contact_damage": 3
       }

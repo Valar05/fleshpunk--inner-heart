@@ -1,28 +1,23 @@
 {
   "symbiotes": [
     {
-      "id": "plate_growth_symbiote",
-      "name": "Plate-Growth Symbiote",
-      "description": "Adds 5 shields. Cannot be used again for 3 rooms. If the shield is fully consumed, the symbiote takes 1 damage. 3 health.",
+      "id": "impermeable_barrier",
+      "name": "Impermeable Barrier",
+      "description": "Manual activation: gain 8 armor. Armor can block event damage. If the armor is expended, the symbiote loses 1 of 3 health.",
       "max_health": 3,
-      "cooldown_rooms": 3
+      "armor": 8,
+      "blocks_event_damage": true
     },
     {
-      "id": "regenerative_graft",
-      "name": "Regenerative Graft",
-      "description": "Heals 1 per room for 5 rooms. If you are not at full health at the end, it takes 1 damage. 5 health.",
-      "max_health": 5,
-      "duration_rooms": 5
+      "id": "pheromones",
+      "name": "Pheromones",
+      "description": "Manual activation before combat: enemy loses 1 initiative for the next fight.",
+      "max_health": 2,
+      "enemy_initiative_delta": -1
     },
     {
-      "id": "doppleganger",
-      "name": "Doppleganger",
-      "description": "Doubles your first action in combat when activated. If the enemy damages you, the symbiote takes damage. 3 health.",
-      "max_health": 3
-    },
-    {
-      "id": "mitosis_symbiote",
-      "name": "Mitosis Symbiote",
+      "id": "mitosis_unit",
+      "name": "Mitosis Unit",
       "description": "Saves you from dying one time, then dies.",
       "max_health": 1
     }

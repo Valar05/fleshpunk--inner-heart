@@ -3,8 +3,27 @@
   "corruption_spike_threshold": 3,
   "danger_notice_threshold": 2,
   "danger_bpm_step": 5.0,
-  "symbiote_every": 3,
-  "merchant_every": 5,
+  "pressure_warning_threshold": 3,
+  "pressure_lock_threshold": 6,
+  "corruption_warning_threshold": 3,
+  "corruption_ending_threshold": 8,
+  "danger_warning_threshold": 3,
+  "hunter_ending_threshold": 8,
+  "hunter_avoidance_threshold": 4,
+  "ending_reckoning_min_rooms": 12,
+  "balanced_corruption_limit": 5,
+  "balanced_danger_limit": 5,
+  "balanced_pressure_limit": 4,
+  "symbiote_card_per_deck": true,
+  "max_enemy_cards_per_deck": 4,
+  "branch_cards_min": 1,
+  "branch_cards_max": 2,
+  "straight_cards_min": 2,
+  "straight_cards_max": 4,
+  "symbiote_every": 0,
+  "merchant_every": 0,
+  "merchant_refusal_limit": 2,
+  "merchant_claim_limit": 3,
   "opening_room_id": "red_corridor",
   "opening_event_id": "symbiote_host_intro",
   "base_player_stats": {
@@ -13,7 +32,8 @@
     "shield": 6,
     "health": 30,
     "ambush_chance": 0.15,
-    "initiative": 0.6
+    "initiative": 0.6,
+    "speed": 1.0
   },
   "starter_rooms": [
     "red_corridor"
@@ -41,9 +61,23 @@
       "red_corridor",
       "amber_corridor"
     ],
+    "enemy": [
+      "red_corridor",
+      "amber_corridor",
+      "split_green_corridor",
+      "split_red_corridor",
+      "egg_corridor",
+      "bone_corridor"
+    ],
     "branch": [
       "split_green_corridor",
       "split_red_corridor"
+    ],
+    "straight_noncombat": [
+      "red_corridor",
+      "amber_corridor",
+      "healing_pool",
+      "egg_corridor"
     ],
     "healing": [
       "healing_pool"
@@ -54,8 +88,7 @@
       "amber_corridor",
       "split_green_corridor",
       "split_red_corridor",
-      "healing_pool",
-      "organ_chamber_red"
+      "healing_pool"
     ]
   }
 }

@@ -1,0 +1,205 @@
+{
+  "categories": [
+    {
+      "id": "story",
+      "label": "Story Element",
+      "purpose": "Low-friction narrative, foreshadowing, lore pressure, room flavor, or run pacing.",
+      "existing_actions": ["proceed", "retreat", "run"],
+      "content_rules": [
+        "Usually one proceed-style outcome.",
+        "May hint at future danger but should not promise unsupported delayed mechanics.",
+        "Use when the event should shape tone more than stats."
+      ]
+    },
+    {
+      "id": "narrative",
+      "label": "Narrative Beat",
+      "purpose": "Low-friction pacing, room texture, warning, or clone-memory narration.",
+      "existing_actions": ["proceed", "retreat", "run"],
+      "content_rules": [
+        "Usually one proceed-style outcome.",
+        "Should still foreshadow pressure, loss, pursuit, or route change.",
+        "Prefer short field-report phrasing over exposition."
+      ]
+    },
+    {
+      "id": "choice",
+      "label": "Risk Choice",
+      "purpose": "A general dilemma with two or three readable tradeoffs.",
+      "existing_actions": [
+        "proceed",
+        "retreat",
+        "run",
+        "combat",
+        "push_through_spikes",
+        "listen_at_green_split",
+        "mark_red_branch"
+      ],
+      "content_rules": [
+        "Use when no more specific category fits.",
+        "Each button should imply a distinct cost or reward.",
+        "Prefer existing actions unless the patch explicitly proposes engine changes."
+      ]
+    },
+    {
+      "id": "shop",
+      "label": "Shop",
+      "purpose": "Merchant, barter, purchase, sacrifice-for-resource, or offer/browse moments.",
+      "existing_actions": ["leave_merchant", "proceed", "retreat"],
+      "content_rules": [
+        "Current shop support is mostly placeholder.",
+        "Use required_engine_changes for real buying, inventory, pricing, or wares.",
+        "Avoid adding browse_wares unless engine support is implemented."
+      ]
+    },
+    {
+      "id": "merchant",
+      "label": "Merchant",
+      "purpose": "Merchant arrival, barter, refusal, debt, purchase pressure, or merchant reckoning.",
+      "existing_actions": ["browse_wares", "leave_merchant", "combat", "proceed", "retreat"],
+      "content_rules": [
+        "The exchange is pressure, not a rest stop.",
+        "Purchases should imply corruption, debt, or future leverage.",
+        "Refusal should be remembered when repeated."
+      ]
+    },
+    {
+      "id": "symbiote",
+      "label": "Symbiote",
+      "purpose": "Bonding with, refusing, damaging, or discovering a symbiotic organism.",
+      "existing_actions": ["take_symbiote", "leave_symbiote", "combat", "proceed"],
+      "content_rules": [
+        "Include symbiote_id when using take_symbiote.",
+        "Use an existing symbiote unless the patch also proposes a new symbiote entry.",
+        "The text should make bodily permanence or dependency clear."
+      ]
+    },
+    {
+      "id": "mutation",
+      "label": "Mutation",
+      "purpose": "Taking, refusing, or being tempted by a mutation.",
+      "existing_actions": ["take_mutation", "leave_mutation", "combat", "proceed"],
+      "content_rules": [
+        "Include mutation_id when using take_mutation.",
+        "Use an existing mutation unless the patch also proposes a new mutation entry.",
+        "State the physical bargain plainly."
+      ]
+    },
+    {
+      "id": "combat",
+      "label": "Combat",
+      "purpose": "Enemy encounter, ambush, or fight-as-choice scenario.",
+      "existing_actions": ["combat", "proceed", "run", "retreat"],
+      "content_rules": [
+        "Include enemy_id when using combat.",
+        "Use an existing enemy unless the patch also proposes a new enemy entry.",
+        "The non-combat option should still have a cost or loss of opportunity."
+      ]
+    },
+    {
+      "id": "healing",
+      "label": "Healing",
+      "purpose": "Recovery, clean/unclean medicine, shield restoration, or healing temptation.",
+      "existing_actions": ["drink_pool", "study_pool", "retreat", "proceed"],
+      "content_rules": [
+        "Healing should usually involve corruption, danger, or uncertainty.",
+        "Use drink_pool and study_pool when possible.",
+        "Avoid free recovery without a tonal or mechanical cost."
+      ]
+    },
+    {
+      "id": "amber",
+      "label": "Amber Resource",
+      "purpose": "Amber sacs, resin, shield recovery, sealed wounds, or pressurized salvage.",
+      "existing_actions": ["siphon_amber", "overdraw_amber", "seal_amber_wound", "leave_amber", "proceed"],
+      "content_rules": [
+        "Amber should feel pressurized, useful, and not fully clean.",
+        "Resource gain should carry damage, corruption, attention, or lost safety.",
+        "Shield recovery should still leave residue or tactical cost."
+      ]
+    },
+    {
+      "id": "resource",
+      "label": "Resource",
+      "purpose": "Biomass, harvest, salvage, amber, marrow, or body-material gain.",
+      "existing_actions": [
+        "harvest_eggs",
+        "siphon_amber",
+        "overdraw_amber",
+        "open_red_artery",
+        "cut_green_spine",
+        "cauterize_eggs",
+        "slip_between_eggs",
+        "leave_amber",
+        "proceed"
+      ],
+      "content_rules": [
+        "Make the material gain concrete.",
+        "Make the risk visible.",
+        "Use room-appropriate verbs: cut, siphon, harvest, cauterize, seal."
+      ]
+    },
+    {
+      "id": "hazard",
+      "label": "Hazard",
+      "purpose": "Damage, pressure, spikes, contamination, danger rise, or forced passage.",
+      "existing_actions": [
+        "push_through_spikes",
+        "brace_through_red_split",
+        "cauterize_eggs",
+        "retreat",
+        "run",
+        "proceed"
+      ],
+      "content_rules": [
+        "The hazard should be readable before the choice.",
+        "Use existing damage actions when possible.",
+        "Use required_engine_changes for delayed or room-count consequences."
+      ]
+    },
+    {
+      "id": "danger",
+      "label": "Danger Notice",
+      "purpose": "A warning that the organism has noticed Hymn and is increasing pursuit pressure.",
+      "existing_actions": ["proceed", "run", "retreat", "combat"],
+      "content_rules": [
+        "Danger is attention, not a generic difficulty popup.",
+        "Use as a warning before pursuit, ambush, or hunter pressure escalates.",
+        "Text should make the environment feel like it learned something."
+      ]
+    },
+    {
+      "id": "corruption",
+      "label": "Corruption Pressure",
+      "purpose": "A threshold warning, body drift, corruption spike, or forced cost from invasive power.",
+      "existing_actions": ["push_through_spikes", "proceed", "retreat", "run", "restart_run"],
+      "content_rules": [
+        "Corruption should feel useful first and identity-threatening later.",
+        "Use as warning or pressure when the player repeats body-altering choices.",
+        "Avoid abstract moral language; show physical drift."
+      ]
+    },
+    {
+      "id": "boss",
+      "label": "Boss Encounter",
+      "purpose": "Major enemy, chamber guardian, forced reckoning, or floor-defining fight.",
+      "existing_actions": ["combat", "proceed", "run", "retreat"],
+      "content_rules": [
+        "Boss events should establish what system function the enemy protects.",
+        "Bypass choices should cost access, information, danger, or ending pressure.",
+        "Use sparingly as a run-shaping event."
+      ]
+    },
+    {
+      "id": "transition",
+      "label": "Transition",
+      "purpose": "Floor changes, pacing breaks, preview rooms, run-state changes, or threshold moments.",
+      "existing_actions": ["proceed", "run", "retreat"],
+      "content_rules": [
+        "Use sparingly.",
+        "Should orient the player toward a coming change.",
+        "Do not change deck rules unless required_engine_changes describes the implementation."
+      ]
+    }
+  ]
+}

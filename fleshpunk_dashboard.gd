@@ -29,8 +29,6 @@ func set_room_data(room_data: Dictionary) -> void:
 		var line_1 := str(ui_text.get("line_1", ""))
 		var line_2 := str(ui_text.get("line_2", ""))
 
-		if speaker != "":
-			lines.append("%s:" % speaker)
 		if line_1 != "":
 			lines.append(line_1)
 		if line_2 != "":
@@ -54,14 +52,25 @@ func show_console(lines: Array, options: Array, room_id: String = "") -> void:
 		_current_room_id = room_id
 
 	clear_console()
-	for index in lines.size():
-		var line_text := str(lines[index])
+	var narrative_lines := _sanitize_narration_lines(lines)
+	for index in narrative_lines.size():
+		var line_text := str(narrative_lines[index])
 		_append_label(line_text, index == 0 and line_text.ends_with(":"))
 
 	for option in options:
 		_append_button(option)
 
 	call_deferred("_reset_console_scroll")
+
+
+func _sanitize_narration_lines(lines: Array) -> Array[String]:
+	var clean_lines: Array[String] = []
+	for line in lines:
+		var text := str(line).strip_edges()
+		if text == "" or text == "Her:":
+			continue
+		clean_lines.append(text)
+	return clean_lines
 
 
 func _get_room_options(room_data: Dictionary) -> Array:
