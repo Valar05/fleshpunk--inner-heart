@@ -18,7 +18,7 @@
     {
       "id": "mitosis_unit",
       "name": "Mitosis Unit",
-      "description": "Saves you from dying one time, then dies.",
+      "description": "Passive: saves you from dying one time, then dies.",
       "max_health": 1
     }
   ]

@@ -197,8 +197,8 @@ func activate_symbiote(symbiote_id: String) -> Dictionary:
 		"mitosis_unit":
 			active_symbiotes[symbiote_id] = true
 			return _with_director_lines(_build_symbiote_activation_result([
-				"%s wakes and starts counting my organs." % symbiote_name,
-				"If I die before it sleeps, it dies instead."
+				"%s is already counting my organs." % symbiote_name,
+				"If I die, it dies first."
 			]), _record_action_pattern("activate_symbiote", {}))
 
 	return _with_director_lines(_build_symbiote_activation_result([
@@ -222,12 +222,17 @@ func get_merchant_shop_offer() -> Dictionary:
 		var mutation_cost := _get_mutation_cost(mutation_data)
 		buttons.append({
 			"label": "%s - %d biomass" % [mutation_name, mutation_cost],
-			"action": "buy_mutation:%s" % mutation_id
+			"action": "buy_mutation:%s" % mutation_id,
+			"voice_aliases": _build_mutation_voice_aliases(mutation_id, mutation_data)
 		})
 
 	if buttons.is_empty():
 		lines.append("Nothing here wants me twice.")
-	buttons.append({"label": "Withdraw", "action": "leave_merchant"})
+	buttons.append({
+		"label": "Withdraw",
+		"action": "leave_merchant",
+		"voice_aliases": ["withdraw", "leave", "walk away", "back off", "retreat"]
+	})
 	return {
 		"lines": lines,
 		"buttons": buttons
@@ -241,7 +246,18 @@ func buy_shop_mutation(mutation_id: String) -> Dictionary:
 				"The scale has no place for that shape.",
 				"I keep my biomass close."
 			],
-			"buttons": [{"label": "Back to scales", "action": "browse_wares"}, {"label": "Withdraw", "action": "leave_merchant"}]
+			"buttons": [
+				{
+					"label": "Back to scales",
+					"action": "browse_wares",
+					"voice_aliases": ["back", "back to scales", "scales", "merchant", "trade"]
+				},
+				{
+					"label": "Withdraw",
+					"action": "leave_merchant",
+					"voice_aliases": ["withdraw", "leave", "walk away", "back off", "retreat"]
+				}
+			]
 		}
 
 	var mutation_data: Dictionary = mutations_by_id.get(mutation_id, {})
@@ -252,7 +268,18 @@ func buy_shop_mutation(mutation_id: String) -> Dictionary:
 				"%s is already written into me." % mutation_name,
 				"The merchant's scale stays still."
 			],
-			"buttons": [{"label": "Back to scales", "action": "browse_wares"}, {"label": "Withdraw", "action": "leave_merchant"}]
+			"buttons": [
+				{
+					"label": "Back to scales",
+					"action": "browse_wares",
+					"voice_aliases": ["back", "back to scales", "scales", "merchant", "trade"]
+				},
+				{
+					"label": "Withdraw",
+					"action": "leave_merchant",
+					"voice_aliases": ["withdraw", "leave", "walk away", "back off", "retreat"]
+				}
+			]
 		}
 
 	var mutation_cost := _get_mutation_cost(mutation_data)
@@ -262,7 +289,18 @@ func buy_shop_mutation(mutation_id: String) -> Dictionary:
 				"The scale wants %d biomass for %s." % [mutation_cost, mutation_name],
 				"I only have %d." % biomass
 			],
-			"buttons": [{"label": "Back to scales", "action": "browse_wares"}, {"label": "Withdraw", "action": "leave_merchant"}]
+			"buttons": [
+				{
+					"label": "Back to scales",
+					"action": "browse_wares",
+					"voice_aliases": ["back", "back to scales", "scales", "merchant", "trade"]
+				},
+				{
+					"label": "Withdraw",
+					"action": "leave_merchant",
+					"voice_aliases": ["withdraw", "leave", "walk away", "back off", "retreat"]
+				}
+			]
 		}
 
 	biomass -= mutation_cost
@@ -276,7 +314,18 @@ func buy_shop_mutation(mutation_id: String) -> Dictionary:
 			"It bursts across my legs and crawls inward.",
 			"%s settles into me. Biomass: %d. Corruption: %d." % [mutation_name, biomass, corruption]
 		],
-		"buttons": [{"label": "Back to scales", "action": "browse_wares"}, {"label": "Withdraw", "action": "leave_merchant"}]
+		"buttons": [
+			{
+				"label": "Back to scales",
+				"action": "browse_wares",
+				"voice_aliases": ["back", "back to scales", "scales", "merchant", "trade"]
+			},
+			{
+				"label": "Withdraw",
+				"action": "leave_merchant",
+				"voice_aliases": ["withdraw", "leave", "walk away", "back off", "retreat"]
+			}
+		]
 	}, _record_action_pattern("buy_mutation", {}))
 
 
@@ -315,7 +364,7 @@ func advance_to_next_encounter() -> Dictionary:
 
 func apply_combat_result(combat_result: Dictionary, enemy_data: Dictionary) -> Dictionary:
 	var adjusted_result := combat_result.duplicate(true)
-	if int(adjusted_result.get("player_remaining_health", player_state.get("health", 0))) <= 0 and active_symbiotes.has("mitosis_unit"):
+	if int(adjusted_result.get("player_remaining_health", player_state.get("health", 0))) <= 0 and _can_mitosis_trigger():
 		_kill_symbiote("mitosis_unit")
 		adjusted_result["player_remaining_health"] = 1
 		adjusted_result["enemy_won"] = false
@@ -828,7 +877,11 @@ func _build_fallback_encounter(reason: String) -> Dictionary:
 		"speaker": "Her",
 		"line_1": "Chorus, route draw failed. The corridor holds open but gives me nothing clean.",
 		"line_2": "Debug: %s. I force a reset and keep moving." % reason,
-		"buttons": [{"label": "Force the route open", "action": "proceed"}]
+		"buttons": [{
+			"label": "Force the route open",
+			"action": "proceed",
+			"voice_aliases": ["proceed", "advance", "move on", "go forward", "step through"]
+		}]
 	}
 	_reset_active_deck()
 	return {
@@ -868,7 +921,7 @@ func _build_buttons(event_data: Dictionary) -> Array:
 	if buttons_variant is Array and not buttons_variant.is_empty():
 		buttons = buttons_variant.duplicate(true)
 	else:
-		buttons = [{"label": "Proceed.", "action": "proceed"}]
+		buttons = [_default_proceed_button()]
 	return _append_symbiote_activation_buttons(buttons, event_data)
 
 
@@ -882,8 +935,9 @@ func _build_symbiote_choice_buttons(event_data: Dictionary) -> Array:
 			continue
 		var symbiote_data: Dictionary = symbiotes_by_id.get(symbiote_id, {})
 		buttons.append({
-			"label": "Bond: %s" % str(symbiote_data.get("name", symbiote_id)),
-			"action": "take_symbiote:%s" % symbiote_id
+			"label": _describe_symbiote_bond_label(symbiote_id, symbiote_data),
+			"action": "take_symbiote:%s" % symbiote_id,
+			"voice_aliases": _build_symbiote_voice_aliases(symbiote_id, symbiote_data)
 		})
 
 	var fallback_buttons = event_data.get("buttons", [])
@@ -893,7 +947,11 @@ func _build_symbiote_choice_buttons(event_data: Dictionary) -> Array:
 				buttons.append(button.duplicate(true))
 
 	if buttons.is_empty():
-		buttons.append({"label": "Leave them", "action": "leave_symbiote"})
+		buttons.append({
+			"label": "Leave them",
+			"action": "leave_symbiote",
+			"voice_aliases": ["leave", "leave them", "walk away", "retreat", "decline"]
+		})
 	return buttons
 
 
@@ -907,15 +965,60 @@ func _append_symbiote_activation_buttons(buttons: Array, event_data: Dictionary)
 		var symbiote_data: Dictionary = symbiotes_by_id.get(symbiote_id, {})
 		buttons.append({
 			"label": "Activate: %s" % str(symbiote_data.get("name", symbiote_id)),
-			"action": "activate_symbiote:%s" % symbiote_id
+			"action": "activate_symbiote:%s" % symbiote_id,
+			"voice_aliases": _build_symbiote_voice_aliases(symbiote_id, symbiote_data)
 		})
 	return buttons
+
+
+func _build_symbiote_voice_aliases(symbiote_id: String, symbiote_data: Dictionary) -> Array[String]:
+	var aliases: Array[String] = []
+	match symbiote_id:
+		"impermeable_barrier":
+			aliases = ["barrier", "shield", "armor shield", "impermeable", "impenetrable", "impenetrible"]
+		"pheromones":
+			aliases = ["pheromones", "scent", "scent trail", "weaken enemies"]
+		"mitosis_unit":
+			aliases = ["mitosis", "split", "clone", "death save"]
+		_:
+			aliases = [symbiote_id.replace("_", " ")]
+
+	var symbiote_name := str(symbiote_data.get("name", symbiote_id)).strip_edges().to_lower()
+	if symbiote_name != "" and not aliases.has(symbiote_name):
+		aliases.append(symbiote_name)
+
+	return aliases
+
+
+func _build_mutation_voice_aliases(mutation_id: String, mutation_data: Dictionary) -> Array[String]:
+	var aliases: Array[String] = []
+	var mutation_name := str(mutation_data.get("name", mutation_id)).strip_edges().to_lower()
+	match mutation_id:
+		_:
+			aliases = ["buy", "purchase", "take mutation", "mutation", "claim"]
+
+	if mutation_name != "" and not aliases.has(mutation_name):
+		aliases.append(mutation_name)
+	if mutation_id != "" and not aliases.has(mutation_id.replace("_", " ")):
+		aliases.append(mutation_id.replace("_", " "))
+
+	return aliases
+
+
+func _default_proceed_button() -> Dictionary:
+	return {
+		"label": "Proceed.",
+		"action": "proceed",
+		"voice_aliases": ["proceed", "advance", "move on", "go forward", "step through"]
+	}
 
 
 func _can_activate_symbiote(symbiote_id: String) -> bool:
 	if not symbiotes_by_id.has(symbiote_id):
 		return false
 	if int(symbiote_health.get(symbiote_id, 0)) <= 0:
+		return false
+	if symbiote_id == "mitosis_unit":
 		return false
 	if int(symbiote_cooldowns.get(symbiote_id, 0)) > 0:
 		return false
@@ -924,8 +1027,20 @@ func _can_activate_symbiote(symbiote_id: String) -> bool:
 	return true
 
 
+func _describe_symbiote_bond_label(symbiote_id: String, symbiote_data: Dictionary) -> String:
+	var symbiote_name := str(symbiote_data.get("name", symbiote_id))
+	match symbiote_id:
+		"impermeable_barrier":
+			return "Bond: %s, armor shield" % symbiote_name
+		"pheromones":
+			return "Bond: %s, weaken enemies" % symbiote_name
+		"mitosis_unit":
+			return "Bond: %s, one death save" % symbiote_name
+	return "Bond: %s" % symbiote_name
+
+
 func _build_symbiote_activation_result(lines: Array[String]) -> Dictionary:
-	var buttons: Array = [{"label": "Proceed.", "action": "proceed"}]
+	var buttons: Array = [_default_proceed_button()]
 	var event_data: Dictionary = current_encounter.get("event_data", {})
 	if not event_data.is_empty() and not bool(current_encounter.get("consumed", false)) and not event_data.has("symbiote_choices"):
 		buttons = _build_buttons(event_data)
@@ -1641,8 +1756,16 @@ func _take_symbiote_from_event(symbiote_id: String, event_data: Dictionary) -> D
 			"%s die with the host. One dependency comes with me." % lost_names
 		],
 		"buttons": [
-			{"label": "Activate: %s" % symbiote_name, "action": "activate_symbiote:%s" % symbiote_id},
-			{"label": "Carry the bond forward", "action": "proceed"}
+			{
+				"label": "Activate: %s" % symbiote_name,
+				"action": "activate_symbiote:%s" % symbiote_id,
+				"voice_aliases": _build_symbiote_voice_aliases(symbiote_id, symbiote_data)
+			},
+			{
+				"label": "Carry the bond forward",
+				"action": "proceed",
+				"voice_aliases": ["proceed", "advance", "move on", "go forward", "step through"]
+			}
 		]
 	}
 
@@ -1806,7 +1929,7 @@ func _apply_player_damage(raw_damage: int) -> Dictionary:
 	var health_lost: int = int(min(current_health, remaining_damage))
 	player_state["health"] = current_health - health_lost
 	var mitosis_triggered := false
-	if int(player_state["health"]) <= 0 and active_symbiotes.has("mitosis_unit"):
+	if int(player_state["health"]) <= 0 and _can_mitosis_trigger():
 		_kill_symbiote("mitosis_unit")
 		player_state["health"] = 1
 		mitosis_triggered = true
@@ -1845,7 +1968,10 @@ func _build_damage_result(raw_damage: int, intro_lines: Array[String], closing_l
 	var lines := intro_lines.duplicate()
 	lines.append(_build_damage_summary(raw_damage, damage_result))
 	lines.append(closing_line)
-	return {"lines": lines}
+	return {
+		"lines": lines,
+		"buttons": [_default_proceed_button()]
+	}
 
 
 func _build_damage_summary(raw_damage: int, damage_result: Dictionary) -> String:
@@ -1861,6 +1987,10 @@ func _build_damage_summary(raw_damage: int, damage_result: Dictionary) -> String
 	if bool(damage_result.get("mitosis_triggered", false)):
 		summary += " Mitosis Unit dies in my place."
 	return summary
+
+
+func _can_mitosis_trigger() -> bool:
+	return owned_symbiotes.has("mitosis_unit") and int(symbiote_health.get("mitosis_unit", 0)) > 0 and active_symbiotes.has("mitosis_unit")
 
 
 func _add_danger(amount: int) -> void:

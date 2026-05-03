@@ -6,3 +6,4 @@
 generated/
 __pycache__/
 *.pyc
+audio/tts/.tts_cache.json

@@ -32,15 +32,98 @@ RUN_MANAGER_PATH = ROOT / "run_manager.gd"
 CATEGORIES_PATH = MEMORY_DIR / "event_categories.json"
 VIBE_GUIDE_PATH = MEMORY_DIR / "vibe_guide.md"
 LORE_GUIDE_PATH = MEMORY_DIR / "lore_guide.md"
+ACCESSIBILITY_GUIDE_PATH = MEMORY_DIR / "accessibility_guide.md"
 CRITIQUE_MEMORY_PATH = MEMORY_DIR / "critic_guidance.jsonl"
 BALANCE_MEMORY_PATH = MEMORY_DIR / "balance_guidance.jsonl"
 FUN_MEMORY_PATH = MEMORY_DIR / "fun_guidance.jsonl"
 LORE_MEMORY_PATH = MEMORY_DIR / "lore_guidance.jsonl"
 LORE_BRAINSTORM_MEMORY_PATH = MEMORY_DIR / "lore_brainstorm_guidance.jsonl"
+ACCESSIBILITY_MEMORY_PATH = MEMORY_DIR / "accessibility_guidance.jsonl"
 
 DEFAULT_MODEL = os.environ.get("SCENARIO_AGENT_MODEL", "gpt-5")
 
 EXISTING_ACTION_RE = re.compile(r'^\s*"([^"]+)":\s*$', re.MULTILINE)
+VOICE_ALIAS_MAX_WORDS = 4
+VOICE_ALIAS_MIN_WORDS = 1
+VOICE_ALIAS_MAX_PER_BUTTON = 5
+VOICE_ALIAS_STOP_WORDS = {
+    "a",
+    "an",
+    "and",
+    "as",
+    "at",
+    "back",
+    "be",
+    "away",
+    "by",
+    "for",
+    "from",
+    "go",
+    "i",
+    "in",
+    "into",
+    "it",
+    "my",
+    "near",
+    "of",
+    "on",
+    "or",
+    "out",
+    "the",
+    "their",
+    "them",
+    "then",
+    "there",
+    "these",
+    "this",
+    "to",
+    "up",
+    "with",
+}
+VOICE_ALIAS_BLOCKLIST = {
+    "confirm",
+    "help",
+    "inventory",
+    "options",
+    "pause",
+    "repeat",
+    "repeat choices",
+    "continue",
+    "resume",
+    "status",
+}
+VOICE_ALIAS_ACTION_SEEDS = {
+    "activate_symbiote": ["activate", "wake symbiote", "use symbiote", "trigger symbiote", "bond"],
+    "browse_wares": ["approach", "merchant", "trade", "exchange", "barter"],
+    "buy_mutation": ["buy", "purchase", "take mutation", "claim mutation", "mutation"],
+    "combat": ["fight", "attack", "strike", "engage", "kill"],
+    "cut_green_spine": ["cut", "green spine", "spine", "sever", "slice"],
+    "drink_pool": ["drink", "sip", "pool", "clean pulse", "take a sip"],
+    "leave_merchant": ["walk away", "refuse merchant", "decline merchant", "back off", "leave merchant"],
+    "leave_symbiote": ["leave symbiote", "decline symbiote", "refuse symbiote", "no bond", "walk away"],
+    "proceed": ["advance", "move on", "carry on", "go forward", "step through"],
+    "retreat": ["retreat", "withdraw", "back away", "fall back", "pull back"],
+    "study_pool": ["study", "inspect", "sample", "listen", "read"],
+    "take_mutation": ["take mutation", "claim mutation", "choose mutation", "mutation", "buy mutation"],
+    "take_symbiote": ["bond", "take symbiote", "claim symbiote", "choose symbiote", "accept symbiote"],
+    "vent_red_split": ["vent", "cut vent", "cut a vent", "open vent", "vent the wall"],
+}
+VOICE_ALIAS_FAMILY_SEEDS = {
+    "approach": ["approach", "merchant", "trade", "exchange", "barter"],
+    "back": ["back away", "back off", "withdraw", "leave", "retreat"],
+    "bond": ["bond", "take symbiote", "claim symbiote", "accept symbiote", "choose symbiote"],
+    "buy": ["buy", "purchase", "take mutation", "claim mutation", "mutation"],
+    "cut": ["cut", "slice", "sever", "open vent", "vent"],
+    "drink": ["drink", "sip", "take a sip", "clean pulse", "breathe"],
+    "leave": ["leave", "walk away", "withdraw", "back away", "retreat"],
+    "mark": ["mark", "trace", "tag", "branch", "select branch"],
+    "move": ["move", "continue", "advance", "go on", "step through"],
+    "proceed": ["proceed", "advance", "move on", "carry on", "go forward"],
+    "retreat": ["retreat", "withdraw", "back away", "fall back", "pull back"],
+    "study": ["study", "inspect", "sample", "listen", "read"],
+    "take": ["take", "claim", "choose", "accept"],
+    "vent": ["vent", "cut vent", "cut a vent", "open vent", "breach"],
+}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -128,12 +211,331 @@ def existing_actions() -> set[str]:
     return actions
 
 
+def enrich_patch_voice_aliases(patch: dict[str, Any]) -> dict[str, Any]:
+    events = patch.get("events", [])
+    if not isinstance(events, list):
+        return patch
+    for item in events:
+        if not isinstance(item, dict):
+            continue
+        event = item.get("event")
+        if not isinstance(event, dict):
+            continue
+        _enrich_event_voice_aliases(event, replace_existing=False)
+    return patch
+
+
+def enrich_events_payload_voice_aliases(payload: dict[str, Any]) -> dict[str, Any]:
+    room_events = payload.get("room_events", {})
+    if isinstance(room_events, dict):
+        for events in room_events.values():
+            if not isinstance(events, list):
+                continue
+            for event in events:
+                if isinstance(event, dict):
+                    _enrich_event_voice_aliases(event, replace_existing=True)
+    special_events = payload.get("special_events", {})
+    if isinstance(special_events, dict):
+        for event in special_events.values():
+            if isinstance(event, dict):
+                _enrich_event_voice_aliases(event, replace_existing=True)
+    return payload
+
+
+def _enrich_event_voice_aliases(event: dict[str, Any], replace_existing: bool) -> None:
+    buttons = event.get("buttons", [])
+    if not isinstance(buttons, list) or not buttons:
+        return
+    event_text = " ".join([
+        str(event.get("line_1", "")),
+        str(event.get("line_2", "")),
+    ]).strip()
+    button_candidates: list[list[dict[str, Any]]] = []
+    for index, button in enumerate(buttons):
+        if not isinstance(button, dict):
+            button_candidates.append([])
+            continue
+        candidates = _voice_alias_candidates_for_button(button, event_text, index)
+        button_candidates.append(candidates)
+    resolved = _resolve_voice_alias_candidates(button_candidates)
+    for index, button in enumerate(buttons):
+        if not isinstance(button, dict):
+            continue
+        if replace_existing:
+            generated = resolved.get(index, [])
+            if generated:
+                button["voice_aliases"] = generated
+        else:
+            merged = _merge_voice_aliases(button.get("voice_aliases", []), resolved.get(index, []))
+            if merged:
+                button["voice_aliases"] = merged
+
+
+def _resolve_voice_alias_candidates(button_candidates: list[list[dict[str, Any]]]) -> dict[int, list[str]]:
+    winner_by_alias: dict[str, dict[str, Any]] = {}
+    for candidates in button_candidates:
+        for candidate in candidates:
+            alias = str(candidate.get("alias", "")).strip()
+            if not alias or alias in VOICE_ALIAS_BLOCKLIST:
+                continue
+            existing = winner_by_alias.get(alias)
+            if existing is None or _voice_alias_is_better(candidate, existing):
+                winner_by_alias[alias] = candidate
+
+    resolved: dict[int, list[tuple[float, str]]] = {}
+    for alias, candidate in winner_by_alias.items():
+        index = int(candidate.get("index", -1))
+        if index < 0:
+            continue
+        resolved.setdefault(index, []).append((float(candidate.get("score", 0.0)), alias))
+
+    output: dict[int, list[str]] = {}
+    for index, aliases in resolved.items():
+        aliases.sort(key=lambda item: (-item[0], item[1]))
+        output[index] = [alias for _, alias in aliases[:VOICE_ALIAS_MAX_PER_BUTTON]]
+    return output
+
+
+def _voice_alias_is_better(candidate: dict[str, Any], existing: dict[str, Any]) -> bool:
+    candidate_score = float(candidate.get("score", 0.0))
+    existing_score = float(existing.get("score", 0.0))
+    if candidate_score != existing_score:
+        return candidate_score > existing_score
+    candidate_words = int(candidate.get("word_count", 0))
+    existing_words = int(existing.get("word_count", 0))
+    if candidate_words != existing_words:
+        return candidate_words < existing_words
+    candidate_length = len(str(candidate.get("alias", "")))
+    existing_length = len(str(existing.get("alias", "")))
+    if candidate_length != existing_length:
+        return candidate_length < existing_length
+    return int(candidate.get("index", 0)) < int(existing.get("index", 0))
+
+
+def _merge_voice_aliases(existing_aliases: Any, generated_aliases: list[str]) -> list[str]:
+    merged: list[str] = []
+    seen: set[str] = set()
+    for alias in existing_aliases if isinstance(existing_aliases, list) else []:
+        normalized = _normalize_voice_alias(str(alias))
+        if _is_valid_voice_alias(normalized) and normalized not in seen:
+            merged.append(normalized)
+            seen.add(normalized)
+    for alias in generated_aliases:
+        normalized = _normalize_voice_alias(alias)
+        if _is_valid_voice_alias(normalized) and normalized not in seen:
+            merged.append(normalized)
+            seen.add(normalized)
+    return merged[:VOICE_ALIAS_MAX_PER_BUTTON]
+
+
+def _voice_alias_candidates_for_button(button: dict[str, Any], event_text: str, index: int) -> list[dict[str, Any]]:
+    label = str(button.get("label", ""))
+    action = str(button.get("action", ""))
+    candidates: list[dict[str, Any]] = []
+    seen: set[str] = set()
+
+    def add_phrase(phrase: str, score: float, source: str) -> None:
+        normalized = _normalize_voice_alias(phrase)
+        if not _is_valid_voice_alias(normalized) or normalized in seen:
+            return
+        seen.add(normalized)
+        candidates.append({
+            "alias": normalized,
+            "score": score,
+            "source": source,
+            "index": index,
+            "word_count": len(normalized.split()),
+        })
+
+    for existing in button.get("voice_aliases", []):
+        add_phrase(str(existing), 1.0, "existing")
+    for phrase in _voice_alias_phrases_from_family(label, action):
+        add_phrase(phrase, _voice_alias_score_for_phrase(phrase, 1.0), "family")
+    for phrase in _voice_alias_phrases_from_action(action):
+        add_phrase(phrase, _voice_alias_score_for_phrase(phrase, 0.98), "action")
+    for phrase in _voice_alias_phrases_from_text(label):
+        add_phrase(phrase, _voice_alias_score_for_phrase(phrase, 0.84), "label")
+    for phrase in _voice_alias_phrases_from_text(event_text):
+        add_phrase(phrase, _voice_alias_score_for_phrase(phrase, 0.66), "event_text")
+
+    candidates.sort(key=lambda item: (-float(item.get("score", 0.0)), int(item.get("word_count", 0)), str(item.get("alias", ""))))
+    return candidates
+
+
+def _voice_alias_phrases_from_action(action: str) -> list[str]:
+    phrases: list[str] = []
+    base = str(action).split(":", 1)[0].replace("_", " ").strip()
+    if base:
+        phrases.append(base)
+    if action in VOICE_ALIAS_ACTION_SEEDS:
+        phrases.extend(VOICE_ALIAS_ACTION_SEEDS[action])
+    if base in VOICE_ALIAS_ACTION_SEEDS:
+        phrases.extend(VOICE_ALIAS_ACTION_SEEDS[base])
+    if ":" in action:
+        suffix = str(action.split(":", 1)[1]).replace("_", " ").strip()
+        if suffix:
+            phrases.extend([suffix, f"{base} {suffix}".strip()])
+    return _dedupe_alias_phrases(phrases)
+
+
+def _voice_alias_phrases_from_family(label: str, action: str) -> list[str]:
+    phrases: list[str] = []
+    for family_key in _voice_alias_family_keys(label, action):
+        phrases.extend(VOICE_ALIAS_FAMILY_SEEDS.get(family_key, []))
+    return _dedupe_alias_phrases(phrases)
+
+
+def _voice_alias_family_keys(label: str, action: str) -> list[str]:
+    keys: list[str] = []
+    normalized_label = _normalize_voice_alias(label)
+    normalized_action = _normalize_voice_alias(action).replace("_", " ")
+    for phrase, key in (
+        ("cut a vent", "cut"),
+        ("cut vent", "cut"),
+        ("vent the wall", "vent"),
+        ("back away", "back"),
+        ("back off", "back"),
+        ("walk away", "leave"),
+        ("leave", "leave"),
+        ("approach", "approach"),
+        ("trade", "approach"),
+        ("exchange", "approach"),
+        ("merchant", "approach"),
+        ("drink", "drink"),
+        ("sip", "drink"),
+        ("study", "study"),
+        ("inspect", "study"),
+        ("sample", "study"),
+        ("retreat", "retreat"),
+        ("move", "move"),
+        ("proceed", "proceed"),
+        ("bond", "bond"),
+        ("activate", "bond"),
+        ("take mutation", "buy"),
+        ("purchase", "buy"),
+        ("claim mutation", "buy"),
+        ("mark", "mark"),
+    ):
+        if phrase in normalized_label or phrase in normalized_action:
+            if key not in keys:
+                keys.append(key)
+
+    raw_label_tokens = normalized_label.split()
+    if raw_label_tokens:
+        first = str(raw_label_tokens[0])
+        if first in VOICE_ALIAS_FAMILY_SEEDS and first not in keys:
+            keys.append(first)
+    raw_action_tokens = normalized_action.split()
+    if raw_action_tokens:
+        first_action = str(raw_action_tokens[0])
+        if first_action in VOICE_ALIAS_FAMILY_SEEDS and first_action not in keys:
+            keys.append(first_action)
+    if "vent" in normalized_action and "cut" not in keys:
+        keys.insert(0, "cut")
+    if "merchant" in normalized_action and "approach" not in keys:
+        keys.append("approach")
+    if "symbiote" in normalized_action and "bond" not in keys:
+        keys.append("bond")
+    return keys[:3]
+
+
+def _voice_alias_phrases_from_text(text: str) -> list[str]:
+    normalized = _normalize_voice_alias(text)
+    if not normalized:
+        return []
+    phrases: list[str] = []
+    for chunk in re.split(r"[.!?;:,/\\-]+", normalized):
+        tokens = _voice_alias_tokens(chunk)
+        if not tokens:
+            continue
+        if len(tokens) <= VOICE_ALIAS_MAX_WORDS:
+            phrases.append(" ".join(tokens))
+        for token in tokens:
+            phrases.append(token)
+        for size in range(2, min(VOICE_ALIAS_MAX_WORDS, len(tokens)) + 1):
+            for start in range(0, len(tokens) - size + 1):
+                window = tokens[start:start + size]
+                phrases.append(" ".join(window))
+    return _dedupe_alias_phrases(phrases)
+
+
+def _voice_alias_score_for_phrase(phrase: str, base_score: float) -> float:
+    tokens = _voice_alias_tokens(phrase)
+    if not tokens:
+        return 0.0
+    score = base_score
+    if len(tokens) == 1:
+        score += 0.03
+    elif len(tokens) == 2:
+        score += 0.05
+    elif len(tokens) == 3:
+        score += 0.02
+    else:
+        score -= 0.04
+    if len(" ".join(tokens)) > 24:
+        score -= 0.03
+    if any(token in {"merchant", "spine", "pulse", "symbiote", "mutation"} for token in tokens):
+        score += 0.03
+    return score
+
+
+def _voice_alias_tokens(text: str) -> list[str]:
+    normalized = _normalize_voice_alias(text)
+    if not normalized:
+        return []
+    tokens = [token for token in normalized.split() if token and token not in VOICE_ALIAS_STOP_WORDS]
+    compacted: list[str] = []
+    for token in tokens:
+        if len(token) < 3 and token not in {"cut", "sip", "buy"}:
+            continue
+        compacted.append(token)
+    return compacted[:VOICE_ALIAS_MAX_WORDS]
+
+
+def _normalize_voice_alias(text: str) -> str:
+    normalized = str(text).lower().strip()
+    normalized = normalized.replace("/", " ").replace("\\", " ")
+    normalized = re.sub(r"[^a-z0-9\s']", " ", normalized)
+    normalized = normalized.replace("'", "")
+    normalized = " ".join(normalized.split())
+    return normalized
+
+
+def _is_valid_voice_alias(alias: str) -> bool:
+    if not alias:
+        return False
+    if alias in VOICE_ALIAS_BLOCKLIST:
+        return False
+    if len(alias.split()) > VOICE_ALIAS_MAX_WORDS:
+        return False
+    if len(alias.split()) < VOICE_ALIAS_MIN_WORDS:
+        return False
+    if len(alias) > 28:
+        return False
+    return True
+
+
+def _dedupe_alias_phrases(phrases: list[str]) -> list[str]:
+    result: list[str] = []
+    seen: set[str] = set()
+    for phrase in phrases:
+        normalized = _normalize_voice_alias(phrase)
+        if _is_valid_voice_alias(normalized) and normalized not in seen:
+            result.append(normalized)
+            seen.add(normalized)
+    return result
+
+
 def load_vibe_guide() -> str:
     return read_text(VIBE_GUIDE_PATH)
 
 
 def load_lore_guide() -> str:
     return read_text(LORE_GUIDE_PATH)
+
+
+def load_accessibility_guide() -> str:
+    return read_text(ACCESSIBILITY_GUIDE_PATH)
 
 
 def load_recent_memory(limit: int = 12, include_core_guides: bool = True) -> str:
@@ -143,6 +545,7 @@ def load_recent_memory(limit: int = 12, include_core_guides: bool = True) -> str
             [
                 "# Vibe Guide\n" + load_vibe_guide(),
                 "# Lore Guide\n" + load_lore_guide(),
+                "# Accessibility Guide\n" + load_accessibility_guide(),
                 "# Style Memory\n" + read_text(MEMORY_DIR / "fleshpunk_style.md"),
                 "# Inspiration Sources\n" + read_text(MEMORY_DIR / "inspiration_sources.md"),
                 "# Mechanic Backlog\n" + read_text(MEMORY_DIR / "mechanic_backlog.md"),
@@ -188,6 +591,11 @@ def load_recent_memory(limit: int = 12, include_core_guides: bool = True) -> str
         recent = lines[-limit:]
         if recent:
             parts.append("# Lore Brainstorm Guidance\n" + "\n".join(recent))
+    if ACCESSIBILITY_MEMORY_PATH.exists():
+        lines = [line for line in ACCESSIBILITY_MEMORY_PATH.read_text(encoding="utf-8").splitlines() if line.strip()]
+        recent = lines[-limit:]
+        if recent:
+            parts.append("# Accessibility Guidance\n" + "\n".join(recent))
     return "\n\n".join(parts)
 
 
@@ -419,11 +827,63 @@ def lore_brainstorm_context() -> dict[str, Any]:
     }
 
 
+def accessibility_context() -> dict[str, Any]:
+    events_payload = load_json(EVENTS_PATH)
+    event_samples: list[dict[str, Any]] = []
+    for room_id, events in events_payload.get("room_events", {}).items():
+        if isinstance(events, list):
+            for event in events:
+                if isinstance(event, dict):
+                    event_samples.append(compact_event(str(room_id), event))
+    for event_id, event in events_payload.get("special_events", {}).items():
+        if isinstance(event, dict):
+            sample = compact_event("special_events", event)
+            sample["special_event_id"] = str(event_id)
+            event_samples.append(sample)
+    return {
+        "accessibility_guide": load_accessibility_guide(),
+        "vibe_guide": load_vibe_guide(),
+        "lore_guide": load_lore_guide(),
+        "event_type_counts": event_type_counts(),
+        "room_event_counts": room_event_counts(),
+        "event_samples": event_samples,
+        "actions": sorted(existing_actions()),
+        "symbiotes": load_json(SYMBIOTES_PATH).get("symbiotes", []),
+        "local_accessibility_findings": event_accessibility_findings(),
+        "global_commands": [
+            "one",
+            "two",
+            "three",
+            "repeat",
+            "repeat choices",
+            "status",
+            "inventory",
+            "help",
+            "confirm",
+            "cancel",
+            "pause",
+            "continue",
+            "slower",
+            "faster",
+        ],
+        "strict_action_notes": events_file_errors(strict_actions=True),
+    }
+
+
 def compact_event(room_id: str, event: dict[str, Any]) -> dict[str, Any]:
     buttons = event.get("buttons", [])
     actions = []
     if isinstance(buttons, list):
         actions = [button.get("action") for button in buttons if isinstance(button, dict) and button.get("action")]
+    compact_buttons = []
+    if isinstance(buttons, list):
+        for button in buttons:
+            if isinstance(button, dict):
+                compact_buttons.append({
+                    "label": button.get("label"),
+                    "action": button.get("action"),
+                    "voice_aliases": button.get("voice_aliases", []),
+                })
     compact: dict[str, Any] = {
         "room_id": room_id,
         "id": event.get("id"),
@@ -431,6 +891,7 @@ def compact_event(room_id: str, event: dict[str, Any]) -> dict[str, Any]:
         "line_1": event.get("line_1"),
         "line_2": event.get("line_2"),
         "actions": actions,
+        "buttons": compact_buttons,
     }
     for key in ("enemy_id", "scene_path", "symbiote_choices", "mutation_choices", "reactivate_on_reshuffle"):
         if key in event:
@@ -822,6 +1283,77 @@ def lore_critique_schema() -> dict[str, Any]:
     }
 
 
+def accessibility_critique_schema() -> dict[str, Any]:
+    finding_item = {
+        "type": "object",
+        "properties": {
+            "severity": {"type": "string"},
+            "target": {"type": "string"},
+            "issue": {"type": "string"},
+            "recommendation": {"type": "string"},
+        },
+        "required": ["severity", "target", "issue", "recommendation"],
+        "additionalProperties": False,
+    }
+    return {
+        "type": "object",
+        "properties": {
+            "summary": {"type": "string"},
+            "eyes_free_score": {"type": "integer", "minimum": 0, "maximum": 10},
+            "commandability_score": {"type": "integer", "minimum": 0, "maximum": 10},
+            "tts_score": {"type": "integer", "minimum": 0, "maximum": 10},
+            "critical_findings": {"type": "array", "items": finding_item},
+            "command_parser_findings": {"type": "array", "items": finding_item},
+            "tts_findings": {"type": "array", "items": finding_item},
+            "schema_recommendations": {"type": "array", "items": {"type": "string"}},
+            "command_alias_plan": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "action": {"type": "string"},
+                        "recommended_aliases": {"type": "array", "items": {"type": "string"}},
+                        "notes": {"type": "string"},
+                    },
+                    "required": ["action", "recommended_aliases", "notes"],
+                    "additionalProperties": False,
+                },
+            },
+            "state_readout_plan": {"type": "array", "items": {"type": "string"}},
+            "testing_plan": {"type": "array", "items": {"type": "string"}},
+            "guide_updates": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "section": {"type": "string"},
+                        "suggested_text": {"type": "string"},
+                    },
+                    "required": ["section", "suggested_text"],
+                    "additionalProperties": False,
+                },
+            },
+            "next_accessibility_prompt": {"type": "string"},
+        },
+        "required": [
+            "summary",
+            "eyes_free_score",
+            "commandability_score",
+            "tts_score",
+            "critical_findings",
+            "command_parser_findings",
+            "tts_findings",
+            "schema_recommendations",
+            "command_alias_plan",
+            "state_readout_plan",
+            "testing_plan",
+            "guide_updates",
+            "next_accessibility_prompt",
+        ],
+        "additionalProperties": False,
+    }
+
+
 def lore_brainstorm_schema() -> dict[str, Any]:
     concept_item = {
         "type": "object",
@@ -922,6 +1454,7 @@ Your scenarios should fit the existing data-driven event system:
 - Each event should include id, type, speaker, line_1, line_2, and buttons.
 - Event type must be one of the defined category ids.
 - Buttons need label and action.
+- voice_aliases are auto-enriched by tooling from label, action, and local narration, but you may include short spoken aliases when they are obvious.
 - Prefer existing actions unless the user explicitly asks for new mechanics.
 - If you invent an action, include it in required_engine_changes and explain what run_manager.gd must do.
 - Keep UI text short and playable.
@@ -946,6 +1479,7 @@ Your scenarios should fit the existing data-driven event system:
             "schema_notes": [
                 "events is a list of {room_id, event}",
                 "event may include existing keys such as mutation_id, symbiote_id, enemy_id, damage, heal, shield, biomass",
+                "voice_aliases may be auto-generated by tooling from label, action, and narration context; keep them short and unique when you do include them.",
                 "required_engine_changes must be empty if only existing actions are used",
             ],
         },
@@ -1125,6 +1659,50 @@ Lore doctrine:
             "rewrite_priorities": "Highest-value text rewrites.",
             "vibe_doc_updates": "Additions to the guide that prevent drift.",
             "next_lore_prompt": "Compact prompt for the next lore pass.",
+        },
+    }
+    return [
+        {"role": "system", "content": system},
+        {"role": "user", "content": json.dumps(user, indent=2, ensure_ascii=False)},
+    ]
+
+
+def build_accessibility_critique_prompt(args: argparse.Namespace) -> list[dict[str, str]]:
+    system = """
+You are the accessibility and audio-UX critic for Fleshpunk: Inner Heart.
+Your job is to make the game fully playable eyes-free through TTS plus typed or spoken commands.
+Return JSON only.
+
+Accessibility doctrine:
+- Audio is primary. Visuals are optional support and must never carry required information alone.
+- Every encounter must be commandable by number and by short aliases.
+- The speech parser must only map to current legal actions, global commands, or legal symbiote activations.
+- Each button needs short, distinct voice aliases.
+- TTS lines should be short phrase chunks.
+- Result text should state mechanical changes clearly.
+- Ambiguous commands need confirmation, not guesses.
+- Unknown commands should recover with repeat choices, status, or choice number prompts.
+- Endings must explain the pressure path that caused them without leaking clone truth.
+""".strip()
+
+    user = {
+        "focus": args.focus,
+        "accessibility_context": accessibility_context(),
+        "memory": load_recent_memory(),
+        "output_contract": {
+            "summary": "Short judgement of eyes-free playability.",
+            "eyes_free_score": "0-10 score for full playability without looking.",
+            "commandability_score": "0-10 score for command parser readiness.",
+            "tts_score": "0-10 score for concise, comprehensible TTS flow.",
+            "critical_findings": "Blockers for legally blind / low-vision play.",
+            "command_parser_findings": "Problems with aliases, ambiguity, parser schema, and recovery.",
+            "tts_findings": "Problems with line length, pacing, state readout, and audio-only clarity.",
+            "schema_recommendations": "Data fields or contracts to add before STT.",
+            "command_alias_plan": "Recommended aliases for important actions.",
+            "state_readout_plan": "What status/repeat/help should speak.",
+            "testing_plan": "Concrete eyes-free tests to run.",
+            "guide_updates": "Accessibility guide additions.",
+            "next_accessibility_prompt": "Compact prompt for the next accessibility pass.",
         },
     }
     return [
@@ -1565,6 +2143,67 @@ def mock_lore_critique() -> dict[str, Any]:
     }
 
 
+def mock_accessibility_critique() -> dict[str, Any]:
+    return {
+        "summary": "Offline accessibility sample. The game needs a command schema before STT: every button needs voice aliases, repeat/status/help must be first-class, and all state changes must be spoken.",
+        "eyes_free_score": 5,
+        "commandability_score": 3,
+        "tts_score": 7,
+        "critical_findings": [
+            {
+                "severity": "high",
+                "target": "events.json buttons",
+                "issue": "Buttons do not yet carry voice_aliases, so STT has no stable command vocabulary.",
+                "recommendation": "Add 2-5 short aliases per button and enforce uniqueness within each encounter.",
+            }
+        ],
+        "command_parser_findings": [
+            {
+                "severity": "high",
+                "target": "command parser contract",
+                "issue": "Parser behavior is not defined for ambiguity, unknown commands, or confirmation.",
+                "recommendation": "Define CommandResult with action, confidence, needs_confirmation, spoken_feedback, and error recovery.",
+            }
+        ],
+        "tts_findings": [
+            {
+                "severity": "medium",
+                "target": "state readout",
+                "issue": "Status command needs a stable order for health, shield, biomass, danger, corruption, dependence, and claim.",
+                "recommendation": "Implement a status readout that only speaks changed or requested state.",
+            }
+        ],
+        "schema_recommendations": [
+            "Add voice_aliases to every button.",
+            "Add global command handling for repeat, repeat choices, status, help, confirm, and cancel.",
+            "Add command parser tests using current encounter buttons.",
+        ],
+        "command_alias_plan": [
+            {"action": "combat", "recommended_aliases": ["fight", "attack", "kill it"], "notes": "Combat aliases should be available only when combat is a legal button."},
+            {"action": "proceed", "recommended_aliases": ["move", "continue", "leave"], "notes": "Use context-specific aliases to avoid making every proceed choice sound identical."},
+            {"action": "pay_resin_toll", "recommended_aliases": ["pay", "pay toll", "feed toll"], "notes": "Short toll aliases should not collide with skip toll."},
+        ],
+        "state_readout_plan": [
+            "Status: health, shield, biomass, danger, corruption, dependence, merchant claim.",
+            "Repeat choices: number, label, and one short cost phrase.",
+            "After action: speak only changed state plus any scheduled warning.",
+        ],
+        "testing_plan": [
+            "Complete a run using typed commands only.",
+            "For each encounter, select each button by number.",
+            "For each encounter, select each button by at least one alias.",
+            "Verify unknown commands recover with repeat/status/help prompt.",
+        ],
+        "guide_updates": [
+            {
+                "section": "Command Result Contract",
+                "suggested_text": "All parser outputs must be legal current actions, global commands, clarification requests, or cancellations. The parser never invents actions.",
+            }
+        ],
+        "next_accessibility_prompt": "Add voice_aliases to the current event deck and implement a typed command parser that supports numbers, aliases, repeat choices, status, confirm, and cancel.",
+    }
+
+
 def mock_lore_brainstorm() -> dict[str, Any]:
     return {
         "summary": "Offline lore brainstorm sample. The strongest direction is to treat lore as operational truth with pressure hooks, not backstory collection.",
@@ -1937,6 +2576,107 @@ def event_writing_findings() -> list[dict[str, str]]:
     return findings
 
 
+def event_accessibility_findings() -> list[dict[str, str]]:
+    payload = load_json(EVENTS_PATH)
+    findings: list[dict[str, str]] = []
+    global_commands = {
+        "one",
+        "two",
+        "three",
+        "repeat",
+        "repeat choices",
+        "status",
+        "inventory",
+        "help",
+        "confirm",
+        "cancel",
+        "pause",
+        "continue",
+        "slower",
+        "faster",
+    }
+    visual_only_terms = {
+        "visual",
+        "see",
+        "look",
+        "color",
+        "red",
+        "green",
+        "glow",
+        "glowing",
+    }
+
+    def add(location: str, severity: str, issue: str, recommendation: str) -> None:
+        findings.append({
+            "location": location,
+            "severity": severity,
+            "issue": issue,
+            "recommendation": recommendation,
+        })
+
+    def check_event(event: dict[str, Any], location: str) -> None:
+        line_1 = str(event.get("line_1", ""))
+        line_2 = str(event.get("line_2", ""))
+        for line_key, line in (("line_1", line_1), ("line_2", line_2)):
+            word_count = len(line.split())
+            if word_count > 22:
+                add(f"{location}.{line_key}", "medium", f"TTS line is long ({word_count} words)", "Split into shorter phrase chunks.")
+            lower_line = line.lower()
+            if any(term in lower_line for term in visual_only_terms) and not any(term in lower_line for term in ("smell", "sound", "hear", "pulse", "heat", "scent", "touch", "breath")):
+                add(f"{location}.{line_key}", "low", "possible visual-only cue", "Add nonvisual sensory information or state effect.")
+
+        buttons = event.get("buttons", [])
+        if not isinstance(buttons, list) or not buttons:
+            add(location, "high", "no commandable buttons", "Every encounter needs at least one legal command target.")
+            return
+
+        seen_aliases: dict[str, int] = {}
+        for index, button in enumerate(buttons):
+            if not isinstance(button, dict):
+                continue
+            button_location = f"{location}.buttons[{index}]"
+            label = str(button.get("label", ""))
+            action = str(button.get("action", ""))
+            aliases = button.get("voice_aliases", [])
+            if not isinstance(aliases, list) or not aliases:
+                add(button_location, "high", "missing voice_aliases", "Add 2-5 short spoken aliases for this command.")
+                aliases = []
+            if len(label.split()) > 5:
+                add(button_location, "low", f"long spoken label '{label}'", "Keep command labels short; move nuance into narration.")
+            normalized_aliases: list[str] = []
+            for alias in aliases:
+                alias_text = str(alias).strip().lower()
+                if not alias_text:
+                    continue
+                normalized_aliases.append(alias_text)
+                if alias_text in global_commands:
+                    add(button_location, "medium", f"alias '{alias_text}' collides with global command", "Use action-specific aliases; numbers remain global.")
+                if len(alias_text.split()) > 4:
+                    add(button_location, "low", f"alias '{alias_text}' is long", "Prefer short aliases that survive STT.")
+                if alias_text in seen_aliases:
+                    add(button_location, "high", f"duplicate alias '{alias_text}' in encounter", "Aliases must be unique within the current encounter.")
+                else:
+                    seen_aliases[alias_text] = index
+            if action == "proceed" and not any(alias in normalized_aliases for alias in ("continue", "move", "leave", "proceed")):
+                add(button_location, "low", "proceed action lacks simple movement alias", "Add a short movement alias such as move, leave, or continue.")
+
+    room_events = payload.get("room_events", {})
+    if isinstance(room_events, dict):
+        for room_id, events in room_events.items():
+            if isinstance(events, list):
+                for event in events:
+                    if isinstance(event, dict):
+                        check_event(event, f"room_events.{room_id}.{event.get('id', 'unknown')}")
+
+    special_events = payload.get("special_events", {})
+    if isinstance(special_events, dict):
+        for event_id, event in special_events.items():
+            if isinstance(event, dict):
+                check_event(event, f"special_events.{event_id}")
+
+    return findings
+
+
 def load_patch(path: Path) -> dict[str, Any]:
     return load_json(path)
 
@@ -1953,6 +2693,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
         patch = mock_patch(room, args.category or "choice")
     else:
         patch = call_openai(build_prompt(args), args.model, patch_schema(), "scenario_patch")
+
+    enrich_patch_voice_aliases(patch)
 
     errors = validation_errors(
         patch,
@@ -2061,6 +2803,26 @@ def cmd_lore_critique(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_accessibility_critique(args: argparse.Namespace) -> int:
+    GENERATED_DIR.mkdir(exist_ok=True)
+    if args.mock:
+        critique = mock_accessibility_critique()
+    else:
+        critique = call_openai(
+            build_accessibility_critique_prompt(args),
+            args.model,
+            accessibility_critique_schema(),
+            "accessibility_critique",
+        )
+
+    out = Path(args.out) if args.out else GENERATED_DIR / "accessibility_critique.json"
+    if not out.is_absolute():
+        out = ROOT / out
+    write_json(out, critique)
+    print(out)
+    return 0
+
+
 def cmd_lore_brainstorm(args: argparse.Namespace) -> int:
     GENERATED_DIR.mkdir(exist_ok=True)
     if args.mock:
@@ -2111,9 +2873,30 @@ def cmd_audit_writing(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_audit_accessibility(args: argparse.Namespace) -> int:
+    findings = event_accessibility_findings()
+    if args.json:
+        print(json.dumps({"findings": findings}, indent=2, ensure_ascii=False))
+        return 1 if findings and args.fail_on_findings else 0
+    if not findings:
+        print("ok")
+        return 0
+    for finding in findings:
+        print(
+            "{severity}: {location}: {issue} -> {recommendation}".format(
+                severity=finding["severity"],
+                location=finding["location"],
+                issue=finding["issue"],
+                recommendation=finding["recommendation"],
+            )
+        )
+    return 1 if args.fail_on_findings else 0
+
+
 def cmd_apply(args: argparse.Namespace) -> int:
     patch_path = Path(args.patch)
     patch = load_patch(patch_path)
+    enrich_patch_voice_aliases(patch)
     errors = validation_errors(patch, allow_new_actions=args.allow_new_actions)
     if errors:
         for error in errors:
@@ -2133,6 +2916,22 @@ def cmd_apply(args: argparse.Namespace) -> int:
 
     write_json(EVENTS_PATH, events_payload)
     print(f"applied {len(patch['events'])} event(s) to events.json")
+    return 0
+
+
+def cmd_backfill_voice_aliases(args: argparse.Namespace) -> int:
+    payload = load_json(EVENTS_PATH)
+    before = json.dumps(payload, ensure_ascii=False, sort_keys=True)
+    enrich_events_payload_voice_aliases(payload)
+    after = json.dumps(payload, ensure_ascii=False, sort_keys=True)
+    if before == after:
+        print("ok")
+        return 0
+    if args.dry_run:
+        print("voice aliases need backfill")
+        return 0
+    write_json(EVENTS_PATH, payload)
+    print("backfilled voice aliases in events.json")
     return 0
 
 
@@ -2239,6 +3038,30 @@ def cmd_remember_lore(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_remember_accessibility(args: argparse.Namespace) -> int:
+    critique = load_json(Path(args.critique))
+    record = {
+        "timestamp": dt.datetime.now(dt.UTC).isoformat(),
+        "summary": critique.get("summary", ""),
+        "eyes_free_score": critique.get("eyes_free_score"),
+        "commandability_score": critique.get("commandability_score"),
+        "tts_score": critique.get("tts_score"),
+        "critical_findings": critique.get("critical_findings", [])[:8],
+        "command_parser_findings": critique.get("command_parser_findings", [])[:8],
+        "tts_findings": critique.get("tts_findings", [])[:8],
+        "schema_recommendations": critique.get("schema_recommendations", []),
+        "command_alias_plan": critique.get("command_alias_plan", []),
+        "state_readout_plan": critique.get("state_readout_plan", []),
+        "testing_plan": critique.get("testing_plan", []),
+        "guide_updates": critique.get("guide_updates", []),
+        "next_accessibility_prompt": critique.get("next_accessibility_prompt", ""),
+        "notes": args.notes or "",
+    }
+    append_jsonl(ACCESSIBILITY_MEMORY_PATH, record)
+    print("remembered accessibility guidance")
+    return 0
+
+
 def cmd_remember_lore_brainstorm(args: argparse.Namespace) -> int:
     brainstorm = load_json(Path(args.brainstorm))
     record = {
@@ -2281,6 +3104,11 @@ def cmd_lore_context(_: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_accessibility_context(_: argparse.Namespace) -> int:
+    print(json.dumps(accessibility_context(), indent=2, ensure_ascii=False))
+    return 0
+
+
 def cmd_lore_brainstorm_context(_: argparse.Namespace) -> int:
     print(json.dumps(lore_brainstorm_context(), indent=2, ensure_ascii=False))
     return 0
@@ -2293,6 +3121,11 @@ def cmd_vibe(_: argparse.Namespace) -> int:
 
 def cmd_lore_guide(_: argparse.Namespace) -> int:
     print(load_lore_guide())
+    return 0
+
+
+def cmd_accessibility_guide(_: argparse.Namespace) -> int:
+    print(load_accessibility_guide())
     return 0
 
 
@@ -2350,6 +3183,13 @@ def build_parser() -> argparse.ArgumentParser:
     lore_critique.add_argument("--mock", action="store_true", help="Generate a local sample without calling OpenAI.")
     lore_critique.set_defaults(func=cmd_lore_critique)
 
+    accessibility_critique = sub.add_parser("accessibility-critique", help="Critique eyes-free playability, commandability, and TTS/audio UX.")
+    accessibility_critique.add_argument("--focus", default="Critique eyes-free playability, command aliases, TTS phrasing, state readouts, and audio-only clarity.")
+    accessibility_critique.add_argument("--out", help="Output accessibility critique JSON path.")
+    accessibility_critique.add_argument("--model", default=DEFAULT_MODEL)
+    accessibility_critique.add_argument("--mock", action="store_true", help="Generate a local sample without calling OpenAI.")
+    accessibility_critique.set_defaults(func=cmd_accessibility_critique)
+
     lore_brainstorm = sub.add_parser("lore-brainstorm", help="Brainstorm lore concepts with reveal boundaries and gameplay hooks.")
     lore_brainstorm.add_argument("--focus", default="Brainstorm factions, recurring characters, relationships, lore fragments, reveal paths, and gameplay hooks.")
     lore_brainstorm.add_argument("--count", type=int, default=6, help="Approximate number of concepts to request per major section.")
@@ -2371,11 +3211,20 @@ def build_parser() -> argparse.ArgumentParser:
     audit_writing.add_argument("--json", action="store_true", help="Print JSON findings.")
     audit_writing.set_defaults(func=cmd_audit_writing)
 
+    audit_accessibility = sub.add_parser("audit-accessibility", help="Audit events.json for eyes-free commandability and TTS risks.")
+    audit_accessibility.add_argument("--json", action="store_true", help="Print JSON findings.")
+    audit_accessibility.add_argument("--fail-on-findings", action="store_true", help="Exit nonzero when accessibility findings are present.")
+    audit_accessibility.set_defaults(func=cmd_audit_accessibility)
+
     apply = sub.add_parser("apply", help="Apply a valid JSON-only scenario patch.")
     apply.add_argument("patch")
     apply.add_argument("--allow-new-actions", action="store_true")
     apply.add_argument("--dry-run", action="store_true")
     apply.set_defaults(func=cmd_apply)
+
+    backfill_aliases = sub.add_parser("backfill-voice-aliases", help="Rebuild voice_aliases across the current events.json deck.")
+    backfill_aliases.add_argument("--dry-run", action="store_true", help="Check whether backfill would change events.json without writing.")
+    backfill_aliases.set_defaults(func=cmd_backfill_voice_aliases)
 
     remember = sub.add_parser("remember", help="Record accepted or rejected feedback.")
     remember.add_argument("patch")
@@ -2404,6 +3253,11 @@ def build_parser() -> argparse.ArgumentParser:
     remember_lore.add_argument("--notes", default="")
     remember_lore.set_defaults(func=cmd_remember_lore)
 
+    remember_accessibility = sub.add_parser("remember-accessibility", help="Store accessibility critique guidance for future generation.")
+    remember_accessibility.add_argument("critique")
+    remember_accessibility.add_argument("--notes", default="")
+    remember_accessibility.set_defaults(func=cmd_remember_accessibility)
+
     remember_lore_brainstorm = sub.add_parser("remember-lore-brainstorm", help="Store lore brainstorm guidance for future generation.")
     remember_lore_brainstorm.add_argument("brainstorm")
     remember_lore_brainstorm.add_argument("--notes", default="")
@@ -2421,6 +3275,9 @@ def build_parser() -> argparse.ArgumentParser:
     lore_context_parser = sub.add_parser("lore-context", help="Print lore continuity and voice context.")
     lore_context_parser.set_defaults(func=cmd_lore_context)
 
+    accessibility_context_parser = sub.add_parser("accessibility-context", help="Print eyes-free playability and commandability context.")
+    accessibility_context_parser.set_defaults(func=cmd_accessibility_context)
+
     lore_brainstorm_context_parser = sub.add_parser("lore-brainstorm-context", help="Print lore brainstorm context.")
     lore_brainstorm_context_parser.set_defaults(func=cmd_lore_brainstorm_context)
 
@@ -2429,6 +3286,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     lore_guide = sub.add_parser("lore-guide", help="Print the lore guide.")
     lore_guide.set_defaults(func=cmd_lore_guide)
+
+    accessibility_guide = sub.add_parser("accessibility-guide", help="Print the accessibility guide.")
+    accessibility_guide.set_defaults(func=cmd_accessibility_guide)
 
     categories = sub.add_parser("categories", help="Print broad event categories.")
     categories.set_defaults(func=cmd_categories)

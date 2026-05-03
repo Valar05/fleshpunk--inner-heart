@@ -18,6 +18,7 @@ Review the project voice guide:
 ```sh
 python tools/scenario_agent.py vibe
 python tools/scenario_agent.py lore-guide
+python tools/scenario_agent.py accessibility-guide
 ```
 
 Generate a local sample without OpenAI:
@@ -32,11 +33,21 @@ Validate a patch:
 python tools/scenario_agent.py validate generated/scenario_patch.json
 ```
 
+Rebuild spoken alias clouds across the current deck:
+
+```sh
+python tools/scenario_agent.py backfill-voice-aliases
+python tools/scenario_agent.py backfill-voice-aliases --dry-run
+```
+
 Validate the current event data:
 
 ```sh
 python tools/scenario_agent.py validate-events
 python tools/scenario_agent.py validate-events --strict-actions
+python tools/scenario_agent.py audit-writing
+python tools/scenario_agent.py audit-accessibility
+python tools/scenario_agent.py audit-accessibility --fail-on-findings
 ```
 
 Critique a patch or the current event file against the vibe guide:
@@ -70,6 +81,14 @@ python tools/scenario_agent.py lore-critique --out generated/lore_critique.json
 python tools/scenario_agent.py remember-lore generated/lore_critique.json --notes "Use this as current lore direction."
 ```
 
+Critique eyes-free playability, command aliases, and TTS/audio UX:
+
+```sh
+python tools/scenario_agent.py accessibility-context
+python tools/scenario_agent.py accessibility-critique --out generated/accessibility_critique.json
+python tools/scenario_agent.py remember-accessibility generated/accessibility_critique.json --notes "Use this as current accessibility direction."
+```
+
 Brainstorm new lore with gameplay hooks:
 
 ```sh
@@ -79,6 +98,28 @@ python tools/scenario_agent.py remember-lore-brainstorm generated/lore_brainstor
 ```
 
 During play, `run_manager.gd` writes lightweight balance telemetry to `user://fleshpunk_run_balance_log.jsonl`.
+
+Build and audit phrase-sized TTS clips:
+
+```sh
+python tools/tts_manifest.py refresh
+python tools/tts_manifest.py refresh --check
+python tools/tts_manifest.py audit --fail-on-findings
+python tools/tts_manifest.py plan
+```
+
+Generate clips with OpenAI Nova voice when ready:
+
+```sh
+OPENAI_API_KEY=... python tools/tts_manifest.py generate --category system
+OPENAI_API_KEY=... python tools/tts_manifest.py generate
+```
+
+Use mock generation for pipeline tests without API calls:
+
+```sh
+python tools/tts_manifest.py generate --mock --category system --limit 3
+```
 
 Store critique guidance so future generation sees it:
 
@@ -105,4 +146,5 @@ Notes:
 - Event `type` values must match one of the category ids in `.agent-memory/event_categories.json`.
 - Use `--allow-new-actions` only when you want it to propose engine work.
 - The model can suggest mutations, symbiotes, or enemies, but this first tool only applies event patches automatically.
+- `voice_aliases` are auto-generated from the button label, action, and nearby narration when patches are generated or applied, so new events get a spoken command cloud without hand-editing each room.
 - Memory lives in `.agent-memory/`.

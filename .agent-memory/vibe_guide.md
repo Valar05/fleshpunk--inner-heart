@@ -136,6 +136,22 @@ Design rule:
 - Safe choices still create pressure somewhere.
 - Refusing, fleeing, healing, extracting, mutating, bonding, and waiting must all have run-shaping consequences when repeated.
 
+## Audio-First Accessibility
+
+The game must be fully playable without looking at the screen.
+
+Visuals can add mood, but audio and commands carry the required information:
+- current room state
+- legal choices
+- likely costs
+- pressure changes
+- combat results
+- ending causes
+
+Every playable choice needs a short command path: number input, typed text, and eventually speech recognition through the same parser.
+
+Accessibility is not a separate mode. It is the primary interface discipline.
+
 ## Organism As Director
 
 The organism is the run director.
@@ -268,6 +284,13 @@ Rooms should communicate:
 - function: what it does
 - risk: what it costs
 - opportunity: what it offers
+
+Room description rule:
+- `line_1` should be concrete before it is poetic.
+- Describe visible structure, position, texture, smell, sound, movement, and what blocks or tempts Hymn.
+- Avoid pure metaphor as the first read. The player should be able to picture the room from audio alone.
+- `line_2` should translate that situation into plain stakes and likely consequences.
+- Flavor can ride on top of clarity, but it cannot replace physical detail.
 
 ## Event Design Philosophy
 

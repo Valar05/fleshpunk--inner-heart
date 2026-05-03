@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://mfsmn5wqj0pf"]
+[gd_scene format=3 uid="uid://mfsmn5wqj0pf"]
 
 [ext_resource type="Shader" uid="uid://b5d1b3kk0njao" path="res://RoomPulse.gdshader" id="1_aqk2v"]
 [ext_resource type="Texture2D" uid="uid://chwovk6l7px4q" path="res://red_corridor.png" id="1_f3sb7"]
@@ -361,66 +361,74 @@ _data = {
 &"RESET": SubResource("Animation_ioo17")
 }
 
-[node name="World" type="Node2D"]
+[node name="World" type="Node2D" unique_id=1710477273]
 script = ExtResource("4_qmcvn")
 
-[node name="RoomSprite" type="Sprite2D" parent="."]
+[node name="RoomSprite" type="Sprite2D" parent="." unique_id=1350678070]
 material = SubResource("ShaderMaterial_036b0")
 position = Vector2(546.5, 814.25)
 scale = Vector2(1.0693359, 1.0693359)
 texture = ExtResource("1_f3sb7")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="RoomSprite"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="RoomSprite" unique_id=402455994]
 root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_dwbse")
-}
+libraries/ = SubResource("AnimationLibrary_dwbse")
 
-[node name="Merchant" type="Sprite2D" parent="."]
+[node name="Merchant" type="Sprite2D" parent="." unique_id=591818842]
 visible = false
 material = SubResource("ShaderMaterial_k3n1d")
 position = Vector2(565, 769)
 scale = Vector2(0.8103849, 0.810385)
 texture = ExtResource("5_ic0uy")
 
-[node name="FleshpunkDashboard" type="Sprite2D" parent="."]
+[node name="FleshpunkDashboard" type="Sprite2D" parent="." unique_id=1941817050]
 material = SubResource("ShaderMaterial_pkg7o")
 position = Vector2(542, 1681)
 scale = Vector2(1.0765766, 1.1328828)
 texture = ExtResource("2_fj7yv")
 script = ExtResource("6_pkg7o")
 
-[node name="Console" type="ScrollContainer" parent="FleshpunkDashboard"]
+[node name="Console" type="ScrollContainer" parent="FleshpunkDashboard" unique_id=205798554]
 offset_left = -342.0
 offset_top = -164.0
 offset_right = 342.0
 offset_bottom = 146.0
 
-[node name="ConsoleContent" type="VBoxContainer" parent="FleshpunkDashboard/Console"]
+[node name="ConsoleContent" type="VBoxContainer" parent="FleshpunkDashboard/Console" unique_id=1041607878]
 custom_minimum_size = Vector2(660, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="FleshpunkDashboard"]
-libraries = {
-&"": SubResource("AnimationLibrary_wse8f")
-}
+[node name="CommandInput" type="LineEdit" parent="FleshpunkDashboard"]
+layout_mode = 2
+offset_left = -342.0
+offset_top = 84.0
+offset_right = 342.0
+offset_bottom = 132.0
+custom_minimum_size = Vector2(0, 48)
+size_flags_horizontal = 3
 
-[node name="Hymn" parent="." instance=ExtResource("3_tlwt5")]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FleshpunkDashboard" unique_id=1239525770]
+libraries/ = SubResource("AnimationLibrary_wse8f")
+
+[node name="Hymn" parent="." unique_id=1299038758 instance=ExtResource("3_tlwt5")]
 position = Vector2(302, 1050)
 scale = Vector2(0.665, 0.665)
 
-[node name="PlayerSpot" type="Marker2D" parent="."]
+[node name="PlayerSpot" type="Marker2D" parent="." unique_id=1519982020]
 position = Vector2(302, 1050)
 
-[node name="Enemy" parent="." instance=ExtResource("7_vrj2k")]
+[node name="Enemy" parent="." unique_id=1772218716 instance=ExtResource("7_vrj2k")]
 visible = false
 position = Vector2(740, 1047)
 scale = Vector2(-0.665, 0.665)
 
-[node name="PlacementSpot" type="Marker2D" parent="."]
+[node name="PlacementSpot" type="Marker2D" parent="." unique_id=1023120997]
 position = Vector2(740, 1047)
+
+[node name="TTSPlayer" type="AudioStreamPlayer" parent="." unique_id=1521343737]
+volume_db = 0.758
 
 [editable path="Hymn"]
 [editable path="Enemy"]
