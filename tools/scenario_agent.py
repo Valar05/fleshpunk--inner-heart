@@ -21,10 +21,17 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 MEMORY_DIR = ROOT / ".agent-memory"
 GENERATED_DIR = ROOT / "generated"
+CORPUS_SEEDS_PATH = GENERATED_DIR / "corpus" / "fleshpunk_seeds.json"
 
-EVENTS_PATH = ROOT / "events.json"
-ROOMS_PATH = ROOT / "room_dialogue.json"
-DECKS_PATH = ROOT / "encounter_decks.json"
+LEGACY_EVENTS_PATH = ROOT / "events.json"
+LEGACY_ROOMS_PATH = ROOT / "room_dialogue.json"
+LEGACY_DECKS_PATH = ROOT / "encounter_decks.json"
+POST_UPDATE_EVENTS_PATH = ROOT / "events_post_update.json"
+POST_UPDATE_ROOMS_PATH = ROOT / "rooms_post_update.json"
+POST_UPDATE_DECKS_PATH = ROOT / "encounter_decks_post_update.json"
+EVENTS_PATH = POST_UPDATE_EVENTS_PATH if POST_UPDATE_EVENTS_PATH.exists() else LEGACY_EVENTS_PATH
+ROOMS_PATH = POST_UPDATE_ROOMS_PATH if POST_UPDATE_ROOMS_PATH.exists() else LEGACY_ROOMS_PATH
+DECKS_PATH = POST_UPDATE_DECKS_PATH if POST_UPDATE_DECKS_PATH.exists() else LEGACY_DECKS_PATH
 ENEMIES_PATH = ROOT / "enemies.json"
 MUTATIONS_PATH = ROOT / "mutations.json"
 SYMBIOTES_PATH = ROOT / "symbiotes.json"
@@ -32,6 +39,11 @@ RUN_MANAGER_PATH = ROOT / "run_manager.gd"
 CATEGORIES_PATH = MEMORY_DIR / "event_categories.json"
 VIBE_GUIDE_PATH = MEMORY_DIR / "vibe_guide.md"
 LORE_GUIDE_PATH = MEMORY_DIR / "lore_guide.md"
+SETTING_BACKBONE_PATH = MEMORY_DIR / "setting_backbone.md"
+STORY_ROOM_CONTRACT_PATH = MEMORY_DIR / "story_room_contract.md"
+ENDING_MAZE_ARCHITECTURE_PATH = MEMORY_DIR / "ending_maze_architecture.md"
+HYMN_CORPUS_VOICE_PATH = MEMORY_DIR / "hymn_corpus_voice.md"
+CONTENT_AUTHORSHIP_WORKFLOW_PATH = MEMORY_DIR / "content_authorship_workflow.md"
 ACCESSIBILITY_GUIDE_PATH = MEMORY_DIR / "accessibility_guide.md"
 CRITIQUE_MEMORY_PATH = MEMORY_DIR / "critic_guidance.jsonl"
 BALANCE_MEMORY_PATH = MEMORY_DIR / "balance_guidance.jsonl"
@@ -41,6 +53,53 @@ LORE_BRAINSTORM_MEMORY_PATH = MEMORY_DIR / "lore_brainstorm_guidance.jsonl"
 ACCESSIBILITY_MEMORY_PATH = MEMORY_DIR / "accessibility_guidance.jsonl"
 
 DEFAULT_MODEL = os.environ.get("SCENARIO_AGENT_MODEL", "gpt-5")
+TRADEOFF_EXEMPT_EVENT_TYPES = {"transition"}
+STORY_ENGINE_CONTENT_TRACK = "post_update_text_only"
+ENVIRONMENT_GROUP_KEYS = {
+    "environment_id",
+    "environment",
+    "environment_family",
+}
+INSTANCE_SITUATION_KEYS = {
+    "instance_premise",
+    "current_situation",
+    "situation",
+    "instance_role",
+}
+ENVIRONMENT_ECHO_KEYS = {
+    "environment_echoes",
+    "later_instance_echoes",
+    "environment_memory_states",
+    "memory_states",
+}
+CORPUS_INFLUENCE_KEYS = {
+    "corpus_influences",
+    "corpus_anchors",
+    "source_anchors",
+    "source_text_anchors",
+}
+ROOM_MEMORY_KEYS = {
+    "room_state_changes",
+    "room_memory_flags",
+    "environment_state_changes",
+    "environment_memory_flags",
+    "memory_key",
+    "memory_changes",
+    "route_state_changes",
+    "actor_state_changes",
+    "faction_state_changes",
+    "infrastructure_state_change",
+    "beast_state_change",
+    "character_state_change",
+}
+ACTION_RESULT_KEYS = {
+    "action_results",
+    "outcomes",
+    "result_lines_by_action",
+    "room_result_lines",
+    "button_results",
+    "action_consequences",
+}
 
 EXISTING_ACTION_RE = re.compile(r'^\s*"([^"]+)":\s*$', re.MULTILINE)
 VOICE_ALIAS_MAX_WORDS = 4
@@ -209,6 +268,73 @@ def existing_actions() -> set[str]:
     actions = set(EXISTING_ACTION_RE.findall(action_source))
     actions.update({"proceed", "combat", "browse_wares", "restart_run"})
     return actions
+
+
+def slugify_id(value: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
+    return slug or "seed"
+
+
+def _source_seed_filters_are_active(args: argparse.Namespace) -> bool:
+    return bool(
+        getattr(args, "source_seeds", "")
+        or getattr(args, "source_seed", None)
+        or getattr(args, "source_work", "")
+        or getattr(args, "source_motif", "")
+    )
+
+
+def load_source_seed_context(args: argparse.Namespace) -> list[dict[str, Any]]:
+    if not _source_seed_filters_are_active(args):
+        return []
+
+    seed_path = Path(args.source_seeds) if getattr(args, "source_seeds", "") else CORPUS_SEEDS_PATH
+    if not seed_path.is_absolute():
+        seed_path = ROOT / seed_path
+    payload = load_json(seed_path)
+    seeds = payload.get("seeds", [])
+    if not isinstance(seeds, list):
+        raise ValueError(f"{seed_path.name} must contain a seeds array")
+
+    requested_ids = set(getattr(args, "source_seed", None) or [])
+    source_work = str(getattr(args, "source_work", "") or "")
+    source_motif = str(getattr(args, "source_motif", "") or "")
+    target_room = str(getattr(args, "room", "") or "")
+    selected: list[dict[str, Any]] = []
+    for seed in seeds:
+        if not isinstance(seed, dict):
+            continue
+        if requested_ids and str(seed.get("id", "")) not in requested_ids:
+            continue
+        if source_work and str(seed.get("source_id", "")) != source_work:
+            continue
+        if source_motif and str(seed.get("motif_id", "")) != source_motif:
+            continue
+        if target_room:
+            suggested_rooms = [str(room) for room in seed.get("suggested_rooms", []) if str(room)]
+            if suggested_rooms and target_room not in suggested_rooms:
+                continue
+        selected.append(_compact_source_seed(seed))
+
+    limit = int(getattr(args, "source_seed_count", 3) or 3)
+    return selected[:max(limit, 1)]
+
+
+def _compact_source_seed(seed: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "id": str(seed.get("id", "")),
+        "source_id": str(seed.get("source_id", "")),
+        "source_title": str(seed.get("source_title", "")),
+        "source_author": str(seed.get("source_author", "")),
+        "motif_id": str(seed.get("motif_id", "")),
+        "motif_group": str(seed.get("motif_group", "")),
+        "source_signal": seed.get("source_signal", {}),
+        "fleshpunk_seed": str(seed.get("fleshpunk_seed", "")),
+        "mechanic_direction": str(seed.get("mechanic_direction", "")),
+        "suggested_rooms": seed.get("suggested_rooms", []),
+        "suggested_existing_actions": seed.get("suggested_existing_actions", []),
+        "generation_guardrails": seed.get("generation_guardrails", []),
+    }
 
 
 def enrich_patch_voice_aliases(patch: dict[str, Any]) -> dict[str, Any]:
@@ -534,6 +660,26 @@ def load_lore_guide() -> str:
     return read_text(LORE_GUIDE_PATH)
 
 
+def load_setting_backbone() -> str:
+    return read_text(SETTING_BACKBONE_PATH)
+
+
+def load_story_room_contract() -> str:
+    return read_text(STORY_ROOM_CONTRACT_PATH)
+
+
+def load_ending_maze_architecture() -> str:
+    return read_text(ENDING_MAZE_ARCHITECTURE_PATH)
+
+
+def load_hymn_corpus_voice() -> str:
+    return read_text(HYMN_CORPUS_VOICE_PATH)
+
+
+def load_content_authorship_workflow() -> str:
+    return read_text(CONTENT_AUTHORSHIP_WORKFLOW_PATH)
+
+
 def load_accessibility_guide() -> str:
     return read_text(ACCESSIBILITY_GUIDE_PATH)
 
@@ -545,6 +691,11 @@ def load_recent_memory(limit: int = 12, include_core_guides: bool = True) -> str
             [
                 "# Vibe Guide\n" + load_vibe_guide(),
                 "# Lore Guide\n" + load_lore_guide(),
+                "# Setting Backbone\n" + load_setting_backbone(),
+                "# Story Room Contract\n" + load_story_room_contract(),
+                "# Ending Maze Architecture\n" + load_ending_maze_architecture(),
+                "# Hymn Corpus Voice\n" + load_hymn_corpus_voice(),
+                "# Content Authorship Workflow\n" + load_content_authorship_workflow(),
                 "# Accessibility Guide\n" + load_accessibility_guide(),
                 "# Style Memory\n" + read_text(MEMORY_DIR / "fleshpunk_style.md"),
                 "# Inspiration Sources\n" + read_text(MEMORY_DIR / "inspiration_sources.md"),
@@ -634,6 +785,9 @@ def game_context() -> dict[str, Any]:
         "existing_symbiotes": symbiote_ids(),
         "existing_enemies": enemy_ids(),
         "event_categories": event_categories(),
+        "single_choice_room_gaps": room_tradeoff_findings(),
+        "room_depth_findings": room_depth_findings(),
+        "room_story_findings": room_story_findings(),
         "base_player_stats": decks.get("base_player_stats", {}),
         "resource_files": {
             "events": "events.json",
@@ -668,6 +822,664 @@ def room_event_counts() -> dict[str, int]:
     for room_id, events in payload.get("room_events", {}).items():
         counts[str(room_id)] = len(events) if isinstance(events, list) else 0
     return dict(sorted(counts.items()))
+
+
+def room_tradeoff_findings() -> list[dict[str, str]]:
+    payload = load_json(EVENTS_PATH)
+    findings: list[dict[str, str]] = []
+
+    def add(location: str, severity: str, issue: str, recommendation: str, button_count: int, event_type: str) -> None:
+        findings.append({
+            "location": location,
+            "severity": severity,
+            "issue": issue,
+            "recommendation": recommendation,
+            "button_count": str(button_count),
+            "event_type": event_type,
+        })
+
+    room_events = payload.get("room_events", {})
+    if not isinstance(room_events, dict):
+        return findings
+
+    for room_id, events in room_events.items():
+        if not isinstance(events, list):
+            continue
+        for event in events:
+            if not isinstance(event, dict):
+                continue
+            event_type = str(event.get("type", ""))
+            if event_type in TRADEOFF_EXEMPT_EVENT_TYPES:
+                continue
+            buttons = event.get("buttons", [])
+            button_count = sum(1 for button in buttons if isinstance(button, dict)) if isinstance(buttons, list) else 0
+            if event_type == "symbiote":
+                symbiote_choices = event.get("symbiote_choices", [])
+                if isinstance(symbiote_choices, list):
+                    button_count += sum(1 for choice in symbiote_choices if str(choice) != "")
+            if button_count < 2:
+                event_id = str(event.get("id", "unknown"))
+                add(
+                    f"room_events.{room_id}.{event_id}",
+                    "high",
+                    f"single-choice room ({button_count} commandable button{'s' if button_count != 1 else ''})",
+                    "Add a second legal choice with a distinct cost, delayed consequence, or alternative pressure axis. Transition events may stay exempt.",
+                    button_count,
+                    event_type or "unknown",
+                )
+
+    for finding in room_depth_findings():
+        findings.append({
+            "location": finding["location"],
+            "severity": finding["severity"],
+            "issue": finding["issue"],
+            "recommendation": finding["recommendation"],
+            "button_count": "n/a",
+            "event_type": "room_depth",
+        })
+    for finding in room_story_findings():
+        findings.append({
+            "location": finding["location"],
+            "severity": finding["severity"],
+            "issue": finding["issue"],
+            "recommendation": finding["recommendation"],
+            "button_count": "n/a",
+            "event_type": "room_story",
+        })
+
+    return findings
+
+
+def _has_delayed_consequence(event: dict[str, Any]) -> bool:
+    delayed_keys = {
+        "delayed_consequence",
+        "reaction",
+        "reaction_tags",
+        "on_repeat",
+        "director_hook",
+        "room_state_changes",
+        "future_effect",
+        "memory_key",
+        "pressure_axis",
+        "character_state_change",
+        "beast_state_change",
+        "infrastructure_state_change",
+        "story_followups",
+    }
+    if any(key in event for key in delayed_keys):
+        return True
+    text = "%s %s" % (event.get("line_1", ""), event.get("line_2", ""))
+    text_lower = text.lower()
+    delayed_terms = {
+        "later",
+        "again",
+        "return",
+        "remembers",
+        "remember",
+        "learns",
+        "learn",
+        "claim",
+        "debt",
+        "mark",
+        "scent",
+        "tracks",
+        "future",
+        "next",
+        "behind me",
+    }
+    return any(term in text_lower for term in delayed_terms)
+
+
+def _has_interactable_actor(event: dict[str, Any]) -> bool:
+    actor_keys = {
+        "character_id",
+        "beast_id",
+        "animal_id",
+        "infrastructure_actor",
+        "organ_actor",
+        "system_actor",
+        "faction_id",
+        "enemy_id",
+        "symbiote_id",
+        "mutation_id",
+    }
+    if any(str(event.get(key, "")).strip() for key in actor_keys):
+        return True
+    text = "%s %s" % (event.get("line_1", ""), event.get("line_2", ""))
+    text_lower = text.lower()
+    actor_terms = {
+        "mouth",
+        "mouths",
+        "organ",
+        "room",
+        "beast",
+        "animal",
+        "parasite",
+        "merchant",
+        "chorus",
+        "tool",
+        "larder",
+        "scale",
+        "map",
+        "lock",
+        "rings",
+        "ribs",
+        "tissue",
+        "valve",
+        "plate",
+        "pressure plate",
+        "seam",
+        "wall",
+    }
+    return any(term in text_lower for term in actor_terms)
+
+
+def _has_only_immediate_stat_surface(event: dict[str, Any]) -> bool:
+    immediate_keys = {
+        "biomass",
+        "biomass_cost",
+        "damage",
+        "break_damage",
+        "heal",
+        "shield",
+        "mutation_id",
+        "enemy_id",
+    }
+    if not any(key in event for key in immediate_keys):
+        return False
+    return not _has_delayed_consequence(event)
+
+
+def _is_story_engine_track(rooms_payload: dict[str, Any]) -> bool:
+    return str(rooms_payload.get("content_track", "")) == STORY_ENGINE_CONTENT_TRACK
+
+
+def _has_environment_group(room_record: dict[str, Any]) -> bool:
+    return any(room_record.get(key) for key in ENVIRONMENT_GROUP_KEYS)
+
+
+def _has_instance_situation(record: dict[str, Any]) -> bool:
+    if any(record.get(key) for key in INSTANCE_SITUATION_KEYS):
+        return True
+    text = "%s %s" % (record.get("line_1", ""), record.get("line_2", ""))
+    return bool(text.strip())
+
+
+def _has_environment_echo_plan(room_record: dict[str, Any]) -> bool:
+    return any(room_record.get(key) for key in ENVIRONMENT_ECHO_KEYS)
+
+
+def _environment_id_for_room(room_id: str, room_record: dict[str, Any]) -> str:
+    for key in ENVIRONMENT_GROUP_KEYS:
+        value = str(room_record.get(key, "")).strip()
+        if value:
+            return value
+    return room_id
+
+
+def _corpus_influence_records(room_record: dict[str, Any]) -> list[dict[str, Any]]:
+    for key in CORPUS_INFLUENCE_KEYS:
+        if key not in room_record:
+            continue
+        records = room_record.get(key, [])
+        if isinstance(records, list):
+            return [record for record in records if isinstance(record, dict)]
+    return []
+
+
+def _has_specific_corpus_influence(room_record: dict[str, Any]) -> bool:
+    for record in _corpus_influence_records(room_record):
+        has_source = bool(str(record.get("seed_id", "")).strip() or str(record.get("source_title", "")).strip())
+        has_specific_moment = bool(
+            str(record.get("source_moment", "")).strip()
+            or str(record.get("writing_influence", "")).strip()
+            or str(record.get("source_bit", "")).strip()
+            or str(record.get("source_excerpt", "")).strip()
+            or str(record.get("source_detail", "")).strip()
+            or str(record.get("character_function", "")).strip()
+        )
+        has_application = bool(
+            str(record.get("room_application", "")).strip()
+            or str(record.get("room_reflection", "")).strip()
+            or str(record.get("transform", "")).strip()
+            or str(record.get("mechanic_reflection", "")).strip()
+        )
+        if has_source and has_specific_moment and has_application:
+            return True
+    return False
+
+
+def _has_ending_vector(room_record: dict[str, Any]) -> bool:
+    vectors = room_record.get("ending_vectors", [])
+    return isinstance(vectors, list) and any(isinstance(vector, dict) and vector.get("id") for vector in vectors)
+
+
+def _has_mutation_hooks(room_record: dict[str, Any]) -> bool:
+    hooks = room_record.get("mutation_hooks", [])
+    return isinstance(hooks, list) and any(isinstance(hook, dict) and hook.get("capability") for hook in hooks)
+
+
+def _has_room_memory_change(event: dict[str, Any]) -> bool:
+    return any(event.get(key) for key in ROOM_MEMORY_KEYS)
+
+
+def _has_action_specific_result(event: dict[str, Any]) -> bool:
+    if any(event.get(key) for key in ACTION_RESULT_KEYS):
+        return True
+    buttons = event.get("buttons", [])
+    if not isinstance(buttons, list):
+        return False
+    button_result_keys = {
+        "result_lines",
+        "outcome",
+        "consequence",
+        "room_state_changes",
+        "memory_key",
+    }
+    return any(isinstance(button, dict) and any(button.get(key) for key in button_result_keys) for button in buttons)
+
+
+def _followups_are_default_only(event: dict[str, Any]) -> bool:
+    followups = event.get("story_followups")
+    if not isinstance(followups, dict):
+        return False
+    return bool(followups) and set(str(key) for key in followups.keys()) == {"default"}
+
+
+def _commandable_button_count(event: dict[str, Any]) -> int:
+    buttons = event.get("buttons", [])
+    if not isinstance(buttons, list):
+        return 0
+    return sum(1 for button in buttons if isinstance(button, dict))
+
+
+def _room_infrastructure_records(room_record: dict[str, Any]) -> list[dict[str, Any]]:
+    records = room_record.get("animal_infrastructure", [])
+    if not isinstance(records, list):
+        return []
+    return [record for record in records if isinstance(record, dict)]
+
+
+def _event_mentions_room_infrastructure(event: dict[str, Any], room_record: dict[str, Any]) -> bool:
+    records = _room_infrastructure_records(room_record)
+    if not records:
+        return False
+    parts: list[str] = [
+        str(event.get("line_1", "")),
+        str(event.get("line_2", "")),
+        str(event.get("infrastructure_actor", "")),
+        str(event.get("animal_infrastructure", "")),
+    ]
+    buttons = event.get("buttons", [])
+    if isinstance(buttons, list):
+        for button in buttons:
+            if isinstance(button, dict):
+                parts.append(str(button.get("label", "")))
+                parts.append(str(button.get("action", "")))
+    text = " ".join(parts).lower().replace("_", " ")
+    for record in records:
+        record_parts = [
+            str(record.get("id", "")).replace("_", " "),
+            str(record.get("function", "")),
+        ]
+        possible = record.get("possible_interactions", [])
+        if isinstance(possible, list):
+            record_parts.extend(str(item).replace("_", " ") for item in possible)
+        signature = " ".join(record_parts).lower()
+        signature_terms = [
+            term
+            for term in re.findall(r"[a-z0-9]+", signature)
+            if len(term) > 3 and term not in {"with", "that", "they", "from", "into", "after", "before", "room", "work"}
+        ]
+        if signature_terms and any(term in text for term in signature_terms):
+            return True
+    return False
+
+
+def room_depth_findings() -> list[dict[str, str]]:
+    payload = load_json(EVENTS_PATH)
+    rooms_payload = load_json(ROOMS_PATH)
+    findings: list[dict[str, str]] = []
+    room_events = payload.get("room_events", {})
+    if not isinstance(room_events, dict):
+        return findings
+    rooms_by_id = {
+        str(room.get("id", "")): room
+        for room in rooms_payload.get("rooms", [])
+        if isinstance(room, dict) and room.get("id")
+    }
+    story_engine_track = _is_story_engine_track(rooms_payload)
+    environment_event_counts: dict[str, int] = {}
+    if story_engine_track:
+        for room_id, events in room_events.items():
+            room_record = rooms_by_id.get(str(room_id), {})
+            environment_id = _environment_id_for_room(str(room_id), room_record)
+            event_count = len(events) if isinstance(events, list) else 0
+            environment_event_counts[environment_id] = environment_event_counts.get(environment_id, 0) + event_count
+
+    def add(location: str, severity: str, issue: str, recommendation: str) -> None:
+        findings.append({
+            "location": location,
+            "severity": severity,
+            "issue": issue,
+            "recommendation": recommendation,
+        })
+
+    for room_id, events in room_events.items():
+        if not isinstance(events, list):
+            add(f"room_events.{room_id}", "high", "room events are not a list", "Room depth cannot be evaluated until events are structured.")
+            continue
+        room_location = f"room_events.{room_id}"
+        room_record = rooms_by_id.get(str(room_id), {})
+        environment_id = _environment_id_for_room(str(room_id), room_record)
+        family_event_count = environment_event_counts.get(environment_id, len(events)) if story_engine_track else len(events)
+        if family_event_count < 3:
+            add(
+                room_location,
+                "high",
+                f"thin environment family: only {family_event_count} event{'s' if family_event_count != 1 else ''}",
+                "Add enough distinct room instances or events inside this environment family to support action, reaction, and delayed consequences before calling it complete.",
+            )
+        if story_engine_track and not _has_environment_group(room_record):
+            add(
+                room_location,
+                "medium",
+                "room lacks explicit environment grouping",
+                "Add environment_id or environment_family so this room is one instance of a larger environment type, not a literal room the player is expected to revisit.",
+            )
+        if story_engine_track and not _has_environment_echo_plan(room_record):
+            add(
+                room_location,
+                "medium",
+                "environment has no echo plan",
+                "Add environment_echoes, later_instance_echoes, or environment_memory_states describing how choices can surface in later similar rooms.",
+            )
+        if story_engine_track and not _has_specific_corpus_influence(room_record):
+            add(
+                room_location,
+                "high",
+                "room lacks a specific corpus writing influence",
+                "Add corpus_influences with source title/seed, the specific source moment or authorial move, the writing energy to import, and how it changes this room's prose.",
+            )
+        if story_engine_track and not _has_ending_vector(room_record):
+            add(
+                room_location,
+                "high",
+                "environment has no ending vector",
+                "Add ending_vectors naming the ending this environment can pull toward, what behavior feeds it, and what diverts it.",
+            )
+        if story_engine_track and not _has_mutation_hooks(room_record):
+            add(
+                room_location,
+                "medium",
+                "environment has no mutation openings",
+                "Add mutation_hooks with concrete capability tags that can alter future choices in this environment.",
+            )
+
+        actor_found = False
+        delayed_found = False
+        memory_found = False
+        infrastructure_used = False
+        for event in events:
+            if not isinstance(event, dict):
+                continue
+            actor_found = actor_found or _has_interactable_actor(event)
+            delayed_found = delayed_found or _has_delayed_consequence(event)
+            memory_found = memory_found or _has_room_memory_change(event)
+            infrastructure_used = infrastructure_used or _event_mentions_room_infrastructure(event, room_record)
+            event_id = str(event.get("id", "unknown"))
+            location = f"{room_location}.{event_id}"
+            if story_engine_track and not _has_action_specific_result(event):
+                add(
+                    location,
+                    "high",
+                    "post-update event relies on generic legacy action results",
+                    "Add action_results or per-button result lines/state changes so outcomes name this room's mechanism instead of only reporting shared stats.",
+                )
+            if story_engine_track and _commandable_button_count(event) > 1 and _followups_are_default_only(event):
+                add(
+                    f"{location}.story_followups",
+                    "medium",
+                    "all choices enqueue the same default follow-up",
+                    "Prefer action-specific follow-ups, or document why every choice awakens the same later character/faction beat.",
+                )
+            if _has_only_immediate_stat_surface(event):
+                add(
+                    location,
+                    "high",
+                    "immediate stat exchange without delayed consequence",
+                    "Attach the choice to future room text, route state, deck pressure, character posture, beast behavior, claim, debt, scent, or pursuit.",
+                )
+            if not _has_interactable_actor(event):
+                add(
+                    location,
+                    "medium",
+                    "no clear interactable actor or infrastructure system",
+                    "Name what Hymn is interacting with: character, beast, animal, organ, parasite, tool, market, route intelligence, or maintenance process.",
+                )
+            if str(event.get("enemy_id", "")) and not any(key in event for key in ("beast_state_change", "infrastructure_actor", "reaction_tags", "delayed_consequence")):
+                add(
+                    location,
+                    "high",
+                    "beast/enemy appears only as attack surface",
+                    "Give the beast an infrastructure role and a non-combat interaction path before or alongside combat.",
+                )
+
+        if not delayed_found:
+            add(
+                room_location,
+                "high",
+                "room lacks explicit delayed consequence or memory hook",
+                "At least one event should change later instance text, deck pressure, route state, actor state, claim, debt, pursuit, or available choices.",
+            )
+        if story_engine_track and not memory_found:
+            add(
+                room_location,
+                "high",
+                "environment lacks explicit memory/state changes",
+                "Add environment_state_changes, environment_memory_flags, actor_state_changes, route_state_changes, or faction_state_changes so choices can alter later room instances or pressure.",
+            )
+        if story_engine_track and _room_infrastructure_records(room_record) and not infrastructure_used:
+            add(
+                room_location,
+                "medium",
+                "declared animal infrastructure is not used by events",
+                "Mention and manipulate at least one declared infrastructure actor in room events, choices, or action results.",
+            )
+        if not actor_found:
+            add(
+                room_location,
+                "medium",
+                "room lacks an interactable character, beast, animal, or infrastructure actor",
+                "Make the room more than scenery by assigning a behaving system the player can influence.",
+            )
+
+    return findings
+
+
+def _has_story_anchor(event: dict[str, Any]) -> bool:
+    story_keys = {
+        "character_id",
+        "faction_id",
+        "storyline_id",
+        "story_stage",
+        "source_character_function",
+        "animal_infrastructure",
+        "recurring_character_id",
+        "cross_run_story_hook",
+    }
+    if any(str(event.get(key, "")).strip() for key in story_keys):
+        return True
+    text = "%s %s" % (event.get("line_1", ""), event.get("line_2", ""))
+    text_lower = text.lower()
+    story_terms = {
+        "chorus",
+        "merchant",
+        "operator",
+        "operators",
+        "survey",
+        "rite",
+        "ledger",
+        "larder",
+        "toll",
+        "ferry",
+        "beetle",
+        "larva",
+        "larval",
+        "mites",
+        "hounds",
+        "mouths",
+        "chapel",
+        "map",
+    }
+    return any(term in text_lower for term in story_terms)
+
+
+def room_story_findings() -> list[dict[str, str]]:
+    payload = load_json(EVENTS_PATH)
+    rooms_payload = load_json(ROOMS_PATH)
+    special_events = payload.get("special_events", {})
+    if not isinstance(special_events, dict):
+        special_events = {}
+    rooms_by_id = {
+        str(room.get("id", "")): room
+        for room in rooms_payload.get("rooms", [])
+        if isinstance(room, dict) and room.get("id")
+    }
+    findings: list[dict[str, str]] = []
+    room_events = payload.get("room_events", {})
+    if not isinstance(room_events, dict):
+        return findings
+
+    def add(location: str, severity: str, issue: str, recommendation: str) -> None:
+        findings.append({
+            "location": location,
+            "severity": severity,
+            "issue": issue,
+            "recommendation": recommendation,
+        })
+
+    for room_id, events in room_events.items():
+        if not isinstance(events, list):
+            continue
+        room_location = f"room_events.{room_id}"
+        room_record = rooms_by_id.get(str(room_id), {})
+        room_text = " ".join([
+            str(room_record.get("first_visit_description", "")),
+            str(room_record.get("return_description", "")),
+            " ".join(str(tag) for tag in room_record.get("tags", []) if str(tag)),
+        ])
+        room_story_anchor = _has_story_anchor({"line_1": room_text, "line_2": ""})
+        chorus_frame = "chorus" in room_text.lower()
+        explicit_story_keys = [
+            "faction_ids",
+            "storyline_ids",
+            "recurring_character_ids",
+            "animal_infrastructure",
+            "cross_run_story_hooks",
+            "progression_state",
+        ]
+        missing_story_keys = [key for key in explicit_story_keys if not room_record.get(key)]
+        story_events = [event for event in events if isinstance(event, dict) and _has_story_anchor(event)]
+        delayed_events = [event for event in events if isinstance(event, dict) and _has_delayed_consequence(event)]
+        story_followup_refs: list[str] = []
+        for event in events:
+            if isinstance(event, dict):
+                story_followup_refs.extend(_story_followup_event_ids(event))
+                for followup in _story_followup_entries(event):
+                    if int(followup.get("delay_rooms", 0)) < 1:
+                        add(
+                            f"{room_location}.{str(event.get('id', 'unknown'))}.story_followups",
+                            "high",
+                            "story follow-up fires too soon",
+                            "Set delay_rooms to at least 1 so the character/faction beat enters later instead of acting like extra result text.",
+                        )
+        if missing_story_keys:
+            add(
+                room_location,
+                "high",
+                "room lacks complete explicit story backbone",
+                "Add non-empty room metadata for: %s." % ", ".join(missing_story_keys),
+            )
+        if not story_events and not room_story_anchor:
+            add(
+                room_location,
+                "high",
+                "room is not anchored to the setting backbone",
+                "Tie the room to a faction, recurring character trace, animal infrastructure role, or cross-run storyline.",
+            )
+        if not delayed_events:
+            add(
+                room_location,
+                "high",
+                "room story has no later-instance or delayed motion",
+                "Add a story hook that returns as altered later-instance text, debt, scent, route dependency, faction posture, animal behavior, deck pressure, or ending pressure.",
+            )
+        if (story_events or room_story_anchor) and not chorus_frame and not any("Chorus" in str(event.get("line_1", "")) or "Chorus" in str(event.get("line_2", "")) for event in story_events):
+            add(
+                room_location,
+                "medium",
+                "story anchor lacks Hymn-to-Chorus reporting frame",
+                "Keep room story in Hymn's first-person field report frame, with Chorus contacted, checked, or conspicuously absent.",
+            )
+        if not story_followup_refs:
+            add(
+                room_location,
+                "high",
+                "room story does not enqueue follow-up events",
+                "Progress character/faction stories by queueing one-shot special events or later environment echoes from room events, not by relying on literal room revisits.",
+            )
+        for followup_id in story_followup_refs:
+            location = f"{room_location}.story_followups.{followup_id}"
+            followup = special_events.get(followup_id, {})
+            if not isinstance(followup, dict):
+                add(
+                    location,
+                    "high",
+                    "story follow-up references missing special event",
+                    "Add the referenced special event or remove the story_followups entry.",
+                )
+                continue
+            if bool(followup.get("reactivate_on_reshuffle", True)):
+                add(
+                    location,
+                    "high",
+                    "story follow-up can retrigger in same run",
+                    "Set reactivate_on_reshuffle to false and use a trigger_key so character/faction beats are one-shot per run.",
+                )
+
+    return findings
+
+
+def _story_followup_event_ids(event: dict[str, Any]) -> list[str]:
+    ids: list[str] = []
+    for followup in _story_followup_entries(event):
+        event_id = str(followup.get("event_id", ""))
+        if event_id:
+            ids.append(event_id)
+    return sorted(set(ids))
+
+
+def _story_followup_entries(event: dict[str, Any]) -> list[dict[str, Any]]:
+    followups = event.get("story_followups")
+    entries: list[dict[str, Any]] = []
+
+    def add_from_value(value: Any) -> None:
+        if isinstance(value, str) and value:
+            entries.append({"event_id": value})
+        elif isinstance(value, dict):
+            entries.append(value)
+
+    if isinstance(followups, str):
+        add_from_value(followups)
+    elif isinstance(followups, dict):
+        for value in followups.values():
+            add_from_value(value)
+    elif isinstance(followups, list):
+        for value in followups:
+            add_from_value(value)
+
+    return entries
 
 
 def action_balance_notes() -> dict[str, Any]:
@@ -755,6 +1567,9 @@ def fun_context() -> dict[str, Any]:
         "events": room_events,
         "special_events": special_events,
         "actions": sorted(existing_actions()),
+        "single_choice_room_gaps": room_tradeoff_findings(),
+        "room_depth_findings": room_depth_findings(),
+        "room_story_findings": room_story_findings(),
         "pressure_axes": pressure_axes,
         "enemies": load_json(ENEMIES_PATH).get("enemies", []),
         "mutations": load_json(MUTATIONS_PATH).get("mutations", []),
@@ -768,6 +1583,7 @@ def lore_context() -> dict[str, Any]:
     return {
         "vibe_guide": load_vibe_guide(),
         "lore_guide": load_lore_guide(),
+        "setting_backbone": load_setting_backbone(),
         "style_memory": read_text(MEMORY_DIR / "fleshpunk_style.md"),
         "events": events_payload,
         "event_type_counts": event_type_counts(),
@@ -806,6 +1622,7 @@ def lore_brainstorm_context() -> dict[str, Any]:
             event_samples.append(sample)
     return {
         "lore_guide": load_lore_guide(),
+        "setting_backbone": load_setting_backbone(),
         "vibe_guide": load_vibe_guide(),
         "style_memory": read_text(MEMORY_DIR / "fleshpunk_style.md"),
         "deck_config": load_json(DECKS_PATH),
@@ -821,7 +1638,8 @@ def lore_brainstorm_context() -> dict[str, Any]:
             "safe_reveal": "What Hymn can learn now without breaking her knowledge boundary.",
             "deferred_secret": "What remains hidden for later.",
             "gameplay_hook": "The mechanical consequence or opportunity this lore creates.",
-            "related_systems": ["danger", "corruption", "merchant", "deck", "enemy", "symbiote", "mutation", "ending", "lore_fragment"],
+            "story_motion": "How the idea can change across rooms or across runs without Hymn knowing the clone premise.",
+            "related_systems": ["danger", "corruption", "merchant", "deck", "enemy", "symbiote", "mutation", "ending", "lore_fragment", "faction", "animal_infrastructure", "environment_memory"],
         },
         "strict_action_notes": events_file_errors(strict_actions=True),
     }
@@ -1442,6 +2260,7 @@ def lore_brainstorm_schema() -> dict[str, Any]:
 
 def build_prompt(args: argparse.Namespace) -> list[dict[str, str]]:
     context = game_context()
+    source_seeds = load_source_seed_context(args)
     room = args.room or "any existing room"
     category = args.category or "any defined category"
     category_rules = get_event_category(args.category) if args.category else {}
@@ -1455,15 +2274,37 @@ Your scenarios should fit the existing data-driven event system:
 - Event type must be one of the defined category ids.
 - Buttons need label and action.
 - voice_aliases are auto-enriched by tooling from label, action, and local narration, but you may include short spoken aliases when they are obvious.
+- Every room event should offer at least two commandable buttons unless it is explicitly a transition event.
+- Do not ship a room that only says Proceed unless the room is truly terminal or transitional.
+- Do not ship one-off rooms whose choices resolve only as minor stat changes.
+- Every room needs action/reaction, a memory hook, and at least one delayed consequence.
+- Character/faction progression should use story_followups that enqueue one-shot special_events into the run stack or later environment echoes; do not rely on revisiting the originating room.
+- Character events must not retrigger in the same run. Use trigger_key and reactivate_on_reshuffle: false on follow-up special events.
+- Treat characters, beasts, animals, parasites, organs, markets, and tools as interactable infrastructure. Beasts should not exist only to attack.
+- Every room instance should tell part of the setting story through faction pressure, recurring character traces, animal infrastructure, route memory, or later environment echoes.
+- Every environment family should have at least one ending vector. Rooms should be able to pull toward, divert from, or clarify that ending.
+- Treat combat as legacy unless explicitly requested. Prefer bypass, payment, mutation, repair, pressure, misdirection, refusal, signal handling, or terminal ending pressure.
+- Treat mutations as story capabilities and future room verbs, not combat upgrades first.
+- Use the setting backbone for factions and cross-run story motion. Corpus inspiration must become original Fleshpunk systems, not copied characters or surface mood.
+- Every room instance must declare corpus_influences that name the source work/seed, the specific source moment or authorial move, the writing energy to import, and the room prose application. source_seed_ids alone are not enough.
+- Use the Hymn corpus voice guide for prose. Import Verne's procedural verve and Lovecraft's evidence-based dread into Hymn's clean field-report voice.
+- Maintain one house voice across the whole deck. Corpus influence changes what Hymn notices, not her diction. Do not write one event in Verne mode and another in Lovecraft mode.
+- Do not use author-costume diction in player-facing prose: no eldritch/cyclopean/aeon/nameless/unspeakable/cosmic dread, no expedition lecture voice, no antique asides, no source-name homages.
+- Use the story room contract as an acceptance bar. Valid buttons are necessary but not enough; room instances need organism function, a specific current situation, environment memory, and action-specific consequence.
+- Keep consequences concrete in data and result structure, but keep Hymn's narration bounded by evidence. She can report the cord still pulsing or the record blister sealing; she should not announce the exact future payoff.
+- Do not write flat scaffold prose. Each line should carry concrete mechanism, place history, and sensory/operational pressure derived structurally from the corpus.
 - Prefer existing actions unless the user explicitly asks for new mechanics.
 - If you invent an action, include it in required_engine_changes and explain what run_manager.gd must do.
 - Keep UI text short and playable.
 - Follow the vibe guide: first-person internal field report, short clipped phrasing, purpose-built biology, reactive systems, transactional choices.
+- Keep Hymn's narration clean and empirical. Report visible structure, motion, markings, pressure, residue, sound, heat, count, timing, and immediate operational choices. Avoid scripture cadence, mystical claims, and unsupported inference about what the organism wants or understands.
 - Do not write visible speaker labels such as Her:. Use first-person narration only; if speaker metadata is required, use Hymn.
 - Use inspiration structurally, never as copied text.
 """.strip()
     if not args.allow_new_actions:
         system += "\n- Do not invent new actions. Use existing actions only."
+    if source_seeds:
+        system += "\n- If source_seed_context is present, transform those seeds into original Fleshpunk events. Do not copy source names, characters, scenes, or prose."
 
     user = {
         "request": args.prompt,
@@ -1473,6 +2314,7 @@ Your scenarios should fit the existing data-driven event system:
         "count": args.count,
         "allow_new_actions": bool(args.allow_new_actions),
         "game_context": context,
+        "source_seed_context": source_seeds,
         "memory": load_recent_memory(),
         "output_contract": {
             "format": "scenario_patch",
@@ -1480,6 +2322,13 @@ Your scenarios should fit the existing data-driven event system:
                 "events is a list of {room_id, event}",
                 "event may include existing keys such as mutation_id, symbiote_id, enemy_id, damage, heal, shield, biomass",
                 "voice_aliases may be auto-generated by tooling from label, action, and narration context; keep them short and unique when you do include them.",
+                "Every room event should have at least 2 commandable buttons unless the event type is transition.",
+                "Every room should include delayed consequence or reaction metadata/prose: future room text, deck pressure, route state, actor state, debt, claim, scent, or pursuit.",
+                "Post-update rooms should include action_results or per-button result lines/state changes so shared legacy action handlers do not carry the whole outcome.",
+                "Post-update rooms should include environment memory/state keys and later-instance echo text keyed by player behavior.",
+                "Rooms should include corpus_influences: seed_id, source_title, source_moment, writing_influence, and room_application.",
+                "Story progression should use story_followups on room events, referencing one-shot special_events with trigger_key and reactivate_on_reshuffle false.",
+                "Events should identify the actor/system being interacted with, not just a cryptic object.",
                 "required_engine_changes must be empty if only existing actions are used",
             ],
         },
@@ -1514,6 +2363,16 @@ Critique priorities:
 - Does each event read like first-person degraded field-report monologue?
 - Is the object purpose-built, reactive, and transactional?
 - Does the choice create hesitation through a clear tradeoff?
+- Does every room event offer at least two commandable buttons unless it is a transition?
+- Is the room more than a one-off stat exchange?
+- Does it create action/reaction and delayed consequence?
+- Is there an interactable character, beast, animal, parasite, organ, market, tool, or infrastructure actor?
+- If beasts appear, are they functional infrastructure rather than just attacks?
+- Does the room instance tell part of the story of this place through faction behavior, animal infrastructure, recurring character traces, or later environment echoes?
+- Does the story continue through one-shot story_followups inserted into the run stack, then across rooms or runs as delayed pressure, altered prices, route memory, animal trust/hostility, Chorus pressure, or ending gravity?
+- Do character/faction follow-up special events avoid same-run retriggering?
+- Does corpus inspiration become original setting machinery instead of surface mood?
+- Is the prose textured enough, or does it read like flat placeholder copy explaining buttons?
 - Are buttons instructions to the character rather than spoken dialogue?
 - Are proposed additions implementable with current actions, or clearly marked as engine work?
 - Suggest new event categories, encounter patterns, mechanics, and vibe-guide updates only when they clarify future generation.
@@ -1522,8 +2381,11 @@ Critique priorities:
     user = {
         "focus": args.focus,
         "vibe_guide": load_vibe_guide(),
+        "setting_backbone": load_setting_backbone(),
         "game_context": game_context(),
         "strict_action_notes": events_file_errors(strict_actions=True),
+        "room_depth_findings": room_depth_findings(),
+        "room_story_findings": room_story_findings(),
         "target": target_payload,
         "output_contract": {
             "summary": "Brief overall judgement.",
@@ -1551,6 +2413,10 @@ Return JSON only.
 Balance priorities:
 - Does danger feel like the system noticing the player, not just a difficulty number?
 - Do corruption, biomass, health, shield, mutations, and symbiotes create real tradeoffs?
+- Do room events avoid one-button dead ends unless they are transitions?
+- Are rooms avoiding one-off stat exchanges?
+- Do choices create delayed pressure, route state, actor state, claim, debt, scent, pursuit, or future text changes?
+- Are character/beast/infrastructure interactions creating different future consequences instead of only different immediate numbers?
 - Does deck cadence create descent pressure without pure repetition?
 - Do rewards and recovery carry cost, contamination, attention, or future pressure?
 - Are combat and non-combat choices both viable but never clean?
@@ -1591,6 +2457,10 @@ Fun-factor doctrine:
 - The living organism is the director of the run.
 - Its job is to notice player patterns, unbalance the player, and push the clone toward an outcome.
 - Every repeated decision should create a gravitational pull: corruption, danger/hunter, starvation, injury, debt, or a narrowed route.
+- Every room should offer at least one meaningful tradeoff, not just a single Proceed choice.
+- Every room needs action/reaction and delayed consequence; immediate stat changes are only the surface.
+- Characters, beasts, animals, parasites, organs, markets, and tools should behave as interactable infrastructure.
+- Beasts should almost never be "just a fight"; they should carry information, pressure, routes, tolls, immune response, or delayed threat.
 - Taking too many mutations raises corruption and pushes the corruption ending.
 - Fleeing or dodging too much combat raises danger until the hunter comes.
 - Greedy extraction, repeated healing, repeated refusal, repeated bonding, and repeated safety should each have a pressure track or explicit cost.
@@ -1639,6 +2509,8 @@ Lore doctrine:
 - Visible narration should not include speaker labels such as Her:.
 - Corruption should read as bodily boundary loss and agency drift, not as a vague bad ending.
 - The merchant is a predatory exchange system and future big bad, not a friendly shopkeeper.
+- The setting must tell ongoing stories through room instances: factions, recurring characters, animal infrastructure, route memory, later environment echoes, and pressure changes.
+- Characters can appear through traces, procedures, animals, prices, signals, records, and changed room behavior; they do not need conventional dialogue scenes.
 - Lore fragments can reveal the world, cult, organism, facility, and Chorus relationship, but each reveal should carry a secondary effect or cost.
 - Expand context through concrete fragments, functional biology, and operational reports. Avoid lore dumps.
 """.strip()
@@ -1721,6 +2593,9 @@ Brainstorm doctrine:
 - New lore must create gameplay pressure, future content, or ending texture.
 - Never make lore a standalone encyclopedia entry.
 - Each concept must include a safe reveal, Hymn misread, deferred secret, and gameplay hook.
+- Each major story idea should have early, mid, and late progression across rooms or runs.
+- Create faction conflicts and recurring character story lines that can alter room text, deck pressure, route state, prices, animal behavior, or ending eligibility.
+- Animals are insectile, larval, crusted, or oversized-cell infrastructure with jobs; they should rarely be only enemies.
 - Hymn does not know she is a clone. Do not put clone facts in sample first-person narration.
 - Hymn reports to Chorus. Chorus is never heard directly.
 - Do not write visible speaker labels such as Her:. Keep sample fragments in first person.
@@ -1849,7 +2724,86 @@ def call_openai(
         raise SystemExit(f"Model returned non-JSON output:\n{text}") from exc
 
 
-def mock_patch(room: str, category: str = "choice") -> dict[str, Any]:
+def _label_for_action(action: str) -> str:
+    labels = {
+        "break_amber_cache": "Break the hard mass",
+        "break_spike_lane": "Break the pressure line",
+        "browse_wares": "Approach the exchange",
+        "combat": "Fight through",
+        "drink_pool": "Drink the fluid",
+        "follow_marked_plates": "Follow the markings",
+        "harvest_eggs": "Harvest the sacs",
+        "leave_mutation": "Leave the growth",
+        "listen_at_green_split": "Listen at the split",
+        "listen_red_wall": "Listen to the wall",
+        "mark_red_branch": "Mark the safer branch",
+        "observe_organ_chamber": "Observe the chamber",
+        "pay_resin_toll": "Pay the toll",
+        "probe_amber_cache": "Probe the cache",
+        "probe_bones": "Probe the bones",
+        "proceed": "Move through",
+        "retreat": "Back away",
+        "rush_red_split": "Rush the split",
+        "scavenge_bones": "Scavenge the bones",
+        "skip_resin_toll": "Skip the toll",
+        "study_pool": "Study the fluid",
+        "take_mutation": "Take the change",
+        "take_symbiote": "Bond with it",
+        "vent_red_split": "Vent the pressure",
+    }
+    return labels.get(action, action.replace("_", " ").capitalize())
+
+
+def _mock_patch_from_seed(room: str, category: str, source_seed: dict[str, Any]) -> dict[str, Any]:
+    seed_id = str(source_seed.get("id", "corpus_seed"))
+    motif_id = str(source_seed.get("motif_id", "source_motif"))
+    actions = [
+        str(action)
+        for action in source_seed.get("suggested_existing_actions", [])
+        if str(action).split(":", 1)[0] in existing_actions()
+    ]
+    if len(actions) < 2:
+        actions = ["study_pool", "retreat", "proceed"]
+
+    event_id = "%s_%s" % (room, slugify_id(motif_id))
+    buttons = [{"label": _label_for_action(action), "action": action} for action in actions[:3]]
+    return {
+        "title": "Corpus Seed: %s" % motif_id.replace("_", " ").title(),
+        "design_goal": "Transform a public-domain source motif into one playable Fleshpunk room event using existing actions.",
+        "events": [
+            {
+                "room_id": room,
+                "event": {
+                    "id": event_id,
+                    "type": category,
+                    "speaker": "Hymn",
+                    "line_1": "Chorus, contact. The room is running an old procedure through fresh tissue.",
+                    "line_2": "It offers a clean path, but the cost is already looking for a place to attach.",
+                    "buttons": buttons,
+                },
+            }
+        ],
+        "mutations": [],
+        "symbiotes": [],
+        "enemies": [],
+        "required_engine_changes": [],
+        "inspiration_notes": [
+            "Source seed: %s" % seed_id,
+            "Source work: %s by %s" % (source_seed.get("source_title", ""), source_seed.get("source_author", "")),
+            "Fleshpunk transform: %s" % source_seed.get("fleshpunk_seed", ""),
+            "Mechanic direction: %s" % source_seed.get("mechanic_direction", ""),
+        ],
+        "self_critique": [
+            "Uses source motifs structurally only; no source prose, names, or scenes are copied.",
+            "Uses existing actions only, so no engine change is required.",
+        ],
+    }
+
+
+def mock_patch(room: str, category: str = "choice", source_seeds: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+    if source_seeds:
+        return _mock_patch_from_seed(room, category, source_seeds[0])
+
     return {
         "title": "The Listening Valve",
         "design_goal": "Add one compact risk-reward event using existing actions.",
@@ -1901,7 +2855,7 @@ def mock_critique() -> dict[str, Any]:
             {
                 "id": "echo",
                 "label": "Delayed Echo",
-                "purpose": "A prior choice returns as a later room consequence.",
+                "purpose": "A prior choice echoes as a later room-instance consequence.",
                 "why": "The vibe guide says every decision should echo forward.",
             }
         ],
@@ -2322,6 +3276,7 @@ def validation_errors(
     patch: dict[str, Any],
     allow_new_actions: bool = False,
     expected_category: str = "",
+    strict_tradeoffs: bool = False,
 ) -> list[str]:
     errors: list[str] = []
     rooms = set(room_ids())
@@ -2366,6 +3321,12 @@ def validation_errors(
         if not isinstance(buttons, list) or not buttons:
             errors.append(f"{event_id or index}: buttons must be a non-empty list")
             continue
+        if strict_tradeoffs and event_type not in TRADEOFF_EXEMPT_EVENT_TYPES:
+            commandable_buttons = sum(1 for button in buttons if isinstance(button, dict))
+            if commandable_buttons < 2:
+                errors.append(
+                    f"{event_id or index}: single-choice room ({commandable_buttons} commandable button{'s' if commandable_buttons != 1 else ''})"
+                )
         for button_index, button in enumerate(buttons):
             if not isinstance(button, dict):
                 errors.append(f"{event_id}: button {button_index} is not an object")
@@ -2396,7 +3357,7 @@ def validation_errors(
     return errors
 
 
-def events_file_errors(strict_actions: bool = False) -> list[str]:
+def events_file_errors(strict_actions: bool = False, strict_tradeoffs: bool = False) -> list[str]:
     errors: list[str] = []
     payload = load_json(EVENTS_PATH)
     rooms = set(room_ids())
@@ -2450,6 +3411,13 @@ def events_file_errors(strict_actions: bool = False) -> list[str]:
                 continue
             for index, event in enumerate(events):
                 if isinstance(event, dict):
+                    if strict_tradeoffs:
+                        event_type = str(event.get("type", ""))
+                        if event_type not in TRADEOFF_EXEMPT_EVENT_TYPES:
+                            buttons = event.get("buttons", [])
+                            commandable_buttons = sum(1 for button in buttons if isinstance(button, dict)) if isinstance(buttons, list) else 0
+                            if commandable_buttons < 2:
+                                errors.append(f"room_events.{room_id}[{index}]: single-choice room ({commandable_buttons} commandable button{'s' if commandable_buttons != 1 else ''})")
                     check_event(event, f"room_events.{room_id}[{index}]")
                 else:
                     errors.append(f"room_events.{room_id}[{index}]: event is not an object")
@@ -2471,7 +3439,7 @@ def events_file_errors(strict_actions: bool = False) -> list[str]:
 
 def event_writing_findings() -> list[dict[str, str]]:
     payload = load_json(EVENTS_PATH)
-    findings: list[dict[str, str]] = []
+    findings: list[dict[str, str]] = room_depth_findings() + room_story_findings()
     generic_labels = {
         "Proceed.",
         "Proceed",
@@ -2488,30 +3456,132 @@ def event_writing_findings() -> list[dict[str, str]]:
         ("i can ", "choice list reads like a menu instead of pressure"),
         ("could be", "uncertain phrasing without field interpretation"),
         ("maybe", "uncertain phrasing without field interpretation"),
+        ("looks safer", "flat safety wording"),
+        ("may lower", "flat probability wording"),
+        ("may show", "flat probability wording"),
+        ("may calm", "flat probability wording"),
+        ("buys control", "abstract choice summary"),
+        ("buys speed", "abstract choice summary"),
+        ("buys uncertainty", "abstract choice summary"),
+        ("is useful", "generic utility wording"),
+        ("under pressure:", "abstract choice framing"),
+        ("three uses", "menu-like choice framing"),
+        ("command signal", "abstract command jargon"),
     ]
-    pressure_words = {
-        "cost",
-        "debt",
-        "danger",
-        "corruption",
-        "claim",
-        "noise",
-        "quiet",
+    source_style_patterns = [
+        (r"\b(verne|lovecraft)\b", "source name leaked into player-facing prose"),
+        (r"\b(eldritch|cyclopean|aeon|aeons|nameless|unspeakable|indescribable|blasphemous|cosmic|madness)\b", "Lovecraft costume diction"),
+        (r"\b(professor|gentleman|gentlemen|my dear|alas|hurrah)\b", "Verne costume diction"),
+        (r"\b(destiny|prophecy|omen|judg(?:e)?ment|invitation|fate)\b", "mystical abstraction in Hymn narration"),
+        (r"\b(the organism wants|the room wants|the room remembers|the system knows|the system wants)\b", "unsupported agency claim"),
+        (r"\b(later this will|next room will|this queues|this unlocks|ending path)\b", "future mechanic stated in narration"),
+    ]
+    lore_name_terms = {
+        "soft captain",
+        "pell",
+        "mother chancel",
+        "commandant signal",
+    }
+    apparatus_terms = {
+        "beetle",
+        "bell",
+        "bore",
+        "cord",
+        "dock",
+        "ferry",
+        "grub",
+        "harness",
+        "larva",
+        "lice",
+        "mouth",
+        "pocket",
+        "pore",
+        "ring",
+        "scale",
+        "seam",
+        "signal",
+        "teeth",
+        "tissue",
+        "valve",
+    }
+    evidence_terms = {
+        "abrasion",
+        "bleeding",
+        "clean",
+        "cold",
+        "cut",
+        "edge",
+        "old",
+        "pulse",
+        "record",
+        "repair",
+        "residue",
+        "ridge",
+        "score",
+        "scored",
+        "scratch",
         "scent",
-        "price",
-        "wants",
-        "learn",
-        "carry",
+        "stain",
+        "tally",
+        "worn",
+    }
+    body_stake_terms = {
         "blood",
-        "biomass",
-        "before",
-        "if",
-        "pay",
-        "risk",
-        "chorus",
+        "body",
+        "boot",
+        "breath",
+        "cuts",
+        "flesh",
+        "glove",
+        "hand",
+        "knees",
+        "pulse",
+        "shoulder",
+        "skin",
+        "weight",
+        "wound",
+        "wrist",
+    }
+    concrete_terms = {
+        "beetle",
+        "bell",
+        "blood",
+        "bone",
+        "bore",
+        "blister",
+        "cord",
+        "cut",
+        "dock",
+        "ferry",
+        "fluid",
+        "grub",
+        "harbor",
+        "harness",
+        "larva",
+        "lice",
+        "larder",
+        "lens",
+        "map",
+        "marrow",
+        "mouth",
+        "pocket",
+        "pore",
+        "packet",
+        "rib",
+        "ring",
+        "scale",
+        "scar",
+        "seam",
+        "signal",
+        "strap",
+        "teeth",
+        "tissue",
+        "token",
+        "valve",
+        "wall",
+        "wound",
     }
     chorus_expected = {"merchant", "danger", "corruption", "symbiote"}
-    cause_effect_types = {"amber", "choice", "combat", "boss", "corruption", "danger", "healing", "merchant", "symbiote"}
 
     def add(location: str, severity: str, issue: str, recommendation: str) -> None:
         findings.append({
@@ -2521,22 +3591,51 @@ def event_writing_findings() -> list[dict[str, str]]:
             "recommendation": recommendation,
         })
 
+    def check_house_voice_text(text: str, location: str) -> None:
+        if not text:
+            return
+        lower_text = text.lower()
+        for pattern, issue in source_style_patterns:
+            if re.search(pattern, lower_text):
+                add(
+                    location,
+                    "high",
+                    issue,
+                    "Rewrite in Hymn's house voice: physical situation, mechanism, evidence, and bodily stakes. Corpus influence should not be visible as author-mode diction.",
+                )
+        for term in lore_name_terms:
+            if term in lower_text:
+                add(
+                    location,
+                    "medium",
+                    "proper-name lore in field report",
+                    "Use observable traces unless the named figure is physically present or has been introduced in-world.",
+                )
+
     def check_event(event: dict[str, Any], location: str) -> None:
         event_type = str(event.get("type", ""))
         line_1 = str(event.get("line_1", ""))
         line_2 = str(event.get("line_2", ""))
         combined = f"{line_1} {line_2}"
         combined_lower = combined.lower()
+        check_house_voice_text(line_1, f"{location}.line_1")
+        check_house_voice_text(line_2, f"{location}.line_2")
 
         for pattern, issue in weak_line_patterns:
             if pattern in combined_lower:
-                add(location, "medium", issue, "Rewrite as observation, interpretation, and pressure instead of a neutral option list.")
+                add(location, "high", issue, "Rewrite as a plain observed situation with one visible actor and one observable pressure. Do not pad with mechanism nouns or future payoff.")
+
+        has_concrete_actor = any(term in combined_lower for term in concrete_terms)
+        if event_type in {"choice", "story"} and not has_concrete_actor:
+            add(
+                location,
+                "medium",
+                "abstract situation",
+                "Name the visible actor, organ, material, or mark involved. One clean concrete detail is enough.",
+            )
 
         if event_type in chorus_expected and "chorus" not in combined_lower:
             add(location, "medium", "missing Chorus field-report cadence", "Add a short Hymn-to-Chorus check without printing a Chorus reply.")
-
-        if event_type in cause_effect_types and not any(word in combined_lower for word in pressure_words):
-            add(location, "medium", "weak cause/effect telegraph", "Add a concrete cost, delayed consequence, or organism intent cue.")
 
         if str(event.get("enemy_id", "")) and event_type in {"combat", "boss"} and "scene_path" not in event:
             add(location, "low", "combat event relies on enemy scene fallback", "Add scene_path if this encounter needs a specific visible sprite.")
@@ -2544,6 +3643,14 @@ def event_writing_findings() -> list[dict[str, str]]:
         buttons = event.get("buttons", [])
         if not isinstance(buttons, list):
             return
+        commandable_buttons = sum(1 for button in buttons if isinstance(button, dict))
+        if event_type not in TRADEOFF_EXEMPT_EVENT_TYPES and commandable_buttons < 2:
+            add(
+                location,
+                "high",
+                f"single-choice room ({commandable_buttons} commandable button{'s' if commandable_buttons != 1 else ''})",
+                "Add a second legal choice with a distinct cost, delayed consequence, or alternative pressure axis. Transition events may stay exempt.",
+            )
         for index, button in enumerate(buttons):
             if not isinstance(button, dict):
                 continue
@@ -2556,6 +3663,71 @@ def event_writing_findings() -> list[dict[str, str]]:
                 add(button_location, "low", "neutral proceed choice", "Name what the refusal preserves or costs.")
             if "wares" in label.lower() or "shop" in label.lower():
                 add(button_location, "high", "shop/menu language in merchant-facing UI", "Use scale/exchange/body language instead.")
+            check_house_voice_text(label, f"{button_location}.label")
+
+        action_results = event.get("action_results", {})
+        if isinstance(action_results, dict):
+            for action_id, result in action_results.items():
+                if not isinstance(result, dict):
+                    continue
+                result_lines = result.get("lines", [])
+                if isinstance(result_lines, list):
+                    for line_index, line in enumerate(result_lines):
+                        check_house_voice_text(str(line), f"{location}.action_results.{action_id}.lines[{line_index}]")
+
+        followups = event.get("story_followups", {})
+        if isinstance(followups, dict):
+            for followup_key, followup in followups.items():
+                if isinstance(followup, dict):
+                    check_house_voice_text(str(followup.get("queued_line", "")), f"{location}.story_followups.{followup_key}.queued_line")
+
+    def check_room_text(text: str, location: str, require_full_house_style: bool = False) -> None:
+        if not text:
+            return
+        check_house_voice_text(text, location)
+        lower_text = text.lower()
+        if not require_full_house_style:
+            return
+        if not any(term in lower_text for term in apparatus_terms):
+            add(
+                location,
+                "medium",
+                "room prose lacks apparatus pressure",
+                "Add one concrete living mechanism and what it does now; corpus influence should not read as pure mood.",
+            )
+        if not any(term in lower_text for term in evidence_terms):
+            add(
+                location,
+                "medium",
+                "room prose lacks accumulated evidence",
+                "Add wear, repair, residue, old marks, measurement, or prior-use evidence so dread comes from records.",
+            )
+        if not any(term in lower_text for term in body_stake_terms):
+            add(
+                location,
+                "medium",
+                "room prose lacks bodily stakes",
+                "Anchor the mechanism to Hymn's body: boot, wrist, pulse, wound, breath, shoulder, weight, or skin.",
+            )
+
+    def check_room(room: dict[str, Any], location: str) -> None:
+        check_room_text(str(room.get("name", "")), f"{location}.name")
+        check_room_text(str(room.get("instance_premise", "")), f"{location}.instance_premise")
+        check_room_text(str(room.get("first_visit_description", "")), f"{location}.first_visit_description", require_full_house_style=True)
+        check_room_text(str(room.get("return_description", "")), f"{location}.return_description")
+        ui_text = room.get("ui_text", {})
+        if isinstance(ui_text, dict):
+            check_room_text(str(ui_text.get("line_1", "")), f"{location}.ui_text.line_1", require_full_house_style=True)
+            check_room_text(str(ui_text.get("line_2", "")), f"{location}.ui_text.line_2", require_full_house_style=True)
+        progression_state = room.get("progression_state", {})
+        if isinstance(progression_state, dict):
+            for state_key, state_text in progression_state.items():
+                check_room_text(str(state_text), f"{location}.progression_state.{state_key}")
+        for array_key in ("cross_run_story_hooks", "environment_echoes"):
+            entries = room.get(array_key, [])
+            if isinstance(entries, list):
+                for index, entry in enumerate(entries):
+                    check_room_text(str(entry), f"{location}.{array_key}[{index}]")
 
     room_events = payload.get("room_events", {})
     if isinstance(room_events, dict):
@@ -2572,6 +3744,14 @@ def event_writing_findings() -> list[dict[str, str]]:
         for event_id, event in special_events.items():
             if isinstance(event, dict):
                 check_event(event, f"special_events.{event_id}")
+
+    rooms_payload = load_json(ROOMS_PATH)
+    rooms = rooms_payload.get("rooms", [])
+    if isinstance(rooms, list):
+        for index, room in enumerate(rooms):
+            if isinstance(room, dict):
+                room_id = str(room.get("id", index))
+                check_room(room, f"rooms.{room_id}")
 
     return findings
 
@@ -2689,8 +3869,9 @@ def cmd_generate(args: argparse.Namespace) -> int:
     if args.category and args.category not in event_category_ids():
         raise SystemExit(f"Unknown category '{args.category}'. Known categories: {', '.join(event_category_ids())}")
 
+    source_seeds = load_source_seed_context(args)
     if args.mock:
-        patch = mock_patch(room, args.category or "choice")
+        patch = mock_patch(room, args.category or "choice", source_seeds)
     else:
         patch = call_openai(build_prompt(args), args.model, patch_schema(), "scenario_patch")
 
@@ -2700,6 +3881,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
         patch,
         allow_new_actions=args.allow_new_actions,
         expected_category=args.category or "",
+        strict_tradeoffs=args.strict_tradeoffs,
     )
     if errors:
         patch["_validation_errors"] = errors
@@ -2719,7 +3901,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
 
 def cmd_validate(args: argparse.Namespace) -> int:
     patch = load_patch(Path(args.patch))
-    errors = validation_errors(patch, allow_new_actions=args.allow_new_actions)
+    errors = validation_errors(patch, allow_new_actions=args.allow_new_actions, strict_tradeoffs=args.strict_tradeoffs)
     if not errors:
         print("ok")
         return 0
@@ -2845,12 +4027,75 @@ def cmd_lore_brainstorm(args: argparse.Namespace) -> int:
 
 def cmd_validate_events(args: argparse.Namespace) -> int:
     errors = events_file_errors(strict_actions=args.strict_actions)
+    if args.strict_tradeoffs:
+        for finding in room_tradeoff_findings():
+            errors.append(f"{finding['location']}: {finding['issue']}")
     if not errors:
         print("ok")
         return 0
     for error in errors:
         print(error, file=sys.stderr)
     return 1
+
+
+def cmd_audit_tradeoffs(args: argparse.Namespace) -> int:
+    findings = room_tradeoff_findings()
+    if args.json:
+        print(json.dumps({"findings": findings}, indent=2, ensure_ascii=False))
+        return 1 if findings and args.fail_on_findings else 0
+    if not findings:
+        print("ok")
+        return 0
+    for finding in findings:
+        print(
+            "{severity}: {location}: {issue} -> {recommendation}".format(
+                severity=finding["severity"],
+                location=finding["location"],
+                issue=finding["issue"],
+                recommendation=finding["recommendation"],
+            )
+        )
+    return 1 if args.fail_on_findings else 0
+
+
+def cmd_audit_depth(args: argparse.Namespace) -> int:
+    findings = room_depth_findings()
+    if args.json:
+        print(json.dumps({"findings": findings}, indent=2, ensure_ascii=False))
+        return 1 if findings and args.fail_on_findings else 0
+    if not findings:
+        print("ok")
+        return 0
+    for finding in findings:
+        print(
+            "{severity}: {location}: {issue} -> {recommendation}".format(
+                severity=finding["severity"],
+                location=finding["location"],
+                issue=finding["issue"],
+                recommendation=finding["recommendation"],
+            )
+        )
+    return 1 if args.fail_on_findings else 0
+
+
+def cmd_audit_story(args: argparse.Namespace) -> int:
+    findings = room_story_findings()
+    if args.json:
+        print(json.dumps({"findings": findings}, indent=2, ensure_ascii=False))
+        return 1 if findings and args.fail_on_findings else 0
+    if not findings:
+        print("ok")
+        return 0
+    for finding in findings:
+        print(
+            "{severity}: {location}: {issue} -> {recommendation}".format(
+                severity=finding["severity"],
+                location=finding["location"],
+                issue=finding["issue"],
+                recommendation=finding["recommendation"],
+            )
+        )
+    return 1 if args.fail_on_findings else 0
 
 
 def cmd_audit_writing(args: argparse.Namespace) -> int:
@@ -2897,7 +4142,7 @@ def cmd_apply(args: argparse.Namespace) -> int:
     patch_path = Path(args.patch)
     patch = load_patch(patch_path)
     enrich_patch_voice_aliases(patch)
-    errors = validation_errors(patch, allow_new_actions=args.allow_new_actions)
+    errors = validation_errors(patch, allow_new_actions=args.allow_new_actions, strict_tradeoffs=args.strict_tradeoffs)
     if errors:
         for error in errors:
             print(error, file=sys.stderr)
@@ -3124,6 +4369,31 @@ def cmd_lore_guide(_: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_setting_backbone(_: argparse.Namespace) -> int:
+    print(load_setting_backbone())
+    return 0
+
+
+def cmd_story_room_contract(_: argparse.Namespace) -> int:
+    print(load_story_room_contract())
+    return 0
+
+
+def cmd_ending_maze(_: argparse.Namespace) -> int:
+    print(load_ending_maze_architecture())
+    return 0
+
+
+def cmd_hymn_corpus_voice(_: argparse.Namespace) -> int:
+    print(load_hymn_corpus_voice())
+    return 0
+
+
+def cmd_content_authorship(_: argparse.Namespace) -> int:
+    print(load_content_authorship_workflow())
+    return 0
+
+
 def cmd_accessibility_guide(_: argparse.Namespace) -> int:
     print(load_accessibility_guide())
     return 0
@@ -3151,6 +4421,12 @@ def build_parser() -> argparse.ArgumentParser:
     generate.add_argument("--out", help="Output patch path.")
     generate.add_argument("--model", default=DEFAULT_MODEL)
     generate.add_argument("--allow-new-actions", action="store_true")
+    generate.add_argument("--strict-tradeoffs", action="store_true", help="Require every non-transition room event in the patch to have at least two commandable buttons.")
+    generate.add_argument("--source-seeds", help="Optional Fleshpunk seed JSON path. Defaults to generated/corpus/fleshpunk_seeds.json when any source filter is used.")
+    generate.add_argument("--source-seed", action="append", help="Specific source seed id to include. Repeatable.")
+    generate.add_argument("--source-work", help="Filter source seeds by source_id.")
+    generate.add_argument("--source-motif", help="Filter source seeds by motif_id.")
+    generate.add_argument("--source-seed-count", type=int, default=3, help="Maximum number of source seeds to include in the generation context.")
     generate.add_argument("--mock", action="store_true", help="Generate a local sample without calling OpenAI.")
     generate.set_defaults(func=cmd_generate)
 
@@ -3201,10 +4477,12 @@ def build_parser() -> argparse.ArgumentParser:
     validate = sub.add_parser("validate", help="Validate a scenario patch.")
     validate.add_argument("patch")
     validate.add_argument("--allow-new-actions", action="store_true")
+    validate.add_argument("--strict-tradeoffs", action="store_true", help="Require every non-transition room event in the patch to have at least two commandable buttons.")
     validate.set_defaults(func=cmd_validate)
 
     validate_events = sub.add_parser("validate-events", help="Validate events.json against broad categories.")
     validate_events.add_argument("--strict-actions", action="store_true")
+    validate_events.add_argument("--strict-tradeoffs", action="store_true", help="Fail when room events have fewer than two commandable buttons, except transition events.")
     validate_events.set_defaults(func=cmd_validate_events)
 
     audit_writing = sub.add_parser("audit-writing", help="Audit events.json for weak cause/effect, generic buttons, and voice drift.")
@@ -3216,9 +4494,25 @@ def build_parser() -> argparse.ArgumentParser:
     audit_accessibility.add_argument("--fail-on-findings", action="store_true", help="Exit nonzero when accessibility findings are present.")
     audit_accessibility.set_defaults(func=cmd_audit_accessibility)
 
+    audit_tradeoffs = sub.add_parser("audit-tradeoffs", help="Audit room events for one-button dead ends and missing tradeoffs.")
+    audit_tradeoffs.add_argument("--json", action="store_true", help="Print JSON findings.")
+    audit_tradeoffs.add_argument("--fail-on-findings", action="store_true", help="Exit nonzero when tradeoff findings are present.")
+    audit_tradeoffs.set_defaults(func=cmd_audit_tradeoffs)
+
+    audit_depth = sub.add_parser("audit-depth", help="Audit room depth, delayed consequence, memory hooks, and interactable actors.")
+    audit_depth.add_argument("--json", action="store_true", help="Print JSON findings.")
+    audit_depth.add_argument("--fail-on-findings", action="store_true", help="Exit nonzero when depth findings are present.")
+    audit_depth.set_defaults(func=cmd_audit_depth)
+
+    audit_story = sub.add_parser("audit-story", help="Audit rooms for setting backbone, faction, character, animal infrastructure, and cross-run story motion.")
+    audit_story.add_argument("--json", action="store_true", help="Print JSON findings.")
+    audit_story.add_argument("--fail-on-findings", action="store_true", help="Exit nonzero when story findings are present.")
+    audit_story.set_defaults(func=cmd_audit_story)
+
     apply = sub.add_parser("apply", help="Apply a valid JSON-only scenario patch.")
     apply.add_argument("patch")
     apply.add_argument("--allow-new-actions", action="store_true")
+    apply.add_argument("--strict-tradeoffs", action="store_true", help="Require every non-transition room event in the patch to have at least two commandable buttons.")
     apply.add_argument("--dry-run", action="store_true")
     apply.set_defaults(func=cmd_apply)
 
@@ -3286,6 +4580,21 @@ def build_parser() -> argparse.ArgumentParser:
 
     lore_guide = sub.add_parser("lore-guide", help="Print the lore guide.")
     lore_guide.set_defaults(func=cmd_lore_guide)
+
+    setting_backbone = sub.add_parser("setting-backbone", help="Print the setting backbone.")
+    setting_backbone.set_defaults(func=cmd_setting_backbone)
+
+    story_room_contract = sub.add_parser("story-room-contract", help="Print the story room contract.")
+    story_room_contract.set_defaults(func=cmd_story_room_contract)
+
+    ending_maze = sub.add_parser("ending-maze", help="Print the ending maze architecture.")
+    ending_maze.set_defaults(func=cmd_ending_maze)
+
+    hymn_corpus_voice = sub.add_parser("hymn-corpus-voice", help="Print the Hymn corpus voice guide.")
+    hymn_corpus_voice.set_defaults(func=cmd_hymn_corpus_voice)
+
+    content_authorship = sub.add_parser("content-authorship", help="Print the content authorship workflow.")
+    content_authorship.set_defaults(func=cmd_content_authorship)
 
     accessibility_guide = sub.add_parser("accessibility-guide", help="Print the accessibility guide.")
     accessibility_guide.set_defaults(func=cmd_accessibility_guide)

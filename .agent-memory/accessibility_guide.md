@@ -1,7 +1,7 @@
 # Fleshpunk: Inner Heart - Accessibility Guide
 
-This game is audio-first.
-Visuals may support mood, but no required information may exist only in art, color, animation, or layout.
+This game is text/audio-first.
+The project is dropping support for visual presentation beyond text, decisions, status, inventory, and command feedback. No required information may exist only in art, color, animation, or layout.
 
 ## North Star
 
@@ -14,6 +14,21 @@ Every turn must make clear:
 - what each choice is likely to cost
 - what state pressures are rising or falling
 - what the player can say next
+
+## Room Text Model
+
+Rooms need two text descriptions:
+- `first_visit_description`: relatively longer; establishes function, threat, route logic, and what the room seems to want
+- `return_description`: shorter; confirms identity and highlights changed pressure or persistence
+
+Both descriptions are narrated by Hymn to Chorus.
+Event text should follow room text and should not repeat the same room description unless something changed.
+
+## Legacy Content Boundary
+
+Existing visual-first room records are legacy.
+
+New accessibility audits should judge forward content against the text-only room model, not against whether old image-backed rooms have parity.
 
 ## Command Model
 

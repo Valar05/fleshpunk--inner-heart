@@ -68,9 +68,11 @@ var _current_console_buttons: Array = []
 var _current_console_room_id := ""
 var _current_console_encounter: Dictionary = {}
 var _pending_confirmation_action: Dictionary = {}
+var _last_text_surface_size := Vector2.ZERO
 
 
 func _ready() -> void:
+	RenderingServer.set_default_clear_color(Color.BLACK)
 	_rng.randomize()
 	_pulse_material = room_sprite.material as ShaderMaterial
 	if _pulse_material == null:
@@ -81,6 +83,9 @@ func _ready() -> void:
 	_reset_pulse_state()
 	_command_parser = CommandParserScript.new()
 	_connect_dashboard()
+	_connect_viewport_resize()
+	_configure_text_only_surface()
+	call_deferred("_configure_text_only_surface")
 	_prepare_actors()
 	_setup_tts_audio()
 	var run_manager := _get_run_manager()
@@ -175,13 +180,37 @@ func change_room(room_id: String, room_data: Dictionary = {}) -> void:
 		if run_manager != null:
 			room_data = run_manager.get_room_data(room_id)
 
-	var image_path := str(room_data.get("image", ""))
-	if image_path != "":
-		var room_texture = load(image_path)
-		if room_texture is Texture2D:
-			room_sprite.texture = room_texture
-
+	room_sprite.visible = false
 	room_sprite.modulate.a = 1.0
+
+
+func _configure_text_only_surface() -> void:
+	var viewport_size := get_viewport_rect().size
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		return
+	_last_text_surface_size = viewport_size
+	room_sprite.visible = false
+	merchant_actor.visible = false
+	player_actor.visible = false
+	enemy_actor.visible = false
+	dashboard.visible = true
+	dashboard.position = viewport_size * 0.5
+	dashboard.scale = Vector2.ONE
+	dashboard.z_index = 100
+	if dashboard.has_method("set_fullscreen_console_layout"):
+		dashboard.call("set_fullscreen_console_layout", viewport_size)
+
+
+func _connect_viewport_resize() -> void:
+	var viewport := get_viewport()
+	if viewport == null:
+		return
+	if not viewport.size_changed.is_connected(_on_viewport_size_changed):
+		viewport.size_changed.connect(_on_viewport_size_changed)
+
+
+func _on_viewport_size_changed() -> void:
+	call_deferred("_configure_text_only_surface")
 
 
 func _connect_dashboard() -> void:
@@ -404,6 +433,7 @@ func _prepare_actors() -> void:
 	if player_actor.has_method("show_world_pose"):
 		player_actor.call("show_world_pose", false)
 	player_actor.position = player_home.position
+	player_actor.visible = false
 
 	if enemy_actor.has_method("reset_visuals"):
 		if enemy_actor.has_method("set_visual_scale_multiplier"):
@@ -532,7 +562,7 @@ func _present_encounter(encounter: Dictionary, faded: bool = false) -> void:
 	var room_id := str(encounter.get("room_id", current_room_id))
 	var room_data: Dictionary = encounter.get("room_data", {})
 	var event_data: Dictionary = encounter.get("event_data", {})
-	merchant_actor.visible = _encounter_shows_merchant(encounter, event_data)
+	merchant_actor.visible = false
 	if room_id != "" and not room_data.is_empty():
 		change_room(room_id, room_data)
 
@@ -541,7 +571,7 @@ func _present_encounter(encounter: Dictionary, faded: bool = false) -> void:
 
 	_clear_encounter_scene()
 	var scene_path := str(encounter.get("scene_path", ""))
-	if scene_path != "":
+	if false and scene_path != "":
 		_show_encounter_scene(scene_path, str(event_data.get("spawn_animation", "")))
 
 	var lines: Array = encounter.get("lines", [])

@@ -1,0 +1,1708 @@
+{
+  "schema_version": 1,
+  "content_track": "post_update_text_only",
+  "legacy_replaces": "events.json",
+  "room_events": {
+    "rib_lock_tally_gate": [
+      {
+        "id": "rib_lock_tally_gate_account",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "rib_vessel_lock",
+      "line_1": "The sensing cord touches my wrist through the glove and twitches with my pulse. The toll mouth opens just wide enough for biomass or a shoulder.",
+      "line_2": "The cord counts while the mouth waits. The shoulder gap is narrow, and the rib is already flexing toward shut.",
+        "biomass_cost": 5,
+        "damage": 4,
+        "environment_memory_flags": ["rib_lock_account_seen"],
+        "buttons": [
+          {
+            "label": "Let it count my pulse",
+            "action": "observe_organ_chamber",
+            "voice_aliases": ["count pulse", "match pulse", "sync", "let it count", "listen"]
+          },
+          {
+            "label": "Pay the mouth",
+            "action": "pay_resin_toll",
+            "voice_aliases": ["pay mouth", "pay toll", "feed toll", "give biomass"]
+          },
+          {
+            "label": "Break the rib",
+            "action": "push_through_spikes",
+            "voice_aliases": ["break rib", "force", "push through", "break through"]
+          }
+        ],
+        "action_results": {
+          "observe_organ_chamber": {
+          "preview": "Immediate: quiet pass. Echo: pulse timing retained by transit tissue.",
+          "lines": [
+            "I hold still until the counting cord finishes its last pulse.",
+            "One rib opens without tearing. The wet tally cut pulses once at the same interval as my wrist."
+          ],
+            "environment_state_changes": ["rib_lock_pulse_known"]
+          },
+          "pay_resin_toll": {
+          "preview": "Immediate: biomass cost. Echo: clean toll receipt retained.",
+          "lines": [
+            "I press biomass into the valve until the inner teeth stop closing.",
+            "The counting cord tightens twice. The fresh tally cut closes clean after the seam opens."
+          ],
+            "environment_state_changes": ["rib_lock_paid_passage"]
+          },
+          "push_through_spikes": {
+          "preview": "Immediate: flesh cost. Echo: broken rib vibration retained.",
+          "lines": [
+            "I put my shoulder into the rib before the counting cord finishes.",
+            "The seam opens unevenly. The broken edge leaves red fiber and shell dust on my sleeve."
+          ],
+            "environment_state_changes": ["rib_lock_forced_damage"]
+          }
+        },
+        "story_followups": {
+          "observe_organ_chamber": {
+            "event_id": "story_soft_captain_pulse_mark",
+            "trigger_key": "soft_captain_pulse_intro",
+            "delay_rooms": 2,
+            "queued_line": "The cord keeps my pulse after the seam opens. Its last twitch matches my wrist."
+          },
+          "pay_resin_toll": {
+            "event_id": "story_quartermaster_lock_receipt",
+            "trigger_key": "quartermaster_lock_receipt",
+            "delay_rooms": 2,
+            "queued_line": "The biomass does not stay local. A receipt blister swells shut behind the wall."
+          },
+          "push_through_spikes": {
+            "event_id": "story_hunt_forced_rib_noise",
+            "trigger_key": "hunt_forced_rib_noise",
+            "delay_rooms": 2,
+            "queued_line": "The broken rib keeps ticking after I leave."
+          }
+        }
+      }
+    ],
+    "rib_lock_larval_cradle": [
+      {
+        "id": "rib_lock_larval_cradle_ferry",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "rib_vessel_lock",
+      "infrastructure_actor": "larval_ferries",
+      "line_1": "The small ferry-larva reaches the surface first. Its cartilage harness is intact, narrow, and slow.",
+      "line_2": "Larger ferries wait lower in the black fluid. Their tendon straps are wider, and the old harness cuts are already opening.",
+        "damage": 3,
+        "shield": 4,
+        "environment_memory_flags": ["rib_lock_ferry_contact"],
+        "buttons": [
+          {
+            "label": "Ride the small larva gently",
+            "action": "observe_organ_chamber",
+            "voice_aliases": ["ride gently", "small larva", "protect ferry", "gentle"]
+          },
+          {
+            "label": "Overload the large ferries",
+            "action": "brace_through_red_split",
+            "voice_aliases": ["overload", "large ferries", "ride fast", "force ferry"]
+          },
+          {
+            "label": "Mute the bell polyps",
+            "action": "turn_baffle",
+            "voice_aliases": ["mute bells", "turn baffle", "quiet signal", "mute"]
+          }
+        ],
+        "action_results": {
+          "observe_organ_chamber": {
+          "preview": "Immediate: slower safe passage. Echo: intact harness load retained.",
+          "lines": [
+            "I lower myself into the small larva's harness and keep my weight on the tendon straps.",
+            "It carries me through slowly. The loops hold, and the far seam opens without a splash."
+          ],
+            "environment_state_changes": ["rib_lock_ferries_protected"]
+          },
+          "brace_through_red_split": {
+          "preview": "Immediate: fast damaged passage. Echo: torn harness load retained.",
+          "lines": [
+            "I drop onto the large ferries before their straps finish taking my weight.",
+            "They cross fast. Two tendon loops tear loose and stay hooked in my boot."
+          ],
+            "environment_state_changes": ["rib_lock_weight_known"]
+          },
+          "turn_baffle": {
+          "preview": "Immediate: signal muted. Echo: missing command phrase retained.",
+          "lines": [
+            "I twist the wet baffle until the bell polyps stop vibrating through the fluid.",
+            "Chorus drops to static for three beats. The far seam opens on the fourth."
+          ],
+            "environment_state_changes": ["rib_lock_signal_muted"]
+          }
+        },
+        "story_followups": {
+          "observe_organ_chamber": {
+            "event_id": "story_soft_captain_ferry_kindness",
+            "trigger_key": "soft_captain_ferry_kindness",
+            "delay_rooms": 2,
+            "queued_line": "The protected ferry-larva sinks with my weight still intact in its harness."
+          },
+          "brace_through_red_split": {
+            "event_id": "story_hunt_weight_record",
+            "trigger_key": "hunt_weight_record",
+            "delay_rooms": 2,
+            "queued_line": "The torn harness keeps my load mark. The tendon fibers do not relax."
+          },
+          "turn_baffle": {
+            "event_id": "story_commandant_signal_mute",
+            "trigger_key": "commandant_signal_mute",
+            "delay_rooms": 2,
+            "queued_line": "The muted bell polyps close on the middle of Chorus' signal."
+          }
+        }
+      }
+    ],
+    "rib_lock_clot_bypass": [
+      {
+        "id": "rib_lock_clot_bypass_repair",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "rib_vessel_lock",
+      "line_1": "Platelet beetles are closing the broken rib from the outside inward. The lower seam is still wide enough for my shoulders.",
+      "line_2": "The lower gap is wet with shellac. Clean ridges are setting above it, and the outside face still takes blood.",
+        "damage": 3,
+        "biomass": 4,
+        "environment_memory_flags": ["rib_lock_beetle_repair_seen"],
+        "buttons": [
+          {
+            "label": "Crawl through the damage",
+            "action": "brace_through_red_split",
+            "voice_aliases": ["crawl through", "use damage", "shortcut", "crawl"]
+          },
+          {
+            "label": "Leave the beetles working",
+            "action": "retreat",
+            "voice_aliases": ["leave beetles", "preserve repair", "leave working", "back away"]
+          },
+          {
+            "label": "Bleed a false trail",
+            "action": "break_marked_pattern",
+            "voice_aliases": ["false trail", "false wound", "bleed trail", "mislead"]
+          }
+        ],
+        "action_results": {
+          "brace_through_red_split": {
+          "preview": "Immediate: damaged shortcut. Echo: repair motion retained.",
+          "lines": [
+            "I crawl under the shellac while the beetles are still setting the lower row.",
+            "The repair scrapes open across my back and leaves hot shellac in the cut."
+          ],
+            "environment_state_changes": ["rib_lock_repair_exploited"]
+          },
+          "retreat": {
+          "preview": "Immediate: no gain. Echo: clean repair ridges retained.",
+          "lines": [
+            "I leave the shortcut alone and let the beetles finish sealing the breach.",
+            "The finished repair leaves three clean ridges across the seam, straight enough to follow."
+          ],
+            "environment_state_changes": ["rib_lock_repair_respected"]
+          },
+          "break_marked_pattern": {
+          "preview": "Immediate: controlled wound. Echo: false blood mark retained.",
+          "lines": [
+            "I open a shallow cut and smear it on the outside face of the repair.",
+            "The beetles turn to that blood mark first and seal it into the wrong side of the shellac."
+          ],
+            "environment_state_changes": ["rib_lock_false_wound"]
+          }
+        },
+        "story_followups": {
+          "brace_through_red_split": {
+            "event_id": "story_hunt_forced_rib_noise",
+            "trigger_key": "hunt_forced_rib_noise",
+            "delay_rooms": 2,
+            "queued_line": "The scraped repair clicks under the shellac. Repair tissue starts moving."
+          },
+          "retreat": {
+            "event_id": "story_pell_beetle_repair",
+            "trigger_key": "pell_beetle_repair",
+            "delay_rooms": 2,
+            "queued_line": "The intact ridges harden in clean rows. The marks are readable now."
+          },
+          "break_marked_pattern": {
+            "event_id": "story_hunt_false_wound",
+            "trigger_key": "hunt_false_wound",
+            "delay_rooms": 2,
+            "queued_line": "The false wound dries on the wrong face of the seam."
+          }
+        }
+      }
+    ],
+    "white_marrow_field": [
+      {
+        "id": "white_marrow_field_cut_marks",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "route_navigation_organs",
+        "infrastructure_actor": "marrow_lice",
+        "line_1": "Old survey cuts cross the marrow in repeating lanes. Marrow lice keep the cuts clean by eating loose warmth.",
+        "line_2": "One lane matches my stride too neatly. Loose marrow shows under the cleanest cuts.",
+        "biomass": 4,
+        "damage": 2,
+        "environment_memory_flags": ["marrow_survey_seen"],
+        "buttons": [
+          {
+            "label": "Follow the cuts",
+            "action": "follow_marked_plates",
+            "voice_aliases": ["follow", "follow cuts", "marked route", "marks"]
+          },
+          {
+            "label": "Break the pattern",
+            "action": "break_marked_pattern",
+            "voice_aliases": ["break pattern", "break marks", "avoid marks", "change route"]
+          },
+          {
+            "label": "Scavenge marrow",
+            "action": "scavenge_bones",
+            "voice_aliases": ["scavenge", "marrow", "take marrow", "strip bones"]
+          }
+        ],
+        "action_results": {
+          "follow_marked_plates": {
+            "preview": "Immediate: safer marked lane. Echo: stride spacing retained.",
+            "lines": [
+              "I follow the clean lane and keep my feet inside the old cuts.",
+              "The lice turn after me in a single line. Their clean edges keep the spacing of my stride."
+            ],
+            "environment_state_changes": ["marrow_lane_obeyed"]
+          },
+          "break_marked_pattern": {
+            "preview": "Immediate: messier lane. Echo: dirty survey edge retained.",
+            "lines": [
+              "I step across two cuts and drag my heel through the lice line.",
+              "The insects scatter and leave the lane dirty. No clean edge holds the shape of my stride."
+            ],
+            "environment_state_changes": ["marrow_lane_spoiled"]
+          },
+          "scavenge_bones": {
+            "preview": "Immediate: biomass gain. Echo: warm absence retained.",
+            "lines": [
+              "I pry ration marrow from the cleaned bone before the lice close over it.",
+              "The exposed cut goes cold around my hand. Lice gather at the warm absence."
+            ],
+            "environment_state_changes": ["marrow_ration_taken"]
+          }
+        },
+        "story_followups": {
+          "follow_marked_plates": {
+            "event_id": "story_pell_survey_cuts",
+            "trigger_key": "pell_intro",
+            "delay_rooms": 2,
+            "queued_line": "The survey cuts keep the shape of my stride."
+          },
+          "break_marked_pattern": {
+            "event_id": "story_pell_spoiled_lane",
+            "trigger_key": "pell_spoiled_lane",
+            "delay_rooms": 2,
+            "queued_line": "The spoiled lane breaks behind me. The cut edges do not match."
+          },
+          "scavenge_bones": {
+            "event_id": "story_marrow_lice_hunger",
+            "trigger_key": "marrow_lice_hunger",
+            "delay_rooms": 2,
+            "queued_line": "The marrow I took leaves a warm absence. Lice gather around it."
+          }
+        }
+      }
+    ],
+    "operator_cellar": [
+      {
+        "id": "operator_cellar_tissue_procedure",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "operator_procedure_cellars",
+        "infrastructure_actor": "lens_amoebae",
+        "line_1": "Lens amoebae pulse in the wall where operator hands used to press. The old repair sequence is still readable.",
+        "line_2": "Three pores remain open: one repeats the order, one is wet with sealant, and one has not touched me.",
+        "shield": 5,
+        "environment_memory_flags": ["operator_procedure_seen"],
+        "buttons": [
+          {
+            "label": "Read the procedure",
+            "action": "study_pool",
+            "voice_aliases": ["read", "study", "procedure", "inspect"]
+          },
+          {
+            "label": "Let it seal me",
+            "action": "seal_amber_wound",
+            "voice_aliases": ["seal", "seal wound", "let it work", "repair"]
+          },
+          {
+            "label": "Leave it sealed",
+            "action": "leave_mutation",
+            "voice_aliases": ["leave", "leave sealed", "back away", "refuse"]
+          }
+        ],
+        "action_results": {
+          "study_pool": {
+            "preview": "Immediate: procedure read. Echo: sequence timing retained.",
+            "lines": [
+              "I watch the amoebae repeat the sequence until the order is clear.",
+              "The first two pores open before I touch them. The sequence has taken my timing."
+            ],
+            "environment_state_changes": ["operator_sequence_read"]
+          },
+          "seal_amber_wound": {
+            "preview": "Immediate: protective seal. Echo: sampled wound edge retained.",
+            "lines": [
+              "I let the wall seal a shallow wound with warm amber tissue.",
+              "The seal holds. It also leaves a clean operator-shaped edge in my skin."
+            ],
+            "environment_state_changes": ["operator_body_sampled"]
+          },
+          "leave_mutation": {
+            "preview": "Immediate: procedure refused. Echo: closed pores retained.",
+            "lines": [
+              "I keep my hands off the open pores and leave the sealed section closed.",
+              "The amoebae dim in sequence. Nothing samples me, and nothing answers."
+            ],
+            "environment_state_changes": ["operator_procedure_refused"]
+          }
+        },
+        "story_followups": {
+          "study_pool": {
+            "event_id": "story_silt_procedure_answer",
+            "trigger_key": "silt_vey_intro",
+            "delay_rooms": 2,
+            "queued_line": "The sequence keeps running after I stop reading."
+          },
+          "seal_amber_wound": {
+            "event_id": "story_silt_sample_edge",
+            "trigger_key": "silt_sample_edge",
+            "delay_rooms": 2,
+            "queued_line": "The seal leaves a clean edge in my skin."
+          },
+          "leave_mutation": {
+            "event_id": "story_operator_sealed_refusal",
+            "trigger_key": "operator_sealed_refusal",
+            "delay_rooms": 2,
+            "queued_line": "The sealed procedure stays shut behind me."
+          }
+        }
+      },
+      {
+        "id": "operator_cellar_sample_vat",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "operator_procedure_cellars",
+        "infrastructure_actor": "womb_wasps",
+        "line_1": "A shallow vat opens beside the tool holes. Womb wasps turn in the fluid with repair larvae held under their legs.",
+        "line_2": "The patch larvae crowd the warm side. A strip of vat wall hangs loose beside the fluid.",
+        "shield": 4,
+        "environment_memory_flags": ["operator_sample_vat_seen"],
+        "buttons": [
+          {
+            "label": "Take the patch",
+            "action": "seal_amber_wound",
+            "voice_aliases": ["take patch", "patch", "repair", "seal"]
+          },
+          {
+            "label": "Give it wall tissue",
+            "action": "study_pool",
+            "voice_aliases": ["wall tissue", "feed wall", "study vat", "sample"]
+          },
+          {
+            "label": "Leave the vat closed",
+            "action": "retreat",
+            "voice_aliases": ["leave vat", "leave closed", "retreat", "back away"]
+          }
+        ],
+        "action_results": {
+          "seal_amber_wound": {
+            "preview": "Immediate: useful patch. Echo: diagnostic rim retained.",
+            "lines": [
+              "The wasps press a larval patch against my side and withdraw their legs cleanly.",
+              "The patch closes fast and leaves a diagnostic rim."
+            ],
+            "environment_state_changes": ["operator_patch_taken"]
+          },
+          "study_pool": {
+            "preview": "Immediate: sample redirected. Echo: false compatibility retained.",
+            "lines": [
+              "I cut a strip from the vat wall and let the wasps sample that instead.",
+              "The larvae accept the wall tissue. The matching pore swells around the wrong material."
+            ],
+            "environment_state_changes": ["operator_sample_redirected"]
+          },
+          "retreat": {
+            "preview": "Immediate: no patch. Echo: denied sample retained.",
+            "lines": [
+              "I close the vat lip with my boot before the wasps climb out.",
+              "The fluid settles without taking a sample."
+            ],
+            "environment_state_changes": ["operator_sample_denied"]
+          }
+        },
+        "story_followups": {
+          "seal_amber_wound": {
+            "event_id": "story_silt_sample_edge",
+            "trigger_key": "silt_sample_edge",
+            "delay_rooms": 2,
+            "queued_line": "The larval patch leaves a rim under the wasps' legs."
+          },
+          "study_pool": {
+            "event_id": "story_operator_false_compatibility",
+            "trigger_key": "operator_false_compatibility",
+            "delay_rooms": 2,
+            "queued_line": "The false sample sinks into a wall pore."
+          },
+          "retreat": {
+            "event_id": "story_operator_sealed_refusal",
+            "trigger_key": "operator_sealed_refusal",
+            "delay_rooms": 2,
+            "queued_line": "The closed vat settles without a sample."
+          }
+        }
+      }
+    ],
+    "scar_map_junction": [
+      {
+        "id": "scar_map_junction_revised_route",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "route_navigation_organs",
+        "infrastructure_actor": "scar_mites",
+        "line_1": "The scar map revises while I watch. Scar mites clean one quiet route while a bright route pulses with my gait.",
+        "line_2": "The quiet scar is clean enough to mark. The bright scar already pulses. The blank seam has no settled edge.",
+        "environment_memory_flags": ["scar_map_seen"],
+        "buttons": [
+          {
+            "label": "Mark the quiet route",
+            "action": "mark_red_branch",
+            "voice_aliases": ["mark route", "quiet route", "mark", "trace"]
+          },
+          {
+            "label": "Trust the bright scar",
+            "action": "proceed",
+            "voice_aliases": ["trust scar", "bright scar", "proceed", "go"]
+          },
+          {
+            "label": "Break the route pattern",
+            "action": "break_marked_pattern",
+            "voice_aliases": ["break pattern", "break route", "change route", "pattern"]
+          }
+        ],
+        "action_results": {
+          "mark_red_branch": {
+            "preview": "Immediate: quiet mark. Echo: dull route groove retained.",
+            "lines": [
+              "I press my nail into the quiet route and mark it before the mites finish cleaning.",
+              "The route accepts the mark without brightening. Mites clean around the groove and leave its center dull."
+            ],
+            "environment_state_changes": ["scar_quiet_route_marked"]
+          },
+          "proceed": {
+            "preview": "Immediate: fast route. Echo: bright stride pulse retained.",
+            "lines": [
+              "I take the bright scar while it is already pulsing with my gait.",
+              "The junction opens fast. The scar behind me pulses at my stride interval."
+            ],
+            "environment_state_changes": ["scar_bright_route_trusted"]
+          },
+          "break_marked_pattern": {
+            "preview": "Immediate: uncertain route. Echo: blank seam retained.",
+            "lines": [
+              "I scrape across all three routes and scatter the scar mites into the junction wall.",
+              "The map opens a blank seam with no settled direction."
+            ],
+            "environment_state_changes": ["scar_route_pattern_broken"]
+          }
+        },
+        "story_followups": {
+          "mark_red_branch": {
+            "event_id": "story_commandant_missing_checksum",
+            "trigger_key": "commandant_signal_intro",
+            "delay_rooms": 2,
+            "queued_line": "The quiet mark pulls a route packet into the signal."
+          },
+          "proceed": {
+            "event_id": "story_hunt_bright_scar",
+            "trigger_key": "hunt_bright_scar",
+            "delay_rooms": 2,
+            "queued_line": "The bright scar keeps my stride lit after I leave."
+          },
+          "break_marked_pattern": {
+            "event_id": "story_glass_apostle_blank_route",
+            "trigger_key": "glass_blank_route",
+            "delay_rooms": 2,
+            "queued_line": "The blank route removes evidence. The absence is visible."
+          }
+        }
+      }
+    ],
+    "biomass_larder": [
+      {
+        "id": "biomass_larder_weighted_pockets",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "ledger_larder_organs",
+        "infrastructure_actor": "marrow_lice",
+        "line_1": "The larder pockets open when I put weight on the tongue-scale. Stored ration meat waits behind thin membrane.",
+        "line_2": "Scale teeth fold under the larder shelf. They close on missing mass, paid mass, and empty weight in different rhythms.",
+        "biomass": 6,
+        "biomass_cost": 5,
+        "environment_memory_flags": ["larder_scale_seen"],
+        "buttons": [
+          {
+            "label": "Take ration mass",
+            "action": "harvest_eggs",
+            "voice_aliases": ["take ration", "harvest", "take mass", "ration"]
+          },
+          {
+            "label": "Pay into the scale",
+            "action": "pay_resin_toll",
+            "voice_aliases": ["pay", "pay scale", "feed scale", "give biomass"]
+          },
+          {
+            "label": "Leave hungry",
+            "action": "retreat",
+            "voice_aliases": ["leave hungry", "leave", "retreat", "back away"]
+          }
+        ],
+        "action_results": {
+          "harvest_eggs": {
+            "preview": "Immediate: biomass gain. Echo: empty ration count retained.",
+            "lines": [
+              "I cut open one ration pocket and take the warm mass before the membrane reseals.",
+              "The tongue-scale closes its teeth after my hand leaves. The empty pocket keeps breathing under the shelf."
+            ],
+            "environment_state_changes": ["larder_ration_taken"]
+          },
+          "pay_resin_toll": {
+            "preview": "Immediate: biomass cost. Echo: clean payment pulse retained.",
+            "lines": [
+              "I press biomass into the tongue-scale until the teeth flatten under it.",
+              "One ration pocket opens and closes without loss. The scale pulse stays even after my hand leaves."
+            ],
+            "environment_state_changes": ["larder_scale_paid"]
+          },
+          "retreat": {
+            "preview": "Immediate: no food. Echo: sealed hunger retained.",
+            "lines": [
+              "I step off the scale and leave the ration pockets sealed.",
+              "The teeth fold away without closing on a count."
+            ],
+            "environment_state_changes": ["larder_hunger_kept"]
+          }
+        },
+        "story_followups": {
+          "harvest_eggs": {
+            "event_id": "story_quartermaster_teeth_count",
+            "trigger_key": "quartermaster_intro",
+            "delay_rooms": 2,
+            "queued_line": "The missing ration closes under the scale teeth. The count stays open."
+          },
+          "pay_resin_toll": {
+            "event_id": "story_quartermaster_clean_payment",
+            "trigger_key": "quartermaster_clean_payment",
+            "delay_rooms": 2,
+            "queued_line": "The paid biomass moves under the shelf. A reserve pocket begins to soften."
+          },
+          "retreat": {
+            "event_id": "story_merchant_hunger_open",
+            "trigger_key": "merchant_hunger_open",
+            "delay_rooms": 2,
+            "queued_line": "The ledger stays clean. The hunger does not."
+          }
+        }
+      },
+      {
+        "id": "biomass_larder_credit_grub",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "ledger_larder_organs",
+        "infrastructure_actor": "womb_wasps",
+        "line_1": "A credit grub hangs under the larder shelf with a ration membrane folded around it.",
+        "line_2": "The grub's mouth works against the folded membrane. The food is open enough to take and closed enough to leave.",
+        "biomass": 5,
+        "environment_memory_flags": ["larder_credit_grub_seen"],
+        "buttons": [
+          {
+            "label": "Use the grub credit",
+            "action": "harvest_eggs",
+            "voice_aliases": ["credit", "use credit", "grub", "take food"]
+          },
+          {
+            "label": "Feed the grub",
+            "action": "pay_resin_toll",
+            "voice_aliases": ["feed grub", "pay grub", "settle", "pay"]
+          },
+          {
+            "label": "Close the membrane",
+            "action": "retreat",
+            "voice_aliases": ["close membrane", "leave grub", "retreat", "leave"]
+          }
+        ],
+        "action_results": {
+          "harvest_eggs": {
+            "preview": "Immediate: ration gain. Echo: living grub count retained.",
+            "lines": [
+              "I let the grub open the ration membrane and take the meat behind it.",
+              "The grub stays alive under the shelf, working its mouth around my count."
+            ],
+            "environment_state_changes": ["larder_credit_accepted"]
+          },
+          "pay_resin_toll": {
+            "preview": "Immediate: count settled. Echo: empty grub retained.",
+            "lines": [
+              "I feed the grub until its mouth stops moving.",
+              "It drops from the shelf empty. The folded membrane lies flat over the count."
+            ],
+            "environment_state_changes": ["larder_credit_settled"]
+          },
+          "retreat": {
+            "preview": "Immediate: no credit. Echo: closed membrane retained.",
+            "lines": [
+              "I fold the ration membrane back over the grub.",
+              "The shelf seals with the food still inside."
+            ],
+            "environment_state_changes": ["larder_credit_refused"]
+          }
+        },
+        "story_followups": {
+          "harvest_eggs": {
+            "event_id": "story_merchant_hunger_open",
+            "trigger_key": "merchant_hunger_open",
+            "delay_rooms": 2,
+            "queued_line": "The credit grub keeps chewing after the shelf seals."
+          },
+          "pay_resin_toll": {
+            "event_id": "story_quartermaster_clean_payment",
+            "trigger_key": "quartermaster_clean_payment",
+            "delay_rooms": 2,
+            "queued_line": "The fed grub drops empty. A reserve pocket softens behind it."
+          },
+          "retreat": {
+            "event_id": "story_larder_closed_credit",
+            "trigger_key": "larder_closed_credit",
+            "delay_rooms": 2,
+            "queued_line": "The refused credit seals under membrane."
+          }
+        }
+      }
+    ],
+    "drowned_toll_harbor": [
+      {
+        "id": "drowned_toll_harbor_dock_mouths",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "ledger_larder_organs",
+        "infrastructure_actor": "dock_mouths",
+        "line_1": "Dock mouths open along the black fluid. Their lips sit above the waterline, dry enough to count payment.",
+        "line_2": "The water rises close to my cuts. The drain vent is open under the dock ribs, and the basin already smells wet.",
+        "biomass_cost": 5,
+        "heal": 8,
+        "environment_memory_flags": ["drowned_harbor_seen"],
+        "buttons": [
+          {
+            "label": "Pay the dock mouths",
+            "action": "pay_resin_toll",
+            "voice_aliases": ["pay dock", "pay", "dock mouths", "feed dock"]
+          },
+          {
+            "label": "Wade through",
+            "action": "disturb_pool",
+            "voice_aliases": ["wade", "wade through", "water", "pool"]
+          },
+          {
+            "label": "Drain the harbor",
+            "action": "vent_red_split",
+            "voice_aliases": ["drain", "drain harbor", "vent", "open vent"]
+          }
+        ],
+        "action_results": {
+          "pay_resin_toll": {
+            "preview": "Immediate: biomass cost. Echo: dry dock service retained.",
+            "lines": [
+              "I feed the dry mouths before I step into the fluid.",
+              "Two dock ribs lower with no splash. The black water stays below my cuts."
+            ],
+            "environment_state_changes": ["harbor_docks_paid"]
+          },
+          "disturb_pool": {
+            "preview": "Immediate: wound recovery. Echo: bright wet marker retained.",
+            "lines": [
+              "I wade through and let the black fluid close over the open cuts.",
+              "The pain drops. Bright residue dries at the wound edges."
+            ],
+            "environment_state_changes": ["harbor_wet_marker"]
+          },
+          "vent_red_split": {
+            "preview": "Immediate: drained passage. Echo: wet route scent retained.",
+            "lines": [
+              "I open the red vent under the dock ribs.",
+              "The harbor drains around my legs and leaves a strong wet scent in the empty basin."
+            ],
+            "environment_state_changes": ["harbor_drained_scent"]
+          }
+        },
+        "story_followups": {
+          "pay_resin_toll": {
+            "event_id": "story_harbor_paid_dock",
+            "trigger_key": "harbor_paid_dock",
+            "delay_rooms": 2,
+            "queued_line": "The paid dock ribs lower without wetting my cuts. A dry service remains in the harbor line."
+          },
+          "disturb_pool": {
+            "event_id": "story_lumen_wet_marker",
+            "trigger_key": "lumen_brack_intro",
+            "delay_rooms": 2,
+            "queued_line": "The black fluid dries bright in my cuts."
+          },
+          "vent_red_split": {
+            "event_id": "story_harbor_drained_scent",
+            "trigger_key": "harbor_drained_scent",
+            "delay_rooms": 2,
+            "queued_line": "The drained basin holds my wet scent after the water leaves."
+          }
+        }
+      }
+    ],
+    "maintenance_rite_chapel": [
+      {
+        "id": "maintenance_rite_chapel_tool_rests",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "operator_procedure_cellars",
+        "infrastructure_actor": "tool_rest_larvae",
+        "line_1": "Tool-rest larvae line up with drain cuts in the floor. The same posture is worn into every kneel point.",
+        "line_2": "Three rests are active: one receives the order, one holds the bone edit, and one grips the displaced drain cut.",
+        "mutation_id": "bone_plates",
+        "environment_memory_flags": ["maintenance_rite_seen"],
+        "buttons": [
+          {
+            "label": "Perform the maintenance rite",
+            "action": "observe_organ_chamber",
+            "voice_aliases": ["perform rite", "rite", "maintenance", "observe"]
+          },
+          {
+            "label": "Take the body edit",
+            "action": "take_mutation",
+            "voice_aliases": ["take edit", "body edit", "mutation", "take mutation"]
+          },
+          {
+            "label": "Break rite order",
+            "action": "break_marked_pattern",
+            "voice_aliases": ["break rite", "break order", "disrupt", "break pattern"]
+          }
+        ],
+        "action_results": {
+          "observe_organ_chamber": {
+            "preview": "Immediate: rite stabilized. Echo: open tool order retained.",
+            "lines": [
+              "I match the kneel points and drain cuts in order.",
+              "The larvae relax their grips. The chapel records me as a usable hand."
+            ],
+            "environment_state_changes": ["rite_sequence_performed"]
+          },
+          "take_mutation": {
+            "preview": "Immediate: body edit gained. Echo: tool-fit shape retained.",
+            "lines": [
+              "I let the larvae press the edit into my bone plates.",
+              "The fit is exact and too clean. Each rest closes on the shape left in my bone."
+            ],
+            "environment_state_changes": ["rite_body_edit_taken"]
+          },
+          "break_marked_pattern": {
+            "preview": "Immediate: rite disrupted. Echo: displaced drain cut retained.",
+            "lines": [
+              "I step across the kneel points and scrape one drain cut out of alignment.",
+              "The larvae snap shut on empty air and the wall calls beetles into the broken order."
+            ],
+            "environment_state_changes": ["rite_order_broken"]
+          }
+        },
+        "story_followups": {
+          "observe_organ_chamber": {
+            "event_id": "story_rite_clean_sequence",
+            "trigger_key": "rite_clean_sequence",
+            "delay_rooms": 2,
+            "queued_line": "The completed rite leaves the tool rests open in sequence."
+          },
+          "take_mutation": {
+            "event_id": "story_mother_chancel_open_tools",
+            "trigger_key": "mother_chancel_intro",
+            "delay_rooms": 2,
+            "queued_line": "The body edit fits too cleanly in the tool rest."
+          },
+          "break_marked_pattern": {
+            "event_id": "story_rite_beetle_repair",
+            "trigger_key": "rite_beetle_repair",
+            "delay_rooms": 2,
+            "queued_line": "The broken rite leaks into the drain cuts. Beetles answer from inside the wall."
+          }
+        }
+      }
+    ],
+    "launch_bore": [
+      {
+        "id": "launch_bore_contracting_rings",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "route_navigation_organs",
+        "infrastructure_actor": "launch_rings",
+        "line_1": "The launch rings contract in sequence. Bell polyps repeat a clipped authorization between the rings.",
+        "line_2": "The first contraction fires fast. The second pauses around my body. One ring is thin enough to cut.",
+        "biomass": 6,
+        "damage": 4,
+        "environment_memory_flags": ["launch_bore_seen"],
+        "buttons": [
+          {
+            "label": "Authorize launch",
+            "action": "proceed",
+            "voice_aliases": ["authorize", "launch", "proceed", "fire"]
+          },
+          {
+            "label": "Let rings measure me",
+            "action": "observe_organ_chamber",
+            "voice_aliases": ["measure", "rings", "let it measure", "observe"]
+          },
+          {
+            "label": "Cut the launch ring",
+            "action": "cut_heart_cords",
+            "voice_aliases": ["cut ring", "cut", "launch ring", "sever"]
+          }
+        ],
+        "action_results": {
+          "proceed": {
+            "preview": "Immediate: fast launch. Echo: authority weight retained.",
+            "lines": [
+              "I accept the authorization and step into the contraction sequence.",
+              "The rings fire me through the bore before the tissue finishes measuring me."
+            ],
+            "environment_state_changes": ["launch_authority_accepted"]
+          },
+          "observe_organ_chamber": {
+            "preview": "Immediate: cleaner launch timing. Echo: ring interval retained.",
+            "lines": [
+              "I hold still and let each ring close near enough to measure body timing.",
+              "The launch is slower and cleaner. The bore keeps the interval."
+            ],
+            "environment_state_changes": ["launch_body_measured"]
+          },
+          "cut_heart_cords": {
+            "preview": "Immediate: bleeding shortcut. Echo: visible cut ring retained.",
+            "lines": [
+              "I cut one ring before it completes the contraction.",
+              "The bore fires unevenly through the wound and leaves a red route open behind me."
+            ],
+            "environment_state_changes": ["launch_ring_cut"]
+          }
+        },
+        "story_followups": {
+          "proceed": {
+            "event_id": "story_launch_authority_reply",
+            "trigger_key": "launch_commandant_intro",
+            "delay_rooms": 2,
+            "queued_line": "The accepted authorization leaves my weight attached to the signal."
+          },
+          "observe_organ_chamber": {
+            "event_id": "story_launch_measured_interval",
+            "trigger_key": "launch_measured_interval",
+            "delay_rooms": 2,
+            "queued_line": "The bore keeps my interval after the rings open."
+          },
+          "cut_heart_cords": {
+            "event_id": "story_launch_bleeding_shortcut",
+            "trigger_key": "launch_bleeding_shortcut",
+            "delay_rooms": 2,
+            "queued_line": "The cut ring bleeds after launch. The shortcut stays open and visible."
+          }
+        }
+      }
+    ]
+  },
+  "special_events": {
+    "story_soft_captain_pulse_mark": {
+      "id": "story_soft_captain_pulse_mark",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "rib_lock_tally_gate",
+      "line_1": "Chorus, a transit cord drops from an overhead seam and pulses at my wrist interval.",
+      "line_2": "The cord holds the count I allowed. A nearby lock opens while the pulse is still running.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "File the rhythm",
+          "action": "proceed",
+          "voice_aliases": ["file rhythm", "report", "rhythm", "file"]
+        },
+        {
+          "label": "Leave it unfiled",
+          "action": "retreat",
+          "voice_aliases": ["leave unfiled", "hide it", "hold back", "retreat"]
+        }
+      ]
+    },
+    "story_quartermaster_lock_receipt": {
+      "id": "story_quartermaster_lock_receipt",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "rib_lock_tally_gate",
+      "line_1": "Chorus, a receipt blister opens in the wall and exposes one dry passage token.",
+      "line_2": "The token carries the ration scent I paid into the valve. Its rim is sealed and clean.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Accept the receipt",
+          "action": "proceed",
+          "voice_aliases": ["accept receipt", "accept", "proceed", "file"]
+        },
+        {
+          "label": "Refuse the account",
+          "action": "retreat",
+          "voice_aliases": ["refuse account", "refuse", "retreat", "deny"]
+        }
+      ]
+    },
+    "story_hunt_forced_rib_noise": {
+      "id": "story_hunt_forced_rib_noise",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "rib_lock_clot_bypass",
+      "line_1": "Chorus, a repair-hunter enters the corridor behind the broken rib seam.",
+      "line_2": "The transit tissue still ticks where I forced it. The hunter turns whenever the vibration repeats.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Keep moving",
+          "action": "run",
+          "voice_aliases": ["run", "keep moving", "move", "go"]
+        },
+        {
+          "label": "Slow my route",
+          "action": "retreat",
+          "voice_aliases": ["slow", "retreat", "back away", "hide"]
+        }
+      ]
+    },
+    "story_soft_captain_ferry_kindness": {
+      "id": "story_soft_captain_ferry_kindness",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "rib_lock_larval_cradle",
+      "line_1": "Chorus, a small ferry-larva surfaces from a service duct beside the route.",
+      "line_2": "Its harness is intact at the load knots. It rises without splashing.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Ride the service larva",
+          "action": "proceed",
+          "voice_aliases": ["use lift", "ride", "proceed", "accept"]
+        },
+        {
+          "label": "Leave it untrusted",
+          "action": "retreat",
+          "voice_aliases": ["leave lift", "do not ride", "retreat", "refuse"]
+        }
+      ]
+    },
+    "story_hunt_weight_record": {
+      "id": "story_hunt_weight_record",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "rib_lock_larval_cradle",
+      "line_1": "Chorus, a tendon snare drops from the ceiling at my load spacing.",
+      "line_2": "The torn ferry harnesses left the same interval. The loop tightens over the place my boot should land.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Ride anyway",
+          "action": "proceed",
+          "voice_aliases": ["ride anyway", "ride", "proceed", "go"]
+        },
+        {
+          "label": "Spoil the measure",
+          "action": "break_marked_pattern",
+          "voice_aliases": ["spoil measure", "break pattern", "mislead", "change weight"]
+        }
+      ]
+    },
+    "story_commandant_signal_mute": {
+      "id": "story_commandant_signal_mute",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "rib_lock_larval_cradle",
+      "line_1": "Chorus, a route packet arrives with its middle command phrase missing.",
+      "line_2": "The bell polyps I muted left a clean gap in the signal. The tissue beyond it opens without a confirming pulse.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Trust the silence",
+          "action": "proceed",
+          "voice_aliases": ["trust silence", "proceed", "go", "silence"]
+        },
+        {
+          "label": "Reopen the signal",
+          "action": "turn_baffle",
+          "voice_aliases": ["reopen signal", "turn baffle", "open signal", "signal"]
+        }
+      ]
+    },
+    "story_pell_beetle_repair": {
+      "id": "story_pell_beetle_repair",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "rib_lock_clot_bypass",
+      "line_1": "Chorus, survey mites have copied the beetle repair into a route tag.",
+      "line_2": "The ridges I left intact match the copied tag. A marked seam opens along the repair line.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Follow the repair marks",
+          "action": "follow_marked_plates",
+          "voice_aliases": ["follow repair", "repair marks", "follow", "marks"]
+        },
+        {
+          "label": "Break from the marks",
+          "action": "break_marked_pattern",
+          "voice_aliases": ["break marks", "break pattern", "avoid marks"]
+        }
+      ]
+    },
+    "story_hunt_false_wound": {
+      "id": "story_hunt_false_wound",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "rib_lock_clot_bypass",
+      "line_1": "Chorus, the repair-hunter stops at the false wound pattern and bites the wrong seam.",
+      "line_2": "The blood I planted holds its jaw in the shellac. The real seam stays closed behind me.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Leave the lie working",
+          "action": "proceed",
+          "voice_aliases": ["leave lie", "proceed", "keep moving", "go"]
+        },
+        {
+          "label": "Cut a second lie",
+          "action": "break_marked_pattern",
+          "voice_aliases": ["second lie", "false wound", "cut lie", "mislead"]
+        }
+      ]
+    },
+    "ending_soft_captain_transit": {
+      "id": "ending_soft_captain_transit",
+      "type": "transition",
+      "speaker": "Hymn",
+      "room_id": "rib_lock_larval_cradle",
+      "line_1": "Chorus, the lock opens before my boot reaches the pressure pad. The pulse cord starts at my wrist interval, the ferry harness lowers, and the toll valve stays shut.",
+      "line_2": "No route packet names this sequence. The transit tissue runs on counts I left behind.",
+      "reactivate_on_reshuffle": false,
+      "ending_id": "ending_soft_captain_transit",
+      "buttons": [
+        {
+          "label": "Let the route carry me",
+          "action": "restart_run",
+          "voice_aliases": ["let route carry me", "route carry", "restart", "wake again"]
+        }
+      ]
+    },
+    "story_pell_survey_cuts": {
+      "id": "story_pell_survey_cuts",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "white_marrow_field",
+      "line_1": "Chorus, a cold survey packet opens under the marrow cuts.",
+      "line_2": "The cuts I obeyed align under my boots. The open floor is rougher on both sides of the lane.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Trust the survey",
+          "action": "follow_marked_plates",
+          "voice_aliases": ["trust survey", "follow marks", "survey"]
+        },
+        {
+          "label": "Break from the survey",
+          "action": "break_marked_pattern",
+          "voice_aliases": ["break path", "break survey", "leave marks"]
+        }
+      ]
+    },
+    "story_silt_procedure_answer": {
+      "id": "story_silt_procedure_answer",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "operator_cellar",
+      "line_1": "Chorus, a diagnostic answer opens in the operator wall.",
+      "line_2": "The lens sequence is still running. The exposed tissue is wet enough to read and wet enough to sample.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Read the answer",
+          "action": "study_pool",
+          "voice_aliases": ["read answer", "study", "read"]
+        },
+        {
+          "label": "Seal the procedure",
+          "action": "leave_mutation",
+          "voice_aliases": ["seal", "leave sealed", "refuse"]
+        }
+      ]
+    },
+    "story_commandant_missing_checksum": {
+      "id": "story_commandant_missing_checksum",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "scar_map_junction",
+      "line_1": "Chorus, a route packet arrives with no checksum.",
+      "line_2": "The quiet mark sits inside the packet. The route beyond it opens fast, with no confirming pulse.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Use the packet",
+          "action": "mark_red_branch",
+          "voice_aliases": ["use packet", "follow command", "packet"]
+        },
+        {
+          "label": "Refuse the packet",
+          "action": "break_marked_pattern",
+          "voice_aliases": ["refuse packet", "break command", "refuse"]
+        }
+      ]
+    },
+    "story_quartermaster_teeth_count": {
+      "id": "story_quartermaster_teeth_count",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "biomass_larder",
+      "line_1": "Chorus, a tooth-count opens under my left hand and shows the ration mass I took.",
+      "line_2": "The empty pocket still breathes inside the count. Each tooth closes on the shape of absence.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Accept the count",
+          "action": "pay_resin_toll",
+          "voice_aliases": ["accept count", "pay", "settle"]
+        },
+        {
+          "label": "Leave the count open",
+          "action": "retreat",
+          "voice_aliases": ["leave open", "withdraw", "retreat"]
+        }
+      ]
+    },
+    "story_lumen_wet_marker": {
+      "id": "story_lumen_wet_marker",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "drowned_toll_harbor",
+      "line_1": "Chorus, the black water dries bright in my cuts.",
+      "line_2": "The healed edge is readable. Wet tissue brightens when I turn toward it.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Study the marker",
+          "action": "study_pool",
+          "voice_aliases": ["study marker", "study", "inspect"]
+        },
+        {
+          "label": "Cover the marker",
+          "action": "retreat",
+          "voice_aliases": ["cover marker", "hide mark", "retreat"]
+        }
+      ]
+    },
+    "story_mother_chancel_open_tools": {
+      "id": "story_mother_chancel_open_tools",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "maintenance_rite_chapel",
+      "line_1": "Chorus, tool rests open around the bone edit I accepted.",
+      "line_2": "The edit fits each socket without adjustment. The rests close before I finish moving.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Close the tools",
+          "action": "observe_organ_chamber",
+          "voice_aliases": ["close tools", "perform rite", "observe"]
+        },
+        {
+          "label": "Leave them open",
+          "action": "break_marked_pattern",
+          "voice_aliases": ["leave open", "break rite", "disrupt"]
+        }
+      ]
+    },
+    "story_launch_authority_reply": {
+      "id": "story_launch_authority_reply",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "launch_bore",
+      "line_1": "Chorus, a launch authorization returns with my weight attached.",
+      "line_2": "The first packet kept its number. This one is warm under my fingers and already contracting.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Accept authority",
+          "action": "proceed",
+          "voice_aliases": ["accept authority", "authorize", "accept"]
+        },
+        {
+          "label": "Break the measure",
+          "action": "cut_heart_cords",
+          "voice_aliases": ["break measure", "cut ring", "cut"]
+        }
+      ]
+    },
+    "story_pell_spoiled_lane": {
+      "id": "story_pell_spoiled_lane",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "white_marrow_field",
+      "line_1": "Chorus, a cold lane breaks before it reaches my boots.",
+      "line_2": "The survey field is still readable, but the lice cannot keep one path clean long enough to hold my step.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Use the dirty lane",
+          "action": "proceed",
+          "voice_aliases": ["dirty lane", "use lane", "proceed"]
+        },
+        {
+          "label": "Spoil it again",
+          "action": "break_marked_pattern",
+          "voice_aliases": ["spoil again", "break pattern", "scatter"]
+        }
+      ]
+    },
+    "story_marrow_lice_hunger": {
+      "id": "story_marrow_lice_hunger",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "white_marrow_field",
+      "line_1": "Chorus, marrow lice gather on the warm side of this bone seam.",
+      "line_2": "They follow the warm absence left by the ration I took. The bone around it has gone cold.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Cross cold",
+          "action": "proceed",
+          "voice_aliases": ["cross", "cold", "proceed"]
+        },
+        {
+          "label": "Feed the lice",
+          "action": "scavenge_bones",
+          "voice_aliases": ["feed lice", "lice", "marrow"]
+        }
+      ]
+    },
+    "story_silt_sample_edge": {
+      "id": "story_silt_sample_edge",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "operator_cellar",
+      "line_1": "Chorus, another operator wall opens a pore at the exact edge of my sealed wound.",
+      "line_2": "The procedure tissue measures the fit against the clean rim in my skin.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Let it compare",
+          "action": "study_pool",
+          "voice_aliases": ["compare", "study", "sample"]
+        },
+        {
+          "label": "Close the pore",
+          "action": "retreat",
+          "voice_aliases": ["close pore", "retreat", "refuse"]
+        }
+      ]
+    },
+    "story_operator_sealed_refusal": {
+      "id": "story_operator_sealed_refusal",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "operator_cellar",
+      "line_1": "Chorus, another cellar keeps its first two pores sealed.",
+      "line_2": "The closed pores give less information and take no sample. The third pore opens blind.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Work blind",
+          "action": "proceed",
+          "voice_aliases": ["work blind", "proceed", "go"]
+        },
+        {
+          "label": "Open one pore",
+          "action": "study_pool",
+          "voice_aliases": ["open pore", "study", "inspect"]
+        }
+      ]
+    },
+    "story_operator_false_compatibility": {
+      "id": "story_operator_false_compatibility",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "operator_cellar",
+      "line_1": "Chorus, a procedure wall opens compatibility pores for tissue I did not give it.",
+      "line_2": "The false wall sample has a matching pore. Repair fluid gathers around the wrong material.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Use the error",
+          "action": "proceed",
+          "voice_aliases": ["use error", "proceed", "go"]
+        },
+        {
+          "label": "Correct the sample",
+          "action": "seal_amber_wound",
+          "voice_aliases": ["correct sample", "seal", "repair"]
+        }
+      ]
+    },
+    "story_hunt_bright_scar": {
+      "id": "story_hunt_bright_scar",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "scar_map_junction",
+      "line_1": "Chorus, a bright scar appears before the mites finish cleaning this junction.",
+      "line_2": "The route opens fast. Its pulse already matches my stride, and the same brightness remains behind me.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Take the fast scar",
+          "action": "proceed",
+          "voice_aliases": ["fast scar", "proceed", "go"]
+        },
+        {
+          "label": "Cut across it",
+          "action": "break_marked_pattern",
+          "voice_aliases": ["cut across", "break scar", "break pattern"]
+        }
+      ]
+    },
+    "story_glass_apostle_blank_route": {
+      "id": "story_glass_apostle_blank_route",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "scar_map_junction",
+      "line_1": "Chorus, this scar map has one blank route with no gait pulse.",
+      "line_2": "Scar mites stop at its edge and clean around it. The blank tissue stays dull.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Use the blank",
+          "action": "proceed",
+          "voice_aliases": ["use blank", "blank route", "proceed"]
+        },
+        {
+          "label": "Mark it myself",
+          "action": "mark_red_branch",
+          "voice_aliases": ["mark blank", "mark", "route"]
+        }
+      ]
+    },
+    "story_quartermaster_clean_payment": {
+      "id": "story_quartermaster_clean_payment",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "biomass_larder",
+      "line_1": "Chorus, a larder tongue opens one pocket without closing its teeth.",
+      "line_2": "The payment pulse is even under the shelf. The pocket opens clean and dry.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Accept the clean count",
+          "action": "proceed",
+          "voice_aliases": ["accept count", "clean count", "proceed"]
+        },
+        {
+          "label": "Overpay it",
+          "action": "pay_resin_toll",
+          "voice_aliases": ["overpay", "pay", "settle"]
+        }
+      ]
+    },
+    "story_merchant_hunger_open": {
+      "id": "story_merchant_hunger_open",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "biomass_larder",
+      "line_1": "Chorus, a sealed ration pocket opens before I touch the scale.",
+      "line_2": "The membrane is already pulled back. The open edge is wet where hunger should press it.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Take the opened ration",
+          "action": "harvest_eggs",
+          "voice_aliases": ["opened ration", "take ration", "harvest"]
+        },
+        {
+          "label": "Leave it open",
+          "action": "retreat",
+          "voice_aliases": ["leave open", "retreat", "refuse"]
+        }
+      ]
+    },
+    "story_larder_closed_credit": {
+      "id": "story_larder_closed_credit",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "biomass_larder",
+      "line_1": "Chorus, a credit grub is sealed under its membrane and does not open when I pass.",
+      "line_2": "The membrane stays closed over the grub. No teeth lift from the shelf.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Keep moving hungry",
+          "action": "proceed",
+          "voice_aliases": ["keep moving", "hungry", "proceed"]
+        },
+        {
+          "label": "Open it anyway",
+          "action": "harvest_eggs",
+          "voice_aliases": ["open anyway", "harvest", "take"]
+        }
+      ]
+    },
+    "story_harbor_paid_dock": {
+      "id": "story_harbor_paid_dock",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "drowned_toll_harbor",
+      "line_1": "Chorus, a dock mouth lowers two ribs before the black fluid reaches my cuts.",
+      "line_2": "The payment rim is clean. The dock ribs stay dry above my wounds.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Use the dry dock",
+          "action": "proceed",
+          "voice_aliases": ["dry dock", "use dock", "proceed"]
+        },
+        {
+          "label": "Refuse the charge",
+          "action": "retreat",
+          "voice_aliases": ["refuse charge", "retreat", "deny"]
+        }
+      ]
+    },
+    "story_harbor_drained_scent": {
+      "id": "story_harbor_drained_scent",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "drowned_toll_harbor",
+      "line_1": "Chorus, this harbor basin is already low, and the mud carries my wet scent.",
+      "line_2": "The drained passage is open. The route trace stays printed in the mud.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Cross the mud",
+          "action": "proceed",
+          "voice_aliases": ["cross mud", "proceed", "go"]
+        },
+        {
+          "label": "Flood the trace",
+          "action": "disturb_pool",
+          "voice_aliases": ["flood trace", "water", "pool"]
+        }
+      ]
+    },
+    "story_rite_clean_sequence": {
+      "id": "story_rite_clean_sequence",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "maintenance_rite_chapel",
+      "line_1": "Chorus, a rite chamber has its drain cuts open in the order I used.",
+      "line_2": "The cuts hold that sequence. A tool rest opens at hand height.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Use the open order",
+          "action": "observe_organ_chamber",
+          "voice_aliases": ["open order", "use order", "observe"]
+        },
+        {
+          "label": "Leave the posture",
+          "action": "retreat",
+          "voice_aliases": ["leave posture", "retreat", "refuse"]
+        }
+      ]
+    },
+    "story_rite_beetle_repair": {
+      "id": "story_rite_beetle_repair",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "maintenance_rite_chapel",
+      "line_1": "Chorus, platelet beetles seal a broken drain cut in this rite chamber.",
+      "line_2": "The displaced cut will not carry fluid. The beetles close it from both ends.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Let them repair",
+          "action": "retreat",
+          "voice_aliases": ["let repair", "retreat", "leave"]
+        },
+        {
+          "label": "Scrape the repair",
+          "action": "break_marked_pattern",
+          "voice_aliases": ["scrape repair", "break pattern", "disrupt"]
+        }
+      ]
+    },
+    "story_launch_measured_interval": {
+      "id": "story_launch_measured_interval",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "launch_bore",
+      "line_1": "Chorus, this launch bore contracts at the interval I gave the last one.",
+      "line_2": "The ring measure matches my recorded pause. The tissue tightens before I step in.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Use the interval",
+          "action": "proceed",
+          "voice_aliases": ["use interval", "launch", "proceed"]
+        },
+        {
+          "label": "Spoil the timing",
+          "action": "break_marked_pattern",
+          "voice_aliases": ["spoil timing", "break pattern", "mislead"]
+        }
+      ]
+    },
+    "story_launch_bleeding_shortcut": {
+      "id": "story_launch_bleeding_shortcut",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "launch_bore",
+      "line_1": "Chorus, a red shortcut opens beside the launch rings.",
+      "line_2": "The wound is visible from the main route. Fluid gathers at the cut edge.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Use the shortcut",
+          "action": "run",
+          "voice_aliases": ["shortcut", "run", "use route"]
+        },
+        {
+          "label": "Leave it bleeding",
+          "action": "retreat",
+          "voice_aliases": ["leave bleeding", "retreat", "avoid"]
+        }
+      ]
+    },
+    "ending_pell_white_route": {
+      "id": "ending_pell_white_route",
+      "type": "transition",
+      "speaker": "Hymn",
+      "room_id": "white_marrow_field",
+      "line_1": "Chorus, the white lanes have stopped branching. Each cold cut gives the same safe step.",
+      "line_2": "The survey record is complete. My next step fits the cut before I take it.",
+      "reactivate_on_reshuffle": false,
+      "ending_id": "ending_pell_white_route",
+      "buttons": [
+        {
+          "label": "Enter the white route",
+          "action": "restart_run",
+          "voice_aliases": ["white route", "enter route", "restart"]
+        }
+      ]
+    },
+    "ending_operator_component": {
+      "id": "ending_operator_component",
+      "type": "transition",
+      "speaker": "Hymn",
+      "room_id": "operator_cellar",
+      "line_1": "Chorus, the procedure cellars now open before my hands reach them.",
+      "line_2": "The sampled rims match my skin. Each pore opens at hand height before I reach it.",
+      "reactivate_on_reshuffle": false,
+      "ending_id": "ending_operator_component",
+      "buttons": [
+        {
+          "label": "Accept the procedure",
+          "action": "restart_run",
+          "voice_aliases": ["accept procedure", "operator", "restart"]
+        }
+      ]
+    },
+    "ending_opened_hunt_route": {
+      "id": "ending_opened_hunt_route",
+      "type": "transition",
+      "speaker": "Hymn",
+      "room_id": "scar_map_junction",
+      "line_1": "Chorus, every scar route brightens before I choose.",
+      "line_2": "The map lights a clean step before I move. Scar mites stop working and leave the bright path open.",
+      "reactivate_on_reshuffle": false,
+      "ending_id": "ending_opened_hunt_route",
+      "buttons": [
+        {
+          "label": "Take the opened route",
+          "action": "restart_run",
+          "voice_aliases": ["opened route", "hunt route", "restart"]
+        }
+      ]
+    },
+    "ending_merchant_debt": {
+      "id": "ending_merchant_debt",
+      "type": "transition",
+      "speaker": "Hymn",
+      "room_id": "biomass_larder",
+      "line_1": "Chorus, the larder opens all ration pockets before I touch the scale.",
+      "line_2": "The food is already counted against me. No trader-mouth opens. Every pocket breathes with the same open count.",
+      "reactivate_on_reshuffle": false,
+      "ending_id": "ending_merchant_debt",
+      "buttons": [
+        {
+          "label": "Take the counted ration",
+          "action": "restart_run",
+          "voice_aliases": ["counted ration", "open count", "restart"]
+        }
+      ]
+    },
+    "ending_lumen_wet_claim": {
+      "id": "ending_lumen_wet_claim",
+      "type": "transition",
+      "speaker": "Hymn",
+      "room_id": "drowned_toll_harbor",
+      "line_1": "Chorus, the harbor fluid rises to the height of every healed cut.",
+      "line_2": "The wet organs read the healed edges and route me by the same mark.",
+      "reactivate_on_reshuffle": false,
+      "ending_id": "ending_lumen_wet_claim",
+      "buttons": [
+        {
+          "label": "Enter the rising harbor",
+          "action": "restart_run",
+          "voice_aliases": ["rising harbor", "enter water", "restart"]
+        }
+      ]
+    },
+    "ending_mother_chancel_tool": {
+      "id": "ending_mother_chancel_tool",
+      "type": "transition",
+      "speaker": "Hymn",
+      "room_id": "maintenance_rite_chapel",
+      "line_1": "Chorus, the rite chamber opens its tool rests around my body before I kneel.",
+      "line_2": "Tool rests close on the shape already cut into me.",
+      "reactivate_on_reshuffle": false,
+      "ending_id": "ending_mother_chancel_tool",
+      "buttons": [
+        {
+          "label": "Fit the tool rests",
+          "action": "restart_run",
+          "voice_aliases": ["tool rests", "fit", "restart"]
+        }
+      ]
+    },
+    "ending_commandant_launch": {
+      "id": "ending_commandant_launch",
+      "type": "transition",
+      "speaker": "Hymn",
+      "room_id": "launch_bore",
+      "line_1": "Chorus, the launch rings contract on command before I enter the bore.",
+      "line_2": "The command phrase repeats from every ring. No local pore opens to inspect me.",
+      "reactivate_on_reshuffle": false,
+      "ending_id": "ending_commandant_launch",
+      "buttons": [
+        {
+          "label": "Accept launch command",
+          "action": "restart_run",
+          "voice_aliases": ["launch command", "accept command", "restart"]
+        }
+      ]
+    }
+  }
+}

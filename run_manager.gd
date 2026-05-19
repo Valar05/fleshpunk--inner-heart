@@ -3,6 +3,9 @@ extends Node
 const ROOMS_PATH := "res://room_dialogue.json"
 const EVENTS_PATH := "res://events.json"
 const DECKS_PATH := "res://encounter_decks.json"
+const POST_UPDATE_ROOMS_PATH := "res://rooms_post_update.json"
+const POST_UPDATE_EVENTS_PATH := "res://events_post_update.json"
+const POST_UPDATE_DECKS_PATH := "res://encounter_decks_post_update.json"
 const ENEMIES_PATH := "res://enemies.json"
 const MUTATIONS_PATH := "res://mutations.json"
 const SYMBIOTES_PATH := "res://symbiotes.json"
@@ -15,6 +18,7 @@ var rooms_by_id: Dictionary = {}
 var room_events_by_room: Dictionary = {}
 var special_events: Dictionary = {}
 var deck_config: Dictionary = {}
+var content_track := "legacy"
 var enemies_by_id: Dictionary = {}
 var mutations_by_id: Dictionary = {}
 var symbiotes_by_id: Dictionary = {}
@@ -26,6 +30,7 @@ var active_deck_room_ids: Array[String] = []
 var base_deck_room_ids: Array[String] = []
 var consumed_room_events: Dictionary = {}
 var permanently_consumed_events: Dictionary = {}
+var room_visit_counts: Dictionary = {}
 var rooms_cleared := 0
 var biomass := 0
 var corruption := 0
@@ -35,6 +40,7 @@ var merchant_claim := 0
 var baffle_mutes := 0
 var marked_route_streak := 0
 var pressure_counts: Dictionary = {}
+var environment_state: Dictionary = {}
 var ending_pressure := ""
 var owned_mutations: Array[String] = []
 var owned_symbiotes: Array[String] = []
@@ -50,6 +56,8 @@ var _corruption_spike_triggers := 0
 var _danger_notice_triggers := 0
 var _director_triggered_warnings: Dictionary = {}
 var _pending_director_events: Array[String] = []
+var _pending_story_events: Array[Dictionary] = []
+var _triggered_story_events: Dictionary = {}
 var _ending_locks: Dictionary = {}
 var _hunter_reckoning_triggered := false
 var _corruption_claim_triggered := false
@@ -77,6 +85,7 @@ func start_new_run() -> void:
 	baffle_mutes = 0
 	marked_route_streak = 0
 	pressure_counts.clear()
+	environment_state.clear()
 	ending_pressure = ""
 	owned_mutations.clear()
 	owned_symbiotes.clear()
@@ -86,6 +95,7 @@ func start_new_run() -> void:
 	active_deck_cards.clear()
 	consumed_room_events.clear()
 	permanently_consumed_events.clear()
+	room_visit_counts.clear()
 	_merchant_triggered_at_rooms.clear()
 	_symbiote_triggered_at_rooms.clear()
 	_merchant_reckoning_triggered = false
@@ -93,6 +103,8 @@ func start_new_run() -> void:
 	_danger_notice_triggers = 0
 	_director_triggered_warnings.clear()
 	_pending_director_events.clear()
+	_pending_story_events.clear()
+	_triggered_story_events.clear()
 	_ending_locks.clear()
 	_hunter_reckoning_triggered = false
 	_corruption_claim_triggered = false
@@ -125,6 +137,7 @@ func get_last_action_result() -> Dictionary:
 func get_director_state() -> Dictionary:
 	return {
 		"pressure_counts": pressure_counts.duplicate(true),
+		"environment_state": environment_state.duplicate(true),
 		"ending_pressure": ending_pressure,
 		"ending_locks": _ending_locks.duplicate(true),
 		"balanced_eligible": _is_balanced_eligible(),
@@ -346,6 +359,8 @@ func consume_current_event(action_id: String = "") -> void:
 			permanently_consumed_events[event_id] = true
 
 	_last_action_result = _apply_action_effects(action_id, event_data)
+	_last_action_result = _apply_event_action_result(action_id, event_data, _last_action_result)
+	_last_action_result = _with_director_lines(_last_action_result, _enqueue_story_followup(action_id, event_data))
 	_last_action_result = _with_director_lines(_last_action_result, _record_action_pattern(action_id, event_data))
 	current_encounter["consumed"] = true
 
@@ -382,11 +397,16 @@ func get_danger_bpm() -> float:
 
 
 func _load_all_data() -> void:
-	rooms_by_id = _index_rooms(_load_json(ROOMS_PATH))
-	var events_payload: Dictionary = _load_json(EVENTS_PATH)
+	var rooms_path := POST_UPDATE_ROOMS_PATH if FileAccess.file_exists(POST_UPDATE_ROOMS_PATH) else ROOMS_PATH
+	var events_path := POST_UPDATE_EVENTS_PATH if FileAccess.file_exists(POST_UPDATE_EVENTS_PATH) else EVENTS_PATH
+	var decks_path := POST_UPDATE_DECKS_PATH if FileAccess.file_exists(POST_UPDATE_DECKS_PATH) else DECKS_PATH
+	content_track = "post_update_text_only" if rooms_path == POST_UPDATE_ROOMS_PATH else "legacy"
+
+	rooms_by_id = _index_rooms(_load_json(rooms_path))
+	var events_payload: Dictionary = _load_json(events_path)
 	room_events_by_room = _index_room_events(events_payload.get("room_events", {}))
 	special_events = _index_special_events(events_payload.get("special_events", {}))
-	deck_config = _load_json(DECKS_PATH)
+	deck_config = _load_json(decks_path)
 	enemies_by_id = _index_simple_map(_load_json(ENEMIES_PATH).get("enemies", []))
 	mutations_by_id = _index_simple_map(_load_json(MUTATIONS_PATH).get("mutations", []))
 	symbiotes_by_id = _index_simple_map(_load_json(SYMBIOTES_PATH).get("symbiotes", []))
@@ -483,6 +503,12 @@ func _get_room_pool_ids(pool_name: String) -> Array[String]:
 func _append_room_cards(cards: Array[Dictionary], pool_ids: Array[String], count: int, preferred_type: String = "", excluded_types: Array[String] = []) -> void:
 	var available_ids := pool_ids.duplicate()
 	var chosen_ids: Array[String] = []
+	for existing_card in cards:
+		if existing_card is Dictionary:
+			var existing_room_id := str(existing_card.get("room_id", ""))
+			if existing_room_id != "" and not chosen_ids.has(existing_room_id):
+				chosen_ids.append(existing_room_id)
+
 	for _index in range(max(count, 0)):
 		var room_id := _draw_room_from_pool(available_ids, chosen_ids)
 		if room_id == "":
@@ -581,6 +607,10 @@ func _build_next_encounter() -> Dictionary:
 
 	if _pending_room_id_after_transition != "":
 		return _build_pending_room_encounter()
+
+	var story_event_id := _pop_available_story_event_id()
+	if story_event_id != "":
+		return _build_special_encounter(story_event_id)
 
 	if not _pending_director_events.is_empty():
 		var director_event_id := str(_pending_director_events.pop_front())
@@ -708,7 +738,7 @@ func _build_symbiote_encounter() -> Dictionary:
 		"event_id": str(event_data.get("id", "symbiote_host_offer")),
 		"event_data": event_data,
 		"scene_path": str(event_data.get("scene_path", "")),
-		"lines": _build_lines({}, event_data),
+		"lines": _build_lines({}, event_data, false),
 		"buttons": _build_buttons(event_data),
 		"enemy_data": _resolve_enemy_data(event_data),
 		"counts_as_room": false,
@@ -799,6 +829,13 @@ func _pick_preview_room_id() -> String:
 
 
 func _get_eligible_events_for_room(room_id: String, preferred_type: String = "", excluded_types: Array[String] = []) -> Array[Dictionary]:
+	var eligible_events := _collect_eligible_events_for_room(room_id, preferred_type, excluded_types, false)
+	if eligible_events.is_empty() and content_track == "post_update_text_only":
+		eligible_events = _collect_eligible_events_for_room(room_id, preferred_type, excluded_types, true)
+	return eligible_events
+
+
+func _collect_eligible_events_for_room(room_id: String, preferred_type: String = "", excluded_types: Array[String] = [], ignore_consumed: bool = false) -> Array[Dictionary]:
 	var eligible_events: Array[Dictionary] = []
 	var room_events: Array = room_events_by_room.get(room_id, [])
 	var consumed_for_room: Dictionary = consumed_room_events.get(room_id, {})
@@ -812,10 +849,10 @@ func _get_eligible_events_for_room(room_id: String, preferred_type: String = "",
 		if event_id == "":
 			continue
 
-		if consumed_for_room.has(event_id):
+		if not ignore_consumed and consumed_for_room.has(event_id):
 			continue
 
-		if permanently_consumed_events.has(event_id):
+		if not ignore_consumed and permanently_consumed_events.has(event_id):
 			continue
 
 		var event_type := str(event_data.get("type", ""))
@@ -852,7 +889,7 @@ func _build_room_encounter(room_id: String, event_data: Dictionary) -> Dictionar
 
 func _build_special_encounter(event_id: String, room_id_override: String = "", room_data_override: Dictionary = {}) -> Dictionary:
 	var event_data: Dictionary = special_events.get(event_id, {}).duplicate(true)
-	var room_id := room_id_override if room_id_override != "" else current_room_id
+	var room_id := room_id_override if room_id_override != "" else str(event_data.get("room_id", current_room_id))
 	var room_data := room_data_override if not room_data_override.is_empty() else get_room_data(room_id)
 	return {
 		"kind": "special_event",
@@ -861,7 +898,7 @@ func _build_special_encounter(event_id: String, room_id_override: String = "", r
 		"event_id": event_id,
 		"event_data": event_data,
 		"scene_path": str(event_data.get("scene_path", "")),
-		"lines": _build_lines({}, event_data),
+		"lines": _build_lines({}, event_data, false),
 		"buttons": _build_buttons(event_data),
 		"enemy_data": _resolve_enemy_data(event_data),
 		"counts_as_room": false,
@@ -891,7 +928,7 @@ func _build_fallback_encounter(reason: String) -> Dictionary:
 		"event_id": "fallback_empty_draw",
 		"event_data": event_data,
 		"scene_path": "",
-		"lines": _build_lines({}, event_data),
+		"lines": _build_lines({}, event_data, false),
 		"buttons": _build_buttons(event_data),
 		"enemy_data": {},
 		"counts_as_room": false,
@@ -899,8 +936,11 @@ func _build_fallback_encounter(reason: String) -> Dictionary:
 	}
 
 
-func _build_lines(room_data: Dictionary, event_data: Dictionary) -> Array[String]:
+func _build_lines(room_data: Dictionary, event_data: Dictionary, include_room_description: bool = true) -> Array[String]:
 	var lines: Array[String] = []
+	if include_room_description:
+		lines.append_array(_build_room_description_lines(room_data))
+
 	var line_1 := str(event_data.get("line_1", room_data.get("ui_text", {}).get("line_1", "")))
 	var line_2 := str(event_data.get("line_2", room_data.get("ui_text", {}).get("line_2", "")))
 
@@ -910,6 +950,27 @@ func _build_lines(room_data: Dictionary, event_data: Dictionary) -> Array[String
 		lines.append(line_2)
 
 	return lines
+
+
+func _build_room_description_lines(room_data: Dictionary) -> Array[String]:
+	var room_id := str(room_data.get("id", ""))
+	if room_id == "":
+		return []
+
+	var visit_count := int(room_visit_counts.get(room_id, 0))
+	room_visit_counts[room_id] = visit_count + 1
+	var description := ""
+	if visit_count <= 0:
+		description = str(room_data.get("first_visit_description", ""))
+	else:
+		description = str(room_data.get("return_description", ""))
+
+	if description == "":
+		description = str(room_data.get("description", ""))
+	if description == "":
+		return []
+
+	return [description]
 
 
 func _build_buttons(event_data: Dictionary) -> Array:
@@ -1518,6 +1579,37 @@ func _with_director_lines(result: Dictionary, director_lines: Array[String]) -> 
 	return updated
 
 
+func _apply_event_action_result(action_id: String, event_data: Dictionary, base_result: Dictionary) -> Dictionary:
+	var action_result := _get_event_action_result(action_id, event_data)
+	if action_result.is_empty():
+		return base_result
+
+	var updated := base_result.duplicate(true)
+	var override_lines := _normalize_string_array(action_result.get("lines", []))
+	if not override_lines.is_empty():
+		updated["lines"] = override_lines
+	var environment_changes := _normalize_string_array(action_result.get("environment_state_changes", []))
+	for state_key in environment_changes:
+		environment_state[state_key] = true
+	var memory_changes := _normalize_string_array(action_result.get("environment_memory_flags", []))
+	for state_key in memory_changes:
+		environment_state[state_key] = true
+	return updated
+
+
+func _get_event_action_result(action_id: String, event_data: Dictionary) -> Dictionary:
+	var action_results_variant = event_data.get("action_results", {})
+	if not action_results_variant is Dictionary:
+		return {}
+
+	var action_results: Dictionary = action_results_variant
+	var base_action := _base_action_id(action_id)
+	for key in [action_id, base_action, "default"]:
+		if action_results.has(key) and action_results[key] is Dictionary:
+			return action_results[key].duplicate(true)
+	return {}
+
+
 func _record_action_pattern(action_id: String, event_data: Dictionary) -> Array[String]:
 	var base_action := _base_action_id(action_id)
 	var event_type := str(event_data.get("type", ""))
@@ -1649,6 +1741,97 @@ func _enqueue_director_event_once(event_id: String, warning_key: String) -> bool
 	if special_events.has(event_id) and not _pending_director_events.has(event_id):
 		_pending_director_events.append(event_id)
 	return true
+
+
+func _enqueue_story_followup(action_id: String, event_data: Dictionary) -> Array[String]:
+	var followup: Dictionary = _resolve_story_followup(action_id, event_data)
+	if followup.is_empty():
+		return []
+
+	var event_id := str(followup.get("event_id", ""))
+	if event_id == "" or not special_events.has(event_id):
+		return []
+
+	var trigger_key := str(followup.get("trigger_key", event_id))
+	if trigger_key == "":
+		trigger_key = event_id
+	if _triggered_story_events.has(trigger_key):
+		return []
+
+	_triggered_story_events[trigger_key] = true
+	if not _pending_story_event_ids().has(event_id):
+		var delay_rooms := int(followup.get("delay_rooms", deck_config.get("story_followup_default_delay_rooms", 1)))
+		_pending_story_events.append({
+			"event_id": event_id,
+			"available_after_rooms": rooms_cleared + max(delay_rooms, 0) + 1
+		})
+
+	var queued_line := str(followup.get("queued_line", ""))
+	var lines: Array[String] = []
+	if queued_line != "":
+		lines.append(queued_line)
+	return lines
+
+
+func _resolve_story_followup(action_id: String, event_data: Dictionary) -> Dictionary:
+	var followups_variant = event_data.get("story_followups", {})
+	if followups_variant is String:
+		return {"event_id": str(followups_variant)}
+
+	if followups_variant is Dictionary:
+		var followups: Dictionary = followups_variant
+		var base_action := _base_action_id(action_id)
+		for key in [action_id, base_action, "default"]:
+			if followups.has(key):
+				return _normalize_story_followup(followups.get(key))
+
+	if followups_variant is Array:
+		var base_action := _base_action_id(action_id)
+		for item in followups_variant:
+			if not item is Dictionary:
+				continue
+			var actions_variant = item.get("actions", [])
+			var actions: Array[String] = []
+			if actions_variant is Array:
+				for value in actions_variant:
+					actions.append(str(value))
+			elif actions_variant is String:
+				actions.append(str(actions_variant))
+			if actions.is_empty() or actions.has(action_id) or actions.has(base_action):
+				return _normalize_story_followup(item)
+
+	return {}
+
+
+func _normalize_story_followup(value: Variant) -> Dictionary:
+	if value is String:
+		return {"event_id": str(value)}
+	if value is Dictionary:
+		return value.duplicate(true)
+	return {}
+
+
+func _pending_story_event_ids() -> Array[String]:
+	var ids: Array[String] = []
+	for pending_variant in _pending_story_events:
+		if pending_variant is Dictionary:
+			var pending: Dictionary = pending_variant
+			var event_id := str(pending.get("event_id", ""))
+			if event_id != "":
+				ids.append(event_id)
+	return ids
+
+
+func _pop_available_story_event_id() -> String:
+	for index in range(_pending_story_events.size()):
+		var pending: Dictionary = _pending_story_events[index]
+		var event_id := str(pending.get("event_id", ""))
+		var available_after_rooms := int(pending.get("available_after_rooms", 0))
+		if event_id != "" and rooms_cleared >= available_after_rooms:
+			_pending_story_events.remove_at(index)
+			if special_events.has(event_id):
+				return event_id
+	return ""
 
 
 func _lock_ending_pressure(lock_id: String) -> bool:

@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "content_track": "post_update_text_only",
+  "legacy_replaces": "encounter_decks.json",
+  "base_bpm": 20.0,
+  "corruption_spike_threshold": 3,
+  "danger_notice_threshold": 2,
+  "danger_bpm_step": 5.0,
+  "pressure_warning_threshold": 3,
+  "pressure_lock_threshold": 6,
+  "corruption_warning_threshold": 3,
+  "corruption_ending_threshold": 8,
+  "danger_warning_threshold": 3,
+  "hunter_ending_threshold": 8,
+  "hunter_avoidance_threshold": 4,
+  "ending_reckoning_min_rooms": 12,
+  "balanced_corruption_limit": 5,
+  "balanced_danger_limit": 5,
+  "balanced_pressure_limit": 4,
+  "symbiote_card_per_deck": false,
+  "max_enemy_cards_per_deck": 2,
+  "branch_cards_min": 1,
+  "branch_cards_max": 2,
+  "straight_cards_min": 3,
+  "straight_cards_max": 4,
+  "symbiote_every": 0,
+  "merchant_every": 0,
+  "merchant_refusal_limit": 2,
+  "merchant_claim_limit": 3,
+  "opening_room_id": "rib_lock_tally_gate",
+  "opening_event_id": "rib_lock_tally_gate_account",
+  "base_player_stats": {
+    "damage": 8,
+    "armor": 2,
+    "shield": 6,
+    "health": 30,
+    "ambush_chance": 0.15,
+    "initiative": 0.6,
+    "speed": 1.0
+  },
+  "starter_rooms": [
+    "rib_lock_tally_gate"
+  ],
+  "draw_rules": [
+    {
+      "pool": "route",
+      "count": 2
+    },
+    {
+      "pool": "resource",
+      "count": 1
+    },
+    {
+      "pool": "knowledge",
+      "count": 1
+    }
+  ],
+  "room_pools": {
+    "enemy": [
+      "white_marrow_field",
+      "drowned_toll_harbor"
+    ],
+    "branch": [
+      "scar_map_junction",
+      "launch_bore"
+    ],
+    "straight_noncombat": [
+      "rib_lock_tally_gate",
+      "rib_lock_larval_cradle",
+      "rib_lock_clot_bypass",
+      "operator_cellar",
+      "biomass_larder",
+      "maintenance_rite_chapel"
+    ],
+    "route": [
+      "rib_lock_tally_gate",
+      "rib_lock_larval_cradle",
+      "rib_lock_clot_bypass",
+      "white_marrow_field",
+      "scar_map_junction",
+      "launch_bore"
+    ],
+    "resource": [
+      "biomass_larder",
+      "drowned_toll_harbor"
+    ],
+    "knowledge": [
+      "operator_cellar",
+      "maintenance_rite_chapel"
+    ],
+    "random_non_special": [
+      "rib_lock_tally_gate",
+      "rib_lock_larval_cradle",
+      "rib_lock_clot_bypass",
+      "white_marrow_field",
+      "operator_cellar",
+      "scar_map_junction",
+      "biomass_larder",
+      "drowned_toll_harbor",
+      "maintenance_rite_chapel",
+      "launch_bore"
+    ]
+  }
+}

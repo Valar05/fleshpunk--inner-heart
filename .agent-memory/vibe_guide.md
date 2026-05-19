@@ -136,11 +136,95 @@ Design rule:
 - Safe choices still create pressure somewhere.
 - Refusing, fleeing, healing, extracting, mutating, bonding, and waiting must all have run-shaping consequences when repeated.
 
+## Text-Only Presentation
+
+The project no longer treats room art, enemy art, or environmental visuals as design requirements.
+
+The only required visual interface is:
+- room text
+- decision text
+- status/inventory text
+- command feedback
+
+Everything else is deprecated mood support. New design work must assume a player can understand the entire game from text and audio alone.
+
+Room identity comes from Hymn's narration, not from images.
+
+Each room should have:
+- a first-visit description: relatively longer, establishing function, threat, and what the room seems to want
+- a return description: shorter, immediately recognizable, and focused on changed pressure or route state
+- event narration layered after the room description
+
+Room descriptions are always Hymn reporting to Chorus. They must not use detached narrator voice.
+
+## Legacy Content Boundary
+
+The original room and event set is legacy content.
+
+Use legacy content as implementation reference, action-handler reference, and migration material. Do not treat it as the forward creative baseline.
+
+Forward room work should begin from generated post-update rooms and corpus-derived mechanics, then promote those rooms into the data model with first-visit and return descriptions.
+
+## Depth Standard
+
+Rooms are not one-off stat kiosks.
+
+A room is only good enough when it has:
+- an identifiable actor or system with behavior: character, beast, organ, colony, route intelligence, tool, parasite, market, or maintenance process
+- action and reaction: the room responds to what Hymn does, not only with an immediate number
+- delayed consequence: at least one choice changes future room text, deck pressure, route state, character posture, beast behavior, claim, debt, pursuit, or available choices
+- legible uncertainty: the player understands the category of risk without seeing the entire consequence table
+- memory: repeat use should change the room, the organism, or the way later rooms treat Hymn
+
+Minor stat changes are allowed only as the visible surface of a larger consequence.
+
+Bad pattern:
+- cryptic object
+- three vague choices
+- +biomass / -health / +corruption
+- no later reaction
+- no actor remembers it
+
+Good pattern:
+- the room has a function and an appetite
+- a character, beast, or infrastructure system can be interacted with
+- each choice teaches the organism something different
+- consequences return later as warning, pursuit, debt, altered route text, changed offers, or a new constraint
+
+Animals and beasts are also infrastructure. They should not exist only as attacks. A beast can be a valve, courier, immune sensor, toll collector, route cleaner, womb guard, memory carrier, or living tool. Combat is one possible interaction, not the default meaning of a beast.
+
+Rooms should also tell the story of the place. A room is weak if it has no faction pressure, no recurring character trace, no animal or infrastructure behavior, and no cross-run story motion. The primary progression mechanic is event insertion: when Hymn kicks off a character or faction thread, a one-shot special event is pushed into the run stack. The player should feel that stories continue when Hymn leaves: ledgers tighten, survey marks become traps, rites wait for a hand, Chorus narrows the mission, animal systems remember treatment, and healing changes identity.
+
+Character and faction follow-up events do not retrigger in the same run. A room can start a thread, but it should not farm the same character beat by repeated draws.
+
+## Prose Texture Standard
+
+The current post-update prose is scaffold prose. It is functional, but too flat to be final.
+
+Forward writing should draw more heavily from the corpus texture:
+- Verne gives procedure, route logic, pressure, instruments, expedition accounting, and the feeling that survival depends on understanding a mechanism.
+- Lovecraft gives deep-time architecture, bad records, contamination, inheritance dread, biological wrongness, and the slow realization that an environment has a history older than the observer.
+
+Use `.agent-memory/hymn_corpus_voice.md` for the dedicated blended voice target. It defines how to compress Verne's procedural verve and Lovecraft's evidence-based dread into Hymn's clean field-report narration.
+
+Do not copy source prose or imitate antique diction. Transform the depth:
+- name concrete mechanisms instead of generic weird objects
+- give rooms history through wear, repair, measurement, residue, marks, and failed prior use
+- make sentences carry two jobs: sensory texture plus operational consequence
+- replace vague hedges like "may help" or "looks safer" with field judgement under uncertainty
+- avoid flat option-list prose where line two merely explains three buttons
+
+Bad pattern:
+- "The room wants payment. Paying is safer. Breaking it is noisy."
+
+Better pattern:
+- "The toll mouth opens along an old bite seam. Its inner teeth are polished by many hands, or many copies of the same hand. Feeding it should quiet the lock; forcing it will teach the ribs my weight in damage."
+
 ## Audio-First Accessibility
 
 The game must be fully playable without looking at the screen.
 
-Visuals can add mood, but audio and commands carry the required information:
+Audio, text, and commands carry the required information:
 - current room state
 - legal choices
 - likely costs

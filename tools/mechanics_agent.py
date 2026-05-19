@@ -20,16 +20,24 @@ ROOT = Path(__file__).resolve().parents[1]
 MEMORY_DIR = ROOT / ".agent-memory"
 GENERATED_DIR = ROOT / "generated"
 
-EVENTS_PATH = ROOT / "events.json"
-ROOMS_PATH = ROOT / "room_dialogue.json"
-DECKS_PATH = ROOT / "encounter_decks.json"
+LEGACY_EVENTS_PATH = ROOT / "events.json"
+LEGACY_ROOMS_PATH = ROOT / "room_dialogue.json"
+LEGACY_DECKS_PATH = ROOT / "encounter_decks.json"
+POST_UPDATE_EVENTS_PATH = ROOT / "events_post_update.json"
+POST_UPDATE_ROOMS_PATH = ROOT / "rooms_post_update.json"
+POST_UPDATE_DECKS_PATH = ROOT / "encounter_decks_post_update.json"
+EVENTS_PATH = POST_UPDATE_EVENTS_PATH if POST_UPDATE_EVENTS_PATH.exists() else LEGACY_EVENTS_PATH
+ROOMS_PATH = POST_UPDATE_ROOMS_PATH if POST_UPDATE_ROOMS_PATH.exists() else LEGACY_ROOMS_PATH
+DECKS_PATH = POST_UPDATE_DECKS_PATH if POST_UPDATE_DECKS_PATH.exists() else LEGACY_DECKS_PATH
 MUTATIONS_PATH = ROOT / "mutations.json"
 SYMBIOTES_PATH = ROOT / "symbiotes.json"
 RUN_MANAGER_PATH = ROOT / "run_manager.gd"
+SETTING_BACKBONE_PATH = MEMORY_DIR / "setting_backbone.md"
 
 DEFAULT_MODEL = os.environ.get("MECHANICS_AGENT_MODEL", os.environ.get("SCENARIO_AGENT_MODEL", "gpt-5"))
 ACTION_CASE_RE_TEMPLATE = r'^{indent}"([^"]+)":\s*$'
 WORLD_ACTIONS = {"proceed", "combat", "browse_wares"}
+TRADEOFF_EXEMPT_EVENT_TYPES = {"transition"}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -174,6 +182,7 @@ def action_inventory() -> list[dict[str, Any]]:
 def load_memory() -> str:
     parts = [
         "# Style Memory\n" + read_text(MEMORY_DIR / "fleshpunk_style.md"),
+        "# Setting Backbone\n" + read_text(SETTING_BACKBONE_PATH),
         "# Mechanic Backlog\n" + read_text(MEMORY_DIR / "mechanic_backlog.md"),
     ]
     path = MEMORY_DIR / "accepted_mechanics.jsonl"
@@ -196,6 +205,8 @@ def game_context() -> dict[str, Any]:
     return {
         "rooms": room_ids(),
         "actions": action_inventory(),
+        "single_choice_room_gaps": room_tradeoff_findings(),
+        "room_depth_gaps": room_depth_findings(),
         "existing_mutation_ids": mutation_ids(),
         "existing_symbiote_ids": symbiote_ids(),
         "mutations": mutations if isinstance(mutations, list) else [],
@@ -209,6 +220,88 @@ def game_context() -> dict[str, Any]:
             "shield": "pre-health buffer",
         },
     }
+
+
+def room_tradeoff_findings() -> list[dict[str, Any]]:
+    payload = load_json(EVENTS_PATH)
+    findings: list[dict[str, Any]] = []
+    room_events = payload.get("room_events", {})
+    if not isinstance(room_events, dict):
+        return findings
+
+    for room_id, events in room_events.items():
+        if not isinstance(events, list):
+            continue
+        for event in events:
+            if not isinstance(event, dict):
+                continue
+            event_type = str(event.get("type", ""))
+            if event_type in TRADEOFF_EXEMPT_EVENT_TYPES:
+                continue
+            buttons = event.get("buttons", [])
+            commandable_buttons = sum(1 for button in buttons if isinstance(button, dict)) if isinstance(buttons, list) else 0
+            if event_type == "symbiote":
+                symbiote_choices = event.get("symbiote_choices", [])
+                if isinstance(symbiote_choices, list):
+                    commandable_buttons += sum(1 for choice in symbiote_choices if str(choice) != "")
+            if commandable_buttons < 2:
+                findings.append({
+                    "room_id": str(room_id),
+                    "event_id": str(event.get("id", "unknown")),
+                    "event_type": event_type or "unknown",
+                    "button_count": commandable_buttons,
+                    "label": str(event.get("line_1", "")),
+                })
+    return findings
+
+
+def has_delayed_consequence(event: dict[str, Any]) -> bool:
+    delayed_keys = {
+        "delayed_consequence",
+        "reaction",
+        "reaction_tags",
+        "on_repeat",
+        "director_hook",
+        "room_state_changes",
+        "future_effect",
+        "memory_key",
+        "pressure_axis",
+        "character_state_change",
+        "beast_state_change",
+        "infrastructure_state_change",
+        "story_followups",
+    }
+    if any(key in event for key in delayed_keys):
+        return True
+    text = "%s %s" % (event.get("line_1", ""), event.get("line_2", ""))
+    return any(term in text.lower() for term in ("later", "again", "return", "remembers", "learns", "claim", "debt", "scent", "future", "next"))
+
+
+def room_depth_findings() -> list[dict[str, Any]]:
+    payload = load_json(EVENTS_PATH)
+    findings: list[dict[str, Any]] = []
+    room_events = payload.get("room_events", {})
+    if not isinstance(room_events, dict):
+        return findings
+
+    for room_id, events in room_events.items():
+        if not isinstance(events, list):
+            continue
+        if len(events) < 3:
+            findings.append({
+                "room_id": str(room_id),
+                "issue": "thin room",
+                "event_count": len(events),
+                "mechanic_need": "Add action/reaction situations and delayed consequence hooks before considering this room complete.",
+            })
+        if not any(isinstance(event, dict) and has_delayed_consequence(event) for event in events):
+            findings.append({
+                "room_id": str(room_id),
+                "issue": "no delayed consequence hook",
+                "event_count": len(events),
+                "mechanic_need": "Add room memory, actor state, route state, deck pressure, debt, claim, scent, pursuit, or changed return text.",
+            })
+    return findings
 
 
 def brainstorm_schema() -> dict[str, Any]:
@@ -276,9 +369,15 @@ Return one JSON object only.
 
 Your job is to turn placeholder-ish event actions into richer mechanics.
 Prefer rules that can be implemented in run_manager.gd and JSON data without a large refactor.
-Make every mechanic legible to the player through short result text and stat consequences.
+Make every mechanic legible to the player through short result text, but do not stop at stat consequences.
+Prioritize action/reaction loops, delayed consequences, room memory, actor state, route state, deck pressure, debt, claim, scent, and pursuit.
+Treat characters, beasts, animals, parasites, organs, markets, and tools as interactable infrastructure.
+Beasts should not exist only as attacks; give them jobs such as valve, courier, immune sensor, toll collector, route cleaner, womb guard, memory carrier, or living tool.
+Mechanics should support setting stories across rooms and runs: faction posture, recurring character traces, animal infrastructure state, altered prices, route memory, and ending pressure.
+Use story follow-up insertion for progression: a room event can enqueue a one-shot special event, and character/faction beats should not retrigger in the same run.
 Leave explicit hooks for new mutations and symbiotes that interact with the proposed mechanic.
 Do not propose a mutation or symbiote as pure stat filler; each one needs a mechanic hook.
+Use the current single-choice and room-depth gaps as targets for mechanics that create immediate and delayed tradeoffs.
 If you require engine work beyond action handlers or JSON fields, list it in required_engine_changes.
 Keep the tone bodily, bio-industrial, and practical.
 """.strip()

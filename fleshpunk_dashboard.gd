@@ -5,11 +5,23 @@ signal console_command_submitted(command_text: String, room_id: String)
 
 const DEFAULT_OPTION_LABEL := "Proceed."
 const DEFAULT_OPTION_ACTION := "proceed"
+const PORTRAIT_DASHBOARD_PATH := "res://Fleshpunk-dashboard-portrait.png"
 const CONSOLE_TEXT_COLOR := Color(0.95, 0.88, 0.8, 1.0)
 const CONSOLE_BUTTON_TEXT_COLOR := Color(0.14, 0.07, 0.04, 1.0)
 const CONSOLE_BUTTON_COLOR := Color(0.93, 0.74, 0.47, 0.95)
+const CONSOLE_BUTTON_BORDER_COLOR := Color(0.42, 0.16, 0.08, 0.95)
 const COMMAND_INPUT_TEXT_COLOR := Color(0.95, 0.88, 0.8, 1.0)
 const COMMAND_INPUT_COLOR := Color(0.10, 0.04, 0.03, 0.86)
+const TERMINAL_MARGIN_X := 84.0
+const TERMINAL_MARGIN_TOP := 84.0
+const TERMINAL_MARGIN_BOTTOM := 84.0
+const COMMAND_GAP := 24.0
+const FULLSCREEN_INPUT_HEIGHT := 96.0
+const BODY_FONT_SIZE := 42
+const HEADING_FONT_SIZE := 48
+const BUTTON_FONT_SIZE := 38
+const INPUT_FONT_SIZE := 36
+const BUTTON_MIN_HEIGHT := 96
 
 @onready var console_scroll: ScrollContainer = $Console
 @onready var console_content: VBoxContainer = $Console/ConsoleContent
@@ -18,14 +30,33 @@ var _current_room_id := ""
 var _command_input: LineEdit
 var _command_submission_in_progress := false
 var _last_command_input_text := ""
+var _fullscreen_size := Vector2(1080, 1920)
+var _background_scale := Vector2.ONE
 
 
 func _ready() -> void:
-	$AnimationPlayer.play("Idle")
+	_load_portrait_dashboard_texture()
+	var animation_player := get_node_or_null("AnimationPlayer") as AnimationPlayer
+	if animation_player != null:
+		animation_player.stop()
+		animation_player.process_mode = Node.PROCESS_MODE_DISABLED
 	set_process(true)
 	console_scroll.focus_mode = Control.FOCUS_NONE
 	_ensure_command_input()
+	set_fullscreen_console_layout(_fullscreen_size)
 	clear_console()
+
+
+func _load_portrait_dashboard_texture() -> void:
+	var image_path := ProjectSettings.globalize_path(PORTRAIT_DASHBOARD_PATH)
+	if not FileAccess.file_exists(image_path):
+		push_warning("Portrait dashboard texture not found: %s." % image_path)
+		return
+	var image := Image.load_from_file(image_path)
+	if image == null or image.is_empty():
+		push_warning("Portrait dashboard texture could not be loaded: %s." % image_path)
+		return
+	texture = ImageTexture.create_from_image(image)
 
 
 func _process(_delta: float) -> void:
@@ -49,6 +80,76 @@ func set_room_data(room_data: Dictionary) -> void:
 			lines.append(line_2)
 
 	show_console(lines, _get_room_options(room_data), _current_room_id)
+
+
+func set_fullscreen_console_layout(viewport_size: Vector2) -> void:
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		return
+
+	_fullscreen_size = viewport_size
+	centered = true
+	modulate = Color.WHITE
+	self_modulate = Color.WHITE
+
+	_background_scale = _calculate_background_cover_scale(viewport_size)
+	scale = _background_scale
+	position = viewport_size * 0.5
+
+	var content_left := TERMINAL_MARGIN_X
+	var content_top := TERMINAL_MARGIN_TOP
+	var content_right := viewport_size.x - TERMINAL_MARGIN_X
+	var content_bottom := viewport_size.y - TERMINAL_MARGIN_BOTTOM
+	var control_width: float = max(content_right - content_left, 0.0)
+	var input_top := content_bottom - FULLSCREEN_INPUT_HEIGHT
+	var console_bottom := input_top - COMMAND_GAP
+	var console_height: float = max(console_bottom - content_top, 0.0)
+
+	_disable_legacy_fullscreen_backdrop()
+
+	_place_control_in_viewport(console_scroll, Rect2(content_left, content_top, control_width, console_height))
+	console_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	console_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	console_content.custom_minimum_size = Vector2(control_width, 0.0)
+	console_content.add_theme_constant_override("separation", 24)
+
+	_ensure_command_input()
+	if _command_input != null:
+		_place_control_in_viewport(_command_input, Rect2(content_left, input_top, control_width, FULLSCREEN_INPUT_HEIGHT))
+		_command_input.custom_minimum_size = Vector2(0, FULLSCREEN_INPUT_HEIGHT)
+
+
+func _calculate_background_cover_scale(viewport_size: Vector2) -> Vector2:
+	if texture == null:
+		return Vector2.ONE
+	var texture_size := texture.get_size()
+	if texture_size.x <= 0.0 or texture_size.y <= 0.0:
+		return Vector2.ONE
+	var cover_scale: float = max(viewport_size.x / texture_size.x, viewport_size.y / texture_size.y)
+	return Vector2(cover_scale, cover_scale)
+
+
+func _place_control_in_viewport(control: Control, viewport_rect: Rect2) -> void:
+	if control == null:
+		return
+	var local_position := _viewport_point_to_local(viewport_rect.position)
+	control.scale = Vector2(1.0 / max(_background_scale.x, 0.001), 1.0 / max(_background_scale.y, 0.001))
+	control.offset_left = local_position.x
+	control.offset_top = local_position.y
+	control.offset_right = local_position.x + viewport_rect.size.x
+	control.offset_bottom = local_position.y + viewport_rect.size.y
+
+
+func _viewport_point_to_local(viewport_point: Vector2) -> Vector2:
+	return Vector2(
+		(viewport_point.x - position.x) / max(_background_scale.x, 0.001),
+		(viewport_point.y - position.y) / max(_background_scale.y, 0.001)
+	)
+
+
+func _disable_legacy_fullscreen_backdrop() -> void:
+	var old_backdrop := get_node_or_null("FullscreenBackdrop") as CanvasItem
+	if old_backdrop != null:
+		old_backdrop.hide()
 
 
 func clear_console() -> void:
@@ -116,7 +217,7 @@ func _append_label(text: String, is_heading: bool = false) -> void:
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.add_theme_color_override("font_color", CONSOLE_TEXT_COLOR)
-	label.add_theme_font_size_override("font_size", 24 if is_heading else 20)
+	label.add_theme_font_size_override("font_size", HEADING_FONT_SIZE if is_heading else BODY_FONT_SIZE)
 	console_content.add_child(label)
 
 
@@ -127,17 +228,22 @@ func _append_button(option_data: Variant) -> void:
 	var option: Dictionary = option_data
 	var button := Button.new()
 	button.text = str(option.get("label", DEFAULT_OPTION_LABEL))
-	button.custom_minimum_size = Vector2(0, 44)
+	button.custom_minimum_size = Vector2(0, BUTTON_MIN_HEIGHT)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.flat = false
 	button.focus_mode = Control.FOCUS_ALL
-	button.add_theme_font_size_override("font_size", 20)
+	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_WORD_ELLIPSIS
+	button.add_theme_font_size_override("font_size", BUTTON_FONT_SIZE)
 	button.add_theme_color_override("font_color", CONSOLE_BUTTON_TEXT_COLOR)
 	button.add_theme_color_override("font_hover_color", CONSOLE_BUTTON_TEXT_COLOR)
 	button.add_theme_color_override("font_pressed_color", CONSOLE_BUTTON_TEXT_COLOR)
 	button.add_theme_color_override("font_focus_color", CONSOLE_BUTTON_TEXT_COLOR)
+	button.add_theme_color_override("font_disabled_color", CONSOLE_BUTTON_TEXT_COLOR.darkened(0.35))
 	button.add_theme_stylebox_override("normal", _build_button_style(CONSOLE_BUTTON_COLOR))
 	button.add_theme_stylebox_override("hover", _build_button_style(CONSOLE_BUTTON_COLOR.lightened(0.08)))
 	button.add_theme_stylebox_override("pressed", _build_button_style(CONSOLE_BUTTON_COLOR.darkened(0.12)))
+	button.add_theme_stylebox_override("disabled", _build_button_style(CONSOLE_BUTTON_COLOR.darkened(0.35)))
+	button.add_theme_stylebox_override("focus", _build_button_style(CONSOLE_BUTTON_COLOR.lightened(0.14)))
 	button.focus_mode = Control.FOCUS_NONE
 	button.pressed.connect(_on_console_button_pressed.bind(str(option.get("action", DEFAULT_OPTION_ACTION))))
 	console_content.add_child(button)
@@ -150,10 +256,15 @@ func _build_button_style(color: Color) -> StyleBoxFlat:
 	style.corner_radius_top_right = 10
 	style.corner_radius_bottom_right = 10
 	style.corner_radius_bottom_left = 10
-	style.content_margin_left = 16
-	style.content_margin_right = 16
-	style.content_margin_top = 10
-	style.content_margin_bottom = 10
+	style.border_width_left = 2
+	style.border_width_top = 2
+	style.border_width_right = 2
+	style.border_width_bottom = 2
+	style.border_color = CONSOLE_BUTTON_BORDER_COLOR
+	style.content_margin_left = 22
+	style.content_margin_right = 22
+	style.content_margin_top = 16
+	style.content_margin_bottom = 16
 	return style
 
 
@@ -170,19 +281,15 @@ func _ensure_command_input() -> void:
 		_command_input = LineEdit.new()
 		_command_input.name = "CommandInput"
 		add_child(_command_input)
-		_command_input.offset_left = -342.0
-		_command_input.offset_top = 84.0
-		_command_input.offset_right = 342.0
-		_command_input.offset_bottom = 132.0
 
-	_command_input.custom_minimum_size = Vector2(0, 48)
+	_command_input.custom_minimum_size = Vector2(0, FULLSCREEN_INPUT_HEIGHT)
 	_command_input.layout_mode = 2
 	_command_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	_command_input.placeholder_text = "Type a command, next, choice number, status, or repeat."
 	_command_input.clear_button_enabled = true
 	_command_input.focus_mode = Control.FOCUS_ALL
-	_command_input.add_theme_font_size_override("font_size", 20)
+	_command_input.add_theme_font_size_override("font_size", INPUT_FONT_SIZE)
 	_command_input.add_theme_color_override("font_color", COMMAND_INPUT_TEXT_COLOR)
 	_command_input.add_theme_color_override("font_placeholder_color", COMMAND_INPUT_TEXT_COLOR.darkened(0.45))
 	_command_input.add_theme_color_override("caret_color", COMMAND_INPUT_TEXT_COLOR)

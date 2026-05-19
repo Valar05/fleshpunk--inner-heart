@@ -18,14 +18,58 @@ ROOT = Path(__file__).resolve().parents[1]
 EVENTS_PATH = ROOT / "events.json"
 ROOMS_PATH = ROOT / "room_dialogue.json"
 DECKS_PATH = ROOT / "encounter_decks.json"
+POST_UPDATE_EVENTS_PATH = ROOT / "events_post_update.json"
+POST_UPDATE_ROOMS_PATH = ROOT / "rooms_post_update.json"
+POST_UPDATE_DECKS_PATH = ROOT / "encounter_decks_post_update.json"
 ENEMIES_PATH = ROOT / "enemies.json"
 MUTATIONS_PATH = ROOT / "mutations.json"
 SYMBIOTES_PATH = ROOT / "symbiotes.json"
 PROJECT_PATH = ROOT / "project.godot"
 RUN_MANAGER_PATH = ROOT / "run_manager.gd"
+CONTENT_AUTHORSHIP_WORKFLOW_PATH = ROOT / ".agent-memory" / "content_authorship_workflow.md"
 
 ACTION_CASE_RE_TEMPLATE = r'^{indent}"([^"]+)":\s*$'
-WORLD_HANDLED_ACTIONS = {"proceed", "combat", "browse_wares"}
+WORLD_HANDLED_ACTIONS = {"proceed", "combat", "browse_wares", "restart_run"}
+STORY_ENGINE_CONTENT_TRACK = "post_update_text_only"
+ENVIRONMENT_GROUP_KEYS = {
+    "environment_id",
+    "environment",
+    "environment_family",
+}
+ENVIRONMENT_ECHO_KEYS = {
+    "environment_echoes",
+    "later_instance_echoes",
+    "environment_memory_states",
+    "memory_states",
+}
+CORPUS_INFLUENCE_KEYS = {
+    "corpus_influences",
+    "corpus_anchors",
+    "source_anchors",
+    "source_text_anchors",
+}
+ROOM_MEMORY_KEYS = {
+    "room_state_changes",
+    "room_memory_flags",
+    "environment_state_changes",
+    "environment_memory_flags",
+    "memory_key",
+    "memory_changes",
+    "route_state_changes",
+    "actor_state_changes",
+    "faction_state_changes",
+    "infrastructure_state_change",
+    "beast_state_change",
+    "character_state_change",
+}
+ACTION_RESULT_KEYS = {
+    "action_results",
+    "outcomes",
+    "result_lines_by_action",
+    "room_result_lines",
+    "button_results",
+    "action_consequences",
+}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -80,6 +124,14 @@ def ids_from_array_file(path: Path, key: str) -> set[str]:
     return {str(record.get("id", "")) for record in records if isinstance(record, dict) and record.get("id")}
 
 
+def active_data_paths() -> dict[str, Path]:
+    return {
+        "rooms": POST_UPDATE_ROOMS_PATH if POST_UPDATE_ROOMS_PATH.exists() else ROOMS_PATH,
+        "events": POST_UPDATE_EVENTS_PATH if POST_UPDATE_EVENTS_PATH.exists() else EVENTS_PATH,
+        "decks": POST_UPDATE_DECKS_PATH if POST_UPDATE_DECKS_PATH.exists() else DECKS_PATH,
+    }
+
+
 def implemented_actions() -> set[str]:
     source = read_text(RUN_MANAGER_PATH)
     match_start = source.find("match action_id:")
@@ -121,10 +173,223 @@ def iter_events(events_payload: dict[str, Any]) -> list[tuple[str, dict[str, Any
     return events
 
 
+def has_delayed_consequence(event: dict[str, Any]) -> bool:
+    delayed_keys = {
+        "delayed_consequence",
+        "reaction",
+        "reaction_tags",
+        "on_repeat",
+        "director_hook",
+        "room_state_changes",
+        "future_effect",
+        "memory_key",
+        "pressure_axis",
+        "character_state_change",
+        "beast_state_change",
+        "infrastructure_state_change",
+        "story_followups",
+    }
+    if any(key in event for key in delayed_keys):
+        return True
+    text = f"{event.get('line_1', '')} {event.get('line_2', '')}".lower()
+    return any(term in text for term in ("later", "again", "return", "remembers", "learns", "claim", "debt", "scent", "future", "next"))
+
+
+def has_environment_group(room_record: dict[str, Any]) -> bool:
+    return any(room_record.get(key) for key in ENVIRONMENT_GROUP_KEYS)
+
+
+def has_environment_echo_plan(room_record: dict[str, Any]) -> bool:
+    return any(room_record.get(key) for key in ENVIRONMENT_ECHO_KEYS)
+
+
+def environment_id_for_room(room_id: str, room_record: dict[str, Any]) -> str:
+    for key in ENVIRONMENT_GROUP_KEYS:
+        value = str(room_record.get(key, "")).strip()
+        if value:
+            return value
+    return room_id
+
+
+def corpus_influence_records(room_record: dict[str, Any]) -> list[dict[str, Any]]:
+    for key in CORPUS_INFLUENCE_KEYS:
+        if key not in room_record:
+            continue
+        records = room_record.get(key, [])
+        if isinstance(records, list):
+            return [record for record in records if isinstance(record, dict)]
+    return []
+
+
+def has_specific_corpus_influence(room_record: dict[str, Any]) -> bool:
+    for record in corpus_influence_records(room_record):
+        has_source = bool(str(record.get("seed_id", "")).strip() or str(record.get("source_title", "")).strip())
+        has_specific_moment = bool(
+            str(record.get("source_moment", "")).strip()
+            or str(record.get("writing_influence", "")).strip()
+            or str(record.get("source_bit", "")).strip()
+            or str(record.get("source_excerpt", "")).strip()
+            or str(record.get("source_detail", "")).strip()
+            or str(record.get("character_function", "")).strip()
+        )
+        has_application = bool(
+            str(record.get("room_application", "")).strip()
+            or str(record.get("room_reflection", "")).strip()
+            or str(record.get("transform", "")).strip()
+            or str(record.get("mechanic_reflection", "")).strip()
+        )
+        if has_source and has_specific_moment and has_application:
+            return True
+    return False
+
+
+def has_ending_vector(room_record: dict[str, Any]) -> bool:
+    vectors = room_record.get("ending_vectors", [])
+    return isinstance(vectors, list) and any(isinstance(vector, dict) and vector.get("id") for vector in vectors)
+
+
+def has_mutation_hooks(room_record: dict[str, Any]) -> bool:
+    hooks = room_record.get("mutation_hooks", [])
+    return isinstance(hooks, list) and any(isinstance(hook, dict) and hook.get("capability") for hook in hooks)
+
+
+def has_room_memory_change(event: dict[str, Any]) -> bool:
+    return any(event.get(key) for key in ROOM_MEMORY_KEYS)
+
+
+def has_action_specific_result(event: dict[str, Any]) -> bool:
+    if any(event.get(key) for key in ACTION_RESULT_KEYS):
+        return True
+    buttons = event.get("buttons", [])
+    if not isinstance(buttons, list):
+        return False
+    button_result_keys = {
+        "result_lines",
+        "outcome",
+        "consequence",
+        "room_state_changes",
+        "memory_key",
+    }
+    return any(isinstance(button, dict) and any(button.get(key) for key in button_result_keys) for button in buttons)
+
+
+def has_default_only_followups(event: dict[str, Any]) -> bool:
+    followups = event.get("story_followups")
+    if not isinstance(followups, dict):
+        return False
+    return bool(followups) and set(str(key) for key in followups.keys()) == {"default"}
+
+
+def creative_room_findings(rooms_payload: dict[str, Any], events_payload: dict[str, Any]) -> list[str]:
+    findings: list[str] = []
+    room_events = events_payload.get("room_events", {})
+    special_events = events_payload.get("special_events", {})
+    if not isinstance(special_events, dict):
+        special_events = {}
+    if not isinstance(room_events, dict):
+        return ["room_events is not an object; creative room critique cannot run"]
+
+    rooms_by_id = {
+        str(room.get("id", "")): room
+        for room in rooms_payload.get("rooms", [])
+        if isinstance(room, dict) and room.get("id")
+    }
+    required_story_keys = (
+        "faction_ids",
+        "storyline_ids",
+        "recurring_character_ids",
+        "animal_infrastructure",
+        "cross_run_story_hooks",
+        "progression_state",
+    )
+    story_engine_track = str(rooms_payload.get("content_track", "")) == STORY_ENGINE_CONTENT_TRACK
+    environment_event_counts: dict[str, int] = {}
+    if story_engine_track:
+        for room_id, events in room_events.items():
+            room_record = rooms_by_id.get(str(room_id), {})
+            environment_id = environment_id_for_room(str(room_id), room_record)
+            event_count = len(events) if isinstance(events, list) else 0
+            environment_event_counts[environment_id] = environment_event_counts.get(environment_id, 0) + event_count
+
+    for room_id, events in sorted(room_events.items()):
+        if not isinstance(events, list):
+            findings.append(f"{room_id}: room events are not a list")
+            continue
+        room_record = rooms_by_id.get(str(room_id), {})
+        environment_id = environment_id_for_room(str(room_id), room_record)
+        family_event_count = environment_event_counts.get(environment_id, len(events)) if story_engine_track else len(events)
+        if family_event_count < 3:
+            findings.append(f"{room_id}: thin environment family with only {family_event_count} event{'s' if family_event_count != 1 else ''}")
+        if not any(isinstance(event, dict) and has_delayed_consequence(event) for event in events):
+            findings.append(f"{room_id}: no explicit delayed consequence or memory hook")
+        if story_engine_track and not has_environment_group(room_record):
+            findings.append(f"{room_id}: no explicit environment grouping")
+        if story_engine_track and not has_environment_echo_plan(room_record):
+            findings.append(f"{room_id}: no later-instance/environment echo plan")
+        if story_engine_track and not has_specific_corpus_influence(room_record):
+            findings.append(f"{room_id}: no specific corpus writing influence")
+        if story_engine_track and not has_ending_vector(room_record):
+            findings.append(f"{room_id}: no ending vector")
+        if story_engine_track and not has_mutation_hooks(room_record):
+            findings.append(f"{room_id}: no mutation openings")
+        missing_story_keys = [key for key in required_story_keys if not room_record.get(key)]
+        if missing_story_keys:
+            findings.append(f"{room_id}: missing story backbone keys ({', '.join(missing_story_keys)})")
+        if story_engine_track and not any(isinstance(event, dict) and has_room_memory_change(event) for event in events):
+            findings.append(f"{room_id}: no explicit environment memory/state changes")
+        for event in events:
+            if not isinstance(event, dict):
+                continue
+            if story_engine_track and not has_action_specific_result(event):
+                findings.append(f"{room_id}/{event.get('id', '<missing-id>')}: relies on generic legacy action results")
+            buttons = event.get("buttons", [])
+            commandable_buttons = sum(1 for button in buttons if isinstance(button, dict)) if isinstance(buttons, list) else 0
+            if story_engine_track and commandable_buttons > 1 and has_default_only_followups(event):
+                findings.append(f"{room_id}/{event.get('id', '<missing-id>')}: all choices enqueue the same default follow-up")
+            for followup in story_followup_entries(event):
+                if int(followup.get("delay_rooms", 0)) < 1:
+                    findings.append(f"{room_id}: story follow-up on {event.get('id', '<missing-id>')} has no delay_rooms >= 1")
+                followup_id = str(followup.get("event_id", ""))
+                followup = special_events.get(followup_id, {})
+                if not isinstance(followup, dict):
+                    findings.append(f"{room_id}: story_followups references missing special event {followup_id}")
+                elif bool(followup.get("reactivate_on_reshuffle", True)):
+                    findings.append(f"{room_id}: story follow-up {followup_id} can retrigger in the same run")
+    return findings
+
+
+def story_followup_ids(event: dict[str, Any]) -> list[str]:
+    return sorted(set(str(followup.get("event_id", "")) for followup in story_followup_entries(event) if str(followup.get("event_id", ""))))
+
+
+def story_followup_entries(event: dict[str, Any]) -> list[dict[str, Any]]:
+    followups = event.get("story_followups")
+    entries: list[dict[str, Any]] = []
+
+    def add_from_value(value: Any) -> None:
+        if isinstance(value, str) and value:
+            entries.append({"event_id": value})
+        elif isinstance(value, dict):
+            entries.append(value)
+
+    if isinstance(followups, str):
+        add_from_value(followups)
+    elif isinstance(followups, dict):
+        for value in followups.values():
+            add_from_value(value)
+    elif isinstance(followups, list):
+        for value in followups:
+            add_from_value(value)
+
+    return entries
+
+
 def collect_event_facts() -> dict[str, Any]:
-    events_payload = load_json(EVENTS_PATH)
-    rooms_payload = load_json(ROOMS_PATH)
-    decks_payload = load_json(DECKS_PATH)
+    data_paths = active_data_paths()
+    events_payload = load_json(data_paths["events"])
+    rooms_payload = load_json(data_paths["rooms"])
+    decks_payload = load_json(data_paths["decks"])
+    content_track = str(rooms_payload.get("content_track", "legacy"))
 
     rooms = rooms_payload.get("rooms", [])
     room_ids = {str(room.get("id", "")) for room in rooms if isinstance(room, dict) and room.get("id")}
@@ -167,7 +432,7 @@ def collect_event_facts() -> dict[str, Any]:
             action = str(button.get("action", ""))
             if action and action not in actions:
                 unhandled_actions.setdefault(action, []).append(location)
-            if action == "take_mutation" and not location.startswith("special/merchant"):
+            if action == "take_mutation" and content_track != "post_update_text_only" and not location.startswith("special/merchant"):
                 grail_warnings.append(f"{location}: room-level take_mutation is legacy; new mutations should come through shop/merchant flow")
 
     return {
@@ -177,9 +442,14 @@ def collect_event_facts() -> dict[str, Any]:
         "unhandled_actions": unhandled_actions,
         "missing_refs": missing_refs,
         "grail_warnings": grail_warnings,
+        "creative_findings": creative_room_findings(rooms_payload, events_payload),
         "duplicate_event_ids": sorted(duplicate_event_ids),
         "opening_room": str(decks_payload.get("opening_room_id", "")),
         "opening_event": str(decks_payload.get("opening_event_id", "")),
+        "content_track": content_track,
+        "active_rooms_file": data_paths["rooms"].name,
+        "active_events_file": data_paths["events"].name,
+        "active_decks_file": data_paths["decks"].name,
     }
 
 
@@ -201,7 +471,9 @@ def print_bootstrap() -> int:
     print(f"Main scene: {config['main_scene']}")
     print(f"Autoloads: {', '.join(config['autoloads']) or 'none'}")
     print(f"Viewport: {config['viewport']}")
+    print(f"Content track: {facts['content_track']}")
     print(f"Opening: {facts['opening_room']} / {facts['opening_event']}")
+    print(f"Active data: {facts['active_rooms_file']}, {facts['active_events_file']}, {facts['active_decks_file']}")
 
     print_section("Core Files")
     for path in (
@@ -213,6 +485,9 @@ def print_bootstrap() -> int:
         "events.json",
         "room_dialogue.json",
         "encounter_decks.json",
+        "rooms_post_update.json",
+        "events_post_update.json",
+        "encounter_decks_post_update.json",
     ):
         print(f"- {path}")
 
@@ -250,6 +525,24 @@ def print_bootstrap() -> int:
     else:
         print("No vibe/current-state conflicts found.")
 
+    print_section("Creative Critique")
+    if facts["creative_findings"]:
+        for finding in facts["creative_findings"][:12]:
+            print(f"- {finding}")
+        if len(facts["creative_findings"]) > 12:
+            print(f"- ... +{len(facts['creative_findings']) - 12} more")
+    else:
+        print("No room depth/story critique findings found.")
+
+    print_section("Content Authorship")
+    if CONTENT_AUTHORSHIP_WORKFLOW_PATH.exists():
+        print("Codex integrates and verifies; scenario/writing agents author player-facing prose.")
+        print("Workflow: .agent-memory/content_authorship_workflow.md")
+        print("Do not hand-author final room/event prose unless the user supplies exact text or the change is non-literary glue.")
+    else:
+        print("Missing .agent-memory/content_authorship_workflow.md.")
+        print("Until restored, do not make substantial player-facing prose changes.")
+
     print_section("Worktree")
     if status:
         for line in status:
@@ -260,8 +553,17 @@ def print_bootstrap() -> int:
     print_section("Useful Commands")
     print("python tools/project_bootstrap.py --strict")
     print("python tools/scenario_agent.py context")
+    print("python tools/scenario_agent.py content-authorship")
+    print("python tools/scenario_agent.py hymn-corpus-voice")
+    print("python tools/scenario_agent.py story-room-contract")
+    print("python tools/scenario_agent.py audit-story --json")
+    print("python tools/scenario_agent.py audit-writing")
+    print("python tools/scenario_agent.py audit-depth --json")
     print("python tools/scenario_agent.py validate generated/scenario_patch.json")
-    print("../bin/godot --headless --quit --path .")
+    print("godot --headless --quit --path .")
+    print("godot --headless --path /storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart --script /storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart/tools/text_only_ui_smoke.gd")
+    print("godot --headless --path /storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart --script /storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart/tools/story_followup_smoke.gd")
+    print("godot --headless --path /storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart --script /storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart/tools/post_update_room_smoke.gd")
 
     return 1 if gap_count else 0
 

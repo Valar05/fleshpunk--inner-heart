@@ -1,0 +1,814 @@
+{
+  "schema_version": 1,
+  "content_track": "post_update_text_only",
+  "legacy_replaces": "room_dialogue.json",
+  "description": "Text-only forward room set. Room identity comes from Hymn narration, not images.",
+  "rooms": [
+    {
+      "id": "rib_lock_tally_gate",
+      "environment_id": "rib_vessel_lock",
+      "name": "Tally Gate",
+      "instance_premise": "A pressure lock with old tally cuts, a fresh cut, and a toll mouth beside the seam.",
+      "first_visit_description": "Chorus, a rib lock blocks the seam. One wet toll mouth hangs beside a pressure pad grown into the floor. Old tally cuts close in dry scar. The fresh cut is still bleeding. When my boot settles on the pad, a sensing cord lifts and starts matching my pulse.",
+      "return_description": "A tally lock waits ahead: swollen pressure pad, wet mouth, exposed sensing cord.",
+      "tags": ["transit", "pressure", "debt", "rib_vessel_lock"],
+      "source_seed_ids": [
+        "verne_twenty_thousand_leagues_02_sealed_vessel",
+        "verne_survivors_chancellor_02_sealed_vessel",
+        "verne_twenty_thousand_leagues_01_ocean_pressure"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_twenty_thousand_leagues_02_sealed_vessel",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_moment": "The narration pauses over a sealed vessel's compartments, damage isolation, pressure, and operational reassurance before the danger is understood.",
+          "writing_influence": "Verne's energy is practical wonder: exact physical parts, technical sequence, and danger made intelligible through mechanism.",
+          "room_application": "Write the tally gate as a working apparatus Hymn can test. The interest comes from procedure, measurement, and visible consequences, not symbolism."
+        }
+      ],
+      "faction_ids": ["the_organism", "ledger_covenant", "opened_hunt"],
+      "storyline_ids": ["ledger_tightens", "animal_city_moves", "chorus_narrows_mission"],
+      "recurring_character_ids": ["soft_captain", "quartermaster_of_teeth", "commandant_signal"],
+      "animal_infrastructure": [
+        {
+          "id": "toll_mouths",
+          "function": "Digest biomass payment and open rib pressure locks.",
+          "possible_interactions": ["pay", "synchronize", "starve", "force"]
+        },
+        {
+          "id": "larval_ferries",
+          "function": "Carry bodies through fluid pressure seams after learning weight and pulse.",
+          "possible_interactions": ["ride", "protect", "overload", "mislead"]
+        },
+        {
+          "id": "platelet_beetles",
+          "function": "Clot ruptured shortcuts after forced passage.",
+          "possible_interactions": ["redirect", "feed_false_wound", "fight"]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Unpaid lock pressure can reappear as a later toll demand.",
+        "Synchronized passage records Hymn's pulse rhythm in later pressure locks.",
+        "Forced ribs leave broken transit tissue that pursuit events can reference later."
+      ],
+      "environment_echoes": [
+        "Later pressure locks can show paid passage, unpaid tally marks, pulse-matched seams, or forced rib damage.",
+        "Toll mouths in other environments can show the same tally pattern after payment or underpayment.",
+        "Platelet beetles can appear in later transit rooms if Hymn breaks rib seams."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_soft_captain_transit",
+          "label": "The Soft Captain Route",
+          "pulls_toward": ["pulse measurement", "careful transit", "readable repairs"],
+          "diverts_to": ["merchant debt from repeated payment", "hunt pressure from forced ribs", "chorus authority from clean signal obedience"]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "brace_pressure",
+          "effect": "Hold a rib seam open without breaking it."
+        },
+        {
+          "capability": "thin_body",
+          "effect": "Pass a partially opened lock without payment or forced damage."
+        }
+      ],
+      "progression_state": {
+        "early": "The lock offers passage by pulse, payment, or force.",
+        "mid": "Later locks show marks that correspond to payment, pulse matching, or forced damage.",
+        "late": "Quiet transit can open a rebel route if Hymn has not overfed debt, authority, or noise."
+      }
+    },
+    {
+      "id": "rib_lock_larval_cradle",
+      "environment_id": "rib_vessel_lock",
+      "name": "Larval Cradle Lock",
+      "instance_premise": "A pressure lock where ferry-larvae are harnessed below a gap in the floor.",
+      "first_visit_description": "Chorus, this rib lock has no floor. Black fluid fills the drop. Ferry-larvae hang below in cartilage harness, their backs flattened by old traffic. The smallest larva rises when my pulse changes. Larger harnesses wait near the far seam with old tendon cuts already opening.",
+      "return_description": "A ferry lock opens below me: black fluid, hanging harness, larvae under matched seams.",
+      "tags": ["transit", "pressure", "ferry", "rib_vessel_lock"],
+      "source_seed_ids": [
+        "verne_twenty_thousand_leagues_02_sealed_vessel",
+        "verne_survivors_chancellor_02_sealed_vessel",
+        "verne_twenty_thousand_leagues_01_ocean_pressure"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_twenty_thousand_leagues_02_sealed_vessel",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_moment": "A secondary vessel is described through cavities, matched openings, closures, and the step-by-step method of entering and releasing it.",
+          "writing_influence": "Verne turns equipment into adventure by making each component legible before movement begins.",
+          "room_application": "Write the larval ferry as living equipment: cartilage harness, tendon closure, pressure gap, pulse check, and launch sequence."
+        },
+        {
+          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_moment": "Pressure is not atmosphere; it is a calculable condition the machine must answer.",
+          "writing_influence": "Physical conditions are dramatic because the narration explains what the body and machine must endure.",
+          "room_application": "Make pressure and pulse the scene's grammar. Choices should feel like manipulating a hostile medium."
+        }
+      ],
+      "faction_ids": ["the_organism", "womb_syndics", "opened_hunt"],
+      "storyline_ids": ["animal_city_moves", "chorus_narrows_mission"],
+      "recurring_character_ids": ["soft_captain", "commandant_signal"],
+      "animal_infrastructure": [
+        {
+          "id": "larval_ferries",
+          "function": "Carry bodies through fluid pressure locks after learning weight and pulse.",
+          "possible_interactions": ["ride", "protect", "overload", "mislead"]
+        },
+        {
+          "id": "bell_polyps",
+          "function": "Carry Chorus signal through wet pressure chambers and leak route data.",
+          "possible_interactions": ["listen", "mute", "overload"]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Protected ferries can make later ferry locks approach more slowly and quietly.",
+        "Overloaded ferries can make later cartilage harnesses tighten before Hymn steps in.",
+        "Muted bell polyps can make later Chorus signal text incomplete."
+      ],
+      "environment_echoes": [
+        "Later ferry locks can show calm larvae, tight tendon loops, or torn cartilage grooves depending on how Hymn used the first cradle.",
+        "Bell polyps can repeat a distorted Chorus instruction after any wet transit choice."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_soft_captain_transit",
+          "label": "The Soft Captain Route",
+          "pulls_toward": ["protected ferries", "quiet transit", "muted over-command"],
+          "diverts_to": ["hunt pressure from overloaded ferries", "chorus confusion from repeated signal muting"]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "wet_breath",
+          "effect": "Use submerged ferry routes without needing a larva to surface."
+        },
+        {
+          "capability": "scent_mask",
+          "effect": "Ride a ferry without giving later locks a reliable weight-and-scent profile."
+        }
+      ],
+      "progression_state": {
+        "early": "The ferry lock offers careful transport, fast transport, or signal muting.",
+        "mid": "Later ferry locks show matching weight marks and pulse timing.",
+        "late": "Careful ferry treatment can route Hymn through pressure locks if she has not turned them into bait."
+      }
+    },
+    {
+      "id": "rib_lock_clot_bypass",
+      "environment_id": "rib_vessel_lock",
+      "name": "Clotted Bypass",
+      "instance_premise": "A damaged pressure lock where platelet beetles are sealing a split rib and leaving a temporary crawlspace.",
+      "first_visit_description": "Chorus, this pressure lock was forced before I arrived. One rib is split outward. Platelet beetles seal it with red shellac from the outside face inward. Their lower repair leaves a crawlspace under the seam, narrow enough to scrape my shoulders while it closes.",
+      "return_description": "A damaged rib lock closes around red shellac, repair beetles, and a narrowing crawlspace.",
+      "tags": ["transit", "pressure", "repair", "rib_vessel_lock"],
+      "source_seed_ids": [
+        "verne_survivors_chancellor_02_sealed_vessel",
+        "verne_twenty_thousand_leagues_01_ocean_pressure",
+        "lovecraft_at_mountains_of_madness_02_ancient_ruin"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_survivors_chancellor_02_sealed_vessel",
+          "source_title": "The Survivors of the Chancellor",
+          "source_author": "Jules Verne",
+          "source_moment": "A disaster changes phase: fire, hull damage, water ingress, and the urgent problem of what can still be done now.",
+          "writing_influence": "The momentum comes from practical crisis management. The narrator tracks changing conditions rather than moralizing them.",
+          "room_application": "Write the clot bypass as a live repair problem: the crack, beetles, narrowing space, and the cost of acting before the repair closes."
+        },
+        {
+          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_moment": "Protective apparatus is described through fit, material, weight, and the specific pressure it answers.",
+          "writing_influence": "Body technology feels alive because every detail has a use under stress.",
+          "room_application": "Mutations should read as physical apparatus: shell, brace, scent mask, lung, grip. They change how the room can be handled."
+        }
+      ],
+      "faction_ids": ["the_organism", "opened_hunt", "maintenance_orders"],
+      "storyline_ids": ["animal_city_moves", "survey_route_learns_her"],
+      "recurring_character_ids": ["pell_last_of_the_survey", "soft_captain"],
+      "animal_infrastructure": [
+        {
+          "id": "platelet_beetles",
+          "function": "Clot ruptured shortcuts after forced passage and mark damaged transit for pursuit.",
+          "possible_interactions": ["redirect", "feed_false_wound", "fight", "preserve"]
+        },
+        {
+          "id": "scar_mites",
+          "function": "Mark damaged routes after beetle repair makes the old path unreadable.",
+          "possible_interactions": ["follow", "scrape", "misroute"]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Preserving a beetle repair can leave later damaged locks marked and readable.",
+        "Breaking a repair can raise later pursuit pressure through damaged transit tissue.",
+        "Leaving blood on the wrong side of a repair can redirect a later pursuit event."
+      ],
+      "environment_echoes": [
+        "Later damaged locks can show intact beetle markings, sealed loss of shortcut, or broken repair tissue.",
+        "A false wound can produce a later event where pursuit stops at the wrong blood mark."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_soft_captain_transit",
+          "label": "The Soft Captain Route",
+          "pulls_toward": ["preserved repairs", "false pursuit marks", "readable transit damage"],
+          "diverts_to": ["hunt pressure from exploited repairs", "survey-route dependence from overusing repair marks"]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "hard_shell",
+          "effect": "Crawl through beetle shellac without taking a sample wound."
+        },
+        {
+          "capability": "scent_mask",
+          "effect": "Make a false blood trail more reliable in later pursuit echoes."
+        }
+      ],
+      "progression_state": {
+        "early": "The bypass offers a choice between using damage, preserving repair, or placing a false blood mark.",
+        "mid": "Later beetle repairs show whether Hymn broke, preserved, or marked the damaged seam.",
+        "late": "Pursuit events can follow broken repairs unless a false blood mark redirects them."
+      }
+    },
+    {
+      "id": "white_marrow_field",
+      "environment_id": "route_navigation_organs",
+      "name": "White Marrow Field",
+      "instance_premise": "A cold marrow field where survey cuts, marrow lice, and step lanes make route obedience measurable.",
+      "first_visit_description": "Chorus, the corridor opens into white marrow. The floor is hard enough to click under my boot and cold enough to stiffen the glove edge. Survey cuts cross it at regular intervals. Marrow lice keep the cuts clean by eating loose warmth. One lane fits my stride too closely.",
+      "return_description": "A marrow field opens ahead: cold floor, cleaned cuts, lice working inside the lanes.",
+      "tags": ["route", "isolation", "bone"],
+      "source_seed_ids": [
+        "lovecraft_at_mountains_of_madness_01_polar_expedition",
+        "verne_antarctic_mystery_02_polar_expedition",
+        "lovecraft_at_mountains_of_madness_02_ancient_ruin"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "lovecraft_at_mountains_of_madness_01_polar_expedition",
+          "source_title": "At the Mountains of Madness",
+          "source_author": "H. P. Lovecraft",
+          "source_moment": "The Antarctic approach builds dread through measured cold, visible tracks, exposed strata, and evidence interpreted before the hidden cause is named.",
+          "writing_influence": "Lovecraft's strength here is evidentiary pressure: the surface record becomes frightening because it is precise.",
+          "room_application": "Write the marrow field as a readable cold record. Hymn should report cuts, lanes, lice behavior, and gait evidence before any larger conclusion."
+        },
+        {
+          "seed_id": "verne_antarctic_mystery_02_polar_expedition",
+          "source_title": "An Antarctic Mystery",
+          "source_author": "Jules Verne",
+          "source_moment": "Travel through polar hazard is driven by route discipline, instruments, scarcity, and the practical decision to continue or turn aside.",
+          "writing_influence": "Verne gives movement a procedure: route choice is dramatic because conditions can be measured.",
+          "room_application": "Make each choice a field decision: follow the lane, spoil the lane, or take material from the field."
+        }
+      ],
+      "faction_ids": ["pale_survey", "opened_hunt", "archive_rot"],
+      "storyline_ids": ["survey_route_learns_her", "animal_city_moves"],
+      "recurring_character_ids": ["pell_last_of_the_survey", "glass_apostle"],
+      "animal_infrastructure": [
+        {
+          "id": "marrow_lice",
+          "function": "Sort dead bone waste into usable stores and preserve survey traces by eating warmth.",
+          "possible_interactions": ["feed", "follow", "scatter", "harvest"]
+        },
+        {
+          "id": "scar_mites",
+          "function": "Maintain old route marks by consuming obsolete paths.",
+          "possible_interactions": ["bribe_with_marks", "break_pattern", "let_clean"]
+        },
+        {
+          "id": "leukocyte_hounds",
+          "function": "Track repeated gait through cold route dependency.",
+          "possible_interactions": ["leave_false_track", "accept_wound", "fight"]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Following a clean survey route lowers immediate danger but trains the field to anticipate Hymn.",
+        "Cold survey marks can become snares if used too cleanly.",
+        "Archive lenses can turn old expedition evidence into dangerous forecasts."
+      ],
+      "environment_echoes": [
+        "Later marrow fields can pre-score the lane Hymn tends to choose.",
+        "Spoiled survey cuts can make later cold fields less efficient but less predictive.",
+        "Harvested marrow can draw lice into later rooms where warmth should have stayed hidden."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_pell_white_route",
+          "label": "The White Route",
+          "pulls_toward": ["following survey lanes", "trusting cold evidence", "letting route marks anticipate her"],
+          "diverts_to": ["opened hunt from repeated track discipline", "archive dependence from over-reading evidence"]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "cold_blood",
+          "effect": "Cross a marrow field without giving lice enough heat to map gait."
+        },
+        {
+          "capability": "soft_step",
+          "effect": "Spoil survey lanes without leaving a readable counter-pattern."
+        }
+      ],
+      "progression_state": {
+        "early": "Survey cuts make the room readable.",
+        "mid": "The same cuts narrow future routes and let the field pre-place cold pressure.",
+        "late": "The Opened Hunt follows the survey grammar unless Hymn abandons the repeated pattern."
+      }
+    },
+    {
+      "id": "operator_cellar",
+      "environment_id": "operator_procedure_cellars",
+      "name": "Operator Cellar",
+      "instance_premise": "A maintenance cellar where wall tissue repeats operator procedure after the operators are gone.",
+      "first_visit_description": "Chorus, this chamber sits below the transit tissue like a cellar under skin. The ceiling sweats through old tool holes. Lens amoebae hold in the wall at hand height. They pulse in the order an operator hand would use, then pause when my fingers come near.",
+      "return_description": "An operator cellar waits with wet tool holes and lens amoebae open at hand height.",
+      "tags": ["operator", "procedure", "knowledge"],
+      "source_seed_ids": [
+        "lovecraft_shunned_house_01_sealed_house_or_lab",
+        "lovecraft_shunned_house_03_tainted_family_or_cult",
+        "lovecraft_colour_out_of_space_01_sealed_house_or_lab"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "lovecraft_shunned_house_01_sealed_house_or_lab",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_moment": "Investigation of a house proceeds through cellar evidence, measurements, local record, and visible contamination rather than immediate explanation.",
+          "writing_influence": "Lovecraft's useful force is methodical investigation under bodily threat.",
+          "room_application": "Write the cellar as a procedure site: holes, lenses, sampling tissue, and step order reveal what the room can do."
+        }
+      ],
+      "faction_ids": ["maintenance_orders", "archive_rot", "chorus"],
+      "storyline_ids": ["rite_wants_a_hand", "chorus_narrows_mission", "clean_healing_becomes_impossible"],
+      "recurring_character_ids": ["dr_silt_vey", "mother_chancel", "glass_apostle"],
+      "animal_infrastructure": [
+        {
+          "id": "lens_amoebae",
+          "function": "Watch procedure choices and relay pattern data through wet records.",
+          "possible_interactions": ["study", "blind", "let_record", "deceive"]
+        },
+        {
+          "id": "womb_wasps",
+          "function": "Implant maintenance larvae that repair or revise the body.",
+          "possible_interactions": ["accept_repair", "refuse", "redirect_to_wall"]
+        },
+        {
+          "id": "tool_rest_larvae",
+          "function": "Occupy missing operator tool positions and test Hymn's grip.",
+          "possible_interactions": ["perform_rite", "break_order", "leave_sealed"]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Reading procedure grants forecasts while adding operator residue.",
+        "Dr. Silt Vey can become a diagnostic habit that challenges Chorus by implication.",
+        "Repeated repair lets maintenance tissue treat Hymn as a replacement tool."
+      ],
+      "environment_echoes": [
+        "Later cellars can start one step ahead if Hymn lets the wall sample her.",
+        "Refused procedures can remain sealed in other operator sites, blocking easy repair.",
+        "Recorded procedure choices can make Dr. Silt Vey's later diagnostics more exact and more invasive."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_operator_component",
+          "label": "The Operator Component",
+          "pulls_toward": ["letting procedure sample Hymn", "accepting clean repairs", "using diagnostic forecasts"],
+          "diverts_to": ["chorus authority from strict mission obedience", "maintenance rejection from repeated refusal"]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "seal_sense",
+          "effect": "Read whether a procedure will seal, sample, or revise before touching it."
+        },
+        {
+          "capability": "hard_shell",
+          "effect": "Let cellar tissue test pressure without entering Hymn's soft tissue."
+        }
+      ],
+      "progression_state": {
+        "early": "Old procedures explain one mechanism safely enough to tempt use.",
+        "mid": "The cellar starts correcting Hymn's movement before she chooses.",
+        "late": "The Maintenance Orders try to preserve Hymn as procedure rather than person."
+      }
+    },
+    {
+      "id": "scar_map_junction",
+      "environment_id": "route_navigation_organs",
+      "name": "Scar Map Junction",
+      "instance_premise": "A living junction where scar mites revise route marks from gait, signal packets, and old survey cuts.",
+      "first_visit_description": "Chorus, the junction is mapped in scar tissue. Three routes pulse under the skin. Scar mites move grain by grain along the quiet path and leave it clean enough to read. The bright path takes my gait before I choose.",
+      "return_description": "A scar junction waits with revised routes already pulsing under the skin.",
+      "tags": ["route", "signal", "memory"],
+      "source_seed_ids": [
+        "verne_moon_voyage_03_navigation_system",
+        "lovecraft_at_mountains_of_madness_04_navigation_system",
+        "lovecraft_charles_dexter_ward_03_signal_or_record"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_moon_voyage_03_navigation_system",
+          "source_title": "From the Earth to the Moon",
+          "source_author": "Jules Verne",
+          "source_moment": "Navigation and launch decisions gain excitement from numbers, trajectory, timing, and a system that must be trusted before it can be tested.",
+          "writing_influence": "Verne turns route selection into practical suspense by making the calculation visible.",
+          "room_application": "Write the scar map as navigation tissue: paths, marks, signal packets, and revisions should be concrete enough to judge."
+        },
+        {
+          "seed_id": "lovecraft_charles_dexter_ward_03_signal_or_record",
+          "source_title": "The Case of Charles Dexter Ward",
+          "source_author": "H. P. Lovecraft",
+          "source_moment": "Records and copied signs become dangerous because they preserve a pattern that can be reactivated.",
+          "writing_influence": "The old mark is not flavor; it is an operating instruction.",
+          "room_application": "Make copied scars useful and suspect at the same time."
+        }
+      ],
+      "faction_ids": ["archive_rot", "chorus", "opened_hunt"],
+      "storyline_ids": ["survey_route_learns_her", "chorus_narrows_mission", "animal_city_moves"],
+      "recurring_character_ids": ["commandant_signal", "pell_last_of_the_survey", "glass_apostle"],
+      "animal_infrastructure": [
+        {
+          "id": "scar_mites",
+          "function": "Eat and redraw route marks when a path becomes too predictable.",
+          "possible_interactions": ["mark_route", "feed_old_mark", "break_pattern"]
+        },
+        {
+          "id": "lens_amoebae",
+          "function": "Translate route behavior into forecasts the Archive Rot can price.",
+          "possible_interactions": ["read", "blind", "trade_certainty"]
+        },
+        {
+          "id": "leukocyte_hounds",
+          "function": "Use marked routes as pursuit grammar.",
+          "possible_interactions": ["misroute", "leave_false_scent", "fight"]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Chorus packets can help now and narrow future choices.",
+        "The scar map can carry survey obedience into an Opened Hunt counter.",
+        "The Glass Apostle can trade exact route knowledge for hunt attention."
+      ],
+      "environment_echoes": [
+        "Later survey-map tissue can brighten the route Hymn trusted most recently.",
+        "Broken route patterns can create blank scar lanes that resist both Chorus and Hunt prediction.",
+        "Marked quiet routes can let survey grammar reappear in another navigation organ."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_opened_hunt_route",
+          "label": "The Opened Hunt Route",
+          "pulls_toward": ["trusting bright scars", "leaving exact route marks", "letting prediction become convenience"],
+          "diverts_to": ["white route from cold survey discipline", "commandant route from packet obedience"]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "scent_mask",
+          "effect": "Mark a route without leaving enough body data for a hunt map."
+        },
+        {
+          "capability": "split_gait",
+          "effect": "Make two scar routes look equally likely."
+        }
+      ],
+      "progression_state": {
+        "early": "The map gives three readable route logics.",
+        "mid": "Marked routes become safer and more predictable.",
+        "late": "The map anticipates Hymn before she moves unless she breaks the route grammar."
+      }
+    },
+    {
+      "id": "biomass_larder",
+      "environment_id": "ledger_larder_organs",
+      "name": "Biomass Larder",
+      "instance_premise": "A ration organ that opens by weight and records whether Hymn takes, pays, or leaves hungry.",
+      "first_visit_description": "Chorus, a larder grows into the wall. Sealed pockets hold ration meat behind thin membrane. A tongue-scale waits below them with teeth folded under its edge. It lowers when my weight shifts toward the food and clicks once before I touch it.",
+      "return_description": "A larder organ waits with thin ration pockets and a tongue-scale under the meat.",
+      "tags": ["biomass", "debt", "scarcity"],
+      "source_seed_ids": [
+        "verne_survivors_chancellor_01_hunger_and_ration",
+        "verne_mysterious_island_01_island_system",
+        "lovecraft_shadow_over_innsmouth_04_hunger_and_ration"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_survivors_chancellor_01_hunger_and_ration",
+          "source_title": "The Survivors of the Chancellor",
+          "source_author": "Jules Verne",
+          "source_moment": "Rationing becomes dramatic through exact scarcity, visible stores, and the arithmetic of who eats now against future survival.",
+          "writing_influence": "Verne's hunger writing is procedural and moral without sermon: the count itself creates pressure.",
+          "room_application": "Make the larder a counting organ. The scene should show stored meat, scale behavior, and the cost of taking or paying."
+        }
+      ],
+      "faction_ids": ["womb_syndics", "ledger_covenant", "merchant"],
+      "storyline_ids": ["ledger_tightens", "animal_city_moves"],
+      "recurring_character_ids": ["quartermaster_of_teeth", "merchant"],
+      "animal_infrastructure": [
+        {
+          "id": "marrow_lice",
+          "function": "Render stored bone and dead tissue into ration mass.",
+          "possible_interactions": ["harvest", "overfeed", "leave_working"]
+        },
+        {
+          "id": "toll_mouths",
+          "function": "Share larder accounting with corridor toll organs.",
+          "possible_interactions": ["pay", "underpay", "contest_debt"]
+        },
+        {
+          "id": "womb_wasps",
+          "function": "Offer larval credit when Hymn takes food she cannot pay for.",
+          "possible_interactions": ["accept_credit", "refuse_larva", "redirect"]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Taking ration mass without payment creates larder debt.",
+        "Balanced payment can make the Quartermaster oppose the Merchant's claim.",
+        "Larval credit matures into future animal obligation."
+      ],
+      "environment_echoes": [
+        "Later larders can open thinner pockets if Hymn takes without payment.",
+        "Paid scales can make toll mouths recognize her as a solvent body.",
+        "Leaving hungry can keep ledger pressure low but make later ration organs less generous."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_merchant_debt",
+          "label": "The Merchant Ending",
+          "pulls_toward": ["taking ration mass on credit", "accepting larval debt", "letting hunger become account"],
+          "diverts_to": ["quartermaster balance from paid scales", "soft captain transit from restrained debt"]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "slow_metabolism",
+          "effect": "Leave a larder hungry without losing route strength."
+        },
+        {
+          "capability": "ledger_tongue",
+          "effect": "Taste whether a ration pocket is food, payment, or debt bait."
+        }
+      ],
+      "progression_state": {
+        "early": "The larder tests whether Hymn feeds herself, the room, or the debt.",
+        "mid": "Prices shift and animal workers react to hunger versus greed.",
+        "late": "The Quartermaster and Merchant dispute who owns the debt."
+      }
+    },
+    {
+      "id": "drowned_toll_harbor",
+      "environment_id": "ledger_larder_organs",
+      "name": "Drowned Toll Harbor",
+      "instance_premise": "A wet toll organ where dock mouths, black fluid, and ferry larvae convert passage into contamination or ledger debt.",
+      "first_visit_description": "Chorus, this chamber holds black fluid up to my knees. Dock ribs rise from it in rows. Each rib has a payment mouth above the waterline. Pale abrasions mark the places where bodies came ashore too often.",
+      "return_description": "A drowned harbor stands ahead with black fluid high and dock mouths open above it.",
+      "tags": ["toll", "fluid", "corruption"],
+      "source_seed_ids": [
+        "lovecraft_shadow_over_innsmouth_01_ocean_pressure",
+        "verne_twenty_thousand_leagues_01_ocean_pressure",
+        "lovecraft_shadow_over_innsmouth_02_island_system"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "lovecraft_shadow_over_innsmouth_01_ocean_pressure",
+          "source_title": "The Shadow over Innsmouth",
+          "source_author": "H. P. Lovecraft",
+          "source_moment": "A wet settlement becomes threatening through physical signs: odor, waterline, local traffic, and bodies adapted to a hidden economy.",
+          "writing_influence": "Lovecraft's useful energy is civic contamination made visible in ordinary infrastructure.",
+          "room_application": "Write the harbor as a working dock, not a mood pool. Payment mouths, waterline marks, ferry bodies, and contamination traces carry the story."
+        },
+        {
+          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_moment": "Underwater pressure is handled through apparatus, timing, and the practical relation between body and medium.",
+          "writing_influence": "The fluid is dramatic because it changes what passage physically requires.",
+          "room_application": "Make wading, paying, and draining distinct operations with distinct residues."
+        }
+      ],
+      "faction_ids": ["ledger_covenant", "womb_syndics", "the_organism"],
+      "storyline_ids": ["ledger_tightens", "animal_city_moves", "clean_healing_becomes_impossible"],
+      "recurring_character_ids": ["soft_captain", "quartermaster_of_teeth", "lumen_brack"],
+      "animal_infrastructure": [
+        {
+          "id": "dock_mouths",
+          "function": "Lower rib docks after payment and report wet debt to the ledger.",
+          "possible_interactions": ["pay", "wade", "starve", "drain"]
+        },
+        {
+          "id": "larval_ferries",
+          "function": "Carry bodies through black fluid and remember cut patterns.",
+          "possible_interactions": ["ride", "protect", "pollute", "mislead"]
+        },
+        {
+          "id": "bell_polyps",
+          "function": "Carry Chorus signal through fluid and leak traffic to the organism.",
+          "possible_interactions": ["listen", "mute", "overload"]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Wading heals but gives Lumen Brack a contamination marker to follow.",
+        "Draining the harbor makes the chamber smell Hymn later.",
+        "Paid dock mouths can open quiet transit routes at the cost of ledger recognition."
+      ],
+      "environment_echoes": [
+        "Later harbors can raise or lower waterline based on whether Hymn paid or drained.",
+        "Wet markers can appear in cuts after any contaminated passage.",
+        "Paid dock mouths can coordinate with larder scales and pressure tolls."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_lumen_wet_claim",
+          "label": "The Wet Claim",
+          "pulls_toward": ["wading for recovery", "letting black fluid mark cuts", "using contaminated passage as medicine"],
+          "diverts_to": ["merchant debt from paid mouths", "soft captain transit from clean paid passage"]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "wet_breath",
+          "effect": "Use lower harbor routes without taking fluid through open cuts."
+        },
+        {
+          "capability": "scent_mask",
+          "effect": "Drain a harbor without leaving a strong wet trail."
+        }
+      ],
+      "progression_state": {
+        "early": "The harbor offers paid passage, contaminated wading, or noisy drainage.",
+        "mid": "Water level, dock prices, and contamination markers respond to prior treatment.",
+        "late": "Quiet transit can move Hymn through if ledger and contamination pressures are balanced."
+      }
+    },
+    {
+      "id": "maintenance_rite_chapel",
+      "environment_id": "operator_procedure_cellars",
+      "name": "Maintenance Rite Chapel",
+      "instance_premise": "A maintenance chamber where ritual posture is only the old shape of a working procedure.",
+      "first_visit_description": "Chorus, the room is arranged like worship, but every mark has a use. Kneel points align with drain cuts worn smooth by repeated weight. Tool-rest larvae hold position where hands used to work. The tissue stays calm while my body matches the old sequence.",
+      "return_description": "A rite chamber waits with tool-rest larvae open and drain cuts cleared for posture.",
+      "tags": ["rite", "operator", "knowledge"],
+      "source_seed_ids": [
+        "lovecraft_shunned_house_03_tainted_family_or_cult",
+        "lovecraft_dunwich_horror_04_ancient_ruin",
+        "lovecraft_at_mountains_of_madness_03_knowledge_cost"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "lovecraft_shunned_house_03_tainted_family_or_cult",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_moment": "Inherited contamination is traced through family practice, cellar signs, and the repeated arrangements people accepted as normal.",
+          "writing_influence": "Lovecraft gives old practice weight by making it legible as both habit and evidence.",
+          "room_application": "Write the chapel without mysticism. The rite is a maintenance sequence with posture, drainage, tool rests, and bodily consequences."
+        }
+      ],
+      "faction_ids": ["maintenance_orders", "archive_rot", "opened_hunt"],
+      "storyline_ids": ["rite_wants_a_hand", "animal_city_moves", "clean_healing_becomes_impossible"],
+      "recurring_character_ids": ["mother_chancel", "dr_silt_vey", "lumen_brack"],
+      "animal_infrastructure": [
+        {
+          "id": "tool_rest_larvae",
+          "function": "Hold old tool positions and test whether Hymn will complete the missing rite.",
+          "possible_interactions": ["perform_rite", "break_order", "leave"]
+        },
+        {
+          "id": "platelet_beetles",
+          "function": "Seal broken rite cuts and close shortcuts opened by disorder.",
+          "possible_interactions": ["redirect", "feed_false_wound", "crush"]
+        },
+        {
+          "id": "womb_wasps",
+          "function": "Patch ritual damage by adding repair larvae to Hymn.",
+          "possible_interactions": ["accept_repair", "refuse", "purge"]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Performing the rite lowers local pressure but increases repair claim.",
+        "Breaking rite order calls animal repair crews that treat Hymn as damage.",
+        "Taking the body edit makes chapel calm part of Hymn's future body text."
+      ],
+      "environment_echoes": [
+        "Later rite chambers can open tool rests early if Hymn performs the sequence cleanly.",
+        "Broken rite order can bring platelet beetles into later maintenance sites.",
+        "Accepted body edits can make other procedure rooms treat Hymn as compatible equipment."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_mother_chancel_tool",
+          "label": "Mother Chancel's Tool",
+          "pulls_toward": ["performing maintenance rites", "taking body edits", "letting repair claims accumulate"],
+          "diverts_to": ["operator component from diagnostic obedience", "opened hunt from repeated disorder"]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "joint_lock",
+          "effect": "Hold rite posture without letting tool-rest larvae enter the joint."
+        },
+        {
+          "capability": "purge_larvae",
+          "effect": "Reject a body edit after seeing what procedure it serves."
+        }
+      ],
+      "progression_state": {
+        "early": "The room frames ritual as machinery that still works.",
+        "mid": "The maintenance protocol learns Hymn's obedience or refusal pattern.",
+        "late": "The rite tries to install Hymn as an operator component."
+      }
+    },
+    {
+      "id": "launch_bore",
+      "environment_id": "route_navigation_organs",
+      "name": "Launch Bore",
+      "instance_premise": "A vertical launch organ whose rings fire bodies along routes after authority, measurement, or damage.",
+      "first_visit_description": "Chorus, a vertical bore opens above me, lined with contracting rings. Bell polyps sit between the rings and repeat a clipped launch phrase. The first ring tightens when I step near the mouth. The second waits at body height. One thin ring is scarred enough to cut.",
+      "return_description": "A launch bore tightens its rings when my boot reaches the mouth.",
+      "tags": ["transit", "authority", "measurement"],
+      "source_seed_ids": [
+        "verne_moon_voyage_02_mission_commander",
+        "verne_journey_into_interior_earth_03_subterranean_route",
+        "verne_mysterious_island_03_engineer_operator"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_moon_voyage_02_mission_commander",
+          "source_title": "From the Earth to the Moon",
+          "source_author": "Jules Verne",
+          "source_moment": "Launch preparation turns authority, calculation, pressure, and bodily risk into one practical sequence.",
+          "writing_influence": "Verne's launch energy comes from procedure under acceleration: timing matters because the machine will act.",
+          "room_application": "Write the bore as a launch apparatus of living rings, signal polyps, and measured body timing."
+        },
+        {
+          "seed_id": "verne_journey_into_interior_earth_03_subterranean_route",
+          "source_title": "Journey to the Center of the Earth",
+          "source_author": "Jules Verne",
+          "source_moment": "Subterranean movement is made concrete through shafts, descent routes, pressure, and forced decisions about direction.",
+          "writing_influence": "Route danger has physical orientation: up, deeper, blocked, fired, or cut open.",
+          "room_application": "Make the launch choice about direction and measurement, not abstract obedience."
+        }
+      ],
+      "faction_ids": ["chorus", "the_organism", "opened_hunt"],
+      "storyline_ids": ["chorus_narrows_mission", "survey_route_learns_her", "animal_city_moves"],
+      "recurring_character_ids": ["commandant_signal", "soft_captain", "pell_last_of_the_survey"],
+      "animal_infrastructure": [
+        {
+          "id": "launch_rings",
+          "function": "Measure body timing and fire Hymn along a pressure route.",
+          "possible_interactions": ["authorize", "measure", "cut"]
+        },
+        {
+          "id": "bell_polyps",
+          "function": "Transmit launch authorization and leak command pressure to the organism.",
+          "possible_interactions": ["confirm_signal", "mute", "overload"]
+        },
+        {
+          "id": "platelet_beetles",
+          "function": "Clot cut launch rings and mark damaged shortcuts for pursuit.",
+          "possible_interactions": ["redirect", "delay", "fight"]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Authorization strengthens Chorus authority pressure.",
+        "Measurement lets the route fire Hymn faster later but improves organism prediction.",
+        "Cut rings can create shortcuts that bleed into Opened Hunt attention."
+      ],
+      "environment_echoes": [
+        "Later launch bores can pre-tighten if Hymn accepts authorization.",
+        "Measured launch rings can fire faster but copy body timing between bores.",
+        "Cut rings can leave bleeding shortcuts that attract pursuit in other transit organs."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_commandant_launch",
+          "label": "The Commandant Launch",
+          "pulls_toward": ["accepting authorization", "letting route packets set direction", "favoring speed over local inspection"],
+          "diverts_to": ["soft captain transit from neutral routing", "opened hunt from cut launch rings"]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "brace_pressure",
+          "effect": "Hold the bore mouth open long enough to inspect its destination."
+        },
+        {
+          "capability": "split_gait",
+          "effect": "Let rings measure a false launch rhythm."
+        }
+      ],
+      "progression_state": {
+        "early": "The bore offers authority, measurement, or damage as launch methods.",
+        "mid": "Repeated authorization narrows the mission and changes future route text.",
+        "late": "Command authority offers conditional extraction while quiet transit offers a costlier neutral route."
+      }
+    }
+  ]
+}

@@ -130,6 +130,17 @@
               "advance",
               "move"
             ]
+          },
+          {
+            "label": "Mark the stride",
+            "action": "mark_red_branch",
+            "voice_aliases": [
+              "mark",
+              "trace",
+              "track",
+              "old signs",
+              "blood"
+            ]
           }
         ]
       },
@@ -182,6 +193,17 @@
               "move on",
               "advance",
               "move"
+            ]
+          },
+          {
+            "label": "Listen to the wall",
+            "action": "listen_red_wall",
+            "voice_aliases": [
+              "listen",
+              "tap",
+              "wall",
+              "hear",
+              "wait"
             ]
           }
         ]
@@ -329,6 +351,17 @@
               "advance",
               "move"
             ]
+          },
+          {
+            "label": "Seal myself with it",
+            "action": "seal_amber_wound",
+            "voice_aliases": [
+              "seal",
+              "seal seep",
+              "amber",
+              "coat",
+              "shut it"
+            ]
           }
         ]
       },
@@ -381,6 +414,17 @@
               "move on",
               "proceed",
               "step through"
+            ]
+          },
+          {
+            "label": "Probe the seam",
+            "action": "probe_amber_cache",
+            "voice_aliases": [
+              "probe",
+              "probe seam",
+              "test",
+              "amber",
+              "check wall"
             ]
           }
         ]
@@ -560,6 +604,17 @@
               "advance",
               "move"
             ]
+          },
+          {
+            "label": "Listen at the split",
+            "action": "listen_at_green_split",
+            "voice_aliases": [
+              "listen",
+              "split",
+              "hear",
+              "calm",
+              "wait"
+            ]
           }
         ]
       }
@@ -699,6 +754,17 @@
               "proceed",
               "step through"
             ]
+          },
+          {
+            "label": "Mark the split",
+            "action": "mark_red_branch",
+            "voice_aliases": [
+              "mark",
+              "trace",
+              "route",
+              "safer",
+              "line"
+            ]
           }
         ]
       }
@@ -837,6 +903,17 @@
               "move on",
               "advance",
               "move"
+            ]
+          },
+          {
+            "label": "Scavenge the bones",
+            "action": "scavenge_bones",
+            "voice_aliases": [
+              "scavenge",
+              "bones",
+              "loot",
+              "strip",
+              "cache"
             ]
           }
         ]
@@ -1025,6 +1102,17 @@
               "proceed",
               "step through"
             ]
+          },
+          {
+            "label": "Break a wider lane",
+            "action": "break_spike_lane",
+            "voice_aliases": [
+              "break",
+              "wider",
+              "spikes",
+              "force",
+              "cut through"
+            ]
           }
         ]
       }
@@ -1121,6 +1209,17 @@
               "move on",
               "proceed",
               "step through"
+            ]
+          },
+          {
+            "label": "Listen to the core",
+            "action": "observe_organ_chamber",
+            "voice_aliases": [
+              "listen",
+              "observe",
+              "breath",
+              "core",
+              "study"
             ]
           }
         ]
@@ -1227,6 +1326,17 @@
               "move on",
               "advance",
               "move"
+            ]
+          },
+          {
+            "label": "Drink the glow",
+            "action": "drink_pool",
+            "voice_aliases": [
+              "drink",
+              "sip",
+              "pool",
+              "heal",
+              "taste"
             ]
           }
         ]
@@ -1365,6 +1475,17 @@
               "move on",
               "advance",
               "move"
+            ]
+          },
+          {
+            "label": "Split one shell",
+            "action": "inspect_cracked_egg",
+            "voice_aliases": [
+              "inspect",
+              "split",
+              "egg",
+              "crack",
+              "shell"
             ]
           }
         ]

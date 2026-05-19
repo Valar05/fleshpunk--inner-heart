@@ -4,6 +4,9 @@ This guide defines what is true, what Hymn can know, who matters, and how lore b
 
 The vibe guide controls tone.
 This guide controls continuity.
+The setting backbone controls faction, character, ecology, and cross-run story architecture.
+
+Use `.agent-memory/setting_backbone.md` before generating new rooms. New room content should express a story already happening in the organism through faction behavior, animal infrastructure, recurring character traces, room memory, and delayed consequences.
 
 ## Core Premise
 
