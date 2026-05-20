@@ -113,6 +113,24 @@ Recovery is still a transaction.
 Healing may cost contamination, attention, future access, or delayed pressure.
 A restored body should usually leave residue.
 
+### Room Role Variety
+
+Purpose-built does not mean every room is an elaborate device.
+
+Only some rooms should feel like apparatus rooms. Others can be direct encounters, character beats, symbiote choices, mutation offers, nests, pools, ambushes, quiet passages, or moments of pressure around a single body or object. Do not add extra biological machinery just to prove the world is functional.
+
+The player should understand the room's role quickly:
+
+- this is a fight
+- this is a choice of symbiotes
+- this is a wounded body with a cost
+- this is a tempting pool
+- this is a narrow passage
+- this is a toll or machine
+- this is a character making an offer
+
+Use set dressing only until the role is clear. More moving parts can make the room weaker.
+
 ## Core Fun Loop
 
 The game is not about optimal stat conversion.
@@ -186,7 +204,7 @@ Bad pattern:
 - no actor remembers it
 
 Good pattern:
-- the room has a function and an appetite
+- the room has a clear role and pressure
 - a character, beast, or infrastructure system can be interacted with
 - each choice teaches the organism something different
 - consequences return later as warning, pursuit, debt, altered route text, changed offers, or a new constraint
@@ -213,6 +231,7 @@ Do not copy source prose or imitate antique diction. Transform the depth:
 - make sentences carry two jobs: sensory texture plus operational consequence
 - replace vague hedges like "may help" or "looks safer" with field judgement under uncertainty
 - avoid flat option-list prose where line two merely explains three buttons
+- avoid overexplaining biological machinery when the room is really about an enemy, character, symbiote, mutation, wound, or simple choice
 
 Bad pattern:
 - "The room wants payment. Paying is safer. Breaking it is noisy."

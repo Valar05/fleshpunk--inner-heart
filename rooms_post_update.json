@@ -11,7 +11,12 @@
       "instance_premise": "A pressure lock with old tally cuts, a fresh cut, and a toll mouth beside the seam.",
       "first_visit_description": "Chorus, a rib lock blocks the seam. One wet toll mouth hangs beside a pressure pad grown into the floor. Old tally cuts close in dry scar. The fresh cut is still bleeding. When my boot settles on the pad, a sensing cord lifts and starts matching my pulse.",
       "return_description": "A tally lock waits ahead: swollen pressure pad, wet mouth, exposed sensing cord.",
-      "tags": ["transit", "pressure", "debt", "rib_vessel_lock"],
+      "tags": [
+        "transit",
+        "pressure",
+        "debt",
+        "rib_vessel_lock"
+      ],
       "source_seed_ids": [
         "verne_twenty_thousand_leagues_02_sealed_vessel",
         "verne_survivors_chancellor_02_sealed_vessel",
@@ -27,24 +32,50 @@
           "room_application": "Write the tally gate as a working apparatus Hymn can test. The interest comes from procedure, measurement, and visible consequences, not symbolism."
         }
       ],
-      "faction_ids": ["the_organism", "ledger_covenant", "opened_hunt"],
-      "storyline_ids": ["ledger_tightens", "animal_city_moves", "chorus_narrows_mission"],
-      "recurring_character_ids": ["soft_captain", "quartermaster_of_teeth", "commandant_signal"],
+      "faction_ids": [
+        "the_organism",
+        "ledger_covenant",
+        "opened_hunt"
+      ],
+      "storyline_ids": [
+        "ledger_tightens",
+        "animal_city_moves",
+        "chorus_narrows_mission"
+      ],
+      "recurring_character_ids": [
+        "soft_captain",
+        "quartermaster_of_teeth",
+        "commandant_signal"
+      ],
       "animal_infrastructure": [
         {
           "id": "toll_mouths",
           "function": "Digest biomass payment and open rib pressure locks.",
-          "possible_interactions": ["pay", "synchronize", "starve", "force"]
+          "possible_interactions": [
+            "pay",
+            "synchronize",
+            "starve",
+            "force"
+          ]
         },
         {
           "id": "larval_ferries",
           "function": "Carry bodies through fluid pressure seams after learning weight and pulse.",
-          "possible_interactions": ["ride", "protect", "overload", "mislead"]
+          "possible_interactions": [
+            "ride",
+            "protect",
+            "overload",
+            "mislead"
+          ]
         },
         {
           "id": "platelet_beetles",
           "function": "Clot ruptured shortcuts after forced passage.",
-          "possible_interactions": ["redirect", "feed_false_wound", "fight"]
+          "possible_interactions": [
+            "redirect",
+            "feed_false_wound",
+            "fight"
+          ]
         }
       ],
       "cross_run_story_hooks": [
@@ -61,8 +92,16 @@
         {
           "id": "ending_soft_captain_transit",
           "label": "The Soft Captain Route",
-          "pulls_toward": ["pulse measurement", "careful transit", "readable repairs"],
-          "diverts_to": ["merchant debt from repeated payment", "hunt pressure from forced ribs", "chorus authority from clean signal obedience"]
+          "pulls_toward": [
+            "pulse measurement",
+            "careful transit",
+            "readable repairs"
+          ],
+          "diverts_to": [
+            "merchant debt from repeated payment",
+            "hunt pressure from forced ribs",
+            "chorus authority from clean signal obedience"
+          ]
         }
       ],
       "mutation_hooks": [
@@ -88,7 +127,12 @@
       "instance_premise": "A pressure lock where ferry-larvae are harnessed below a gap in the floor.",
       "first_visit_description": "Chorus, this rib lock has no floor. Black fluid fills the drop. Ferry-larvae hang below in cartilage harness, their backs flattened by old traffic. The smallest larva rises when my pulse changes. Larger harnesses wait near the far seam with old tendon cuts already opening.",
       "return_description": "A ferry lock opens below me: black fluid, hanging harness, larvae under matched seams.",
-      "tags": ["transit", "pressure", "ferry", "rib_vessel_lock"],
+      "tags": [
+        "transit",
+        "pressure",
+        "ferry",
+        "rib_vessel_lock"
+      ],
       "source_seed_ids": [
         "verne_twenty_thousand_leagues_02_sealed_vessel",
         "verne_survivors_chancellor_02_sealed_vessel",
@@ -112,19 +156,38 @@
           "room_application": "Make pressure and pulse the scene's grammar. Choices should feel like manipulating a hostile medium."
         }
       ],
-      "faction_ids": ["the_organism", "womb_syndics", "opened_hunt"],
-      "storyline_ids": ["animal_city_moves", "chorus_narrows_mission"],
-      "recurring_character_ids": ["soft_captain", "commandant_signal"],
+      "faction_ids": [
+        "the_organism",
+        "womb_syndics",
+        "opened_hunt"
+      ],
+      "storyline_ids": [
+        "animal_city_moves",
+        "chorus_narrows_mission"
+      ],
+      "recurring_character_ids": [
+        "soft_captain",
+        "commandant_signal"
+      ],
       "animal_infrastructure": [
         {
           "id": "larval_ferries",
           "function": "Carry bodies through fluid pressure locks after learning weight and pulse.",
-          "possible_interactions": ["ride", "protect", "overload", "mislead"]
+          "possible_interactions": [
+            "ride",
+            "protect",
+            "overload",
+            "mislead"
+          ]
         },
         {
           "id": "bell_polyps",
           "function": "Carry Chorus signal through wet pressure chambers and leak route data.",
-          "possible_interactions": ["listen", "mute", "overload"]
+          "possible_interactions": [
+            "listen",
+            "mute",
+            "overload"
+          ]
         }
       ],
       "cross_run_story_hooks": [
@@ -140,8 +203,15 @@
         {
           "id": "ending_soft_captain_transit",
           "label": "The Soft Captain Route",
-          "pulls_toward": ["protected ferries", "quiet transit", "muted over-command"],
-          "diverts_to": ["hunt pressure from overloaded ferries", "chorus confusion from repeated signal muting"]
+          "pulls_toward": [
+            "protected ferries",
+            "quiet transit",
+            "muted over-command"
+          ],
+          "diverts_to": [
+            "hunt pressure from overloaded ferries",
+            "chorus confusion from repeated signal muting"
+          ]
         }
       ],
       "mutation_hooks": [
@@ -167,7 +237,12 @@
       "instance_premise": "A damaged pressure lock where platelet beetles are sealing a split rib and leaving a temporary crawlspace.",
       "first_visit_description": "Chorus, this pressure lock was forced before I arrived. One rib is split outward. Platelet beetles seal it with red shellac from the outside face inward. Their lower repair leaves a crawlspace under the seam, narrow enough to scrape my shoulders while it closes.",
       "return_description": "A damaged rib lock closes around red shellac, repair beetles, and a narrowing crawlspace.",
-      "tags": ["transit", "pressure", "repair", "rib_vessel_lock"],
+      "tags": [
+        "transit",
+        "pressure",
+        "repair",
+        "rib_vessel_lock"
+      ],
       "source_seed_ids": [
         "verne_survivors_chancellor_02_sealed_vessel",
         "verne_twenty_thousand_leagues_01_ocean_pressure",
@@ -191,19 +266,38 @@
           "room_application": "Mutations should read as physical apparatus: shell, brace, scent mask, lung, grip. They change how the room can be handled."
         }
       ],
-      "faction_ids": ["the_organism", "opened_hunt", "maintenance_orders"],
-      "storyline_ids": ["animal_city_moves", "survey_route_learns_her"],
-      "recurring_character_ids": ["pell_last_of_the_survey", "soft_captain"],
+      "faction_ids": [
+        "the_organism",
+        "opened_hunt",
+        "maintenance_orders"
+      ],
+      "storyline_ids": [
+        "animal_city_moves",
+        "survey_route_learns_her"
+      ],
+      "recurring_character_ids": [
+        "pell_last_of_the_survey",
+        "soft_captain"
+      ],
       "animal_infrastructure": [
         {
           "id": "platelet_beetles",
           "function": "Clot ruptured shortcuts after forced passage and mark damaged transit for pursuit.",
-          "possible_interactions": ["redirect", "feed_false_wound", "fight", "preserve"]
+          "possible_interactions": [
+            "redirect",
+            "feed_false_wound",
+            "fight",
+            "preserve"
+          ]
         },
         {
           "id": "scar_mites",
           "function": "Mark damaged routes after beetle repair makes the old path unreadable.",
-          "possible_interactions": ["follow", "scrape", "misroute"]
+          "possible_interactions": [
+            "follow",
+            "scrape",
+            "misroute"
+          ]
         }
       ],
       "cross_run_story_hooks": [
@@ -219,8 +313,15 @@
         {
           "id": "ending_soft_captain_transit",
           "label": "The Soft Captain Route",
-          "pulls_toward": ["preserved repairs", "false pursuit marks", "readable transit damage"],
-          "diverts_to": ["hunt pressure from exploited repairs", "survey-route dependence from overusing repair marks"]
+          "pulls_toward": [
+            "preserved repairs",
+            "false pursuit marks",
+            "readable transit damage"
+          ],
+          "diverts_to": [
+            "hunt pressure from exploited repairs",
+            "survey-route dependence from overusing repair marks"
+          ]
         }
       ],
       "mutation_hooks": [
@@ -246,7 +347,11 @@
       "instance_premise": "A cold marrow field where survey cuts, marrow lice, and step lanes make route obedience measurable.",
       "first_visit_description": "Chorus, the corridor opens into white marrow. The floor is hard enough to click under my boot and cold enough to stiffen the glove edge. Survey cuts cross it at regular intervals. Marrow lice keep the cuts clean by eating loose warmth. One lane fits my stride too closely.",
       "return_description": "A marrow field opens ahead: cold floor, cleaned cuts, lice working inside the lanes.",
-      "tags": ["route", "isolation", "bone"],
+      "tags": [
+        "route",
+        "isolation",
+        "bone"
+      ],
       "source_seed_ids": [
         "lovecraft_at_mountains_of_madness_01_polar_expedition",
         "verne_antarctic_mystery_02_polar_expedition",
@@ -270,24 +375,47 @@
           "room_application": "Make each choice a field decision: follow the lane, spoil the lane, or take material from the field."
         }
       ],
-      "faction_ids": ["pale_survey", "opened_hunt", "archive_rot"],
-      "storyline_ids": ["survey_route_learns_her", "animal_city_moves"],
-      "recurring_character_ids": ["pell_last_of_the_survey", "glass_apostle"],
+      "faction_ids": [
+        "pale_survey",
+        "opened_hunt",
+        "archive_rot"
+      ],
+      "storyline_ids": [
+        "survey_route_learns_her",
+        "animal_city_moves"
+      ],
+      "recurring_character_ids": [
+        "pell_last_of_the_survey",
+        "glass_apostle"
+      ],
       "animal_infrastructure": [
         {
           "id": "marrow_lice",
           "function": "Sort dead bone waste into usable stores and preserve survey traces by eating warmth.",
-          "possible_interactions": ["feed", "follow", "scatter", "harvest"]
+          "possible_interactions": [
+            "feed",
+            "follow",
+            "scatter",
+            "harvest"
+          ]
         },
         {
           "id": "scar_mites",
           "function": "Maintain old route marks by consuming obsolete paths.",
-          "possible_interactions": ["bribe_with_marks", "break_pattern", "let_clean"]
+          "possible_interactions": [
+            "bribe_with_marks",
+            "break_pattern",
+            "let_clean"
+          ]
         },
         {
           "id": "leukocyte_hounds",
           "function": "Track repeated gait through cold route dependency.",
-          "possible_interactions": ["leave_false_track", "accept_wound", "fight"]
+          "possible_interactions": [
+            "leave_false_track",
+            "accept_wound",
+            "fight"
+          ]
         }
       ],
       "cross_run_story_hooks": [
@@ -304,8 +432,15 @@
         {
           "id": "ending_pell_white_route",
           "label": "The White Route",
-          "pulls_toward": ["following survey lanes", "trusting cold evidence", "letting route marks anticipate her"],
-          "diverts_to": ["opened hunt from repeated track discipline", "archive dependence from over-reading evidence"]
+          "pulls_toward": [
+            "following survey lanes",
+            "trusting cold evidence",
+            "letting route marks anticipate her"
+          ],
+          "diverts_to": [
+            "opened hunt from repeated track discipline",
+            "archive dependence from over-reading evidence"
+          ]
         }
       ],
       "mutation_hooks": [
@@ -331,7 +466,11 @@
       "instance_premise": "A maintenance cellar where wall tissue repeats operator procedure after the operators are gone.",
       "first_visit_description": "Chorus, this chamber sits below the transit tissue like a cellar under skin. The ceiling sweats through old tool holes. Lens amoebae hold in the wall at hand height. They pulse in the order an operator hand would use, then pause when my fingers come near.",
       "return_description": "An operator cellar waits with wet tool holes and lens amoebae open at hand height.",
-      "tags": ["operator", "procedure", "knowledge"],
+      "tags": [
+        "operator",
+        "procedure",
+        "knowledge"
+      ],
       "source_seed_ids": [
         "lovecraft_shunned_house_01_sealed_house_or_lab",
         "lovecraft_shunned_house_03_tainted_family_or_cult",
@@ -347,24 +486,49 @@
           "room_application": "Write the cellar as a procedure site: holes, lenses, sampling tissue, and step order reveal what the room can do."
         }
       ],
-      "faction_ids": ["maintenance_orders", "archive_rot", "chorus"],
-      "storyline_ids": ["rite_wants_a_hand", "chorus_narrows_mission", "clean_healing_becomes_impossible"],
-      "recurring_character_ids": ["dr_silt_vey", "mother_chancel", "glass_apostle"],
+      "faction_ids": [
+        "maintenance_orders",
+        "archive_rot",
+        "chorus"
+      ],
+      "storyline_ids": [
+        "rite_wants_a_hand",
+        "chorus_narrows_mission",
+        "clean_healing_becomes_impossible"
+      ],
+      "recurring_character_ids": [
+        "dr_silt_vey",
+        "mother_chancel",
+        "glass_apostle"
+      ],
       "animal_infrastructure": [
         {
           "id": "lens_amoebae",
           "function": "Watch procedure choices and relay pattern data through wet records.",
-          "possible_interactions": ["study", "blind", "let_record", "deceive"]
+          "possible_interactions": [
+            "study",
+            "blind",
+            "let_record",
+            "deceive"
+          ]
         },
         {
           "id": "womb_wasps",
           "function": "Implant maintenance larvae that repair or revise the body.",
-          "possible_interactions": ["accept_repair", "refuse", "redirect_to_wall"]
+          "possible_interactions": [
+            "accept_repair",
+            "refuse",
+            "redirect_to_wall"
+          ]
         },
         {
           "id": "tool_rest_larvae",
           "function": "Occupy missing operator tool positions and test Hymn's grip.",
-          "possible_interactions": ["perform_rite", "break_order", "leave_sealed"]
+          "possible_interactions": [
+            "perform_rite",
+            "break_order",
+            "leave_sealed"
+          ]
         }
       ],
       "cross_run_story_hooks": [
@@ -381,8 +545,15 @@
         {
           "id": "ending_operator_component",
           "label": "The Operator Component",
-          "pulls_toward": ["letting procedure sample Hymn", "accepting clean repairs", "using diagnostic forecasts"],
-          "diverts_to": ["chorus authority from strict mission obedience", "maintenance rejection from repeated refusal"]
+          "pulls_toward": [
+            "letting procedure sample Hymn",
+            "accepting clean repairs",
+            "using diagnostic forecasts"
+          ],
+          "diverts_to": [
+            "chorus authority from strict mission obedience",
+            "maintenance rejection from repeated refusal"
+          ]
         }
       ],
       "mutation_hooks": [
@@ -408,7 +579,11 @@
       "instance_premise": "A living junction where scar mites revise route marks from gait, signal packets, and old survey cuts.",
       "first_visit_description": "Chorus, the junction is mapped in scar tissue. Three routes pulse under the skin. Scar mites move grain by grain along the quiet path and leave it clean enough to read. The bright path takes my gait before I choose.",
       "return_description": "A scar junction waits with revised routes already pulsing under the skin.",
-      "tags": ["route", "signal", "memory"],
+      "tags": [
+        "route",
+        "signal",
+        "memory"
+      ],
       "source_seed_ids": [
         "verne_moon_voyage_03_navigation_system",
         "lovecraft_at_mountains_of_madness_04_navigation_system",
@@ -432,24 +607,48 @@
           "room_application": "Make copied scars useful and suspect at the same time."
         }
       ],
-      "faction_ids": ["archive_rot", "chorus", "opened_hunt"],
-      "storyline_ids": ["survey_route_learns_her", "chorus_narrows_mission", "animal_city_moves"],
-      "recurring_character_ids": ["commandant_signal", "pell_last_of_the_survey", "glass_apostle"],
+      "faction_ids": [
+        "archive_rot",
+        "chorus",
+        "opened_hunt"
+      ],
+      "storyline_ids": [
+        "survey_route_learns_her",
+        "chorus_narrows_mission",
+        "animal_city_moves"
+      ],
+      "recurring_character_ids": [
+        "commandant_signal",
+        "pell_last_of_the_survey",
+        "glass_apostle"
+      ],
       "animal_infrastructure": [
         {
           "id": "scar_mites",
           "function": "Eat and redraw route marks when a path becomes too predictable.",
-          "possible_interactions": ["mark_route", "feed_old_mark", "break_pattern"]
+          "possible_interactions": [
+            "mark_route",
+            "feed_old_mark",
+            "break_pattern"
+          ]
         },
         {
           "id": "lens_amoebae",
           "function": "Translate route behavior into forecasts the Archive Rot can price.",
-          "possible_interactions": ["read", "blind", "trade_certainty"]
+          "possible_interactions": [
+            "read",
+            "blind",
+            "trade_certainty"
+          ]
         },
         {
           "id": "leukocyte_hounds",
           "function": "Use marked routes as pursuit grammar.",
-          "possible_interactions": ["misroute", "leave_false_scent", "fight"]
+          "possible_interactions": [
+            "misroute",
+            "leave_false_scent",
+            "fight"
+          ]
         }
       ],
       "cross_run_story_hooks": [
@@ -466,8 +665,15 @@
         {
           "id": "ending_opened_hunt_route",
           "label": "The Opened Hunt Route",
-          "pulls_toward": ["trusting bright scars", "leaving exact route marks", "letting prediction become convenience"],
-          "diverts_to": ["white route from cold survey discipline", "commandant route from packet obedience"]
+          "pulls_toward": [
+            "trusting bright scars",
+            "leaving exact route marks",
+            "letting prediction become convenience"
+          ],
+          "diverts_to": [
+            "white route from cold survey discipline",
+            "commandant route from packet obedience"
+          ]
         }
       ],
       "mutation_hooks": [
@@ -493,7 +699,11 @@
       "instance_premise": "A ration organ that opens by weight and records whether Hymn takes, pays, or leaves hungry.",
       "first_visit_description": "Chorus, a larder grows into the wall. Sealed pockets hold ration meat behind thin membrane. A tongue-scale waits below them with teeth folded under its edge. It lowers when my weight shifts toward the food and clicks once before I touch it.",
       "return_description": "A larder organ waits with thin ration pockets and a tongue-scale under the meat.",
-      "tags": ["biomass", "debt", "scarcity"],
+      "tags": [
+        "biomass",
+        "debt",
+        "scarcity"
+      ],
       "source_seed_ids": [
         "verne_survivors_chancellor_01_hunger_and_ration",
         "verne_mysterious_island_01_island_system",
@@ -509,24 +719,46 @@
           "room_application": "Make the larder a counting organ. The scene should show stored meat, scale behavior, and the cost of taking or paying."
         }
       ],
-      "faction_ids": ["womb_syndics", "ledger_covenant", "merchant"],
-      "storyline_ids": ["ledger_tightens", "animal_city_moves"],
-      "recurring_character_ids": ["quartermaster_of_teeth", "merchant"],
+      "faction_ids": [
+        "womb_syndics",
+        "ledger_covenant",
+        "merchant"
+      ],
+      "storyline_ids": [
+        "ledger_tightens",
+        "animal_city_moves"
+      ],
+      "recurring_character_ids": [
+        "quartermaster_of_teeth",
+        "merchant"
+      ],
       "animal_infrastructure": [
         {
           "id": "marrow_lice",
           "function": "Render stored bone and dead tissue into ration mass.",
-          "possible_interactions": ["harvest", "overfeed", "leave_working"]
+          "possible_interactions": [
+            "harvest",
+            "overfeed",
+            "leave_working"
+          ]
         },
         {
           "id": "toll_mouths",
           "function": "Share larder accounting with corridor toll organs.",
-          "possible_interactions": ["pay", "underpay", "contest_debt"]
+          "possible_interactions": [
+            "pay",
+            "underpay",
+            "contest_debt"
+          ]
         },
         {
           "id": "womb_wasps",
           "function": "Offer larval credit when Hymn takes food she cannot pay for.",
-          "possible_interactions": ["accept_credit", "refuse_larva", "redirect"]
+          "possible_interactions": [
+            "accept_credit",
+            "refuse_larva",
+            "redirect"
+          ]
         }
       ],
       "cross_run_story_hooks": [
@@ -543,8 +775,15 @@
         {
           "id": "ending_merchant_debt",
           "label": "The Merchant Ending",
-          "pulls_toward": ["taking ration mass on credit", "accepting larval debt", "letting hunger become account"],
-          "diverts_to": ["quartermaster balance from paid scales", "soft captain transit from restrained debt"]
+          "pulls_toward": [
+            "taking ration mass on credit",
+            "accepting larval debt",
+            "letting hunger become account"
+          ],
+          "diverts_to": [
+            "quartermaster balance from paid scales",
+            "soft captain transit from restrained debt"
+          ]
         }
       ],
       "mutation_hooks": [
@@ -570,7 +809,11 @@
       "instance_premise": "A wet toll organ where dock mouths, black fluid, and ferry larvae convert passage into contamination or ledger debt.",
       "first_visit_description": "Chorus, this chamber holds black fluid up to my knees. Dock ribs rise from it in rows. Each rib has a payment mouth above the waterline. Pale abrasions mark the places where bodies came ashore too often.",
       "return_description": "A drowned harbor stands ahead with black fluid high and dock mouths open above it.",
-      "tags": ["toll", "fluid", "corruption"],
+      "tags": [
+        "toll",
+        "fluid",
+        "corruption"
+      ],
       "source_seed_ids": [
         "lovecraft_shadow_over_innsmouth_01_ocean_pressure",
         "verne_twenty_thousand_leagues_01_ocean_pressure",
@@ -594,24 +837,50 @@
           "room_application": "Make wading, paying, and draining distinct operations with distinct residues."
         }
       ],
-      "faction_ids": ["ledger_covenant", "womb_syndics", "the_organism"],
-      "storyline_ids": ["ledger_tightens", "animal_city_moves", "clean_healing_becomes_impossible"],
-      "recurring_character_ids": ["soft_captain", "quartermaster_of_teeth", "lumen_brack"],
+      "faction_ids": [
+        "ledger_covenant",
+        "womb_syndics",
+        "the_organism"
+      ],
+      "storyline_ids": [
+        "ledger_tightens",
+        "animal_city_moves",
+        "clean_healing_becomes_impossible"
+      ],
+      "recurring_character_ids": [
+        "soft_captain",
+        "quartermaster_of_teeth",
+        "lumen_brack"
+      ],
       "animal_infrastructure": [
         {
           "id": "dock_mouths",
           "function": "Lower rib docks after payment and report wet debt to the ledger.",
-          "possible_interactions": ["pay", "wade", "starve", "drain"]
+          "possible_interactions": [
+            "pay",
+            "wade",
+            "starve",
+            "drain"
+          ]
         },
         {
           "id": "larval_ferries",
           "function": "Carry bodies through black fluid and remember cut patterns.",
-          "possible_interactions": ["ride", "protect", "pollute", "mislead"]
+          "possible_interactions": [
+            "ride",
+            "protect",
+            "pollute",
+            "mislead"
+          ]
         },
         {
           "id": "bell_polyps",
           "function": "Carry Chorus signal through fluid and leak traffic to the organism.",
-          "possible_interactions": ["listen", "mute", "overload"]
+          "possible_interactions": [
+            "listen",
+            "mute",
+            "overload"
+          ]
         }
       ],
       "cross_run_story_hooks": [
@@ -628,8 +897,15 @@
         {
           "id": "ending_lumen_wet_claim",
           "label": "The Wet Claim",
-          "pulls_toward": ["wading for recovery", "letting black fluid mark cuts", "using contaminated passage as medicine"],
-          "diverts_to": ["merchant debt from paid mouths", "soft captain transit from clean paid passage"]
+          "pulls_toward": [
+            "wading for recovery",
+            "letting black fluid mark cuts",
+            "using contaminated passage as medicine"
+          ],
+          "diverts_to": [
+            "merchant debt from paid mouths",
+            "soft captain transit from clean paid passage"
+          ]
         }
       ],
       "mutation_hooks": [
@@ -655,7 +931,11 @@
       "instance_premise": "A maintenance chamber where ritual posture is only the old shape of a working procedure.",
       "first_visit_description": "Chorus, the room is arranged like worship, but every mark has a use. Kneel points align with drain cuts worn smooth by repeated weight. Tool-rest larvae hold position where hands used to work. The tissue stays calm while my body matches the old sequence.",
       "return_description": "A rite chamber waits with tool-rest larvae open and drain cuts cleared for posture.",
-      "tags": ["rite", "operator", "knowledge"],
+      "tags": [
+        "rite",
+        "operator",
+        "knowledge"
+      ],
       "source_seed_ids": [
         "lovecraft_shunned_house_03_tainted_family_or_cult",
         "lovecraft_dunwich_horror_04_ancient_ruin",
@@ -671,24 +951,48 @@
           "room_application": "Write the chapel without mysticism. The rite is a maintenance sequence with posture, drainage, tool rests, and bodily consequences."
         }
       ],
-      "faction_ids": ["maintenance_orders", "archive_rot", "opened_hunt"],
-      "storyline_ids": ["rite_wants_a_hand", "animal_city_moves", "clean_healing_becomes_impossible"],
-      "recurring_character_ids": ["mother_chancel", "dr_silt_vey", "lumen_brack"],
+      "faction_ids": [
+        "maintenance_orders",
+        "archive_rot",
+        "opened_hunt"
+      ],
+      "storyline_ids": [
+        "rite_wants_a_hand",
+        "animal_city_moves",
+        "clean_healing_becomes_impossible"
+      ],
+      "recurring_character_ids": [
+        "mother_chancel",
+        "dr_silt_vey",
+        "lumen_brack"
+      ],
       "animal_infrastructure": [
         {
           "id": "tool_rest_larvae",
           "function": "Hold old tool positions and test whether Hymn will complete the missing rite.",
-          "possible_interactions": ["perform_rite", "break_order", "leave"]
+          "possible_interactions": [
+            "perform_rite",
+            "break_order",
+            "leave"
+          ]
         },
         {
           "id": "platelet_beetles",
           "function": "Seal broken rite cuts and close shortcuts opened by disorder.",
-          "possible_interactions": ["redirect", "feed_false_wound", "crush"]
+          "possible_interactions": [
+            "redirect",
+            "feed_false_wound",
+            "crush"
+          ]
         },
         {
           "id": "womb_wasps",
           "function": "Patch ritual damage by adding repair larvae to Hymn.",
-          "possible_interactions": ["accept_repair", "refuse", "purge"]
+          "possible_interactions": [
+            "accept_repair",
+            "refuse",
+            "purge"
+          ]
         }
       ],
       "cross_run_story_hooks": [
@@ -705,8 +1009,15 @@
         {
           "id": "ending_mother_chancel_tool",
           "label": "Mother Chancel's Tool",
-          "pulls_toward": ["performing maintenance rites", "taking body edits", "letting repair claims accumulate"],
-          "diverts_to": ["operator component from diagnostic obedience", "opened hunt from repeated disorder"]
+          "pulls_toward": [
+            "performing maintenance rites",
+            "taking body edits",
+            "letting repair claims accumulate"
+          ],
+          "diverts_to": [
+            "operator component from diagnostic obedience",
+            "opened hunt from repeated disorder"
+          ]
         }
       ],
       "mutation_hooks": [
@@ -732,7 +1043,11 @@
       "instance_premise": "A vertical launch organ whose rings fire bodies along routes after authority, measurement, or damage.",
       "first_visit_description": "Chorus, a vertical bore opens above me, lined with contracting rings. Bell polyps sit between the rings and repeat a clipped launch phrase. The first ring tightens when I step near the mouth. The second waits at body height. One thin ring is scarred enough to cut.",
       "return_description": "A launch bore tightens its rings when my boot reaches the mouth.",
-      "tags": ["transit", "authority", "measurement"],
+      "tags": [
+        "transit",
+        "authority",
+        "measurement"
+      ],
       "source_seed_ids": [
         "verne_moon_voyage_02_mission_commander",
         "verne_journey_into_interior_earth_03_subterranean_route",
@@ -756,24 +1071,48 @@
           "room_application": "Make the launch choice about direction and measurement, not abstract obedience."
         }
       ],
-      "faction_ids": ["chorus", "the_organism", "opened_hunt"],
-      "storyline_ids": ["chorus_narrows_mission", "survey_route_learns_her", "animal_city_moves"],
-      "recurring_character_ids": ["commandant_signal", "soft_captain", "pell_last_of_the_survey"],
+      "faction_ids": [
+        "chorus",
+        "the_organism",
+        "opened_hunt"
+      ],
+      "storyline_ids": [
+        "chorus_narrows_mission",
+        "survey_route_learns_her",
+        "animal_city_moves"
+      ],
+      "recurring_character_ids": [
+        "commandant_signal",
+        "soft_captain",
+        "pell_last_of_the_survey"
+      ],
       "animal_infrastructure": [
         {
           "id": "launch_rings",
           "function": "Measure body timing and fire Hymn along a pressure route.",
-          "possible_interactions": ["authorize", "measure", "cut"]
+          "possible_interactions": [
+            "authorize",
+            "measure",
+            "cut"
+          ]
         },
         {
           "id": "bell_polyps",
           "function": "Transmit launch authorization and leak command pressure to the organism.",
-          "possible_interactions": ["confirm_signal", "mute", "overload"]
+          "possible_interactions": [
+            "confirm_signal",
+            "mute",
+            "overload"
+          ]
         },
         {
           "id": "platelet_beetles",
           "function": "Clot cut launch rings and mark damaged shortcuts for pursuit.",
-          "possible_interactions": ["redirect", "delay", "fight"]
+          "possible_interactions": [
+            "redirect",
+            "delay",
+            "fight"
+          ]
         }
       ],
       "cross_run_story_hooks": [
@@ -790,8 +1129,15 @@
         {
           "id": "ending_commandant_launch",
           "label": "The Commandant Launch",
-          "pulls_toward": ["accepting authorization", "letting route packets set direction", "favoring speed over local inspection"],
-          "diverts_to": ["soft captain transit from neutral routing", "opened hunt from cut launch rings"]
+          "pulls_toward": [
+            "accepting authorization",
+            "letting route packets set direction",
+            "favoring speed over local inspection"
+          ],
+          "diverts_to": [
+            "soft captain transit from neutral routing",
+            "opened hunt from cut launch rings"
+          ]
         }
       ],
       "mutation_hooks": [
@@ -808,6 +1154,1125 @@
         "early": "The bore offers authority, measurement, or damage as launch methods.",
         "mid": "Repeated authorization narrows the mission and changes future route text.",
         "late": "Command authority offers conditional extraction while quiet transit offers a costlier neutral route."
+      }
+    },
+    {
+      "id": "red_corridor",
+      "environment_id": "red_corridor",
+      "room_role": "symbiote_offer",
+      "name": "Red Corridor Foot",
+      "instance_premise": "A narrow red passage descends to a body with split armor. Symbiotes move under the ribs. One bond can be made; the others will die from shock.",
+      "first_visit_description": "Chorus, the corridor pinches at the foot of a short slope. Heat rises through the floor and fogs my visor’s edge. A body lies against the right wall with the armor split open at the chest. Three small organisms move under the exposed ribs in slow waves, testing gaps with cilia and scent. The air has copper in it and old rotkill. The slope is cramped enough that stepping past will brush the rib cage unless I turn my shoulders.",
+      "return_description": "The red tube narrows around a slope with old blood on the right wall. The split armor below is quiet unless I stop and look into the ribs.",
+      "tags": [
+        "corridor",
+        "symbiote",
+        "transit",
+        "wound"
+      ],
+      "source_seed_ids": [
+        "lovecraft_shunned_house_01_cellar_record",
+        "verne_survivors_chancellor_02_sealed_vessel"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "lovecraft_shunned_house_01_cellar_record",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_moment": "A cellar scene where accumulated stains, odors, and tool traces build a record of prior attempts before the narrator commits to another test.",
+          "writing_influence": "Evidence over mood: dried residue, medicinal odor, and repeated-use marks imply a failed procedure without declaring intent. The decision turns on bodily risk the room makes legible.",
+          "room_application": "The corridor stays a corridor. The body shows a prior operation through armor split and rotkill trace. Symbiote bonding text stresses dependency and loss of alternate options without making new machinery."
+        },
+        {
+          "seed_id": "verne_survivors_chancellor_02_sealed_vessel",
+          "source_title": "The Survivors of the Chancellor",
+          "source_author": "Jules Verne",
+          "source_moment": "Damage management under pressure where each action changes the situation’s later stability.",
+          "writing_influence": "Practical crisis tone: short, operational sentences, and consequence as altered stability rather than prophecy.",
+          "room_application": "Hymn’s choice reads as a field operation: bond, refuse, or move. Text names sensory facts (heat, slope, touch clearance) and the cost of making the corridor tighter or safer later."
+        }
+      ],
+      "faction_ids": [
+        "the_organism",
+        "womb_syndics"
+      ],
+      "storyline_ids": [
+        "animal_city_moves",
+        "chorus_narrows_mission"
+      ],
+      "recurring_character_ids": [],
+      "animal_infrastructure": [],
+      "cross_run_story_hooks": [
+        "A bonded symbiote’s scent can alter later nurse behavior in larval or larder spaces.",
+        "Refusal at a readable host site can appear later as cold ribs and slowed corridor heat."
+      ],
+      "environment_echoes": [
+        "Later red corridors can carry Hymn’s symbiote scent in warm exhalations or remain dry if she refused this bond.",
+        "Operator-smell rotkill can repeat in later procedure rooms when this host was disturbed."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_symbiosis_dependence",
+          "label": "Symbiosis Dependence",
+          "pulls_toward": [
+            "repeated body edits",
+            "nurse recognition",
+            "route opened by dependency"
+          ],
+          "diverts_to": [
+            "hunt pressure from residue scent",
+            "repair rites if edits accumulate like tools"
+          ]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "thin_body",
+          "effect": "Turning past narrow ribs without brushing the host becomes easier if already acquired."
+        },
+        {
+          "capability": "wet_breath",
+          "effect": "Holding face close to read the chest scent without coughing or noise."
+        }
+      ],
+      "progression_state": {
+        "early": "A single, legible symbiote opportunity appears in a constrained corridor.",
+        "mid": "Later corridors and nurse organs note bond scent or its absence.",
+        "late": "Repeated edits can pressure a dependence ending or pull repair rites if paired with operator residues."
+      }
+    },
+    {
+      "id": "healing_pool",
+      "environment_id": "drowned_toll_harbor",
+      "name": "Sterile Glow Pool",
+      "room_role": "recovery_beat",
+      "instance_premise": "A shallow, round pit holds a pale-glowing fluid that smells clean and carries fine motile threads. The rim is lined with tongue-smooth bone. Intake pores skim the surface only when the light brightens.",
+      "first_visit_description": "Chorus, a circular pit in the floor holds a clear, pale-glowing pool. The light rises and falls like a slow breath. A sterile smell cuts through the corridor odor. Thin white threads move under the surface and gather wherever my shadow falls. The rim bone is worn smooth by mouths and hands. When the glow peaks, narrow pores open along the inner wall and sip the top film. When it dims, the pores shut and the threads float higher.",
+      "return_description": "A round glow pool ahead: sterile smell, polished rim, threads turning toward shadow as the light swells.",
+      "tags": [
+        "recovery",
+        "contamination",
+        "pool",
+        "drowned_toll_harbor"
+      ],
+      "source_seed_ids": [
+        "verne_survivors_chancellor_02_sealed_vessel",
+        "lovecraft_shunned_house_01_cellar_contamination"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_survivors_chancellor_02_sealed_vessel",
+          "source_title": "The Survivors of the Chancellor",
+          "source_author": "Jules Verne",
+          "source_moment": "A damaged hold’s water ingress is tracked by smell, level, and timing until action is possible.",
+          "writing_influence": "Procedure framed by measurement: watch the breathing light and the intake pores; act on the peak or during stillness for different outcomes.",
+          "room_application": "Make the pool’s cycle operational. Choices feel like timing a clean intake versus sampling residue at the rim."
+        },
+        {
+          "seed_id": "lovecraft_shunned_house_01_cellar_contamination",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_moment": "Accumulated cellar evidence—odors, stains, growth—signals a long, bad interaction between cure and corruption.",
+          "writing_influence": "Evidence-first contamination: sterile smell that isn’t safe, threads that answer shadow, bone smoothed by repeat use.",
+          "room_application": "Healing is suspect by residue. Studying can lower corruption but marks the pool’s attention elsewhere."
+        }
+      ],
+      "faction_ids": [
+        "the_organism",
+        "womb_syndics",
+        "ledger_covenant"
+      ],
+      "storyline_ids": [
+        "chorus_narrows_mission",
+        "animal_city_moves"
+      ],
+      "recurring_character_ids": [
+        "quartermaster_of_teeth"
+      ],
+      "animal_infrastructure": [
+        {
+          "id": "toll_mouths",
+          "function": "Elsewhere-linked exchange organs that price intake and residue across wet rooms.",
+          "possible_interactions": [
+            "pay",
+            "synchronize",
+            "starve"
+          ]
+        },
+        {
+          "id": "bell_polyps",
+          "function": "Carry Chorus signal through wet chambers and leak route data.",
+          "possible_interactions": [
+            "listen",
+            "mute",
+            "overload"
+          ]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Taking wet healing leaves a marker that later wet rooms can read as open intake.",
+        "Rim sampling can smudge that marker and reduce corruption but teaches the pool your temperature rhythm.",
+        "Retreating twice at healing sites can raise later pursuit attention: the smell of restraint travels."
+      ],
+      "environment_echoes": [
+        "Later drowned toll harbors can read a wet marker set here and pre-open intake at approach timing.",
+        "A later rib lock’s wet side can taste for the same sterile marker on her skin.",
+        "If she studies instead of drinks, later wet rooms can hesitate—threads gather but pores delay.",
+        "Quartermaster of Teeth can price the wet marker at a dock mouth, treating it like pre-payment scent."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_lumen_wet_claim",
+          "label": "The Lumen Route",
+          "pulls_toward": [
+            "repeated wet healing",
+            "intake rhythm learned",
+            "clean smell carried"
+          ],
+          "diverts_to": [
+            "ledger_claim from paid docks",
+            "hunter pressure from repeated refusal at recovery"
+          ]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "wet_breath",
+          "effect": "Breathe through the glow cycle and drink deeper without surfacing during dim periods."
+        },
+        {
+          "capability": "scent_mask",
+          "effect": "Hide the sterile marker after drinking so later wet rooms do not pre-open intake."
+        }
+      ],
+      "progression_state": {
+        "early": "Pool cycles open and shut; threads gather under shadow. Choice between drink, study, or withdraw.",
+        "mid": "Later wet rooms reference intake rhythm or sterile marker depending on action.",
+        "late": "Stacked wet markers can bias routes toward the Lumen ending; repeated refusals can raise hunt attention in wet spaces."
+      }
+    },
+    {
+      "id": "egg_corridor",
+      "environment_id": "red_corridor",
+      "name": "Egg Corridor",
+      "instance_premise": "A transit vein narrowed by brood-growth. Egg sacs crowd the passage and react to heat, scent, and rupture. Some are near hatching.",
+      "first_visit_description": "Chorus, the corridor pinches into a brood lane. Egg sacs swell from both walls and meet at my shoulders. Their skins hold water-clear yolk with pale threads moving inside. When my sleeve brushes a sac, its cilia tighten and the skin warms under my wrist. A feeder valve at knee height opens and closes on my heat, pulsing yolk smell into the lane. Old burn marks make one narrow route with bubbled resin along the floor. On the right, a single shell is open and dripping; wet drag ridges cross the film toward a side fold. The feeder valve keeps breathing now, and each pulse draws nearby cilia to face my knee.",
+      "return_description": "A brood lane returns: tight sacs, sweet air, one open shell and a side fold scored with wet drag.",
+      "tags": [
+        "transit",
+        "nest",
+        "hazard",
+        "resource",
+        "red_corridor"
+      ],
+      "source_seed_ids": [
+        "verne_survivors_chancellor_02_sealed_vessel",
+        "lovecraft_shunned_house_01_contamination_record"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_survivors_chancellor_02_sealed_vessel",
+          "source_title": "The Survivors of the Chancellor",
+          "source_author": "Jules Verne",
+          "source_moment": "A damaged space is crossed by managing phase-change hazards: heat, smoke, water ingress; the narrator tracks condition shifts rather than sermonizing.",
+          "writing_influence": "Procedural crisis tone: name the changing medium (sweet air, rupture heat, resin bubbles), make each action alter that medium in a legible way.",
+          "room_application": "Burning eggs changes air and leaves resin record; slipping controls disturbance; harvesting alters scent and draws nursery attention."
+        },
+        {
+          "seed_id": "lovecraft_shunned_house_01_contamination_record",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_moment": "Accumulated small evidences—ooze, stains, smell—build a record of prior events and exposure without declaring conclusions.",
+          "writing_influence": "Evidence-first dread: shell drips, drag ridges, open film; the room reads as a record that can be added to.",
+          "room_application": "Checking a cracked shell yields residue and a quiet ledger of contact; following drag marks trades safety for a learned trail."
+        }
+      ],
+      "faction_ids": [
+        "the_organism",
+        "womb_syndics",
+        "opened_hunt"
+      ],
+      "storyline_ids": [
+        "animal_city_moves",
+        "chorus_narrows_mission"
+      ],
+      "recurring_character_ids": [
+        "soft_captain"
+      ],
+      "animal_infrastructure": [
+        {
+          "id": "nursery_sacs",
+          "function": "Grow and time clutches in corridor pinch-points; respond to heat and scent.",
+          "possible_interactions": [
+            "harvest",
+            "burn",
+            "avoid"
+          ]
+        },
+        {
+          "id": "hatchling_tracks",
+          "function": "Carry fresh body sign deeper into folds; teach hunters and nurses where to go.",
+          "possible_interactions": [
+            "follow",
+            "smear",
+            "lose"
+          ]
+        },
+        {
+          "id": "brood_air",
+          "function": "A scented carrier medium that thickens with yolk and heat; routes nursery reading through the lane.",
+          "possible_interactions": [
+            "test",
+            "thin",
+            "load_scent"
+          ]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Resin-burn lanes can appear in later brood corridors, changing passage and danger.",
+        "Scent-heavy harvests can make later nursery spaces orient toward Hymn’s profile.",
+        "Following a fresh trail can schedule a hatchling guard later instead of now."
+      ],
+      "environment_echoes": [
+        "Another brood lane can show bubbled resin from prior burns, easing passage but making air harsh.",
+        "Later nursery rooms can present pre-aligned sacs that part for her scent if she harvested boldly.",
+        "Side folds elsewhere can present a delayed hatchling guard sourced from a followed trail."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_opened_hunt_pressure",
+          "label": "Opened Hunt Pressure",
+          "pulls_toward": [
+            "disturbance",
+            "scent marks",
+            "trail following"
+          ],
+          "diverts_to": [
+            "soft_captain_transit via quiet slips",
+            "merchant_debt via paying for later clean burns"
+          ]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "wet_breath",
+          "effect": "Slip longer lanes without coughing resin air after burns or ruptures."
+        },
+        {
+          "capability": "scent_mask",
+          "effect": "Harvest or track without leaving a strong nursery profile."
+        }
+      ],
+      "progression_state": {
+        "early": "Brood lane offers harvest, burn, or slip; a cracked shell offers residue or pursuit.",
+        "mid": "Later brood lanes echo resin lanes, scent, or scheduled hatchling pressure.",
+        "late": "Repeated disturbance can pull a specialized nursery hunter; repeated quiet slips keep the organism’s brood learning thin."
+      }
+    },
+    {
+      "id": "bone_corridor",
+      "environment_id": "red_corridor",
+      "name": "Bone Corridor",
+      "instance_premise": "A narrow passage plated in fused bones with caches, marked strides, and living stricture points. One sentinel sometimes guards a cache. Plates can teach obedience or cut her if she resists.",
+      "first_visit_description": "Chorus, a bone-lined corridor narrows and widens by ribs. Old heaps are fused into lanes. White dust hangs and sets in my throat. Plates pass load between seams when I step. A rib screen holds a cache pocket; a live brace pad under the screen tightens if a hand rests there. Every print I leave shows on the pale floor like a counted error; barbs turn a fraction toward skin heat when I pause.",
+      "return_description": "Another bone corridor: rib screens, dust, plate seams, and a cache smell under the dry air.",
+      "tags": [
+        "transit",
+        "hazard",
+        "resource",
+        "red_corridor"
+      ],
+      "source_seed_ids": [
+        "lovecraft_at_mountains_of_madness_02_ancient_ruin",
+        "verne_twenty_thousand_leagues_01_ocean_pressure"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "lovecraft_at_mountains_of_madness_02_ancient_ruin",
+          "source_title": "At the Mountains of Madness",
+          "source_moment": "Architecture read through wear, dust, and residue that implies prior use and failed exits.",
+          "writing_influence": "Evidence-first dread: dry powder, fused heaps, precise footmarks, and rib wear give history before I move.",
+          "room_application": "Describe the corridor as accumulated bone work with readable traces: dust grind, stride marks, fused caches, polished barbs."
+        },
+        {
+          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_moment": "Pressure and fit described as calculable conditions the body must answer.",
+          "writing_influence": "Mechanism under stress: plate seams, inward barbs, shoulder clearance, and guard posture written as operations I can test.",
+          "room_application": "Make forcing, probing, and marked-lane obedience feel like procedure: count stride, read barb angle, decide cache vs passage."
+        }
+      ],
+      "faction_ids": [
+        "the_organism",
+        "opened_hunt",
+        "pale_survey"
+      ],
+      "storyline_ids": [
+        "animal_city_moves",
+        "survey_route_learns_her"
+      ],
+      "recurring_character_ids": [
+        "pell_last_of_the_survey"
+      ],
+      "animal_infrastructure": [
+        {
+          "id": "marrow_lice",
+          "function": "Eat loose warmth and keep lanes cut clean.",
+          "possible_interactions": [
+            "follow",
+            "scavenge",
+            "mislead"
+          ]
+        },
+        {
+          "id": "platelet_beetles",
+          "function": "Seal ruptures and close forced shortcuts.",
+          "possible_interactions": [
+            "preserve",
+            "redirect",
+            "break"
+          ]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Stride obedience can show up as aligned plates in later corridors.",
+        "Forced narrowings can echo as tightening ribs elsewhere.",
+        "Scraped caches and dust prints can let hunters read route timing."
+      ],
+      "environment_echoes": [
+        "Later corridors can show plate seams pre-set to her stride if she followed marked lanes.",
+        "Broken rib strictures can tick in distant walls after a force-through.",
+        "Cleaned caches can appear empty with dust settled in her boot pattern."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_plate_snare_route",
+          "label": "Plate Snare",
+          "pulls_toward": [
+            "marked-lane obedience",
+            "stride imprint"
+          ],
+          "diverts_to": [
+            "injury from breaking patterns",
+            "opened_hunt arrival"
+          ]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "thin_body",
+          "effect": "Squeeze through strictures without full barb contact."
+        },
+        {
+          "capability": "hard_shell",
+          "effect": "Scrape through barbs with reduced wound."
+        }
+      ],
+      "progression_state": {
+        "early": "Readable bones: cache, marks, and a narrow stricture.",
+        "mid": "Plates and barbs start answering her stride or her force habit.",
+        "late": "Route narrows into either snare obedience or carved, noisy passages that attract hunters."
+      }
+    },
+    {
+      "id": "amber_corridor",
+      "environment_id": "red_corridor",
+      "name": "Amber Pressure Lane",
+      "room_role": "apparatus/resource temptation/transit",
+      "instance_situation": "The plaque is live and ticking through a count; nearby amber sacs are unevenly loaded, some taut and some leaking now.",
+      "room_scope": "narrow apparatus",
+      "instance_premise": "A corridor whose wall-skin holds resin pressure. Amber sacs and plaques regulate scent and count traffic.",
+      "first_visit_description": "Chorus, the corridor walls glow the color of dried fat. Amber veins run under the skin like slow cords. Some sacs are full and hard; others leak a sweet scent that sticks to the glove. Floor seams are tight; the pressure here is stored, not vented. Cutting or sealing will change how this lane sounds behind me.",
+      "return_description": "Amber sacs hang heavy. A flat plaque sits at hand height with bead organs ticking under a resin lid.",
+      "tags": [
+        "transit",
+        "pressure",
+        "amber",
+        "debt",
+        "red_corridor"
+      ],
+      "source_seed_ids": [
+        "verne_twenty_thousand_leagues_01_ocean_pressure",
+        "lovecraft_shunned_house_01_contamination_record"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_moment": "External pressure is treated as a calculable condition the hull must answer.",
+          "writing_influence": "Make corridor pressure legible: sacs as reservoirs, plaque as count, actions as adjustments to noise and seal.",
+          "room_application": "Describe sacs and plaque as working parts storing route pressure. Cutting relieves and leaves scent; sealing restores shield with residue; paying keeps the lane quiet."
+        },
+        {
+          "seed_id": "lovecraft_shunned_house_01_contamination_record",
+          "source_title": "The Shunned House",
+          "source_moment": "Accumulated stains, odors, and growths build evidence of prior use and contamination.",
+          "writing_influence": "Let resin smell, clouding, and plaque-ticks serve as records. Dread comes from residue that other organs can read.",
+          "room_application": "When Hymn takes or pays, the amber keeps a tell: scent print, click count, clouded patch that later tolls and hunters can use."
+        }
+      ],
+      "faction_ids": [
+        "the_organism",
+        "ledger_covenant",
+        "opened_hunt"
+      ],
+      "storyline_ids": [
+        "animal_city_moves",
+        "ledger_tightens"
+      ],
+      "recurring_character_ids": [
+        "quartermaster_of_teeth"
+      ],
+      "animal_infrastructure": [
+        {
+          "id": "toll_mouths",
+          "function": "Digest biomass and quiet ledger-linked corridors.",
+          "possible_interactions": [
+            "pay",
+            "starve",
+            "force"
+          ]
+        },
+        {
+          "id": "platelet_beetles",
+          "function": "Seal ruptures after resin overdraw or forced passage.",
+          "possible_interactions": [
+            "preserve",
+            "redirect"
+          ]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Resin toll payments appear as clean clicks in later toll mouths.",
+        "Overdrawn or broken amber leaves scent that pursuit can lift later.",
+        "Quieted plaques reduce immediate noise but increase Claim visibility."
+      ],
+      "environment_echoes": [
+        "Later red corridors can show clouded resin, open counts, or sealed seams matching Hymn’s choices.",
+        "Ledger-linked mouths can repeat the same click count pattern after payment or refusal."
+      ],
+      "environment_echo_bindings": [
+        {
+          "flag": "amber_lane_scent_print",
+          "target_environment": "opened_hunt",
+          "handler_id": "hunter_scent_lift",
+          "min_delay_rooms": 1
+        },
+        {
+          "flag": "amber_seam_softened",
+          "target_environment": "red_corridor",
+          "handler_id": "noise_variant",
+          "min_delay_rooms": 1
+        },
+        {
+          "flag": "amber_self_seal_residue",
+          "target_environment": "red_corridor",
+          "handler_id": "noise_variant",
+          "min_delay_rooms": 1
+        },
+        {
+          "flag": "amber_resin_film",
+          "target_environment": "red_corridor",
+          "handler_id": "noise_variant",
+          "min_delay_rooms": 1
+        },
+        {
+          "flag": "amber_pressure_preserved",
+          "target_environment": "red_corridor",
+          "handler_id": "noise_variant",
+          "min_delay_rooms": 1
+        },
+        {
+          "flag": "amber_plaque_paid",
+          "target_environment": "toll_mouths",
+          "handler_id": "ledger_count_repeat",
+          "min_delay_rooms": 1
+        },
+        {
+          "flag": "ledger_clean_count",
+          "target_environment": "toll_mouths",
+          "handler_id": "ledger_count_repeat",
+          "min_delay_rooms": 1
+        },
+        {
+          "flag": "amber_plaque_unpaid",
+          "target_environment": "toll_mouths",
+          "handler_id": "ledger_count_repeat",
+          "min_delay_rooms": 1
+        },
+        {
+          "flag": "ledger_open_count",
+          "target_environment": "toll_mouths",
+          "handler_id": "ledger_count_repeat",
+          "min_delay_rooms": 1
+        },
+        {
+          "flag": "amber_plaque_partial",
+          "target_environment": "toll_mouths",
+          "handler_id": "ledger_count_repeat",
+          "min_delay_rooms": 1
+        },
+        {
+          "flag": "lane_noise_carried",
+          "target_environment": "red_corridor",
+          "handler_id": "noise_variant",
+          "min_delay_rooms": 1
+        },
+        {
+          "flag": "attention_tick",
+          "target_environment": "opened_hunt",
+          "handler_id": "hunter_scent_lift",
+          "min_delay_rooms": 1
+        },
+        {
+          "flag": "opportunity_lost",
+          "target_environment": "ledger_covenant",
+          "handler_id": "ledger_count_repeat",
+          "min_delay_rooms": 1
+        }
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_soft_captain_transit",
+          "label": "The Soft Captain Route",
+          "pulls_toward": [
+            "quiet transit",
+            "readable pressure",
+            "measured resource use"
+          ],
+          "diverts_to": [
+            "merchant debt from repeated plaque use",
+            "hunt attention from greedy cuts"
+          ]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "scent_mask",
+          "effect": "Reduce how much a cut sac’s sweetness marks the lane for hunters."
+        },
+        {
+          "capability": "hard_shell",
+          "effect": "Press against hot resin without opening a new wound."
+        }
+      ],
+      "progression_state": {
+        "early": "Amber offers biomass, shield, or quiet passage with readable residue.",
+        "mid": "Later corridors mirror paid counts, scent marks, or sealed seams.",
+        "late": "Consistent quieting and measured siphons can bias routes toward low-noise transit, unless debt or scent pressure tips a reckoning."
+      }
+    },
+    {
+      "id": "spiked_red_corridor",
+      "environment_id": "red_corridor",
+      "name": "Spiked Red Corridor",
+      "instance_premise": "A narrowing red passage where bone spines grow in rows and a Spine Stalker waits between lanes.",
+      "first_visit_description": "Chorus, the corridor walls are red bone with live spine rows. The floor spikes grow in counter-rows, staggered to close a walking lane one notch at a time. Old impacts show where shoulders forced space between tips. A thin scrape line crosses low near the left wall where someone crawled under a set that hadn’t finished hardening. A soft click repeats ahead at spine interval. That click matches a body holding still to ambush between rows.",
+      "return_description": "A red spine corridor tightens in rows. Old shoulder scrapes, a low crawl line, and the same patient click ahead.",
+      "tags": [
+        "transit",
+        "hazard",
+        "ambush",
+        "red_corridor"
+      ],
+      "source_seed_ids": [
+        "verne_twenty_thousand_leagues_01_ocean_pressure",
+        "lovecraft_shunned_house_01_residue_cellar"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_moment": "Pressure made legible through named parts and sequence before the danger resolves.",
+          "writing_influence": "Make closure a countable sequence: alternating spine rows, notch-by-notch lane loss, and timing a pass between closes.",
+          "room_application": "Describe the corridor as rows that close in order. Choices test brace/timing/clearance instead of abstract risk."
+        },
+        {
+          "seed_id": "lovecraft_shunned_house_01_residue_cellar",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_moment": "Dread from accumulated stains and structural clues in a cellar before contact.",
+          "writing_influence": "Let prior scrapes, stains, and the patient click build evidence of a waiting predator.",
+          "room_application": "Show old shoulder gouges and a crawl scrape as records. The stalker’s click is evidence, not an announcement."
+        }
+      ],
+      "faction_ids": [
+        "the_organism",
+        "opened_hunt"
+      ],
+      "storyline_ids": [
+        "animal_city_moves",
+        "chorus_narrows_mission"
+      ],
+      "recurring_character_ids": [
+        "commandant_signal"
+      ],
+      "animal_infrastructure": [
+        {
+          "id": "spine_lanes",
+          "function": "Grow and retract on an interval to close or open a passable path.",
+          "possible_interactions": [
+            "push",
+            "break",
+            "time",
+            "crawl"
+          ]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Broken lanes leave grit and vibration other hunters can key on.",
+        "Timed passage can make later red corridors present wider gaps on the same interval.",
+        "Forced breaks encourage platelet beetles to seal future red lanes faster."
+      ],
+      "environment_echoes": [
+        "Later red corridors can show widened low crawls if Hymn prefers underpasses.",
+        "If she breaks lanes, later corridors may present hardened spike tips and fewer timing windows.",
+        "If she times passage cleanly, the next corridor may open one extra beat on her interval."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_hunt_pressure",
+          "label": "Opened Hunt Route",
+          "pulls_toward": [
+            "repeated ambush avoidance",
+            "forced lanes",
+            "noise signs"
+          ],
+          "diverts_to": [
+            "clean timing that cools pursuit",
+            "alternate marrow routes if crawls become habit"
+          ]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "thin_body",
+          "effect": "Fit the low crawl without scraping shield or skin."
+        },
+        {
+          "capability": "hard_shell",
+          "effect": "Take shoulder scrapes with less wound when forcing a lane."
+        }
+      ],
+      "progression_state": {
+        "early": "Corridor offers three reads: force a lane, time a pass, or take the low crawl.",
+        "mid": "Subsequent red corridors echo whether she forced, timed, or crawled.",
+        "late": "Repeated forcing invites faster sealing and hunter pressure; repeated timing can open a quieter sequence."
+      },
+      "contract": {
+        "contract_version": "post_update_1",
+        "migration_status": "ready",
+        "prose_review_passed": true,
+        "event_coverage_ok": true,
+        "echo_hooks_bound": true,
+        "handler_map": {
+          "actions_verified": [
+            "push_through_spikes",
+            "break_spike_lane",
+            "proceed",
+            "run",
+            "retreat",
+            "combat"
+          ],
+          "proceed_handler": "proceed",
+          "run_handler": "run",
+          "retreat_handler": "retreat",
+          "combat_handler": "corridor_spine_stalker"
+        },
+        "enemy_binding": {
+          "enemy_id": "spine_stalker",
+          "environment_variant": "lane_flattened_back"
+        },
+        "deck_pool_policy": {
+          "base_pools": [
+            "enemy",
+            "route",
+            "random_non_special"
+          ],
+          "weights": {
+            "default": {
+              "enemy": 3,
+              "route": 2,
+              "random_non_special": 1
+            },
+            "under_hunt_variant": {
+              "enemy": 4,
+              "route": 1,
+              "random_non_special": 1
+            }
+          }
+        }
+      },
+      "environment_echo_bindings": {
+        "red_lane_forced_noise": {
+          "handler_id": "red_corridor_noisy_variant",
+          "effects": {
+            "hunt_pressure_delta": 1,
+            "deck_weight_profile": "under_hunt_variant"
+          },
+          "later_text_variant": "Rows ahead keep a fine tremor where tips touch. Shoulder-room reads tighter and louder."
+        },
+        "red_lane_broken_grit": {
+          "handler_id": "red_corridor_grit_trace_variant",
+          "effects": {
+            "grit_trace": true
+          },
+          "later_text_variant": "Red grit holds in tread marks. Floor rows show chipped tips aligned to a kicked lane."
+        },
+        "red_lane_interval_kept": {
+          "handler_id": "red_corridor_timing_window_variant",
+          "effects": {
+            "timing_window": "kept"
+          },
+          "later_text_variant": "Open beats arrive on a readable count. One window holds a breath longer than the rest."
+        },
+        "red_lane_blood_scent": {
+          "handler_id": "red_corridor_predator_weight",
+          "effects": {
+            "predator_weight_delta": 1
+          },
+          "later_text_variant": "The air is copper-sour. Lane rows carry a dragged scent between tips."
+        },
+        "red_lane_interval_used_under_hunt": {
+          "handler_id": "red_corridor_ambush_offtime_variant",
+          "effects": {
+            "ambush_offtime": true
+          },
+          "later_text_variant": "A rear row clicks out of time once, like something missed its catch."
+        },
+        "red_lane_withdrawn_seal": {
+          "handler_id": "red_corridor_fast_close_variant",
+          "effects": {
+            "close_speed_delta": 1,
+            "next_instance_bias": "immediate"
+          },
+          "later_text_variant": "Fresh hardening ridges make the next rows close sooner than the count suggests."
+        }
+      }
+    },
+    {
+      "id": "organ_chamber_red",
+      "environment_id": "red_corridor",
+      "name": "Hanging Core Chamber",
+      "instance_premise": "A furnace-sized heart hangs from black cords. A keeper-grown body stands rooted below it, guarding the pulse vent that clears downstream routes.",
+      "first_visit_description": "Chorus, the corridor opens into a red organ chamber. A heart the size of a furnace hangs from black cords and vents heat on the downbeat. A rooted keeper stands under it with plates over the ribs and a grafted hook in place of one hand. Each pulse pushes a breath against my chest hard enough to move my sight for a half second. Black cords creak when the beat surges. The far seam stays closed between beats. As I pass, a counting ring in the vent clicks once after the exhale, as if holding the last beat.",
+      "return_description": "A hot red chamber with a hanging heart, creaking cords, and the keeper planted under the vent. The vent ring still clicks once after a long exhale.",
+      "tags": [
+        "enemy",
+        "guard",
+        "red_corridor"
+      ],
+      "source_seed_ids": [
+        "verne_twenty_thousand_leagues_01_ocean_pressure",
+        "lovecraft_shunned_house_01_residue"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_moment": "Pressure described as a calculable condition the machine must answer, not ambiance.",
+          "writing_influence": "Name the parts that answer pressure and make beat-timing a legible risk.",
+          "room_application": "The heart’s pulse is a measurable interval that affects approach, attack rhythm, and bypass timing."
+        },
+        {
+          "seed_id": "lovecraft_shunned_house_01_residue",
+          "source_title": "The Shunned House",
+          "source_moment": "Accumulated stains and growths that testify to prior use and failed procedures.",
+          "writing_influence": "Let residue mark previous entries and keeper work without declaring motive.",
+          "room_application": "Old splash arcs on the wall and cord polish at grasp-height show how intruders were handled here."
+        }
+      ],
+      "faction_ids": [
+        "the_organism",
+        "opened_hunt"
+      ],
+      "storyline_ids": [
+        "animal_city_moves",
+        "chorus_narrows_mission"
+      ],
+      "recurring_character_ids": [
+        "commandant_signal"
+      ],
+      "animal_infrastructure": [
+        {
+          "id": "pulse_vent",
+          "function": "Clears heat and pressure waves in timed beats that open far seams briefly.",
+          "possible_interactions": [
+            "observe",
+            "time",
+            "force"
+          ]
+        },
+        {
+          "id": "cords_black",
+          "function": "Suspend the core and transmit beat load to wall anchors.",
+          "possible_interactions": [
+            "cut",
+            "brace",
+            "hide_timing"
+          ]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "A recorded pulse interval can make later red seams open on Hymn’s rhythm for one beat.",
+        "Spilled keeper plate fragments can appear in later red corridors after a fight."
+      ],
+      "environment_echoes": [
+        "Later red corridors can present short on-beat openings if Hymn matched breathing here.",
+        "Broken cord residue can reappear as a harsher beat in a follow-up red room."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_soft_captain_transit",
+          "label": "The Soft Captain Route",
+          "pulls_toward": [
+            "measured approach",
+            "timed passage",
+            "quiet bypass"
+          ],
+          "diverts_to": [
+            "hunt pressure from unresolved guardians",
+            "authority pressure from forced entries"
+          ]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "brace_pressure",
+          "effect": "Stabilize breath and stance during beat spikes in this family, holding through a vent surge without staggering."
+        },
+        {
+          "capability": "thin_body",
+          "effect": "Reduce target window at on-beat seams so the keeper’s reach clips past while you slip the opening."
+        }
+      ],
+      "progression_state": {
+        "early": "The keeper holds the vent. Hymn can fight or time a bypass.",
+        "mid": "Red corridors echo recorded rhythm or spilled plate residue.",
+        "late": "Measured red timing can combine with other transit measurements toward a quiet route if combat was avoided."
+      }
+    },
+    {
+      "id": "split_green_corridor",
+      "environment_id": "red_corridor",
+      "name": "Split Green Corridor",
+      "instance_premise": "A corridor divides around a living green support spine. One branch is soft, warm, and moist; the other is dry shell over cartilage. Spores ride floor flex. A small airway control is mounted in the wall.",
+      "first_visit_description": "Chorus, the corridor splits around a green support spine. The left branch stays wet and warm. Footfalls leave slow-closing prints and hold my calf heat after a test step. The right branch is dry shell over exposed cartilage with bright scrape marks that line up where tools were dragged. Green spores drift ankle-high and collect in heel cups from other bodies. When the floor flexes under my boot, the cloud lifts and shows a broken run of wider prints. A thumb-sized airway wheel sits in the wall between the mouths, its tubes running under both branch floors. Brown oil stains ring the wheel from old turns.",
+      "return_description": "A green split ahead: warm soft lane left, dry shell right, spores low, a small airway wheel between them.",
+      "tags": [
+        "transit",
+        "corridor",
+        "spores",
+        "route_choice"
+      ],
+      "source_seed_ids": [
+        "verne_twenty_thousand_leagues_02_sealed_vessel",
+        "lovecraft_shunned_house_01_fungus_record"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_twenty_thousand_leagues_02_sealed_vessel",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_moment": "Narration slows to name parts and explain how a compartment answers pressure before movement begins.",
+          "writing_influence": "Procedure made legible: parts, sequence, failure modes. The split reads as lanes managed by tissue and airflow.",
+          "room_application": "Name the soft lane, dry shell, spores, and airway wheel. Choices manipulate airflow, tissue contact, or disturbance with concrete, testable outcomes."
+        },
+        {
+          "seed_id": "lovecraft_shunned_house_01_fungus_record",
+          "source_title": "The Shunned House",
+          "source_moment": "Fungal growth and lingering contamination are catalogued through stains, odors, and repeated attempts to suppress them.",
+          "writing_influence": "Evidence-first contamination: spores hold to prints; suppression has residue and can draw future attention.",
+          "room_application": "Let spore prints and muted airflow become readable tells that can echo in later corridors and hunter pressure without stating future mechanics."
+        }
+      ],
+      "faction_ids": [
+        "the_organism",
+        "opened_hunt"
+      ],
+      "storyline_ids": [
+        "animal_city_moves",
+        "survey_route_learns_her"
+      ],
+      "recurring_character_ids": [
+        "commandant_signal"
+      ],
+      "animal_infrastructure": [
+        {
+          "id": "bell_polyps",
+          "function": "Carry Chorus signal through nearby tissue and leak route data when airflow is muted.",
+          "possible_interactions": [
+            "listen",
+            "mute",
+            "overload"
+          ]
+        },
+        {
+          "id": "spore_motes",
+          "function": "Mark gait and disturbance; can medicate shallow wounds while raising contamination and attention.",
+          "possible_interactions": [
+            "disturb",
+            "slip",
+            "wait"
+          ]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Muted lanes can draw diaphragms in later corridors that constrict breathing windows.",
+        "Heavy spore disturbance can make later hunter forms track by lifted prints instead of scent.",
+        "Soft-lane contact can leave warmth records that bias later corridor tissue to close slower or cling."
+      ],
+      "environment_echoes": [
+        "Later corridors can present flattened diaphragm growth if airway wheels were muted repeatedly.",
+        "Spore floors elsewhere can show Hymn’s stride spacing when she crossed carefully.",
+        "Dry-shell branches may show bright scrape continuity from earlier cuts of green support spine."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_soft_captain_transit",
+          "label": "The Soft Captain Route",
+          "pulls_toward": [
+            "careful passage",
+            "measured suppression",
+            "readable spoor"
+          ],
+          "diverts_to": [
+            "smother-hunter pressure from repeated muting",
+            "pursuit from lifted spore prints"
+          ]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "wet_breath",
+          "effect": "Hold breath and pass muted-air corridors without triggering diaphragm attention."
+        },
+        {
+          "capability": "scent_mask",
+          "effect": "Cross spore fields with fewer readable prints after careful movement."
+        }
+      ],
+      "progression_state": {
+        "early": "The split offers soft contact, resource cut, spore management, and a small airway control.",
+        "mid": "Later corridors echo airflow muting and spore handling as diaphragm growth, lifted prints, or clinging tissue.",
+        "late": "Repeated muting or disturbance can bend route selection toward constriction hunters or quiet lanes if handled gently."
+      },
+      "room_role": "route_choice / transit apparatus",
+      "apparatus_function": "Route airway balancing via wheel, tissue contact registration, spore record-making when Hymn is absent."
+    },
+    {
+      "id": "split_red_corridor",
+      "environment_id": "red_corridor",
+      "name": "Split Red Corridor",
+      "instance_premise": "A red fork where one lane wraps a swollen artery and the other is a dry, cracked plate run. Pressure is unstable. A hunter can peel from the artery wall when heat or movement spikes.",
+      "first_visit_description": "Chorus, the corridor splits around a red artery. The wet side hugs the vessel; it pulses and leaves sweat on the wall. The dry side is a plate lane split into sharp hex seams. Air is hot on the artery side and thin over the plates. Old heel dust is caught in the plate cracks. Fresh red beads push through the artery skin at shoulder height.",
+      "return_description": "A hot red fork: wet artery against one wall, cracked plates on the other. Heat shimmer, thin air, and bead-sweat at shoulder height.",
+      "tags": [
+        "transit",
+        "route",
+        "pressure",
+        "red_corridor"
+      ],
+      "source_seed_ids": [
+        "verne_twenty_thousand_leagues_01_ocean_pressure",
+        "lovecraft_at_mountains_of_madness_02_ancient_ruin"
+      ],
+      "corpus_influences": [
+        {
+          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_moment": "Pressure as measurable condition that a vessel must answer; narration makes danger legible through parts and sequence.",
+          "writing_influence": "Name pressure vectors and failure modes: artery pulse, wall bead, plate edge, breath cost. Choices read like managing medium, not guessing.",
+          "room_application": "Describe the fork as two pressure languages: fluid pulse versus brittle plates. Each option states physical cost, timing, and what the corridor learns (scent, stride, noise)."
+        },
+        {
+          "seed_id": "lovecraft_at_mountains_of_madness_02_ancient_ruin",
+          "source_title": "At the Mountains of Madness",
+          "source_moment": "Accumulated evidence from architecture and wear builds dread without declaring intent.",
+          "writing_influence": "Let old heel dust, plate scratches, and bead lines imply prior use and surveillance. Mark inference as inference.",
+          "room_application": "Recordable traces matter: opening the artery leaves a scent record; bracing through plates leaves a stride cut; marking leaves a route tell that later corridors can copy."
+        }
+      ],
+      "faction_ids": [
+        "the_organism",
+        "opened_hunt"
+      ],
+      "storyline_ids": [
+        "animal_city_moves",
+        "chorus_narrows_mission"
+      ],
+      "recurring_character_ids": [
+        "commandant_signal"
+      ],
+      "animal_infrastructure": [
+        {
+          "id": "arterial_sensors",
+          "function": "Read heat and movement along wet corridor walls and express it as bead-sweat and pulse knots.",
+          "possible_interactions": [
+            "open",
+            "vent",
+            "rush",
+            "mark"
+          ]
+        },
+        {
+          "id": "plate_ridge_line",
+          "function": "Carry gait and weight as micro-cuts along dry seams.",
+          "possible_interactions": [
+            "brace",
+            "rush",
+            "mark"
+          ]
+        },
+        {
+          "id": "blood_hunters",
+          "function": "Shear from arterial walls in response to heat and fresh scent to remove intruders.",
+          "possible_interactions": [
+            "fight",
+            "avoid",
+            "mislead"
+          ]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "Opening wet routes can make later red corridors sweat early at Hymn’s approach.",
+        "Marking branches can reduce later hunter chance but expose her lane preference.",
+        "Rushing through dry seams can cut a readable stride that later plate corridors align to."
+      ],
+      "environment_echoes": [
+        "Later red corridors can show pre-wet bead lines that match her last open, or dry lanes can carry her heel-spacing.",
+        "Hunter spawns can reference fresh scent from prior artery work.",
+        "Marked branches can appear as cleaner splits with less noise two rooms later."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_soft_captain_transit",
+          "label": "The Soft Captain Route",
+          "pulls_toward": [
+            "careful route marks",
+            "measured pressure handling",
+            "reduced hunter pressure"
+          ],
+          "diverts_to": [
+            "opened_hunt escalation from heat and rush",
+            "commandant_signal pressure from repeated venting under order cadence"
+          ]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "brace_pressure",
+          "effect": "Hold the dry lane plates without deep cutting her stride."
+        },
+        {
+          "capability": "thin_body",
+          "effect": "Slip past a half-open artery without dumping fresh scent on the wall."
+        }
+      ],
+      "progression_state": {
+        "early": "The fork offers artery, dry plates, or marking for a quieter later path.",
+        "mid": "Repeated wet handling pre-wets later arteries; plate bracing repeats stride in later dry forks.",
+        "late": "Quiet marked branches aggregate into safer red corridors unless heat and rush have already trained hunters."
       }
     }
   ]

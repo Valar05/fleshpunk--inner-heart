@@ -19,6 +19,7 @@ LEGACY_ROOMS_PATH = ROOT / "room_dialogue.json"
 LEGACY_EVENTS_PATH = ROOT / "events.json"
 POST_UPDATE_ROOMS_PATH = ROOT / "rooms_post_update.json"
 POST_UPDATE_EVENTS_PATH = ROOT / "events_post_update.json"
+SYMBIOTES_PATH = ROOT / "symbiotes.json"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -79,6 +80,13 @@ class ContentStore:
         self.events_path = paths["events"]
         self.rooms_payload = load_json(self.rooms_path)
         self.events_payload = load_json(self.events_path)
+        symbiotes_payload = load_json(SYMBIOTES_PATH) if SYMBIOTES_PATH.exists() else {}
+        symbiotes = symbiotes_payload.get("symbiotes", [])
+        self.symbiotes_by_id = {
+            str(symbiote.get("id")): symbiote
+            for symbiote in symbiotes
+            if isinstance(symbiote, dict) and symbiote.get("id")
+        }
         self.rooms = [
             room
             for room in self.rooms_payload.get("rooms", [])
@@ -128,10 +136,43 @@ def format_list(values: Any) -> str:
 def event_action_result(event: dict[str, Any], action: str) -> dict[str, Any]:
     results = event.get("action_results", {})
     if isinstance(results, dict):
-        result = results.get(action, {})
+        base_action = action.split(":", 1)[0]
+        result = results.get(action, results.get(base_action, {}))
         if isinstance(result, dict):
             return result
     return {}
+
+
+def display_buttons_for_event(store: ContentStore, event: dict[str, Any]) -> list[dict[str, Any]]:
+    buttons: list[dict[str, Any]] = []
+    symbiote_choices = event.get("symbiote_choices", [])
+    explicit_choice_count = 0
+    if isinstance(symbiote_choices, list):
+        for symbiote_id_variant in symbiote_choices:
+            symbiote_id = str(symbiote_id_variant)
+            if not symbiote_id:
+                continue
+            explicit_choice_count += 1
+            symbiote = store.symbiotes_by_id.get(symbiote_id, {})
+            label = str(symbiote.get("name", symbiote_id.replace("_", " ").title()))
+            buttons.append({
+                "label": f"Bond: {label}",
+                "action": f"take_symbiote:{symbiote_id}",
+                "voice_aliases": ["bond", "take symbiote", label.lower()],
+            })
+    if explicit_choice_count == 0 and event.get("symbiote_choice_count") is not None:
+        choice_count = int(event.get("symbiote_choice_count", 0))
+        for symbiote_id, symbiote in list(store.symbiotes_by_id.items())[:choice_count]:
+            label = str(symbiote.get("name", symbiote_id.replace("_", " ").title()))
+            buttons.append({
+                "label": f"Random bond option: {label}",
+                "action": f"take_symbiote:{symbiote_id}",
+                "voice_aliases": ["bond", "take symbiote", label.lower()],
+            })
+    raw_buttons = event.get("buttons", [])
+    if isinstance(raw_buttons, list):
+        buttons.extend(button for button in raw_buttons if isinstance(button, dict))
+    return buttons
 
 
 def preview_markdown(store: ContentStore, room_id: str) -> str:
@@ -176,8 +217,8 @@ def preview_markdown(store: ContentStore, room_id: str) -> str:
         if event.get("line_2"):
             lines.append(str(event.get("line_2", "")))
             lines.append("\n\n")
-        buttons = event.get("buttons", [])
-        if isinstance(buttons, list) and buttons:
+        buttons = display_buttons_for_event(store, event)
+        if buttons:
             lines.append(md_heading(3, "Choices"))
             for button in buttons:
                 if not isinstance(button, dict):
@@ -343,9 +384,9 @@ def event_markdown(store: ContentStore, event_id: str) -> str:
     lines.append(f"{event.get('line_1', '')}\n\n")
     lines.append(f"{event.get('line_2', '')}\n\n")
 
-    buttons = event.get("buttons", [])
+    buttons = display_buttons_for_event(store, event)
     lines.append(md_heading(2, "Choices"))
-    if isinstance(buttons, list) and buttons:
+    if buttons:
         for button in buttons:
             if not isinstance(button, dict):
                 continue

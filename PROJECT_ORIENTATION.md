@@ -5,6 +5,7 @@
 Run this first when re-entering the project:
 
 ```sh
+source ~/.bashrc
 python tools/project_bootstrap.py
 ```
 

@@ -17,6 +17,8 @@ She should sound like a person reporting from inside a hostile working system:
 - restrained enough that dread comes from evidence, not performance
 - clipped enough to remain playable
 
+This formula is not permission to turn every room into an apparatus description. In non-apparatus rooms, "apparatus" can be replaced by the actual pressure point: enemy, character, symbiote, wound, pool, nest, corridor, offer, or body. The prose still stays empirical, but it does not need to explain a machine that is not central to the scene.
+
 Keep the radio-report frame. Hymn reports to Chorus. Chorus does not answer in printed text.
 
 ## House Voice Contract
@@ -158,6 +160,8 @@ Unified:
 2. Make The Mechanism Dramatic
 
 The interest is not only what the room looks like. The interest is how it works while Hymn is present.
+
+Use this rule only when a mechanism is actually the room's point. If the room is a symbiote host, a hunter, a wounded body, a merchant, or a quiet passage, make that encounter dramatic instead of inventing additional machinery.
 
 Bad:
 

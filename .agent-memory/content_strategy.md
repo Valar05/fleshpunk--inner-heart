@@ -73,6 +73,24 @@ When generating scenarios, mechanics, or lore:
 13. Treat mutations as story capabilities and future room verbs, not combat upgrades first. A mutation should help with some later room mechanisms while increasing or reducing specific ending pressure.
 14. Require a specific corpus influence for every room instance. Reject rooms that only use corpus as mood, provenance, citation, genre, or broad inspiration.
 
+## Anti-Overmechanization Rule
+
+The post-update contract is a guardrail, not the desired surface texture.
+
+Do not make every room read like a pressure-machine diagram, procedural puzzle, or Rube Goldberg device. The game is not a parade of clever biological mechanisms. A room can be simple, immediate, quiet, predatory, wounded, empty, or uncanny. It still needs consequence, but consequence can come from mood, scarcity, pursuit, debt, injury, lost information, or character pressure rather than a new bespoke apparatus.
+
+Forward migration should preserve the broad feel and pacing of legacy rooms while raising the writing level:
+
+- one strong room identity is better than six interacting parts
+- one memorable image plus one playable pressure is enough for many rooms
+- avoid stacking valves, beetles, tally organs, stride records, scent marks, and follow-up systems into the same room unless the legacy room already demands that density
+- do not make the text sound derivative of the existing post-update rooms
+- keep descriptions readable in play; the player should feel danger and option pressure before they feel schema compliance
+- let some rooms be corridors, pools, nests, shrines, ambushes, or rests, not all infrastructure puzzles
+- event text should not merely explain button economics or future scheduler hooks
+
+Critiques should reject content that satisfies metadata while feeling overdesigned, too mechanical, too derivative, or unlike the game being made.
+
 ## Critique Standard
 
 A critique that says the current post-update rooms are broadly good is too soft.
@@ -80,7 +98,7 @@ A critique that says the current post-update rooms are broadly good is too soft.
 The current post-update room track is a scaffold, not finished content. It proves text-only room loading and seed-based direction. It does not yet satisfy the desired room depth.
 
 Critiques must flag:
-- rooms with only one event
+- broad environment-family rooms with only one event, unless the room has a narrow role such as symbiote offer, ambush, recovery beat, mutation offer, or character encounter
 - rooms with no specific corpus influence, or a source seed id without the actual passage-level writing move being transformed
 - rooms or environment families with no ending vector
 - mutations that only change combat stats and do not create room capabilities

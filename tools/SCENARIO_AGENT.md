@@ -65,12 +65,28 @@ python tools/scenario_agent.py balance-critique --out generated/balance_critique
 python tools/scenario_agent.py remember-balance generated/balance_critique.json --notes "Use this as current run-feel direction."
 ```
 
-Critique fun factor and whether the organism is directing the run toward outcomes:
+Critique blind first-time fun, whether visible rooms/choices build into a run, and whether the organism is directing play toward outcomes:
 
 ```sh
 python tools/scenario_agent.py fun-context
 python tools/scenario_agent.py fun-critique --out generated/fun_critique.json
 python tools/scenario_agent.py remember-fun generated/fun_critique.json --notes "Use this as current fun-loop direction."
+```
+
+Plan character-driven story architecture from the current repo data:
+
+```sh
+python tools/scenario_agent.py story-architect-context
+python tools/scenario_agent.py story-architect --out generated/story_architect.json
+python tools/scenario_agent.py remember-story-architecture generated/story_architect.json --notes "Use this as current story-spine direction."
+```
+
+Generate and apply a story pilot patch from the current architecture:
+
+```sh
+python tools/scenario_agent.py story-pilot --out generated/story_pilot_patch.json
+python tools/scenario_agent.py apply-story-pilot generated/story_pilot_patch.json --dry-run
+python tools/scenario_agent.py apply-story-pilot generated/story_pilot_patch.json
 ```
 
 Critique lore continuity, Chorus usage, and Hymn's knowledge boundaries:

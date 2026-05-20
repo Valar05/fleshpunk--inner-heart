@@ -49,6 +49,164 @@
       "effects": {
         "contact_damage": 3
       }
+    },
+    {
+      "id": "rotkill_liver",
+      "name": "Rotkill Liver",
+      "description": "Endure fouled pools, rotkill wash, and bad fluid. Sturdier blood, slower first strike.",
+      "biomass_cost": 7,
+      "mechanic_hook": "contamination_tolerance",
+      "room_hooks": [
+        "drowned_toll_harbor",
+        "red_corridor",
+        "future_rotkill_rooms"
+      ],
+      "effects": {
+        "max_health_delta": 2,
+        "initiative_delta": -0.05
+      }
+    },
+    {
+      "id": "scar_reader",
+      "name": "Scar Reader",
+      "description": "Read old cuts, route marks, and wound-script before the room finishes lying.",
+      "biomass_cost": 6,
+      "mechanic_hook": "route_mark_literacy",
+      "room_hooks": [
+        "white_marrow_field",
+        "scar_map_junction",
+        "operator_cellar"
+      ],
+      "effects": {
+        "initiative_delta": 0.05
+      }
+    },
+    {
+      "id": "nurse_scent_gland",
+      "name": "Nurse Scent Gland",
+      "description": "Smell less like prey to larvae, hatchlings, and weak symbiotes. Hunters can learn the scent.",
+      "biomass_cost": 7,
+      "mechanic_hook": "larval_and_symbiote_calm",
+      "room_hooks": [
+        "rib_lock_larval_cradle",
+        "red_corridor",
+        "biomass_larder"
+      ],
+      "effects": {
+        "battle_start_shield": 2,
+        "speed_multiplier": 0.95
+      }
+    },
+    {
+      "id": "toll_tongue",
+      "name": "Toll Tongue",
+      "description": "Bargain with mouths, ledgers, and resin debt before the price becomes teeth.",
+      "biomass_cost": 6,
+      "mechanic_hook": "biomass_debt_bargain",
+      "room_hooks": [
+        "rib_lock_tally_gate",
+        "biomass_larder",
+        "drowned_toll_harbor"
+      ],
+      "effects": {
+        "max_shield_delta": 1
+      }
+    },
+    {
+      "id": "false_pulse",
+      "name": "False Pulse",
+      "description": "Lie to tally organs, measuring rings, and anything that opens a fight by reading you.",
+      "biomass_cost": 8,
+      "mechanic_hook": "identity_spoof",
+      "room_hooks": [
+        "rib_lock_tally_gate",
+        "launch_bore",
+        "future_authority_rooms"
+      ],
+      "effects": {
+        "initiative_delta": 0.1,
+        "max_health_delta": -1
+      }
+    },
+    {
+      "id": "wound_lock",
+      "name": "Wound Lock",
+      "description": "Clamp red splits, open cuts, and pressure leaks long enough to pass through them.",
+      "biomass_cost": 8,
+      "mechanic_hook": "wound_pressure_control",
+      "room_hooks": [
+        "rib_lock_clot_bypass",
+        "drowned_toll_harbor",
+        "launch_bore"
+      ],
+      "effects": {
+        "max_shield_delta": 3,
+        "speed_multiplier": 0.95
+      }
+    },
+    {
+      "id": "clot_step_feet",
+      "name": "Clot-Step Feet",
+      "description": "Cross brittle marrow, egg fields, and sleeping floors without waking every nerve.",
+      "biomass_cost": 7,
+      "mechanic_hook": "quiet_traversal",
+      "room_hooks": [
+        "white_marrow_field",
+        "biomass_larder",
+        "future_enemy_rooms"
+      ],
+      "effects": {
+        "speed_multiplier": 1.1,
+        "damage_delta": -1
+      }
+    },
+    {
+      "id": "larder_gut",
+      "name": "Larder Gut",
+      "description": "Digest unsafe ration matter, eggs, and grub credit before it turns into debt.",
+      "biomass_cost": 7,
+      "mechanic_hook": "unsafe_biomass_conversion",
+      "room_hooks": [
+        "biomass_larder",
+        "drowned_toll_harbor",
+        "future_scarcity_rooms"
+      ],
+      "effects": {
+        "max_health_delta": 1
+      }
+    },
+    {
+      "id": "split_shed",
+      "name": "Split Shed",
+      "description": "Leave a skin, scent, or heat trace behind when retreating or breaking a route pattern.",
+      "biomass_cost": 8,
+      "mechanic_hook": "decoy_escape",
+      "room_hooks": [
+        "scar_map_junction",
+        "rib_lock_clot_bypass",
+        "future_hunter_rooms"
+      ],
+      "effects": {
+        "speed_multiplier": 1.05,
+        "max_shield_delta": -1
+      }
+    },
+    {
+      "id": "anchor_rib",
+      "name": "Anchor Rib",
+      "description": "Hold position against current, launch pressure, ferry pull, and forced movement.",
+      "biomass_cost": 8,
+      "mechanic_hook": "forced_movement_resistance",
+      "room_hooks": [
+        "rib_lock_larval_cradle",
+        "drowned_toll_harbor",
+        "launch_bore"
+      ],
+      "effects": {
+        "battle_start_shield": 4,
+        "speed_multiplier": 0.9,
+        "initiative_delta": -0.05
+      }
     }
   ]
 }

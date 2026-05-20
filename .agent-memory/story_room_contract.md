@@ -20,10 +20,11 @@ Every forward room needs:
 
 - An `environment_id` or other grouping identity that says what kind of space this belongs to.
 - A concrete `corpus_influences` entry naming the specific source passage, authorial move, scene energy, or character function the room is trying to bottle.
-- A concrete organism function: what work this environment performs when Hymn is not present.
+- A clear room role: apparatus, enemy encounter, character encounter, symbiote offer, mutation offer, recovery, resource temptation, route choice, ambush, rest beat, story pressure, or simple passage.
+- If the room is an apparatus room, name what work the environment performs when Hymn is not present. If it is not an apparatus room, do not invent machinery to satisfy the schema.
 - A specific instance situation: what is happening in this drawn room right now.
-- At least one interactable actor or infrastructure system: animal, organ, parasite, tool, route intelligence, faction remnant, or recurring character trace.
-- Three or more room events before the room is considered complete.
+- At least one interactable pressure point: animal, enemy, character, parasite, organ, tool, route intelligence, faction remnant, symbiote, mutation, wound, resource, or environmental hazard.
+- Enough event coverage for the room's role. Broad environment-family rooms usually need three or more events. A narrow role room, such as a symbiote-host choice or a single ambush, can be complete with one focused event if the choice is playable, memorable, and consequential.
 - A first-read description that gives enough background to make the current choice intelligible.
 - At least one delayed consequence that appears in a later room instance, special event, deck pressure, or environment echo.
 - At least one environment memory flag or state change caused by a player choice.
@@ -99,7 +100,7 @@ Hymn's player-facing narration can imply future pressure through an observable t
 Every choice should answer:
 
 - What is Hymn physically doing?
-- What system is she interacting with?
+- What pressure point is she interacting with: body, enemy, character, symbiote, route, object, resource, wound, or system?
 - What immediate bargain does the player understand?
 - What does this environment or actor learn, remember, charge, damage, open, close, or misread later?
 
@@ -217,3 +218,13 @@ The player should not always know where a mutation will help. The capability sho
 ## Completion Bar
 
 A room is not complete when it has valid buttons. A room is complete when a player can describe what kind of place this is, what is happening in this instance, why the choices matter, and what future pressure they may have created elsewhere in the dungeon.
+
+## Variety Standard
+
+Do not make every room an apparatus room.
+
+The organism has infrastructure, but the game also needs enemies, characters, offers, quiet corridors, wounds, nests, pools, ambushes, and direct choices. A symbiote-host room can be about the body on the floor and the cost of bonding. A hunter room can be about whether Hymn fights, slips past, or misdirects it. A rest or recovery room can be about need, risk, and contamination. These rooms do not need extra valves, tally organs, beetles, route records, or pressure logic unless those elements are already the point.
+
+Strong migration preserves the legacy room's core role first, then raises the writing level. If a legacy room is mostly "choose one symbiote," the forward version should make that choice vivid and consequential, not wrap it in unnecessary machinery.
+
+Use enough setting texture to ground the room, then stop. One clear image and one playable pressure often beat a dense explanation of how the whole space works.

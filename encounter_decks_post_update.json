@@ -58,7 +58,9 @@
   "room_pools": {
     "enemy": [
       "white_marrow_field",
-      "drowned_toll_harbor"
+      "drowned_toll_harbor",
+      "healing_pool",
+      "spiked_red_corridor"
     ],
     "branch": [
       "scar_map_junction",
@@ -70,7 +72,15 @@
       "rib_lock_clot_bypass",
       "operator_cellar",
       "biomass_larder",
-      "maintenance_rite_chapel"
+      "maintenance_rite_chapel",
+      "red_corridor",
+      "healing_pool",
+      "egg_corridor",
+      "bone_corridor",
+      "amber_corridor",
+      "organ_chamber_red",
+      "split_green_corridor",
+      "split_red_corridor"
     ],
     "route": [
       "rib_lock_tally_gate",
@@ -78,11 +88,21 @@
       "rib_lock_clot_bypass",
       "white_marrow_field",
       "scar_map_junction",
-      "launch_bore"
+      "launch_bore",
+      "red_corridor",
+      "healing_pool",
+      "egg_corridor",
+      "bone_corridor",
+      "amber_corridor",
+      "spiked_red_corridor",
+      "organ_chamber_red",
+      "split_green_corridor",
+      "split_red_corridor"
     ],
     "resource": [
       "biomass_larder",
-      "drowned_toll_harbor"
+      "drowned_toll_harbor",
+      "healing_pool"
     ],
     "knowledge": [
       "operator_cellar",
@@ -98,7 +118,16 @@
       "biomass_larder",
       "drowned_toll_harbor",
       "maintenance_rite_chapel",
-      "launch_bore"
+      "launch_bore",
+      "red_corridor",
+      "healing_pool",
+      "egg_corridor",
+      "bone_corridor",
+      "amber_corridor",
+      "spiked_red_corridor",
+      "organ_chamber_red",
+      "split_green_corridor",
+      "split_red_corridor"
     ]
   }
 }

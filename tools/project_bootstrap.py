@@ -31,6 +31,17 @@ CONTENT_AUTHORSHIP_WORKFLOW_PATH = ROOT / ".agent-memory" / "content_authorship_
 ACTION_CASE_RE_TEMPLATE = r'^{indent}"([^"]+)":\s*$'
 WORLD_HANDLED_ACTIONS = {"proceed", "combat", "browse_wares", "restart_run"}
 STORY_ENGINE_CONTENT_TRACK = "post_update_text_only"
+NARROW_ROOM_ROLES = {
+    "ambush",
+    "character_encounter",
+    "enemy_encounter",
+    "mutation_offer",
+    "quiet_passage",
+    "recovery_beat",
+    "rest_beat",
+    "simple_passage",
+    "symbiote_offer",
+}
 ENVIRONMENT_GROUP_KEYS = {
     "environment_id",
     "environment",
@@ -253,6 +264,14 @@ def has_mutation_hooks(room_record: dict[str, Any]) -> bool:
     return isinstance(hooks, list) and any(isinstance(hook, dict) and hook.get("capability") for hook in hooks)
 
 
+def is_narrow_room_role(room_record: dict[str, Any]) -> bool:
+    room_role = str(room_record.get("room_role", "")).strip()
+    if room_role in NARROW_ROOM_ROLES:
+        return True
+    tags = room_record.get("tags", [])
+    return isinstance(tags, list) and any(str(tag) in NARROW_ROOM_ROLES for tag in tags)
+
+
 def has_room_memory_change(event: dict[str, Any]) -> bool:
     return any(event.get(key) for key in ROOM_MEMORY_KEYS)
 
@@ -316,23 +335,32 @@ def creative_room_findings(rooms_payload: dict[str, Any], events_payload: dict[s
             findings.append(f"{room_id}: room events are not a list")
             continue
         room_record = rooms_by_id.get(str(room_id), {})
+        narrow_room = is_narrow_room_role(room_record)
         environment_id = environment_id_for_room(str(room_id), room_record)
         family_event_count = environment_event_counts.get(environment_id, len(events)) if story_engine_track else len(events)
-        if family_event_count < 3:
+        if family_event_count < 3 and not narrow_room:
             findings.append(f"{room_id}: thin environment family with only {family_event_count} event{'s' if family_event_count != 1 else ''}")
-        if not any(isinstance(event, dict) and has_delayed_consequence(event) for event in events):
+        if not narrow_room and not any(isinstance(event, dict) and has_delayed_consequence(event) for event in events):
             findings.append(f"{room_id}: no explicit delayed consequence or memory hook")
         if story_engine_track and not has_environment_group(room_record):
             findings.append(f"{room_id}: no explicit environment grouping")
-        if story_engine_track and not has_environment_echo_plan(room_record):
+        if story_engine_track and not narrow_room and not has_environment_echo_plan(room_record):
             findings.append(f"{room_id}: no later-instance/environment echo plan")
         if story_engine_track and not has_specific_corpus_influence(room_record):
             findings.append(f"{room_id}: no specific corpus writing influence")
-        if story_engine_track and not has_ending_vector(room_record):
+        if story_engine_track and not narrow_room and not has_ending_vector(room_record):
             findings.append(f"{room_id}: no ending vector")
-        if story_engine_track and not has_mutation_hooks(room_record):
+        if story_engine_track and not narrow_room and not has_mutation_hooks(room_record):
             findings.append(f"{room_id}: no mutation openings")
-        missing_story_keys = [key for key in required_story_keys if not room_record.get(key)]
+        scoped_story_keys = required_story_keys
+        if narrow_room:
+            scoped_story_keys = (
+                "faction_ids",
+                "storyline_ids",
+                "cross_run_story_hooks",
+                "progression_state",
+            )
+        missing_story_keys = [key for key in scoped_story_keys if not room_record.get(key)]
         if missing_story_keys:
             findings.append(f"{room_id}: missing story backbone keys ({', '.join(missing_story_keys)})")
         if story_engine_track and not any(isinstance(event, dict) and has_room_memory_change(event) for event in events):
@@ -551,6 +579,7 @@ def print_bootstrap() -> int:
         print("Clean")
 
     print_section("Useful Commands")
+    print("source ~/.bashrc")
     print("python tools/project_bootstrap.py --strict")
     print("python tools/scenario_agent.py context")
     print("python tools/scenario_agent.py content-authorship")

@@ -346,6 +346,7 @@ func consume_current_event(action_id: String = "") -> void:
 	if current_encounter.is_empty() or bool(current_encounter.get("consumed", false)):
 		return
 
+	var result_snapshot_before := _build_result_snapshot()
 	var room_id := str(current_encounter.get("room_id", ""))
 	var event_id := str(current_encounter.get("event_id", ""))
 	var event_data: Dictionary = current_encounter.get("event_data", {})
@@ -362,6 +363,7 @@ func consume_current_event(action_id: String = "") -> void:
 	_last_action_result = _apply_event_action_result(action_id, event_data, _last_action_result)
 	_last_action_result = _with_director_lines(_last_action_result, _enqueue_story_followup(action_id, event_data))
 	_last_action_result = _with_director_lines(_last_action_result, _record_action_pattern(action_id, event_data))
+	_last_action_result = _with_result_delta_lines(_last_action_result, result_snapshot_before)
 	current_encounter["consumed"] = true
 
 
@@ -868,27 +870,92 @@ func _collect_eligible_events_for_room(room_id: String, preferred_type: String =
 
 func _build_room_encounter(room_id: String, event_data: Dictionary) -> Dictionary:
 	var room_data := get_room_data(room_id)
-	var enemy_data := _resolve_enemy_data(event_data)
-	var scene_path := str(event_data.get("scene_path", ""))
-	if scene_path == "" and str(event_data.get("type", "")) == "combat":
+	var prepared_event_data := _prepare_event_data(event_data)
+	var enemy_data := _resolve_enemy_data(prepared_event_data)
+	var scene_path := str(prepared_event_data.get("scene_path", ""))
+	if scene_path == "" and str(prepared_event_data.get("type", "")) == "combat":
 		scene_path = str(enemy_data.get("scene_path", ""))
 	return {
 		"kind": "room_event",
 		"room_id": room_id,
 		"room_data": room_data,
-		"event_id": str(event_data.get("id", "")),
-		"event_data": event_data.duplicate(true),
+		"event_id": str(prepared_event_data.get("id", "")),
+		"event_data": prepared_event_data,
 		"scene_path": scene_path,
-		"lines": _build_lines(room_data, event_data),
-		"buttons": _build_buttons(event_data),
+		"lines": _build_lines(room_data, prepared_event_data),
+		"buttons": _build_buttons(prepared_event_data),
 		"enemy_data": enemy_data,
 		"counts_as_room": true,
 		"consumed": false
 	}
 
 
+func _prepare_event_data(event_data: Dictionary) -> Dictionary:
+	var prepared_event_data := _apply_state_overrides(event_data)
+	if prepared_event_data.has("symbiote_choice_count") and not prepared_event_data.has("symbiote_choices"):
+		var available_symbiote_ids := _get_available_symbiote_ids()
+		var choice_count := int(prepared_event_data.get("symbiote_choice_count", 3))
+		prepared_event_data["symbiote_choices"] = _draw_symbiote_choices(available_symbiote_ids, choice_count)
+	return prepared_event_data
+
+
+func _apply_state_overrides(event_data: Dictionary) -> Dictionary:
+	var prepared_event_data := event_data.duplicate(true)
+	var overrides_variant = event_data.get("state_overrides", [])
+	if not overrides_variant is Array:
+		return prepared_event_data
+
+	for override_variant in overrides_variant:
+		if not override_variant is Dictionary:
+			continue
+		var override: Dictionary = override_variant
+		if not _state_override_matches(override):
+			continue
+
+		var event_override_variant = override.get("event", {})
+		if event_override_variant is Dictionary:
+			var event_override: Dictionary = event_override_variant
+			for key in event_override.keys():
+				prepared_event_data[key] = event_override[key]
+
+		var consume_keys := _normalize_string_array(override.get("consume_state_keys", []))
+		if consume_keys.is_empty() and bool(override.get("consume_state", false)):
+			consume_keys = _state_override_keys(override)
+		for state_key in consume_keys:
+			environment_state.erase(state_key)
+		return prepared_event_data
+
+	return prepared_event_data
+
+
+func _state_override_matches(override: Dictionary) -> bool:
+	var any_keys := _state_override_keys(override)
+	var all_keys := _normalize_string_array(override.get("all_state_keys", []))
+	if any_keys.is_empty() and all_keys.is_empty():
+		return false
+
+	for state_key in all_keys:
+		if not environment_state.has(state_key):
+			return false
+	if not all_keys.is_empty():
+		return true
+
+	for state_key in any_keys:
+		if environment_state.has(state_key):
+			return true
+	return false
+
+
+func _state_override_keys(override: Dictionary) -> Array[String]:
+	var keys := _normalize_string_array(override.get("state_keys", []))
+	var state_key := str(override.get("state_key", ""))
+	if state_key != "" and not keys.has(state_key):
+		keys.append(state_key)
+	return keys
+
+
 func _build_special_encounter(event_id: String, room_id_override: String = "", room_data_override: Dictionary = {}) -> Dictionary:
-	var event_data: Dictionary = special_events.get(event_id, {}).duplicate(true)
+	var event_data: Dictionary = _prepare_event_data(special_events.get(event_id, {}))
 	var room_id := room_id_override if room_id_override != "" else str(event_data.get("room_id", current_room_id))
 	var room_data := room_data_override if not room_data_override.is_empty() else get_room_data(room_id)
 	return {
@@ -1577,6 +1644,52 @@ func _with_director_lines(result: Dictionary, director_lines: Array[String]) -> 
 			lines.append(line)
 	updated["lines"] = lines
 	return updated
+
+
+func _build_result_snapshot() -> Dictionary:
+	return {
+		"health": int(player_state.get("health", 0)),
+		"shield": int(player_state.get("shield", 0)),
+		"biomass": biomass,
+		"danger": danger,
+		"corruption": corruption,
+		"merchant_claim": merchant_claim
+	}
+
+
+func _with_result_delta_lines(result: Dictionary, snapshot_before: Dictionary) -> Dictionary:
+	var deltas: Array[String] = []
+	_append_result_delta(deltas, "Health", snapshot_before, "health", int(player_state.get("health", 0)))
+	_append_result_delta(deltas, "Shield", snapshot_before, "shield", int(player_state.get("shield", 0)))
+	_append_result_delta(deltas, "Biomass", snapshot_before, "biomass", biomass)
+	_append_result_delta(deltas, "Danger", snapshot_before, "danger", danger)
+	_append_result_delta(deltas, "Corruption", snapshot_before, "corruption", corruption)
+	_append_result_delta(deltas, "Claim", snapshot_before, "merchant_claim", merchant_claim)
+	if deltas.is_empty():
+		return result
+
+	var updated := result.duplicate(true)
+	var lines: Array = []
+	var existing_lines = updated.get("lines", [])
+	if existing_lines is Array:
+		lines = existing_lines.duplicate()
+	lines.append("Result: %s." % ". ".join(deltas))
+	updated["lines"] = lines
+	return updated
+
+
+func _append_result_delta(deltas: Array[String], label: String, snapshot_before: Dictionary, key: String, current_value: int) -> void:
+	var previous_value := int(snapshot_before.get(key, current_value))
+	var delta := current_value - previous_value
+	if delta == 0:
+		return
+	deltas.append("%s %s" % [label, _format_signed_delta(delta)])
+
+
+func _format_signed_delta(delta: int) -> String:
+	if delta > 0:
+		return "+%d" % delta
+	return "%d" % delta
 
 
 func _apply_event_action_result(action_id: String, event_data: Dictionary, base_result: Dictionary) -> Dictionary:

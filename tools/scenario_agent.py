@@ -50,11 +50,47 @@ BALANCE_MEMORY_PATH = MEMORY_DIR / "balance_guidance.jsonl"
 FUN_MEMORY_PATH = MEMORY_DIR / "fun_guidance.jsonl"
 LORE_MEMORY_PATH = MEMORY_DIR / "lore_guidance.jsonl"
 LORE_BRAINSTORM_MEMORY_PATH = MEMORY_DIR / "lore_brainstorm_guidance.jsonl"
+STORY_ARCHITECTURE_MEMORY_PATH = MEMORY_DIR / "story_architecture_guidance.jsonl"
 ACCESSIBILITY_MEMORY_PATH = MEMORY_DIR / "accessibility_guidance.jsonl"
 
 DEFAULT_MODEL = os.environ.get("SCENARIO_AGENT_MODEL", "gpt-5")
 TRADEOFF_EXEMPT_EVENT_TYPES = {"transition"}
 STORY_ENGINE_CONTENT_TRACK = "post_update_text_only"
+NARROW_ROOM_ROLES = {
+    "ambush",
+    "character_encounter",
+    "enemy_encounter",
+    "mutation_offer",
+    "quiet_passage",
+    "recovery_beat",
+    "rest_beat",
+    "simple_passage",
+    "symbiote_offer",
+}
+
+
+def commandable_button_count(event: dict[str, Any]) -> int:
+    buttons = event.get("buttons", [])
+    count = sum(1 for button in buttons if isinstance(button, dict)) if isinstance(buttons, list) else 0
+    if str(event.get("type", "")) == "symbiote":
+        symbiote_choices = event.get("symbiote_choices", [])
+        explicit_choice_count = 0
+        if isinstance(symbiote_choices, list):
+            explicit_choice_count = sum(1 for choice in symbiote_choices if str(choice).strip())
+            count += explicit_choice_count
+        if explicit_choice_count == 0 and event.get("symbiote_choice_count") is not None:
+            count += max(int(event.get("symbiote_choice_count", 0)), 0)
+    return count
+
+
+def is_narrow_room_role(room_record: dict[str, Any]) -> bool:
+    room_role = str(room_record.get("room_role", "")).strip()
+    if room_role in NARROW_ROOM_ROLES:
+        return True
+    tags = room_record.get("tags", [])
+    if isinstance(tags, list) and any(str(tag) in NARROW_ROOM_ROLES for tag in tags):
+        return True
+    return False
 ENVIRONMENT_GROUP_KEYS = {
     "environment_id",
     "environment",
@@ -742,6 +778,11 @@ def load_recent_memory(limit: int = 12, include_core_guides: bool = True) -> str
         recent = lines[-limit:]
         if recent:
             parts.append("# Lore Brainstorm Guidance\n" + "\n".join(recent))
+    if STORY_ARCHITECTURE_MEMORY_PATH.exists():
+        lines = [line for line in STORY_ARCHITECTURE_MEMORY_PATH.read_text(encoding="utf-8").splitlines() if line.strip()]
+        recent = lines[-limit:]
+        if recent:
+            parts.append("# Story Architecture Guidance\n" + "\n".join(recent))
     if ACCESSIBILITY_MEMORY_PATH.exists():
         lines = [line for line in ACCESSIBILITY_MEMORY_PATH.read_text(encoding="utf-8").splitlines() if line.strip()]
         recent = lines[-limit:]
@@ -768,6 +809,7 @@ def load_lore_brainstorm_memory(limit: int = 6) -> str:
     for path, title in (
         (LORE_MEMORY_PATH, "Lore Guidance"),
         (LORE_BRAINSTORM_MEMORY_PATH, "Lore Brainstorm Guidance"),
+        (STORY_ARCHITECTURE_MEMORY_PATH, "Story Architecture Guidance"),
         (FUN_MEMORY_PATH, "Fun Guidance"),
     ):
         block = recent_jsonl_block(path, title, limit=limit)
@@ -851,12 +893,7 @@ def room_tradeoff_findings() -> list[dict[str, str]]:
             event_type = str(event.get("type", ""))
             if event_type in TRADEOFF_EXEMPT_EVENT_TYPES:
                 continue
-            buttons = event.get("buttons", [])
-            button_count = sum(1 for button in buttons if isinstance(button, dict)) if isinstance(buttons, list) else 0
-            if event_type == "symbiote":
-                symbiote_choices = event.get("symbiote_choices", [])
-                if isinstance(symbiote_choices, list):
-                    button_count += sum(1 for choice in symbiote_choices if str(choice) != "")
+            button_count = commandable_button_count(event)
             if button_count < 2:
                 event_id = str(event.get("id", "unknown"))
                 add(
@@ -945,6 +982,11 @@ def _has_interactable_actor(event: dict[str, Any]) -> bool:
     }
     if any(str(event.get(key, "")).strip() for key in actor_keys):
         return True
+    symbiote_choices = event.get("symbiote_choices", [])
+    if isinstance(symbiote_choices, list) and any(str(choice).strip() for choice in symbiote_choices):
+        return True
+    if event.get("symbiote_choice_count") is not None:
+        return True
     text = "%s %s" % (event.get("line_1", ""), event.get("line_2", ""))
     text_lower = text.lower()
     actor_terms = {
@@ -970,6 +1012,10 @@ def _has_interactable_actor(event: dict[str, Any]) -> bool:
         "pressure plate",
         "seam",
         "wall",
+        "body",
+        "bodies",
+        "symbiote",
+        "symbiotes",
     }
     return any(term in text_lower for term in actor_terms)
 
@@ -1087,10 +1133,7 @@ def _followups_are_default_only(event: dict[str, Any]) -> bool:
 
 
 def _commandable_button_count(event: dict[str, Any]) -> int:
-    buttons = event.get("buttons", [])
-    if not isinstance(buttons, list):
-        return 0
-    return sum(1 for button in buttons if isinstance(button, dict))
+    return commandable_button_count(event)
 
 
 def _room_infrastructure_records(room_record: dict[str, Any]) -> list[dict[str, Any]]:
@@ -1171,9 +1214,10 @@ def room_depth_findings() -> list[dict[str, str]]:
             continue
         room_location = f"room_events.{room_id}"
         room_record = rooms_by_id.get(str(room_id), {})
+        narrow_room = is_narrow_room_role(room_record)
         environment_id = _environment_id_for_room(str(room_id), room_record)
         family_event_count = environment_event_counts.get(environment_id, len(events)) if story_engine_track else len(events)
-        if family_event_count < 3:
+        if family_event_count < 3 and not narrow_room:
             add(
                 room_location,
                 "high",
@@ -1187,7 +1231,7 @@ def room_depth_findings() -> list[dict[str, str]]:
                 "room lacks explicit environment grouping",
                 "Add environment_id or environment_family so this room is one instance of a larger environment type, not a literal room the player is expected to revisit.",
             )
-        if story_engine_track and not _has_environment_echo_plan(room_record):
+        if story_engine_track and not narrow_room and not _has_environment_echo_plan(room_record):
             add(
                 room_location,
                 "medium",
@@ -1201,14 +1245,14 @@ def room_depth_findings() -> list[dict[str, str]]:
                 "room lacks a specific corpus writing influence",
                 "Add corpus_influences with source title/seed, the specific source moment or authorial move, the writing energy to import, and how it changes this room's prose.",
             )
-        if story_engine_track and not _has_ending_vector(room_record):
+        if story_engine_track and not narrow_room and not _has_ending_vector(room_record):
             add(
                 room_location,
                 "high",
                 "environment has no ending vector",
                 "Add ending_vectors naming the ending this environment can pull toward, what behavior feeds it, and what diverts it.",
             )
-        if story_engine_track and not _has_mutation_hooks(room_record):
+        if story_engine_track and not narrow_room and not _has_mutation_hooks(room_record):
             add(
                 room_location,
                 "medium",
@@ -1265,7 +1309,7 @@ def room_depth_findings() -> list[dict[str, str]]:
                     "Give the beast an infrastructure role and a non-combat interaction path before or alongside combat.",
                 )
 
-        if not delayed_found:
+        if not delayed_found and not narrow_room:
             add(
                 room_location,
                 "high",
@@ -1364,6 +1408,7 @@ def room_story_findings() -> list[dict[str, str]]:
             continue
         room_location = f"room_events.{room_id}"
         room_record = rooms_by_id.get(str(room_id), {})
+        narrow_room = is_narrow_room_role(room_record)
         room_text = " ".join([
             str(room_record.get("first_visit_description", "")),
             str(room_record.get("return_description", "")),
@@ -1379,7 +1424,15 @@ def room_story_findings() -> list[dict[str, str]]:
             "cross_run_story_hooks",
             "progression_state",
         ]
-        missing_story_keys = [key for key in explicit_story_keys if not room_record.get(key)]
+        required_story_keys = explicit_story_keys
+        if narrow_room:
+            required_story_keys = [
+                "faction_ids",
+                "storyline_ids",
+                "cross_run_story_hooks",
+                "progression_state",
+            ]
+        missing_story_keys = [key for key in required_story_keys if not room_record.get(key)]
         story_events = [event for event in events if isinstance(event, dict) and _has_story_anchor(event)]
         delayed_events = [event for event in events if isinstance(event, dict) and _has_delayed_consequence(event)]
         story_followup_refs: list[str] = []
@@ -1408,7 +1461,7 @@ def room_story_findings() -> list[dict[str, str]]:
                 "room is not anchored to the setting backbone",
                 "Tie the room to a faction, recurring character trace, animal infrastructure role, or cross-run storyline.",
             )
-        if not delayed_events:
+        if not delayed_events and not narrow_room:
             add(
                 room_location,
                 "high",
@@ -1422,7 +1475,7 @@ def room_story_findings() -> list[dict[str, str]]:
                 "story anchor lacks Hymn-to-Chorus reporting frame",
                 "Keep room story in Hymn's first-person field report frame, with Chorus contacted, checked, or conspicuously absent.",
             )
-        if not story_followup_refs:
+        if not story_followup_refs and not narrow_room:
             add(
                 room_location,
                 "high",
@@ -1542,6 +1595,221 @@ def balance_context() -> dict[str, Any]:
     }
 
 
+def _short_visible_lines(value: Any, limit: int = 3) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    lines: list[str] = []
+    for item in value:
+        text = str(item).strip()
+        if text:
+            lines.append(text)
+        if len(lines) >= limit:
+            break
+    return lines
+
+
+def _blind_choice_read(event: dict[str, Any]) -> list[dict[str, Any]]:
+    buttons = event.get("buttons", [])
+    action_results = event.get("action_results", {})
+    story_followups = event.get("story_followups", {})
+    choices: list[dict[str, Any]] = []
+    if not isinstance(buttons, list):
+        return choices
+
+    for button in buttons:
+        if not isinstance(button, dict):
+            continue
+        label = str(button.get("label", "")).strip()
+        if not label:
+            continue
+        action = str(button.get("action", "")).strip()
+        action_result = action_results.get(action, {}) if isinstance(action_results, dict) else {}
+        followup = story_followups.get(action, {}) if isinstance(story_followups, dict) else {}
+        choice: dict[str, Any] = {"label": label}
+        result_lines = _short_visible_lines(action_result.get("lines", [])) if isinstance(action_result, dict) else []
+        if result_lines:
+            choice["result_lines"] = result_lines
+        if isinstance(followup, dict):
+            queued_line = str(followup.get("queued_line", "")).strip()
+            if queued_line:
+                choice["queued_followup_line"] = queued_line
+        choices.append(choice)
+    return choices
+
+
+def _blind_event_read(event: dict[str, Any]) -> dict[str, Any]:
+    visible_event: dict[str, Any] = {
+        "id": str(event.get("id", "")).strip(),
+        "type": str(event.get("type", "")).strip(),
+    }
+    line_1 = str(event.get("line_1", "")).strip()
+    line_2 = str(event.get("line_2", "")).strip()
+    if line_1:
+        visible_event["line_1"] = line_1
+    if line_2:
+        visible_event["line_2"] = line_2
+    choices = _blind_choice_read(event)
+    if choices:
+        visible_event["choices"] = choices
+    return visible_event
+
+
+def blind_player_text_context() -> dict[str, Any]:
+    rooms_payload = load_json(ROOMS_PATH)
+    events_payload = load_json(EVENTS_PATH)
+    decks_payload = load_json(DECKS_PATH)
+    rooms_by_id = {
+        str(room.get("id", "")): room
+        for room in rooms_payload.get("rooms", [])
+        if isinstance(room, dict) and str(room.get("id", "")).strip()
+    }
+    room_events = events_payload.get("room_events", {})
+    special_events = events_payload.get("special_events", {})
+    visible_rooms: list[dict[str, Any]] = []
+
+    if isinstance(room_events, dict):
+        for room_id in sorted(room_events.keys()):
+            room = rooms_by_id.get(str(room_id), {})
+            room_read: dict[str, Any] = {
+                "room_id": str(room_id),
+                "name": str(room.get("name", "")).strip(),
+                "first_visit_description": str(room.get("first_visit_description", "")).strip(),
+                "return_description": str(room.get("return_description", "")).strip(),
+                "events": [],
+            }
+            events = room_events.get(room_id, [])
+            if isinstance(events, list):
+                room_read["events"] = [_blind_event_read(event) for event in events if isinstance(event, dict)]
+            visible_rooms.append(room_read)
+
+    visible_special_events: list[dict[str, Any]] = []
+    special_event_values: list[Any] = []
+    if isinstance(special_events, dict):
+        special_event_values = list(special_events.values())
+    elif isinstance(special_events, list):
+        special_event_values = special_events
+    for event in special_event_values:
+        if isinstance(event, dict):
+            visible_special_events.append(_blind_event_read(event))
+
+    return {
+        "read_rule": "Judge this as a first-time player with no design notes, lore primer, system knowledge, or author intent. Use only these visible room descriptions, event lines, result lines, queued follow-up lines, and choice labels.",
+        "opening_room_id": str(decks_payload.get("opening_room_id", "")).strip(),
+        "rooms": visible_rooms,
+        "special_events": visible_special_events,
+    }
+
+
+def _story_list(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [str(item).strip() for item in value if str(item).strip()]
+
+
+def story_architect_context() -> dict[str, Any]:
+    rooms_payload = load_json(ROOMS_PATH)
+    events_payload = load_json(EVENTS_PATH)
+    decks_payload = load_json(DECKS_PATH)
+    room_events = events_payload.get("room_events", {})
+    special_events = events_payload.get("special_events", {})
+    rooms = rooms_payload.get("rooms", [])
+    recurring_characters: dict[str, dict[str, Any]] = {}
+    storyline_ids: dict[str, int] = {}
+    faction_ids: dict[str, int] = {}
+    room_story_inventory: list[dict[str, Any]] = []
+    followup_refs: list[dict[str, Any]] = []
+
+    if isinstance(rooms, list):
+        for room in rooms:
+            if not isinstance(room, dict):
+                continue
+            room_id = str(room.get("id", "")).strip()
+            if not room_id:
+                continue
+            room_characters = _story_list(room.get("recurring_character_ids", []))
+            for character_id in room_characters:
+                record = recurring_characters.setdefault(character_id, {"id": character_id, "rooms": []})
+                record["rooms"].append(room_id)
+            for storyline_id in _story_list(room.get("storyline_ids", [])):
+                storyline_ids[storyline_id] = storyline_ids.get(storyline_id, 0) + 1
+            for faction_id in _story_list(room.get("faction_ids", [])):
+                faction_ids[faction_id] = faction_ids.get(faction_id, 0) + 1
+            room_story_inventory.append({
+                "room_id": room_id,
+                "name": str(room.get("name", "")).strip(),
+                "instance_premise": str(room.get("instance_premise", "")).strip(),
+                "recurring_character_ids": room_characters,
+                "storyline_ids": _story_list(room.get("storyline_ids", [])),
+                "faction_ids": _story_list(room.get("faction_ids", [])),
+                "progression_state": room.get("progression_state", {}),
+                "cross_run_story_hooks": room.get("cross_run_story_hooks", []),
+            })
+
+    if isinstance(room_events, dict):
+        for room_id, events in room_events.items():
+            if not isinstance(events, list):
+                continue
+            for event in events:
+                if not isinstance(event, dict):
+                    continue
+                event_id = str(event.get("id", "")).strip()
+                story_followups = event.get("story_followups", {})
+                if not isinstance(story_followups, dict):
+                    continue
+                for action_id, followup in story_followups.items():
+                    if not isinstance(followup, dict):
+                        continue
+                    followup_refs.append({
+                        "source_room_id": str(room_id),
+                        "source_event_id": event_id,
+                        "source_action": str(action_id),
+                        "followup_event_id": str(followup.get("event_id", "")).strip(),
+                        "trigger_key": str(followup.get("trigger_key", "")).strip(),
+                        "delay_rooms": followup.get("delay_rooms"),
+                        "queued_line": str(followup.get("queued_line", "")).strip(),
+                    })
+
+    special_event_summaries: list[dict[str, Any]] = []
+    special_event_values: list[tuple[str, Any]] = []
+    if isinstance(special_events, dict):
+        special_event_values = [(str(event_id), event) for event_id, event in special_events.items()]
+    elif isinstance(special_events, list):
+        special_event_values = [(str(index), event) for index, event in enumerate(special_events)]
+    for event_id, event in special_event_values:
+        if not isinstance(event, dict):
+            continue
+        special_event_summaries.append({
+            "id": str(event.get("id", event_id)).strip(),
+            "type": str(event.get("type", "")).strip(),
+            "line_1": str(event.get("line_1", "")).strip(),
+            "line_2": str(event.get("line_2", "")).strip(),
+            "buttons": [str(button.get("label", "")).strip() for button in event.get("buttons", []) if isinstance(button, dict)],
+            "trigger_key": str(event.get("trigger_key", "")).strip(),
+            "reactivate_on_reshuffle": event.get("reactivate_on_reshuffle"),
+        })
+
+    return {
+        "goal": "Find the missing story spine and propose character-driven follow-up encounters grounded in current data.",
+        "active_content": {
+            "rooms_path": str(ROOMS_PATH.relative_to(ROOT)),
+            "events_path": str(EVENTS_PATH.relative_to(ROOT)),
+            "decks_path": str(DECKS_PATH.relative_to(ROOT)),
+            "opening_room_id": str(decks_payload.get("opening_room_id", "")).strip(),
+            "room_count": len(rooms) if isinstance(rooms, list) else 0,
+            "room_event_count": sum(len(events) for events in room_events.values() if isinstance(events, list)) if isinstance(room_events, dict) else 0,
+            "special_event_count": len(special_event_summaries),
+        },
+        "blind_player_text_context": blind_player_text_context(),
+        "room_story_inventory": room_story_inventory,
+        "recurring_character_inventory": sorted(recurring_characters.values(), key=lambda item: item["id"]),
+        "storyline_counts": dict(sorted(storyline_ids.items())),
+        "faction_counts": dict(sorted(faction_ids.items())),
+        "story_followup_refs": followup_refs,
+        "special_event_summaries": special_event_summaries,
+        "recent_guidance": load_recent_memory(limit=4, include_core_guides=True),
+    }
+
+
 def fun_context() -> dict[str, Any]:
     events_payload = load_json(EVENTS_PATH)
     room_events = events_payload.get("room_events", {})
@@ -1561,6 +1829,7 @@ def fun_context() -> dict[str, Any]:
         },
     }
     return {
+        "blind_player_text_context": blind_player_text_context(),
         "deck_config": load_json(DECKS_PATH),
         "event_type_counts": event_type_counts(),
         "room_event_counts": room_event_counts(),
@@ -1937,9 +2206,61 @@ def fun_critique_schema() -> dict[str, Any]:
         "type": "object",
         "properties": {
             "summary": {"type": "string"},
+            "blind_read_summary": {"type": "string"},
             "fun_score": {"type": "integer", "minimum": 0, "maximum": 10},
+            "first_time_player_score": {"type": "integer", "minimum": 0, "maximum": 10},
+            "build_score": {"type": "integer", "minimum": 0, "maximum": 10},
+            "sequence_cohesion_score": {"type": "integer", "minimum": 0, "maximum": 10},
             "organism_pressure_score": {"type": "integer", "minimum": 0, "maximum": 10},
             "core_loop_diagnosis": {"type": "string"},
+            "blind_text_findings": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "severity": {"type": "string"},
+                        "target": {"type": "string"},
+                        "player_facing_evidence": {"type": "string"},
+                        "why_it_feels_disconnected": {"type": "string"},
+                        "recommendation": {"type": "string"},
+                    },
+                    "required": [
+                        "severity",
+                        "target",
+                        "player_facing_evidence",
+                        "why_it_feels_disconnected",
+                        "recommendation",
+                    ],
+                    "additionalProperties": False,
+                },
+            },
+            "choice_progression_findings": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "target": {"type": "string"},
+                        "current_choice_read": {"type": "string"},
+                        "missing_progression": {"type": "string"},
+                        "recommendation": {"type": "string"},
+                    },
+                    "required": ["target", "current_choice_read", "missing_progression", "recommendation"],
+                    "additionalProperties": False,
+                },
+            },
+            "payoff_gaps": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "setup": {"type": "string"},
+                        "current_payoff_gap": {"type": "string"},
+                        "recommended_payoff": {"type": "string"},
+                    },
+                    "required": ["setup", "current_payoff_gap", "recommended_payoff"],
+                    "additionalProperties": False,
+                },
+            },
             "not_fun_findings": {
                 "type": "array",
                 "items": {
@@ -1999,6 +2320,7 @@ def fun_critique_schema() -> dict[str, Any]:
             },
             "content_priorities": {"type": "array", "items": {"type": "string"}},
             "system_priorities": {"type": "array", "items": {"type": "string"}},
+            "minimum_game_shape": {"type": "array", "items": {"type": "string"}},
             "vibe_doc_updates": {
                 "type": "array",
                 "items": {
@@ -2016,15 +2338,23 @@ def fun_critique_schema() -> dict[str, Any]:
         },
         "required": [
             "summary",
+            "blind_read_summary",
             "fun_score",
+            "first_time_player_score",
+            "build_score",
+            "sequence_cohesion_score",
             "organism_pressure_score",
             "core_loop_diagnosis",
+            "blind_text_findings",
+            "choice_progression_findings",
+            "payoff_gaps",
             "not_fun_findings",
             "organism_director_findings",
             "decision_loop_rewrites",
             "ending_pressure_plan",
             "content_priorities",
             "system_priorities",
+            "minimum_game_shape",
             "vibe_doc_updates",
             "next_fun_prompt",
         ],
@@ -2258,6 +2588,192 @@ def lore_brainstorm_schema() -> dict[str, Any]:
     }
 
 
+def story_architect_schema() -> dict[str, Any]:
+    arc_beat_item = {
+        "type": "object",
+        "properties": {
+            "beat_id": {"type": "string"},
+            "role": {"type": "string"},
+            "trigger": {"type": "string"},
+            "encounter_function": {"type": "string"},
+            "player_choice": {"type": "string"},
+            "visible_change": {"type": "string"},
+            "mechanical_consequence": {"type": "string"},
+            "implementation_notes": {"type": "array", "items": {"type": "string"}},
+        },
+        "required": [
+            "beat_id",
+            "role",
+            "trigger",
+            "encounter_function",
+            "player_choice",
+            "visible_change",
+            "mechanical_consequence",
+            "implementation_notes",
+        ],
+        "additionalProperties": False,
+    }
+    character_arc_item = {
+        "type": "object",
+        "properties": {
+            "character_id": {"type": "string"},
+            "player_facing_name": {"type": "string"},
+            "current_status": {"type": "string"},
+            "desire": {"type": "string"},
+            "pressure_method": {"type": "string"},
+            "relationship_to_hymn": {"type": "string"},
+            "first_appearance": {"type": "string"},
+            "arc_beats": {"type": "array", "items": arc_beat_item},
+            "why_this_is_a_character": {"type": "string"},
+            "failure_mode_if_absent": {"type": "string"},
+        },
+        "required": [
+            "character_id",
+            "player_facing_name",
+            "current_status",
+            "desire",
+            "pressure_method",
+            "relationship_to_hymn",
+            "first_appearance",
+            "arc_beats",
+            "why_this_is_a_character",
+            "failure_mode_if_absent",
+        ],
+        "additionalProperties": False,
+    }
+    first_spine_item = {
+        "type": "object",
+        "properties": {
+            "sequence_index": {"type": "integer"},
+            "target_room_or_event": {"type": "string"},
+            "story_function": {"type": "string"},
+            "player_question": {"type": "string"},
+            "choice_pressure": {"type": "string"},
+            "followup_payoff": {"type": "string"},
+            "required_data_changes": {"type": "array", "items": {"type": "string"}},
+        },
+        "required": [
+            "sequence_index",
+            "target_room_or_event",
+            "story_function",
+            "player_question",
+            "choice_pressure",
+            "followup_payoff",
+            "required_data_changes",
+        ],
+        "additionalProperties": False,
+    }
+    followup_item = {
+        "type": "object",
+        "properties": {
+            "source_event": {"type": "string"},
+            "followup_event_id": {"type": "string"},
+            "character_id": {"type": "string"},
+            "trigger": {"type": "string"},
+            "timing": {"type": "string"},
+            "scene_function": {"type": "string"},
+            "choice_or_route_change": {"type": "string"},
+            "mechanical_hook": {"type": "string"},
+            "authoring_prompt": {"type": "string"},
+        },
+        "required": [
+            "source_event",
+            "followup_event_id",
+            "character_id",
+            "trigger",
+            "timing",
+            "scene_function",
+            "choice_or_route_change",
+            "mechanical_hook",
+            "authoring_prompt",
+        ],
+        "additionalProperties": False,
+    }
+    pilot_item = {
+        "type": "object",
+        "properties": {
+            "arc_name": {"type": "string"},
+            "why_this_first": {"type": "string"},
+            "scope_events": {"type": "array", "items": {"type": "string"}},
+            "required_system_hooks": {"type": "array", "items": {"type": "string"}},
+            "acceptance_tests": {"type": "array", "items": {"type": "string"}},
+            "generation_prompt": {"type": "string"},
+        },
+        "required": [
+            "arc_name",
+            "why_this_first",
+            "scope_events",
+            "required_system_hooks",
+            "acceptance_tests",
+            "generation_prompt",
+        ],
+        "additionalProperties": False,
+    }
+    return {
+        "type": "object",
+        "properties": {
+            "summary": {"type": "string"},
+            "story_diagnosis": {"type": "string"},
+            "missing_story_primitives": {"type": "array", "items": {"type": "string"}},
+            "character_arcs": {"type": "array", "items": character_arc_item},
+            "first_15_minute_spine": {"type": "array", "items": first_spine_item},
+            "followup_encounter_plan": {"type": "array", "items": followup_item},
+            "pilot_arc_recommendation": pilot_item,
+            "story_rules": {"type": "array", "items": {"type": "string"}},
+            "patch_strategy": {"type": "array", "items": {"type": "string"}},
+            "next_story_prompt": {"type": "string"},
+        },
+        "required": [
+            "summary",
+            "story_diagnosis",
+            "missing_story_primitives",
+            "character_arcs",
+            "first_15_minute_spine",
+            "followup_encounter_plan",
+            "pilot_arc_recommendation",
+            "story_rules",
+            "patch_strategy",
+            "next_story_prompt",
+        ],
+        "additionalProperties": False,
+    }
+
+
+def story_pilot_schema() -> dict[str, Any]:
+    room_event_update_item = {
+        "type": "object",
+        "properties": {
+            "room_id": {"type": "string"},
+            "event_id": {"type": "string"},
+            "merge": {"type": "object"},
+        },
+        "required": ["room_id", "event_id", "merge"],
+        "additionalProperties": False,
+    }
+    return {
+        "type": "object",
+        "properties": {
+            "title": {"type": "string"},
+            "design_goal": {"type": "string"},
+            "special_events": {"type": "array", "items": {"type": "object"}},
+            "room_event_updates": {"type": "array", "items": room_event_update_item},
+            "required_engine_changes": {"type": "array", "items": {"type": "string"}},
+            "validation_notes": {"type": "array", "items": {"type": "string"}},
+            "self_critique": {"type": "array", "items": {"type": "string"}},
+        },
+        "required": [
+            "title",
+            "design_goal",
+            "special_events",
+            "room_event_updates",
+            "required_engine_changes",
+            "validation_notes",
+            "self_critique",
+        ],
+        "additionalProperties": False,
+    }
+
+
 def build_prompt(args: argparse.Namespace) -> list[dict[str, str]]:
     context = game_context()
     source_seeds = load_source_seed_context(args)
@@ -2454,6 +2970,11 @@ Your job is not to praise vibe. Your job is to find why the run is not fun yet.
 Return JSON only.
 
 Fun-factor doctrine:
+- Start with a blind player read. Pretend you have no lore primer, no vibe guide, no design intent, and no hidden implementation context. Judge only the visible room descriptions, event text, result text, queued follow-up text, and choice labels in blind_player_text_context.
+- Do not reward implied plans that are not visible to the player. If a room, choice, pressure, faction, or character only makes sense because of hidden metadata, call that a disconnect.
+- The central question is whether the first-time player feels scenes are building into a game: recurring situations, escalating pressures, recognizable actors, changed future choices, and payoff.
+- Flag when events feel like isolated vignettes, when choices are just differently flavored interaction verbs, and when consequences do not accumulate into a direction.
+- Judge whether the old writing inspiration creates playable specificity or only atmospheric density. Preserve texture, but recommend sharper setups, state changes, and payoffs where clarity is missing.
 - The living organism is the director of the run.
 - Its job is to notice player patterns, unbalance the player, and push the clone toward an outcome.
 - Every repeated decision should create a gravitational pull: corruption, danger/hunter, starvation, injury, debt, or a narrowed route.
@@ -2471,20 +2992,31 @@ Fun-factor doctrine:
 
     user = {
         "focus": args.focus,
-        "vibe_guide": load_vibe_guide(),
-        "memory": load_recent_memory(),
         "fun_context": fun_context(),
+        "secondary_design_context": {
+            "vibe_guide": load_vibe_guide(),
+            "memory": load_recent_memory(),
+            "use_after_blind_read_only": "Use this only after judging the user-facing text. It can explain intended direction, but it must not excuse player-facing disconnects.",
+        },
         "output_contract": {
             "summary": "Blunt judgement of current fun factor.",
+            "blind_read_summary": "Blunt first-time player read based only on visible text and choices.",
             "fun_score": "0-10 score for whether the current game loop creates desire to keep playing.",
+            "first_time_player_score": "0-10 score for whether an unbiased first-time player understands and wants to continue.",
+            "build_score": "0-10 score for whether events build on each other instead of feeling isolated.",
+            "sequence_cohesion_score": "0-10 score for whether the first 10-15 minutes feel like one developing run.",
             "organism_pressure_score": "0-10 score for whether the organism behaves like a director that pushes outcomes.",
             "core_loop_diagnosis": "One paragraph naming the current loop and why it fails or works.",
+            "blind_text_findings": "Concrete visible-text reasons the game feels clear, compelling, disconnected, or insufficient.",
+            "choice_progression_findings": "Where choice labels/results do not escalate, differentiate, or imply future direction.",
+            "payoff_gaps": "Setups that are visible but not yet paid off strongly enough for an ordinary player.",
             "not_fun_findings": "Concrete reasons the current game feels like stats instead of a living organism.",
             "organism_director_findings": "How each pressure axis should notice and push repeated decisions.",
             "decision_loop_rewrites": "Specific loops to rewrite, such as mutation shopping, combat avoidance, extraction, healing, symbiote dependence.",
             "ending_pressure_plan": "How player patterns warn, then lock, into endings.",
             "content_priorities": "Content to add first for fun, not just lore.",
             "system_priorities": "Engine/data hooks that create the fun loop.",
+            "minimum_game_shape": "Smallest set of additions needed for this to feel like a game with build, payoff, and replay desire.",
             "vibe_doc_updates": "Guide additions that prevent future content from becoming stat soup.",
             "next_fun_prompt": "Compact prompt for the next fun critique.",
         },
@@ -2621,6 +3153,89 @@ Brainstorm doctrine:
             "mechanic_hooks": "Concrete systems these ideas suggest.",
             "guardrails": "Rules to preserve mystery and prevent lore drift.",
             "next_lore_prompt": "Compact prompt for the next brainstorm or generation pass.",
+        },
+    }
+    return [
+        {"role": "system", "content": system},
+        {"role": "user", "content": json.dumps(user, indent=2, ensure_ascii=False)},
+    ]
+
+
+def build_story_architect_prompt(args: argparse.Namespace) -> list[dict[str, str]]:
+    system = """
+You are the story architect for Fleshpunk: Inner Heart.
+Your job is to turn the current room/event stack into real playable story architecture.
+Return JSON only.
+
+Story doctrine:
+- Do not polish prose. Diagnose and plan story structure: characters, desires, relationships, follow-up encounters, escalation, and payoff.
+- A character is not a name or a faction tag. A character must recur, want something, pressure Hymn, remember choices, change future options, and create a payoff or rupture.
+- The game currently has strong vibe, intricate room apparatuses, and a bestiary/infrastructure layer. Your task is to identify what story spine is missing.
+- Follow-up encounters should be scenes, not only atmospheric echoes. Each should change a route, price, option set, pressure, relationship, or ending eligibility.
+- The first 10-15 minutes need a visible arc: setup, first character pressure, player response, consequence, changed later encounter, and payoff.
+- Use the existing data and active story hints. Prefer a small pilot arc over a massive rewrite.
+- Preserve mystery and Hymn's limited knowledge. Do not reveal clone truth or hidden cosmology directly.
+- Treat Chorus, the Merchant/Quartermaster, the Soft Captain, the Hunter, and Commandant Signal as candidates only if they can become real recurring agents in play.
+- Recommendations must be implementable through room events, story_followups, special_events, environment_state, pressure counters, and small run_manager hooks.
+""".strip()
+
+    user = {
+        "focus": args.focus,
+        "story_architect_context": story_architect_context(),
+        "output_contract": {
+            "summary": "Short judgement of the current story shape.",
+            "story_diagnosis": "Blunt explanation of why the current stack does or does not tell a story.",
+            "missing_story_primitives": "The missing primitives: character desire, recurrence, memory, conflict, escalation, payoff, etc.",
+            "character_arcs": "Real playable character arcs grounded in current data.",
+            "first_15_minute_spine": "A concrete early-run sequence that makes the player feel a story is underway.",
+            "followup_encounter_plan": "Follow-up encounter scenes to author next, with triggers and mechanical effect.",
+            "pilot_arc_recommendation": "The one arc to build first, with scope, hooks, acceptance tests, and a generation prompt.",
+            "story_rules": "Rules future generation must obey so it produces story, not only vibe.",
+            "patch_strategy": "Implementation order for Codex/tooling plus OpenAI-authored content.",
+            "next_story_prompt": "Compact prompt for the next story-arc generation pass.",
+        },
+    }
+    return [
+        {"role": "system", "content": system},
+        {"role": "user", "content": json.dumps(user, indent=2, ensure_ascii=False)},
+    ]
+
+
+def build_story_pilot_prompt(args: argparse.Namespace) -> list[dict[str, str]]:
+    system = """
+You are the scenario/writing agent for Fleshpunk: Inner Heart.
+Generate JSON only. You are writing the pilot story patch requested by the story architect.
+
+Pilot doctrine:
+- Write player-facing prose through Hymn's first-person field-report voice: clipped, concrete, sensory, operational.
+- Do not write exposition, lore lectures, visible speaker labels, clone truth, or cosmic explanation.
+- This patch must turn echoes into scenes: a recurring agent has leverage, remembers a specific prior choice, and changes the next room's options, price, route, or trap state.
+- Use existing actions only unless required_engine_changes names a hook. Available small hooks: action_results.environment_state_changes and room event state_overrides.
+- state_overrides format: each room event may include state_overrides: [{state_key, consume_state, consume_state_keys, event:{line_1,line_2,buttons,action_results,story_followups,...}}]. When the state is present, the event override replaces visible text/buttons/results once if consume_state is true.
+- Prefer replacing/expanding existing special events that are already queued by current story_followups.
+- Return complete special_events. Return room_event_updates as merge patches for existing room events.
+- Every special event needs id, type, speaker, line_1, line_2, reactivate_on_reshuffle:false, buttons, and action_results for each meaningful button.
+- Every button needs label, action, and voice_aliases.
+- Keep required_engine_changes empty if the state_overrides hook is sufficient.
+""".strip()
+
+    architecture_path = GENERATED_DIR / "story_architect.json"
+    architecture = load_json(architecture_path) if architecture_path.exists() else {}
+    previous_pilot_path = GENERATED_DIR / "story_pilot_patch.json"
+    previous_pilot = load_json(previous_pilot_path) if previous_pilot_path.exists() else {}
+    user = {
+        "focus": args.focus,
+        "story_architecture": architecture,
+        "previous_story_pilot_patch": previous_pilot,
+        "story_architect_context": story_architect_context(),
+        "output_contract": {
+            "title": "Patch title.",
+            "design_goal": "What story problem this pilot solves.",
+            "special_events": "Complete special event objects keyed by their id when applied.",
+            "room_event_updates": "Merge patches to existing room events; use state_overrides to make prior choices change later visible encounters.",
+            "required_engine_changes": "Must be empty unless this patch needs hooks beyond action_results.environment_state_changes and state_overrides.",
+            "validation_notes": "How to verify the pilot reads as story.",
+            "self_critique": "Risks or compromises in the patch.",
         },
     }
     return [
@@ -2937,9 +3552,37 @@ def mock_balance_critique() -> dict[str, Any]:
 def mock_fun_critique() -> dict[str, Any]:
     return {
         "summary": "Offline fun critique sample. The current risk is stat soup: choices move numbers, but the organism does not yet feel like it is steering the run.",
+        "blind_read_summary": "Offline blind-read sample. The visible scenes have strong texture, but the player may not yet see why one chamber matters to the next.",
         "fun_score": 4,
+        "first_time_player_score": 5,
+        "build_score": 3,
+        "sequence_cohesion_score": 4,
         "organism_pressure_score": 3,
         "core_loop_diagnosis": "The loop needs to become temptation, repeated pattern, visible pressure, adaptation, and outcome. Right now many actions reward or punish once, but repeated behavior rarely makes the organism change its strategy.",
+        "blind_text_findings": [
+            {
+                "severity": "high",
+                "target": "first-time sequence",
+                "player_facing_evidence": "Rooms present specific apparatuses and choices, but the visible follow-through is mostly local.",
+                "why_it_feels_disconnected": "A new player sees vivid chambers without enough recurring actors, route changes, or visible payoff to feel a run is building.",
+                "recommendation": "Add more explicit later echoes that name what the player did and alter the next available pressure or route.",
+            }
+        ],
+        "choice_progression_findings": [
+            {
+                "target": "choice labels",
+                "current_choice_read": "Many buttons read as interact/extract/avoid variants.",
+                "missing_progression": "The label does not always imply what future state or threat the player is accepting.",
+                "recommendation": "Make labels and result lines expose distinct upside, cost, and future pressure.",
+            }
+        ],
+        "payoff_gaps": [
+            {
+                "setup": "The organism records pulse, debt, scent, and damage.",
+                "current_payoff_gap": "The player may not see those records changing later scenes quickly enough.",
+                "recommended_payoff": "Within two rooms, surface a concrete echo that changes a choice, blocks a route, discounts a toll, or summons pressure.",
+            }
+        ],
         "not_fun_findings": [
             {
                 "severity": "high",
@@ -3020,6 +3663,11 @@ def mock_fun_critique() -> dict[str, Any]:
             "Track repeated action patterns, not just resource totals.",
             "Add ending warning and lock thresholds.",
             "Let deck composition react to pressure axes.",
+        ],
+        "minimum_game_shape": [
+            "A visible early thread that starts in the opening room, changes a later room, and pays off before minute fifteen.",
+            "At least one pressure actor that escalates after repeated choices and interrupts the deck.",
+            "Choice labels that expose future risk, not only immediate interaction style.",
         ],
         "vibe_doc_updates": [
             {
@@ -3272,6 +3920,137 @@ def mock_lore_brainstorm() -> dict[str, Any]:
     }
 
 
+def mock_story_architect() -> dict[str, Any]:
+    return {
+        "summary": "Offline story architect sample. The current stack has strong local situations but needs a pilot arc where a recurring figure wants something and changes later encounters.",
+        "story_diagnosis": "The rooms imply memory, debt, and pursuit, but many follow-ups behave like echoes instead of scenes. A story spine needs a character who returns with leverage and forces Hymn to answer.",
+        "missing_story_primitives": [
+            "A recurring character with a visible desire.",
+            "Follow-up encounters that change options or prices.",
+            "A payoff before the first run feels like disconnected room browsing.",
+        ],
+        "character_arcs": [
+            {
+                "character_id": "quartermaster_of_teeth",
+                "player_facing_name": "Quartermaster of Teeth",
+                "current_status": "Present in metadata and toll imagery, but not yet active enough as a character.",
+                "desire": "Convert Hymn's route choices into payable debt.",
+                "pressure_method": "Changes prices, closes mouths, and sells route heat to hunters.",
+                "relationship_to_hymn": "Predatory accountant who treats her as inventory with legs.",
+                "first_appearance": "Opening rib/toll decision or first larder debt.",
+                "arc_beats": [
+                    {
+                        "beat_id": "debt_setup",
+                        "role": "setup",
+                        "trigger": "First toll refusal or underpayment.",
+                        "encounter_function": "Name the debt system as an actor.",
+                        "player_choice": "Pay, dispute, or force the mouth.",
+                        "visible_change": "A later toll has a marked price or missing safe option.",
+                        "mechanical_consequence": "merchant_claim or toll_debt_streak increases.",
+                        "implementation_notes": ["Use story_followups and a special_event with trigger_key."],
+                    }
+                ],
+                "why_this_is_a_character": "It wants payment, remembers refusal, and can alter future rooms.",
+                "failure_mode_if_absent": "Debt remains flavor and the player does not feel opposed by anyone.",
+            }
+        ],
+        "first_15_minute_spine": [
+            {
+                "sequence_index": 1,
+                "target_room_or_event": "rib_lock_tally_gate_account",
+                "story_function": "Open with a pressure-lock bargain.",
+                "player_question": "Do I let this place count me, pay it, or injure myself forcing through?",
+                "choice_pressure": "Each option creates a different claimant.",
+                "followup_payoff": "A named toll actor recognizes the decision within two rooms.",
+                "required_data_changes": ["Add a Quartermaster follow-up scene for toll refusal/payment/force."],
+            }
+        ],
+        "followup_encounter_plan": [
+            {
+                "source_event": "rib_lock_tally_gate_account",
+                "followup_event_id": "story_quartermaster_first_claim",
+                "character_id": "quartermaster_of_teeth",
+                "trigger": "Toll refusal, payment, or forced rib passage.",
+                "timing": "1-2 rooms later.",
+                "scene_function": "Turn toll accounting into a recurring antagonist scene.",
+                "choice_or_route_change": "One option is cheaper, blocked, or dangerous based on the earlier decision.",
+                "mechanical_hook": "merchant_claim and environment_state flags.",
+                "authoring_prompt": "Write a short follow-up encounter where a toll/accounting actor returns with leverage from the player's first toll decision.",
+            }
+        ],
+        "pilot_arc_recommendation": {
+            "arc_name": "Quartermaster Debt Pilot",
+            "why_this_first": "It attaches to existing toll/larder/merchant content and can pay off quickly.",
+            "scope_events": ["rib_lock_tally_gate_account", "biomass_larder_weighted_pockets", "story_quartermaster_first_claim"],
+            "required_system_hooks": ["Track toll stance or reuse merchant_claim", "Allow follow-up event to alter a later toll option"],
+            "acceptance_tests": ["A blind player can name who is pressuring them by minute fifteen.", "A prior toll choice visibly changes one later option."],
+            "generation_prompt": "Generate the Quartermaster Debt Pilot as setup, escalation, choice, and payoff follow-up encounters using existing actions where possible.",
+        },
+        "story_rules": [
+            "Every named character needs desire, memory, pressure, and payoff.",
+            "Every story follow-up must be a scene or option change, not only a mood echo.",
+        ],
+        "patch_strategy": [
+            "Plan one arc first.",
+            "Generate OpenAI-authored follow-up encounters for that arc.",
+            "Validate that first-run play reveals the character before minute fifteen.",
+        ],
+        "next_story_prompt": "Generate a small Quartermaster debt arc with 4-6 follow-up encounters, using current rooms and existing actions first.",
+    }
+
+
+def mock_story_pilot() -> dict[str, Any]:
+    return {
+        "title": "Offline Story Pilot Sample",
+        "design_goal": "Show the shape of a story pilot patch without calling OpenAI.",
+        "special_events": [
+            {
+                "id": "story_soft_captain_pulse_mark",
+                "type": "story",
+                "speaker": "Hymn",
+                "line_1": "Chorus, a transit cord drops from an overhead seam and pulses at my wrist interval.",
+                "line_2": "The cord holds the count I allowed. A nearby lock opens while the pulse is still running.",
+                "reactivate_on_reshuffle": False,
+                "buttons": [
+                    {"label": "File the rhythm", "action": "proceed", "voice_aliases": ["file rhythm", "report", "rhythm"]},
+                    {"label": "Leave it unfiled", "action": "retreat", "voice_aliases": ["leave unfiled", "hide it", "retreat"]},
+                ],
+                "action_results": {
+                    "proceed": {
+                        "lines": ["I file the rhythm and keep the cord's interval in my wrist."],
+                        "environment_state_changes": ["soft_captain_next_rib_lock"],
+                    },
+                    "retreat": {
+                        "lines": ["I leave the rhythm unfiled. The cord retracts with my count still in it."],
+                        "environment_state_changes": ["soft_captain_refused"],
+                    },
+                },
+            }
+        ],
+        "room_event_updates": [
+            {
+                "room_id": "rib_lock_tally_gate",
+                "event_id": "rib_lock_tally_gate_account",
+                "merge": {
+                    "state_overrides": [
+                        {
+                            "state_key": "soft_captain_next_rib_lock",
+                            "consume_state": True,
+                            "event": {
+                                "line_1": "The lock starts at my stored wrist interval before the toll mouth opens.",
+                                "line_2": "The held count gives me one quiet slip. Paying or forcing would break it.",
+                            },
+                        }
+                    ]
+                },
+            }
+        ],
+        "required_engine_changes": [],
+        "validation_notes": ["Mock patch only."],
+        "self_critique": ["Insufficient for production; use OpenAI for authored content."],
+    }
+
+
 def validation_errors(
     patch: dict[str, Any],
     allow_new_actions: bool = False,
@@ -3322,7 +4101,7 @@ def validation_errors(
             errors.append(f"{event_id or index}: buttons must be a non-empty list")
             continue
         if strict_tradeoffs and event_type not in TRADEOFF_EXEMPT_EVENT_TYPES:
-            commandable_buttons = sum(1 for button in buttons if isinstance(button, dict))
+            commandable_buttons = commandable_button_count(event)
             if commandable_buttons < 2:
                 errors.append(
                     f"{event_id or index}: single-choice room ({commandable_buttons} commandable button{'s' if commandable_buttons != 1 else ''})"
@@ -3415,7 +4194,7 @@ def events_file_errors(strict_actions: bool = False, strict_tradeoffs: bool = Fa
                         event_type = str(event.get("type", ""))
                         if event_type not in TRADEOFF_EXEMPT_EVENT_TYPES:
                             buttons = event.get("buttons", [])
-                            commandable_buttons = sum(1 for button in buttons if isinstance(button, dict)) if isinstance(buttons, list) else 0
+                            commandable_buttons = commandable_button_count(event)
                             if commandable_buttons < 2:
                                 errors.append(f"room_events.{room_id}[{index}]: single-choice room ({commandable_buttons} commandable button{'s' if commandable_buttons != 1 else ''})")
                     check_event(event, f"room_events.{room_id}[{index}]")
@@ -3643,7 +4422,7 @@ def event_writing_findings() -> list[dict[str, str]]:
         buttons = event.get("buttons", [])
         if not isinstance(buttons, list):
             return
-        commandable_buttons = sum(1 for button in buttons if isinstance(button, dict))
+        commandable_buttons = commandable_button_count(event)
         if event_type not in TRADEOFF_EXEMPT_EVENT_TYPES and commandable_buttons < 2:
             add(
                 location,
@@ -3711,14 +4490,15 @@ def event_writing_findings() -> list[dict[str, str]]:
             )
 
     def check_room(room: dict[str, Any], location: str) -> None:
+        narrow_room = is_narrow_room_role(room)
         check_room_text(str(room.get("name", "")), f"{location}.name")
         check_room_text(str(room.get("instance_premise", "")), f"{location}.instance_premise")
-        check_room_text(str(room.get("first_visit_description", "")), f"{location}.first_visit_description", require_full_house_style=True)
+        check_room_text(str(room.get("first_visit_description", "")), f"{location}.first_visit_description", require_full_house_style=not narrow_room)
         check_room_text(str(room.get("return_description", "")), f"{location}.return_description")
         ui_text = room.get("ui_text", {})
         if isinstance(ui_text, dict):
-            check_room_text(str(ui_text.get("line_1", "")), f"{location}.ui_text.line_1", require_full_house_style=True)
-            check_room_text(str(ui_text.get("line_2", "")), f"{location}.ui_text.line_2", require_full_house_style=True)
+            check_room_text(str(ui_text.get("line_1", "")), f"{location}.ui_text.line_1", require_full_house_style=not narrow_room)
+            check_room_text(str(ui_text.get("line_2", "")), f"{location}.ui_text.line_2", require_full_house_style=not narrow_room)
         progression_state = room.get("progression_state", {})
         if isinstance(progression_state, dict):
             for state_key, state_text in progression_state.items():
@@ -4025,6 +4805,140 @@ def cmd_lore_brainstorm(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_story_architect(args: argparse.Namespace) -> int:
+    GENERATED_DIR.mkdir(exist_ok=True)
+    if args.mock:
+        architecture = mock_story_architect()
+    else:
+        architecture = call_openai(
+            build_story_architect_prompt(args),
+            args.model,
+            story_architect_schema(),
+            "story_architect",
+        )
+
+    out = Path(args.out) if args.out else GENERATED_DIR / "story_architect.json"
+    if not out.is_absolute():
+        out = ROOT / out
+    write_json(out, architecture)
+    print(out)
+    return 0
+
+
+def cmd_story_pilot(args: argparse.Namespace) -> int:
+    GENERATED_DIR.mkdir(exist_ok=True)
+    if args.mock:
+        patch = mock_story_pilot()
+    else:
+        patch = call_openai(
+            build_story_pilot_prompt(args),
+            args.model,
+            story_pilot_schema(),
+            "story_pilot_patch",
+        )
+
+    out = Path(args.out) if args.out else GENERATED_DIR / "story_pilot_patch.json"
+    if not out.is_absolute():
+        out = ROOT / out
+    write_json(out, patch)
+    print(out)
+    return 0
+
+
+def _deep_merge_dict(target: dict[str, Any], patch: dict[str, Any]) -> dict[str, Any]:
+    for key, value in patch.items():
+        if isinstance(value, dict) and isinstance(target.get(key), dict):
+            _deep_merge_dict(target[key], value)
+        elif key == "state_overrides" and isinstance(value, list) and isinstance(target.get(key), list):
+            target[key].extend(value)
+        else:
+            target[key] = value
+    return target
+
+
+def _normalize_story_pilot_action_results(event: dict[str, Any]) -> None:
+    action_results = event.get("action_results")
+    if not isinstance(action_results, dict):
+        return
+    for result in action_results.values():
+        if not isinstance(result, dict):
+            continue
+        if "result_lines" in result and "lines" not in result:
+            result["lines"] = result.pop("result_lines")
+        environment_changes = result.get("environment_state_changes")
+        if isinstance(environment_changes, dict):
+            normalized_changes: list[str] = []
+            for key, value in environment_changes.items():
+                if value in (None, False, 0, "0", "false", "False", "none", "None", "cleared", ""):
+                    continue
+                normalized_changes.append(str(key))
+            result["environment_state_changes"] = normalized_changes
+
+
+def _normalize_story_pilot_event(event: dict[str, Any]) -> None:
+    _normalize_story_pilot_action_results(event)
+    overrides = event.get("state_overrides")
+    if not isinstance(overrides, list):
+        return
+    for override in overrides:
+        if not isinstance(override, dict):
+            continue
+        override_event = override.get("event")
+        if isinstance(override_event, dict):
+            _normalize_story_pilot_event(override_event)
+
+
+def cmd_apply_story_pilot(args: argparse.Namespace) -> int:
+    patch_path = Path(args.patch)
+    if not patch_path.is_absolute():
+        patch_path = ROOT / patch_path
+    patch = load_json(patch_path)
+    events_payload = load_json(EVENTS_PATH)
+    special_events = events_payload.setdefault("special_events", {})
+    if not isinstance(special_events, dict):
+        raise SystemExit("special_events must be an object")
+
+    for event in patch.get("special_events", []):
+        if not isinstance(event, dict):
+            raise SystemExit("special_events entries must be objects")
+        _normalize_story_pilot_event(event)
+        event_id = str(event.get("id", "")).strip()
+        if not event_id:
+            raise SystemExit("special event missing id")
+        special_events[event_id] = event
+
+    room_events = events_payload.setdefault("room_events", {})
+    for update in patch.get("room_event_updates", []):
+        if not isinstance(update, dict):
+            raise SystemExit("room_event_updates entries must be objects")
+        room_id = str(update.get("room_id", "")).strip()
+        event_id = str(update.get("event_id", "")).strip()
+        merge_patch = update.get("merge", {})
+        if not isinstance(merge_patch, dict):
+            raise SystemExit(f"{room_id}.{event_id}: merge must be an object")
+        _normalize_story_pilot_event(merge_patch)
+        events = room_events.get(room_id, [])
+        if not isinstance(events, list):
+            raise SystemExit(f"room_events.{room_id} is not a list")
+        matched = False
+        for event in events:
+            if isinstance(event, dict) and str(event.get("id", "")) == event_id:
+                _deep_merge_dict(event, merge_patch)
+                matched = True
+                break
+        if not matched:
+            raise SystemExit(f"room_events.{room_id}: event '{event_id}' not found")
+
+    enrich_events_payload_voice_aliases(events_payload)
+    if args.dry_run:
+        print("dry-run ok")
+        return 0
+
+    write_json(EVENTS_PATH, events_payload)
+    print("applied story pilot patch")
+    return 0
+
+
 def cmd_validate_events(args: argparse.Namespace) -> int:
     errors = events_file_errors(strict_actions=args.strict_actions)
     if args.strict_tradeoffs:
@@ -4243,15 +5157,23 @@ def cmd_remember_fun(args: argparse.Namespace) -> int:
     record = {
         "timestamp": dt.datetime.now(dt.UTC).isoformat(),
         "summary": critique.get("summary", ""),
+        "blind_read_summary": critique.get("blind_read_summary", ""),
         "fun_score": critique.get("fun_score"),
+        "first_time_player_score": critique.get("first_time_player_score"),
+        "build_score": critique.get("build_score"),
+        "sequence_cohesion_score": critique.get("sequence_cohesion_score"),
         "organism_pressure_score": critique.get("organism_pressure_score"),
         "core_loop_diagnosis": critique.get("core_loop_diagnosis", ""),
+        "blind_text_findings": critique.get("blind_text_findings", [])[:6],
+        "choice_progression_findings": critique.get("choice_progression_findings", [])[:6],
+        "payoff_gaps": critique.get("payoff_gaps", [])[:6],
         "not_fun_findings": critique.get("not_fun_findings", [])[:6],
         "organism_director_findings": critique.get("organism_director_findings", []),
         "decision_loop_rewrites": critique.get("decision_loop_rewrites", []),
         "ending_pressure_plan": critique.get("ending_pressure_plan", []),
         "content_priorities": critique.get("content_priorities", []),
         "system_priorities": critique.get("system_priorities", []),
+        "minimum_game_shape": critique.get("minimum_game_shape", []),
         "vibe_doc_updates": critique.get("vibe_doc_updates", []),
         "next_fun_prompt": critique.get("next_fun_prompt", ""),
         "notes": args.notes or "",
@@ -4329,6 +5251,27 @@ def cmd_remember_lore_brainstorm(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_remember_story_architecture(args: argparse.Namespace) -> int:
+    architecture = load_json(Path(args.architecture))
+    record = {
+        "timestamp": dt.datetime.now(dt.UTC).isoformat(),
+        "summary": architecture.get("summary", ""),
+        "story_diagnosis": architecture.get("story_diagnosis", ""),
+        "missing_story_primitives": architecture.get("missing_story_primitives", []),
+        "character_arcs": architecture.get("character_arcs", [])[:6],
+        "first_15_minute_spine": architecture.get("first_15_minute_spine", []),
+        "followup_encounter_plan": architecture.get("followup_encounter_plan", [])[:10],
+        "pilot_arc_recommendation": architecture.get("pilot_arc_recommendation", {}),
+        "story_rules": architecture.get("story_rules", []),
+        "patch_strategy": architecture.get("patch_strategy", []),
+        "next_story_prompt": architecture.get("next_story_prompt", ""),
+        "notes": args.notes or "",
+    }
+    append_jsonl(STORY_ARCHITECTURE_MEMORY_PATH, record)
+    print("remembered story architecture guidance")
+    return 0
+
+
 def cmd_context(_: argparse.Namespace) -> int:
     print(json.dumps(game_context(), indent=2, ensure_ascii=False))
     return 0
@@ -4356,6 +5299,11 @@ def cmd_accessibility_context(_: argparse.Namespace) -> int:
 
 def cmd_lore_brainstorm_context(_: argparse.Namespace) -> int:
     print(json.dumps(lore_brainstorm_context(), indent=2, ensure_ascii=False))
+    return 0
+
+
+def cmd_story_architect_context(_: argparse.Namespace) -> int:
+    print(json.dumps(story_architect_context(), indent=2, ensure_ascii=False))
     return 0
 
 
@@ -4445,8 +5393,8 @@ def build_parser() -> argparse.ArgumentParser:
     balance_critique.add_argument("--mock", action="store_true", help="Generate a local sample without calling OpenAI.")
     balance_critique.set_defaults(func=cmd_balance_critique)
 
-    fun_critique = sub.add_parser("fun-critique", help="Critique fun factor and organism pressure against the vibe guide.")
-    fun_critique.add_argument("--focus", default="Critique fun loop, organism pressure, repeated-choice consequences, ending gravity, and stat-only choices.")
+    fun_critique = sub.add_parser("fun-critique", help="Critique blind first-time fun, build, choice progression, and organism pressure.")
+    fun_critique.add_argument("--focus", default="Critique blind first-time user-facing text and choices, whether rooms build into a run, organism pressure, repeated-choice consequences, ending gravity, and stat-only choices.")
     fun_critique.add_argument("--out", help="Output fun critique JSON path.")
     fun_critique.add_argument("--model", default=DEFAULT_MODEL)
     fun_critique.add_argument("--mock", action="store_true", help="Generate a local sample without calling OpenAI.")
@@ -4473,6 +5421,20 @@ def build_parser() -> argparse.ArgumentParser:
     lore_brainstorm.add_argument("--model", default=DEFAULT_MODEL)
     lore_brainstorm.add_argument("--mock", action="store_true", help="Generate a local sample without calling OpenAI.")
     lore_brainstorm.set_defaults(func=cmd_lore_brainstorm)
+
+    story_architect = sub.add_parser("story-architect", help="Plan playable character arcs and follow-up encounter story structure from current repo data.")
+    story_architect.add_argument("--focus", default="Plan the smallest character-driven story spine that turns the current room/event stack from strong vibe into a playable story with recurring characters, follow-up scenes, escalation, and payoff.")
+    story_architect.add_argument("--out", help="Output story architecture JSON path.")
+    story_architect.add_argument("--model", default=DEFAULT_MODEL)
+    story_architect.add_argument("--mock", action="store_true", help="Generate a local sample without calling OpenAI.")
+    story_architect.set_defaults(func=cmd_story_architect)
+
+    story_pilot = sub.add_parser("story-pilot", help="Generate an OpenAI-authored story pilot patch from story architecture guidance.")
+    story_pilot.add_argument("--focus", default="Generate the five-scene pilot story patch recommended by the story architect. Use existing queued special event IDs where possible, add state_overrides to current room events, and keep required_engine_changes empty unless absolutely necessary.")
+    story_pilot.add_argument("--out", help="Output story pilot patch JSON path.")
+    story_pilot.add_argument("--model", default=DEFAULT_MODEL)
+    story_pilot.add_argument("--mock", action="store_true", help="Generate a local sample without calling OpenAI.")
+    story_pilot.set_defaults(func=cmd_story_pilot)
 
     validate = sub.add_parser("validate", help="Validate a scenario patch.")
     validate.add_argument("patch")
@@ -4516,6 +5478,11 @@ def build_parser() -> argparse.ArgumentParser:
     apply.add_argument("--dry-run", action="store_true")
     apply.set_defaults(func=cmd_apply)
 
+    apply_story_pilot = sub.add_parser("apply-story-pilot", help="Apply a story pilot patch with special_events and room_event_updates.")
+    apply_story_pilot.add_argument("patch")
+    apply_story_pilot.add_argument("--dry-run", action="store_true")
+    apply_story_pilot.set_defaults(func=cmd_apply_story_pilot)
+
     backfill_aliases = sub.add_parser("backfill-voice-aliases", help="Rebuild voice_aliases across the current events.json deck.")
     backfill_aliases.add_argument("--dry-run", action="store_true", help="Check whether backfill would change events.json without writing.")
     backfill_aliases.set_defaults(func=cmd_backfill_voice_aliases)
@@ -4557,6 +5524,11 @@ def build_parser() -> argparse.ArgumentParser:
     remember_lore_brainstorm.add_argument("--notes", default="")
     remember_lore_brainstorm.set_defaults(func=cmd_remember_lore_brainstorm)
 
+    remember_story_architecture = sub.add_parser("remember-story-architecture", help="Store story architecture guidance for future generation.")
+    remember_story_architecture.add_argument("architecture")
+    remember_story_architecture.add_argument("--notes", default="")
+    remember_story_architecture.set_defaults(func=cmd_remember_story_architecture)
+
     context = sub.add_parser("context", help="Print compact game context.")
     context.set_defaults(func=cmd_context)
 
@@ -4574,6 +5546,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     lore_brainstorm_context_parser = sub.add_parser("lore-brainstorm-context", help="Print lore brainstorm context.")
     lore_brainstorm_context_parser.set_defaults(func=cmd_lore_brainstorm_context)
+
+    story_architect_context_parser = sub.add_parser("story-architect-context", help="Print story architecture packet context.")
+    story_architect_context_parser.set_defaults(func=cmd_story_architect_context)
 
     vibe = sub.add_parser("vibe", help="Print the vibe and design guide.")
     vibe.set_defaults(func=cmd_vibe)
