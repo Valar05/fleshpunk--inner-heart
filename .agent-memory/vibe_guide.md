@@ -181,17 +181,19 @@ The original room and event set is legacy content.
 
 Use legacy content as implementation reference, action-handler reference, and migration material. Do not treat it as the forward creative baseline.
 
-Forward room work should begin from generated post-update rooms and corpus-derived mechanics, then promote those rooms into the data model with first-visit and return descriptions.
+Forward room work should begin from generated post-update rooms and corpus-derived scenario pressure, then promote those rooms into the data model with first-read descriptions, scenario events, and implicit future branches.
 
 ## Depth Standard
 
 Rooms are not one-off stat kiosks.
 
-A room is only good enough when it has:
+A room scenario is only good enough when it has:
 - an identifiable actor or system with behavior: character, beast, organ, colony, route intelligence, tool, parasite, market, or maintenance process
 - action and reaction: the room responds to what Hymn does, not only with an immediate number
-- delayed consequence: at least one choice changes future room text, deck pressure, route state, character posture, beast behavior, claim, debt, pursuit, or available choices
-- legible uncertainty: the player understands the category of risk without seeing the entire consequence table
+- character change: the scenario enriches Hymn, destabilizes Hymn, or both
+- implicit possibility: at least two future pressures can diverge from the choice, without visible branch labels
+- delayed consequence: at least one choice changes future room text, deck pressure, route state, character posture, beast behavior, claim, debt, pursuit, body appetite, or available choices
+- legible uncertainty: the player understands the immediate pressure without seeing the entire consequence table
 - memory: repeat use should change the room, the organism, or the way later rooms treat Hymn
 
 Minor stat changes are allowed only as the visible surface of a larger consequence.
@@ -219,11 +221,14 @@ Character and faction follow-up events do not retrigger in the same run. A room 
 
 The current post-update prose is scaffold prose. It is functional, but too flat to be final.
 
-Forward writing should draw more heavily from the corpus texture:
-- Verne gives procedure, route logic, pressure, instruments, expedition accounting, and the feeling that survival depends on understanding a mechanism.
-- Lovecraft gives deep-time architecture, bad records, contamination, inheritance dread, biological wrongness, and the slow realization that an environment has a history older than the observer.
+Forward writing should draw more heavily from the new corpus texture:
+- pre-1930 pulp gives immediate physical danger, pursuit, reversal, lost-world thresholds, unsafe refuge, rival recognition, and mythic compression
+- martial anatomy gives posture, distance, contact, commitment, recovery, stance, and body-specific consequence
+- biological adaptation gives mutation logic: what a body solves, what it worsens, and what selected for it
+- progression fantasy gives breakthrough hunger, discipline, rank pressure, identity narrowing, and the feeling of becoming more consequential
+- Verne/Lovecraft remain legacy-local tools for procedure, evidence, contamination, and built history when those pressures are actually useful
 
-Use `.agent-memory/hymn_corpus_voice.md` for the dedicated blended voice target. It defines how to compress Verne's procedural verve and Lovecraft's evidence-based dread into Hymn's clean field-report narration.
+Use `.agent-memory/hymn_corpus_voice.md` for the dedicated voice target. It defines how to compress pulp pressure, martial anatomy, biological adaptation, and older corpus craft into Hymn's clean field-report narration.
 
 Do not copy source prose or imitate antique diction. Transform the depth:
 - name concrete mechanisms instead of generic weird objects

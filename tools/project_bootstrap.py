@@ -234,10 +234,20 @@ def corpus_influence_records(room_record: dict[str, Any]) -> list[dict[str, Any]
 
 def has_specific_corpus_influence(room_record: dict[str, Any]) -> bool:
     for record in corpus_influence_records(room_record):
-        has_source = bool(str(record.get("seed_id", "")).strip() or str(record.get("source_title", "")).strip())
+        has_source = bool(
+            str(record.get("seed_id", "")).strip()
+            or str(record.get("source_id", "")).strip()
+            or str(record.get("source_title", "")).strip()
+            or str(record.get("source_layer", "")).strip()
+            or str(record.get("research_layer", "")).strip()
+        )
         has_specific_moment = bool(
             str(record.get("source_moment", "")).strip()
             or str(record.get("writing_influence", "")).strip()
+            or str(record.get("structural_idea", "")).strip()
+            or str(record.get("scene_function", "")).strip()
+            or str(record.get("combat_exchange", "")).strip()
+            or str(record.get("progression_beat", "")).strip()
             or str(record.get("source_bit", "")).strip()
             or str(record.get("source_excerpt", "")).strip()
             or str(record.get("source_detail", "")).strip()
@@ -245,6 +255,7 @@ def has_specific_corpus_influence(room_record: dict[str, Any]) -> bool:
         )
         has_application = bool(
             str(record.get("room_application", "")).strip()
+            or str(record.get("scenario_application", "")).strip()
             or str(record.get("room_reflection", "")).strip()
             or str(record.get("transform", "")).strip()
             or str(record.get("mechanic_reflection", "")).strip()

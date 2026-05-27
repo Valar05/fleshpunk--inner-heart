@@ -4,6 +4,20 @@
       "id": "impermeable_barrier",
       "name": "Impermeable Barrier",
       "description": "Manual activation: gain 8 armor. Armor can block event damage. If the armor is expended, the symbiote loses 1 of 3 health.",
+      "body_option_type": "symbiote",
+      "reliability_model": "active_cooldown_wounded_if_broken",
+      "capability_tags": ["barrier", "brace"],
+      "tradeoff_axes": ["wound_debt", "body_drift", "recognition"],
+      "in_encounter_use": "Wake it before contact to take a heavy hit, cross a killing lane, or hold a line that would break bare flesh.",
+      "out_of_encounter_use": "Use the shell to pass crush, heat, pressure, toothfall, or closing-room hazards without stopping.",
+      "sapience_hint": "It plates over threats before Hymn finishes naming them, but tightens when she wastes it on minor pain.",
+      "need": "Impact. It stays healthy when used against real force and grows restless when carried idle too long.",
+      "relationship_pressure": "Repeated activation teaches it that Hymn solves danger by being covered, not by reading the room.",
+      "failure_modes": [
+        "If the armor pool is fully spent, the symbiote loses health.",
+        "While on cooldown it cannot answer even if the next room would favor it.",
+        "Rooms that read armored bodies may classify Hymn as shield-bearing prey or claimant."
+      ],
       "max_health": 3,
       "armor": 8,
       "blocks_event_damage": true
@@ -12,6 +26,20 @@
       "id": "pheromones",
       "name": "Pheromones",
       "description": "Manual activation before combat: enemy loses 1 initiative for the next fight.",
+      "body_option_type": "symbiote",
+      "reliability_model": "active_room_duration_cooldown",
+      "capability_tags": ["scent_control", "identity_spoof", "calm_weak_life"],
+      "tradeoff_axes": ["recognition", "hunt_pressure", "body_drift"],
+      "in_encounter_use": "Bleed scent into a fight to make an enemy hesitate, misread opening tempo, or delay the first committed bite.",
+      "out_of_encounter_use": "Muffle prey-smell, pass nurseries, sour a toll reader, or make weak organisms treat Hymn as belonging nearby.",
+      "sapience_hint": "It answers social air before spoken choices and lingers around bodies it wants to influence.",
+      "need": "Audience. It wants living noses, glands, and measuring organs to react.",
+      "relationship_pressure": "The more Hymn leans on scent, the more the dungeon knows her through scent traces rather than conduct.",
+      "failure_modes": [
+        "It only lasts the current room and then needs quiet.",
+        "Predators and social organs can learn the recurring scent.",
+        "Some enemies may become curious rather than afraid."
+      ],
       "max_health": 2,
       "enemy_initiative_delta": -1
     },
@@ -19,6 +47,20 @@
       "id": "mitosis_unit",
       "name": "Mitosis Unit",
       "description": "Passive: saves you from dying one time, then dies.",
+      "body_option_type": "symbiote",
+      "reliability_model": "passive_emergency_sacrifice",
+      "capability_tags": ["death_intercept", "decoy", "seal_wound"],
+      "tradeoff_axes": ["wound_debt", "body_drift", "recognition"],
+      "in_encounter_use": "Intercept fatal damage by spending itself as a living spare body process.",
+      "out_of_encounter_use": "Let Hymn risk a route, bargain, or crossing that would otherwise be unacceptable because one death has a body waiting under it.",
+      "sapience_hint": "It counts organs and crisis states, not wishes. It is quiet until death gives it jurisdiction.",
+      "need": "Catastrophe. It exists to divide at the point of loss.",
+      "relationship_pressure": "Possessing it can make reckless choices feel affordable while making other organisms notice that Hymn carries a spare ending.",
+      "failure_modes": [
+        "It cannot be manually activated.",
+        "It dies when it saves Hymn.",
+        "Rooms and witnesses that detect divided survival may mark Hymn as host rather than solitary body."
+      ],
       "max_health": 1
     }
   ]

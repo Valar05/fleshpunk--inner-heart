@@ -24,8 +24,8 @@
     },
     {
       "id": "choice",
-      "label": "Risk Choice",
-      "purpose": "A general dilemma with two or three readable tradeoffs.",
+      "label": "Scenario Choice",
+      "purpose": "A compact story dilemma with two or three readable actions and implicit future pressure.",
       "existing_actions": [
         "proceed",
         "retreat",
@@ -37,7 +37,7 @@
       ],
       "content_rules": [
         "Use when no more specific category fits.",
-        "Each button should imply a distinct cost or reward.",
+        "Each button should imply a distinct pressure, branch, or identity shift without spelling out the full risk tree.",
         "Prefer existing actions unless the patch explicitly proposes engine changes."
       ]
     },
@@ -82,7 +82,7 @@
       "content_rules": [
         "Include mutation_id when using take_mutation.",
         "Use an existing mutation unless the patch also proposes a new mutation entry.",
-        "State the physical bargain plainly."
+        "State the physical bargain plainly, but keep future branch pressure implicit."
       ]
     },
     {
@@ -135,7 +135,7 @@
       ],
       "content_rules": [
         "Make the material gain concrete.",
-        "Make the risk visible.",
+        "Make the immediate physical pressure visible without labeling the future risk tree.",
         "Use room-appropriate verbs: cut, siphon, harvest, cauterize, seal."
       ]
     },

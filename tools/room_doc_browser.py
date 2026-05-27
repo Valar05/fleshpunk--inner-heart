@@ -20,6 +20,16 @@ LEGACY_EVENTS_PATH = ROOT / "events.json"
 POST_UPDATE_ROOMS_PATH = ROOT / "rooms_post_update.json"
 POST_UPDATE_EVENTS_PATH = ROOT / "events_post_update.json"
 SYMBIOTES_PATH = ROOT / "symbiotes.json"
+FEATURED_SCENARIO_ROOMS = [
+    "operator_cellar",
+    "white_marrow_field",
+]
+ACTIVE_ROOM_IDS = set(FEATURED_SCENARIO_ROOMS)
+ACTIVE_EVENT_IDS = {
+    "operator_cellar_grip_predator",
+    "operator_cellar_wall_reader",
+    "white_marrow_field_hound_lanes",
+}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -90,11 +100,19 @@ class ContentStore:
         self.rooms = [
             room
             for room in self.rooms_payload.get("rooms", [])
-            if isinstance(room, dict) and room.get("id")
+            if isinstance(room, dict) and room.get("id") and str(room.get("id")) in ACTIVE_ROOM_IDS
         ]
         self.rooms_by_id = {str(room.get("id")): room for room in self.rooms}
         room_events = self.events_payload.get("room_events", {})
-        self.room_events = room_events if isinstance(room_events, dict) else {}
+        self.room_events = {
+            str(room_id): [
+                event
+                for event in events
+                if isinstance(event, dict) and str(event.get("id", "")) in ACTIVE_EVENT_IDS
+            ]
+            for room_id, events in room_events.items()
+            if str(room_id) in ACTIVE_ROOM_IDS and isinstance(events, list)
+        } if isinstance(room_events, dict) else {}
         special_events = self.events_payload.get("special_events", {})
         self.special_events = special_events if isinstance(special_events, dict) else {}
         self.events_by_id: dict[str, dict[str, Any]] = {}
@@ -270,6 +288,127 @@ def preview_markdown(store: ContentStore, room_id: str) -> str:
                 lines.append(f"- **{hook.get('capability', '')}:** {hook.get('effect', '')}\n")
         lines.append("\n")
 
+    return "".join(lines)
+
+
+def scenario_event_sequence(store: ContentStore, room_id: str) -> list[dict[str, Any]]:
+    sequence: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    pending = list(store.room_events_for(room_id))
+    while pending:
+        event = pending.pop(0)
+        if not isinstance(event, dict):
+            continue
+        event_id = str(event.get("id", ""))
+        if event_id in seen:
+            continue
+        seen.add(event_id)
+        sequence.append(event)
+        for followup in normalize_followups(event):
+            followup_id = str(followup.get("event_id", ""))
+            linked_event = store.events_by_id.get(followup_id)
+            if isinstance(linked_event, dict) and followup_id not in seen:
+                pending.append(linked_event)
+    return sequence
+
+
+def append_event_playthrough(lines: list[str], store: ContentStore, event: dict[str, Any]) -> None:
+    event_id = str(event.get("id", "missing_id"))
+    lines.append(md_heading(2, str(event.get("title", event_id)).replace("_", " ").title()))
+    lines.append(f"`{event_id}` / `{event.get('type', '')}`\n\n")
+    if event.get("line_1"):
+        lines.append(str(event.get("line_1", "")))
+        lines.append("\n\n")
+    if event.get("line_2"):
+        lines.append(str(event.get("line_2", "")))
+        lines.append("\n\n")
+    buttons = display_buttons_for_event(store, event)
+    if buttons:
+        lines.append(md_heading(3, "Choices And Results"))
+        for button in buttons:
+            if not isinstance(button, dict):
+                continue
+            label = str(button.get("label", ""))
+            action = str(button.get("action", ""))
+            lines.append(f"- **{label}** -> `{action}`\n")
+            result = event_action_result(event, action)
+            preview = result.get("preview", "")
+            if preview:
+                lines.append(f"  - {preview}\n")
+            result_lines = result.get("lines", [])
+            if isinstance(result_lines, list) and result_lines:
+                lines.append(f"  - Result: {' '.join(str(line) for line in result_lines)}\n")
+        lines.append("\n")
+    followups = normalize_followups(event)
+    if followups:
+        lines.append(md_heading(3, "Follow-Up Queue"))
+        for followup in followups:
+            followup_id = str(followup.get("event_id", ""))
+            action = str(followup.get("action", "default"))
+            delay = followup.get("delay_rooms", "")
+            queued_line = str(followup.get("queued_line", ""))
+            if followup_id:
+                lines.append(f"- `{action}` -> [{followup_id}](/events/{event_slug(followup_id)})")
+                if delay != "":
+                    lines.append(f" after {delay} rooms")
+                lines.append("\n")
+            if queued_line:
+                lines.append(f"  - {queued_line}\n")
+        lines.append("\n")
+
+
+def scenario_markdown(store: ContentStore, room_id: str) -> str:
+    room = store.rooms_by_id.get(room_id)
+    if not room:
+        return f"# Missing Scenario\n\nNo room found for `{room_id}`.\n"
+
+    title = str(room.get("name", room_id))
+    sequence = scenario_event_sequence(store, room_id)
+    lines: list[str] = []
+    lines.append(md_heading(1, f"{title} Scenario"))
+    lines.append(f"`{room_id}`\n\n")
+    lines.append(str(room.get("instance_premise", room.get("first_visit_description", ""))))
+    lines.append("\n\n")
+    if room.get("first_visit_description"):
+        lines.append(md_heading(2, "Room Entry"))
+        lines.append(str(room.get("first_visit_description", "")))
+        lines.append("\n\n")
+
+    corpus_anchors = room.get("corpus_anchors", [])
+    if isinstance(corpus_anchors, list) and corpus_anchors:
+        lines.append(md_heading(2, "Corpus Foundation"))
+        for anchor in corpus_anchors:
+            if not isinstance(anchor, dict):
+                continue
+            title = str(anchor.get("source_title", anchor.get("source_id", "source")))
+            author = str(anchor.get("source_author", ""))
+            tier = str(anchor.get("tier", ""))
+            locator = str(anchor.get("source_locator", ""))
+            source_label = title if not author else f"{title}, {author}"
+            if tier:
+                source_label = f"Tier {tier}: {source_label}"
+            lines.append(f"- **{source_label}**")
+            if locator:
+                lines.append(f" ({locator})")
+            lines.append("\n")
+            for key, label in (
+                ("source_moment", "Source move"),
+                ("story_element", "Story element"),
+                ("scenario_application", "Scenario use"),
+            ):
+                value = str(anchor.get(key, "")).strip()
+                if value:
+                    lines.append(f"  - {label}: {value}\n")
+        lines.append("\n")
+
+    if not sequence:
+        lines.append("_No scenario events found._\n")
+        return "".join(lines)
+
+    lines.append(md_heading(2, "Scenario Path"))
+    lines.append(format_list([str(event.get("id", "missing_id")) for event in sequence]))
+    for event in sequence:
+        append_event_playthrough(lines, store, event)
     return "".join(lines)
 
 
@@ -604,6 +743,7 @@ def page(title: str, body: str, store: ContentStore, md_href: str = "") -> bytes
     <nav>
       <a href="/rooms">Rooms</a>
       <a href="/events">Events</a>
+      <a href="/scenarios">Scenarios</a>
       {md_link}
     </nav>
     <div class="meta">{escape(store.content_track)} / {escape(store.rooms_path.name)} / {escape(store.events_path.name)}</div>
@@ -641,6 +781,20 @@ def events_index(store: ContentStore) -> bytes:
     return page("Events", body, store)
 
 
+def scenarios_index(store: ContentStore) -> bytes:
+    items = []
+    for room_id in FEATURED_SCENARIO_ROOMS:
+        room = store.rooms_by_id.get(room_id, {})
+        title = str(room.get("name", room_id))
+        sequence = scenario_event_sequence(store, room_id)
+        items.append(
+            '<li><a href="/scenarios/%s">%s</a> <span class="meta">%s beats</span></li>'
+            % (room_slug(room_id), escape(title), len(sequence))
+        )
+    body = "<h1>Scenarios</h1><p>Linked scenario playthroughs with room beats and delayed follow-ups inline.</p><ul>%s</ul>" % "".join(items)
+    return page("Scenarios", body, store)
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = "FleshpunkRoomDocs/0.1"
 
@@ -657,6 +811,25 @@ class Handler(BaseHTTPRequestHandler):
                 return
             if path == "/events":
                 self.send_bytes(events_index(store), "text/html; charset=utf-8")
+                return
+            if path == "/scenarios":
+                self.send_bytes(scenarios_index(store), "text/html; charset=utf-8")
+                return
+            if path.startswith("/scenarios/"):
+                room_id = path.removeprefix("/scenarios/")
+                markdown = False
+                if room_id.endswith(".md"):
+                    room_id = room_id[:-3]
+                    markdown = True
+                if room_id not in store.rooms_by_id:
+                    self.send_error(HTTPStatus.NOT_FOUND, "scenario room not found")
+                    return
+                md = scenario_markdown(store, room_id)
+                if markdown:
+                    self.send_bytes(md.encode("utf-8"), "text/markdown; charset=utf-8")
+                else:
+                    body = markdown_to_html(md)
+                    self.send_bytes(page(f"{room_id} scenario", body, store, f"/scenarios/{room_slug(room_id)}.md"), "text/html; charset=utf-8")
                 return
             if path.startswith("/preview/"):
                 room_id = path.removeprefix("/preview/")

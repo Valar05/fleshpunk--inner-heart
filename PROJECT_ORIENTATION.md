@@ -39,6 +39,18 @@ Preview active room/event docs without running Godot:
 python tools/room_doc_browser.py --host 127.0.0.1 --port 3000
 ```
 
+Preview scenario docs with restart-on-change:
+
+```sh
+npx -y nodemon --watch events_post_update.json --watch rooms_post_update.json --watch tools/room_doc_browser.py --ext py,json --exec "python tools/room_doc_browser.py --host 127.0.0.1 --port 3000"
+```
+
+Current playtest scenario review index:
+
+```text
+http://127.0.0.1:3000/scenarios
+```
+
 ## Project Shape
 
 - Godot 4.5 mobile project.
@@ -55,10 +67,17 @@ python tools/room_doc_browser.py --host 127.0.0.1 --port 3000
 - Test post-update rooms in text/decision form before refreshing or generating TTS audio.
 - Content authorship workflow lives in `.agent-memory/content_authorship_workflow.md`. Codex agents should not be the primary author of player-facing prose; use the scenario/writing agent path for drafting and revision, then let Codex integrate and verify accepted patches.
 - External writing-agent work must start from a narrow source packet, not a broad repo prompt. Use `.agent-memory/source_packet_workflow.md` before asking Claude/OpenAI/another writer to draft from-scratch scenarios, major rewrites, recurring character arcs, endings, or delayed follow-ups.
-- The forward story-room quality bar lives in `.agent-memory/story_room_contract.md`; use it before accepting new room/event content.
+- The forward story-scenario quality bar lives in `.agent-memory/story_room_contract.md`; use it before accepting new room/event content. Scenarios should be Revelation-scale: compact, playable, story-rich, and built around implicit possibility trees.
 - Ending-maze structure lives in `.agent-memory/ending_maze_architecture.md`; every environment family should be able to culminate in at least one ending vector.
-- Hymn's corpus-blended prose target lives in `.agent-memory/hymn_corpus_voice.md`; use it when rewriting descriptions, events, results, and choice text.
-- Every forward room needs a specific `corpus_influences` entry. `source_seed_ids` are not enough; the room must name the concrete source moment, writing energy, and room-writing application.
+- Hymn's scenario voice target lives in `.agent-memory/hymn_corpus_voice.md`; use it when rewriting descriptions, events, results, and choice text.
+- The forward research stack lives in `.agent-memory/fleshpunk_corpus_research_stack.md` and the companion `fleshpunk_research_*.md` files.
+- Whole-text pulp sources live under `generated/corpus/pulp_pre_1930/`; use `generated/corpus/pulp_pre_1930/retrieval_index.md` to choose source pressure before drafting.
+- Every forward room/scenario needs a specific `corpus_influences` or `research_influences` entry. `source_seed_ids` are not enough; the scenario must name the concrete source move, writing/mechanic energy, and scenario application.
+- Every scenario should enrich Hymn, destabilize Hymn, or both. Do not spell out risk trees, branch labels, or future consequences in player-facing text.
+- Combat is optional. When present, it should be readable physical action: posture, distance, contact, commitment, recovery, and consequence.
+- Major mutations should be multi-use: one in-encounter use, one out-of-encounter use, and one later surprising second use.
+- Validate new generation patches with `python tools/scenario_agent.py validate PATCH --strict-scenario-contract`.
+- Applied-content audits default to migration mode so old metadata debt is grouped. Use `--mode strict` on `audit-depth` or `audit-writing` only when auditing newly migrated/generated content.
 
 ## Core Runtime Files
 

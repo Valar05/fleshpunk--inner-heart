@@ -105,10 +105,50 @@ func _run() -> void:
 				{"label": "Activate: Pheromones", "action": "activate_symbiote:pheromones"},
 			],
 		},
+		{
+			"name": "console help and speed",
+			"lines": [
+				"Nothing is waiting for confirmation.",
+				"Speech slower.",
+				"Current speed: 0.90x.",
+				"Say repeat choices, status, inventory, confirm, cancel, slower, faster, or a choice number.",
+			],
+			"buttons": [],
+		},
+		{
+			"name": "status inventory",
+			"lines": [
+				"Status report.",
+				"Health: 30.",
+				"Shield: 6.",
+				"Inventory report.",
+				"Mutations: none.",
+				"Symbiotes: none.",
+			],
+			"buttons": [],
+		},
+		{
+			"name": "fuzzy prompts",
+			"lines": [
+				"I think you meant Proceed. Say confirm or cancel.",
+				"I matched two commands: Proceed, or Withdraw. Say a choice number.",
+			],
+			"buttons": [],
+		},
 	]
 
 	var failed := false
 	var text_clips: Dictionary = world.get("_tts_text_clip_files")
+	var room_intro := _room_description("operator_cellar", "first_visit_description")
+	if room_intro == "":
+		failed = true
+		push_error("Missing operator_cellar first_visit_description for TTS regression.")
+	else:
+		var resolved_intro_clip: String = world.call("_resolve_encounter_line_tts_clip", "operator_cellar_wall_reader", 1, room_intro)
+		if resolved_intro_clip != "res://audio/tts/operator_cellar_first_visit.wav":
+			failed = true
+			push_error("Room intro resolved to wrong TTS clip: %s" % resolved_intro_clip)
+
 	for test_case in cases:
 		var phrases: Array = world.call("_build_console_speech_phrases", test_case["lines"], test_case["buttons"])
 		for forbidden_phrase in test_case.get("forbidden", []):
@@ -124,3 +164,19 @@ func _run() -> void:
 	root.remove_child(world)
 	world.queue_free()
 	quit(1 if failed else 0)
+
+
+func _room_description(room_id: String, key: String) -> String:
+	var file := FileAccess.open("res://rooms_post_update.json", FileAccess.READ)
+	if file == null:
+		return ""
+	var parsed = JSON.parse_string(file.get_as_text())
+	if not parsed is Dictionary:
+		return ""
+	var rooms = parsed.get("rooms", [])
+	if not rooms is Array:
+		return ""
+	for room in rooms:
+		if room is Dictionary and str(room.get("id", "")) == room_id:
+			return str(room.get(key, ""))
+	return ""

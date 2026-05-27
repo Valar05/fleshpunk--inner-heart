@@ -61,6 +61,7 @@ var _triggered_story_events: Dictionary = {}
 var _ending_locks: Dictionary = {}
 var _hunter_reckoning_triggered := false
 var _corruption_claim_triggered := false
+var _named_ending_triggered := false
 var _pending_room_id_after_transition := ""
 var _pending_encounter_after_overlay: Dictionary = {}
 var _last_action_result: Dictionary = {}
@@ -108,6 +109,7 @@ func start_new_run() -> void:
 	_ending_locks.clear()
 	_hunter_reckoning_triggered = false
 	_corruption_claim_triggered = false
+	_named_ending_triggered = false
 	_pending_room_id_after_transition = ""
 	_pending_encounter_after_overlay.clear()
 	_last_action_result.clear()
@@ -121,12 +123,14 @@ func start_new_run() -> void:
 	var opening_event_data: Dictionary = current_encounter.get("event_data", {})
 	if str(opening_event_data.get("type", "")) == "symbiote":
 		_remove_symbiote_cards_from_active_deck()
+		_pending_room_id_after_transition = str(deck_config.get("first_room_after_opening", ""))
 	_sync_heart_rate()
 	run_started.emit()
 	encounter_changed.emit(get_current_encounter())
 
 
 func get_current_encounter() -> Dictionary:
+	_replace_disallowed_current_encounter()
 	return current_encounter.duplicate(true)
 
 
@@ -343,6 +347,7 @@ func buy_shop_mutation(mutation_id: String) -> Dictionary:
 
 
 func consume_current_event(action_id: String = "") -> void:
+	_replace_disallowed_current_encounter()
 	if current_encounter.is_empty() or bool(current_encounter.get("consumed", false)):
 		return
 
@@ -350,6 +355,8 @@ func consume_current_event(action_id: String = "") -> void:
 	var room_id := str(current_encounter.get("room_id", ""))
 	var event_id := str(current_encounter.get("event_id", ""))
 	var event_data: Dictionary = current_encounter.get("event_data", {})
+	if event_id == "symbiote_host_offer" and rooms_cleared == 0 and _pending_room_id_after_transition == "":
+		_pending_room_id_after_transition = str(deck_config.get("first_room_after_opening", ""))
 
 	if room_id != "" and event_id != "":
 		if not consumed_room_events.has(room_id):
@@ -361,6 +368,7 @@ func consume_current_event(action_id: String = "") -> void:
 
 	_last_action_result = _apply_action_effects(action_id, event_data)
 	_last_action_result = _apply_event_action_result(action_id, event_data, _last_action_result)
+	_apply_event_memory_flags(event_data)
 	_last_action_result = _with_director_lines(_last_action_result, _enqueue_story_followup(action_id, event_data))
 	_last_action_result = _with_director_lines(_last_action_result, _record_action_pattern(action_id, event_data))
 	_last_action_result = _with_result_delta_lines(_last_action_result, result_snapshot_before)
@@ -368,6 +376,7 @@ func consume_current_event(action_id: String = "") -> void:
 
 
 func advance_to_next_encounter() -> Dictionary:
+	_replace_disallowed_current_encounter()
 	if not current_encounter.is_empty() and bool(current_encounter.get("counts_as_room", false)):
 		rooms_cleared += 1
 		_advance_symbiote_room_state()
@@ -377,6 +386,25 @@ func advance_to_next_encounter() -> Dictionary:
 	current_room_id = str(next_encounter.get("room_id", current_room_id))
 	encounter_changed.emit(get_current_encounter())
 	return get_current_encounter()
+
+
+func _replace_disallowed_current_encounter() -> void:
+	if current_encounter.is_empty():
+		return
+	if _is_encounter_allowed_by_playtest_slice(current_encounter):
+		return
+	var replacement := _draw_room_encounter()
+	current_encounter = replacement
+	current_room_id = str(replacement.get("room_id", current_room_id))
+
+
+func _is_encounter_allowed_by_playtest_slice(encounter: Dictionary) -> bool:
+	if not bool(encounter.get("counts_as_room", false)):
+		return true
+	var allowed_event_ids := _get_playtest_event_ids()
+	if allowed_event_ids.is_empty():
+		return true
+	return allowed_event_ids.has(str(encounter.get("event_id", "")))
 
 
 func apply_combat_result(combat_result: Dictionary, enemy_data: Dictionary) -> Dictionary:
@@ -455,7 +483,8 @@ func _build_base_deck_room_ids() -> Array[String]:
 			if room_choice != "":
 				chosen_rooms.append(room_choice)
 
-	_ensure_room_type_in_deck(chosen_rooms, "combat")
+	if not _get_room_pool_ids("enemy").is_empty():
+		_ensure_room_type_in_deck(chosen_rooms, "combat")
 	return chosen_rooms
 
 
@@ -593,6 +622,9 @@ func _reset_active_deck() -> void:
 
 func _build_opening_encounter(room_id: String) -> Dictionary:
 	var opening_event_id := str(deck_config.get("opening_event_id", ""))
+	if opening_event_id != "" and special_events.has(opening_event_id):
+		return _build_special_encounter(opening_event_id, room_id, get_room_data(room_id))
+
 	var room_events: Array = room_events_by_room.get(room_id, [])
 	for event_variant in room_events:
 		if event_variant is Dictionary and str(event_variant.get("id", "")) == opening_event_id:
@@ -619,6 +651,11 @@ func _build_next_encounter() -> Dictionary:
 		if special_events.has(director_event_id):
 			return _build_special_encounter(director_event_id)
 
+	var named_ending_event_id := _pick_named_ending_event_id()
+	if named_ending_event_id != "":
+		_named_ending_triggered = true
+		return _build_special_encounter(named_ending_event_id)
+
 	if _should_offer_corruption_claim():
 		_corruption_claim_triggered = true
 		return _build_special_encounter("corruption_claim")
@@ -630,6 +667,14 @@ func _build_next_encounter() -> Dictionary:
 	if _should_offer_merchant_reckoning():
 		_merchant_reckoning_triggered = true
 		return _build_special_encounter("merchant_reckoning")
+
+	if _should_offer_merchant():
+		_merchant_triggered_at_rooms[rooms_cleared] = true
+		return _build_special_encounter("merchant_arrival", current_room_id, get_room_data(current_room_id))
+
+	if _should_offer_symbiote_host():
+		_symbiote_triggered_at_rooms[rooms_cleared] = true
+		return _build_symbiote_encounter()
 
 	if _should_offer_corruption_spike_room():
 		_corruption_spike_triggers += 1
@@ -688,6 +733,91 @@ func _can_offer_terminal_pressure_event() -> bool:
 	return rooms_cleared >= max(minimum_rooms, 0)
 
 
+func _pick_named_ending_event_id() -> String:
+	if _named_ending_triggered:
+		return ""
+	if not _can_offer_terminal_pressure_event():
+		return ""
+
+	if special_events.has("ending_merchant_debt"):
+		var claim_limit := int(deck_config.get("merchant_claim_limit", 3))
+		if claim_limit > 0 and merchant_claim >= claim_limit:
+			return "ending_merchant_debt"
+
+	var threshold := int(deck_config.get("named_ending_state_threshold", 3))
+	var best_event_id := ""
+	var best_score := 0
+	var candidates := [
+		{
+			"event_id": "ending_soft_captain_transit",
+			"patterns": ["rib_lock", "soft_captain", "ferry", "toll"]
+		},
+		{
+			"event_id": "ending_pell_white_route",
+			"patterns": ["marrow", "pell", "survey"]
+		},
+		{
+			"event_id": "ending_operator_component",
+			"patterns": ["operator", "silt", "procedure"]
+		},
+		{
+			"event_id": "ending_opened_hunt_route",
+			"patterns": ["hunt", "scar", "red_guard", "red_hunter", "pursuit", "red_lane"]
+		},
+		{
+			"event_id": "ending_merchant_debt",
+			"patterns": ["merchant_claim", "larder", "credit", "hunger", "ledger"]
+		},
+		{
+			"event_id": "ending_lumen_wet_claim",
+			"patterns": ["harbor", "wet_marker", "intake_rhythm"]
+		},
+		{
+			"event_id": "ending_mother_chancel_tool",
+			"patterns": ["rite", "mother", "chancel"]
+		},
+		{
+			"event_id": "ending_commandant_launch",
+			"patterns": ["launch", "commandant", "route_packet"]
+		}
+	]
+
+	for candidate in candidates:
+		var event_id := str(candidate.get("event_id", ""))
+		if event_id == "" or not special_events.has(event_id):
+			continue
+		var score := _count_environment_state_matches(candidate.get("patterns", []))
+		if event_id == "ending_merchant_debt":
+			score += merchant_claim
+		if score > best_score:
+			best_score = score
+			best_event_id = event_id
+
+	if best_score >= threshold:
+		return best_event_id
+	return ""
+
+
+func _count_environment_state_matches(patterns_variant: Variant) -> int:
+	var patterns: Array[String] = []
+	if patterns_variant is Array:
+		for pattern_variant in patterns_variant:
+			var pattern := str(pattern_variant)
+			if pattern != "":
+				patterns.append(pattern)
+	if patterns.is_empty():
+		return 0
+
+	var count := 0
+	for state_key_variant in environment_state.keys():
+		var state_key := str(state_key_variant)
+		for pattern in patterns:
+			if state_key.contains(pattern):
+				count += 1
+				break
+	return count
+
+
 func _should_offer_danger_notice() -> bool:
 	var threshold := int(deck_config.get("danger_notice_threshold", 2))
 	if threshold <= 0:
@@ -707,6 +837,18 @@ func _should_offer_corruption_spike_room() -> bool:
 
 
 func _should_offer_symbiote_host() -> bool:
+	var offer_limit := int(deck_config.get("symbiote_offer_limit", 0))
+	if offer_limit > 0 and _symbiote_triggered_at_rooms.size() >= offer_limit:
+		return false
+	var first_after_rooms := int(deck_config.get("symbiote_first_after_rooms", -1))
+	if first_after_rooms >= 0:
+		if rooms_cleared != first_after_rooms:
+			return false
+		if _symbiote_triggered_at_rooms.has(rooms_cleared):
+			return false
+		if not special_events.has("symbiote_host_offer"):
+			return false
+		return not _get_available_symbiote_ids().is_empty()
 	var symbiote_every := int(deck_config.get("symbiote_every", 3))
 	if symbiote_every <= 0 or rooms_cleared <= 0:
 		return false
@@ -776,7 +918,12 @@ func _draw_room_encounter() -> Dictionary:
 		if active_deck_cards.is_empty():
 			if _merchant_due_before_redraw:
 				_reset_active_deck()
-			elif rooms_cleared > 0 and special_events.has("merchant_arrival"):
+			elif (
+				rooms_cleared > 0
+				and int(deck_config.get("merchant_every", 5)) > 0
+				and not _merchant_triggered_at_rooms.has(rooms_cleared)
+				and special_events.has("merchant_arrival")
+			):
 				_merchant_due_before_redraw = true
 				_merchant_triggered_at_rooms[rooms_cleared] = true
 				return _build_special_encounter("merchant_arrival", current_room_id, get_room_data(current_room_id))
@@ -841,6 +988,7 @@ func _collect_eligible_events_for_room(room_id: String, preferred_type: String =
 	var eligible_events: Array[Dictionary] = []
 	var room_events: Array = room_events_by_room.get(room_id, [])
 	var consumed_for_room: Dictionary = consumed_room_events.get(room_id, {})
+	var allowed_event_ids := _get_playtest_event_ids()
 
 	for event_variant in room_events:
 		if not event_variant is Dictionary:
@@ -849,6 +997,9 @@ func _collect_eligible_events_for_room(room_id: String, preferred_type: String =
 		var event_data: Dictionary = event_variant
 		var event_id := str(event_data.get("id", ""))
 		if event_id == "":
+			continue
+
+		if not allowed_event_ids.is_empty() and not allowed_event_ids.has(event_id):
 			continue
 
 		if not ignore_consumed and consumed_for_room.has(event_id):
@@ -866,6 +1017,18 @@ func _collect_eligible_events_for_room(room_id: String, preferred_type: String =
 		eligible_events.append(event_data)
 
 	return eligible_events
+
+
+func _get_playtest_event_ids() -> Dictionary:
+	var ids := {}
+	var raw_ids = deck_config.get("playtest_event_ids", [])
+	if not raw_ids is Array:
+		return ids
+	for id_variant in raw_ids:
+		var event_id := str(id_variant)
+		if event_id != "":
+			ids[event_id] = true
+	return ids
 
 
 func _build_room_encounter(room_id: String, event_data: Dictionary) -> Dictionary:
@@ -1559,7 +1722,7 @@ func _apply_action_effects(action_id: String, event_data: Dictionary) -> Diction
 				"Danger settles to %d." % danger
 			]
 			if baffle_mutes >= 2:
-				if _enqueue_director_event_once("smother_hunter_arrival", "smother_hunter"):
+				if _enqueue_director_event_once("story_smother_flat_air_warning", "smother_hunter"):
 					baffle_lines.append("The air stays too still behind me. Thin diaphragms tighten in the vents.")
 			return {"lines": baffle_lines}
 		"break_baffle":
@@ -1584,7 +1747,7 @@ func _apply_action_effects(action_id: String, event_data: Dictionary) -> Diction
 			if marked_route_streak >= 2:
 				plate_lines.append("Minute teeth in the seams turn to match my stride.")
 			if marked_route_streak >= 3:
-				if _enqueue_director_event_once("plate_snare", "plate_snare"):
+				if _enqueue_director_event_once("plate_snare_warning_v1", "plate_snare"):
 					plate_lines.append("The plates remember the shape of my steps.")
 			return {"lines": plate_lines}
 		"break_marked_pattern":
@@ -1704,10 +1867,57 @@ func _apply_event_action_result(action_id: String, event_data: Dictionary, base_
 	var environment_changes := _normalize_string_array(action_result.get("environment_state_changes", []))
 	for state_key in environment_changes:
 		environment_state[state_key] = true
+		_apply_environment_state_effect(state_key)
+	var pressure_axis_changes := _normalize_string_array(action_result.get("pressure_axis_changes", []))
+	for axis in pressure_axis_changes:
+		for line in _apply_pressure_axis_change(axis):
+			if not updated.has("lines"):
+				updated["lines"] = []
+			updated["lines"].append(line)
 	var memory_changes := _normalize_string_array(action_result.get("environment_memory_flags", []))
 	for state_key in memory_changes:
 		environment_state[state_key] = true
+	var next_special_event_id := str(action_result.get("next_special_event_id", ""))
+	if next_special_event_id != "" and special_events.has(next_special_event_id):
+		_pending_encounter_after_overlay = _build_special_encounter(next_special_event_id, current_room_id, get_room_data(current_room_id))
+	var next_room_id := str(action_result.get("next_room_id", ""))
+	if next_room_id != "":
+		_pending_room_id_after_transition = next_room_id
 	return updated
+
+
+func _apply_event_memory_flags(event_data: Dictionary) -> void:
+	for state_key in _normalize_string_array(event_data.get("environment_memory_flags", [])):
+		environment_state[state_key] = true
+
+
+func _apply_environment_state_effect(state_key: String) -> void:
+	if state_key.begins_with("pressure:"):
+		_apply_pressure_axis_change(state_key.substr("pressure:".length()))
+		return
+	match state_key:
+		"merchant_claim_up":
+			merchant_claim += 1
+		"merchant_claim_down":
+			merchant_claim = max(merchant_claim - 1, 0)
+		"hunt_pressure_plus_one":
+			_apply_pressure_axis_change("hunt_pressure")
+			_add_danger(1)
+		"body_drift_plus_one":
+			_apply_pressure_axis_change("body_drift")
+			_add_corruption(1)
+		"baseline_discipline_plus_one":
+			_apply_pressure_axis_change("baseline_discipline")
+		"wound_debt_plus_one":
+			_apply_pressure_axis_change("wound_debt")
+		"recognition_plus_one":
+			_apply_pressure_axis_change("recognition")
+		"route_memory_plus_one":
+			_apply_pressure_axis_change("route_memory")
+		"pursuit_pressure_plus_one", "attention_tick", "global_attention_trade_up":
+			_add_danger(1)
+		"heal_instability_push":
+			_add_corruption(1)
 
 
 func _get_event_action_result(action_id: String, event_data: Dictionary) -> Dictionary:
@@ -1737,27 +1947,36 @@ func _record_action_pattern(action_id: String, event_data: Dictionary) -> Array[
 	match base_action:
 		"combat":
 			_add_pressure_axis(axes, "combat")
+			_add_pressure_axis(axes, "recognition")
 		"take_mutation", "buy_mutation":
 			_add_pressure_axis(axes, "corruption")
+			_add_pressure_axis(axes, "body_drift")
 		"take_symbiote", "activate_symbiote":
 			_add_pressure_axis(axes, "dependence")
+			_add_pressure_axis(axes, "body_drift")
 		"drink_pool", "disturb_pool", "seal_amber_wound", "take_green_tunnel", "disturb_green_spores", "harvest_eggs", "open_red_artery", "cut_red_wall", "cut_heart_cords":
 			_add_pressure_axis(axes, "corruption")
+			_add_pressure_axis(axes, "body_drift")
 		"run", "leave_merchant", "track_hatchling", "rush_red_split", "disturb_green_spores":
 			_add_pressure_axis(axes, "danger")
+			_add_pressure_axis(axes, "hunt_pressure")
 		"skip_resin_toll", "break_baffle":
 			_add_pressure_axis(axes, "danger")
 			_add_pressure_axis(axes, "debt")
+			_add_pressure_axis(axes, "route_memory")
 		"retreat":
 			_add_pressure_axis(axes, "safety")
 			_add_pressure_axis(axes, "danger")
+			_add_pressure_axis(axes, "hunt_pressure")
 			_add_danger(1)
 		"harvest_eggs", "siphon_amber", "overdraw_amber", "break_amber_cache", "inspect_cracked_egg", "scavenge_bones", "open_red_artery", "cut_green_spine", "cut_red_wall", "vent_red_split", "cut_heart_cords":
 			_add_pressure_axis(axes, "greed")
 		"pay_resin_toll", "turn_baffle", "follow_marked_plates":
 			_add_pressure_axis(axes, "safety")
+			_add_pressure_axis(axes, "route_memory")
 		"study_pool", "listen_at_green_split", "mark_red_branch", "listen_red_wall", "probe_amber_cache", "slip_green_spores", "probe_bones", "observe_organ_chamber", "leave_amber", "leave_symbiote", "leave_mutation", "slip_between_eggs", "break_marked_pattern":
 			_add_pressure_axis(axes, "safety")
+			_add_pressure_axis(axes, "baseline_discipline")
 
 	var lines: Array[String] = []
 	for axis in axes:
@@ -1790,6 +2009,13 @@ func _increment_pressure(axis: String) -> int:
 
 func _get_pressure_count(axis: String) -> int:
 	return int(pressure_counts.get(axis, 0))
+
+
+func _apply_pressure_axis_change(axis: String) -> Array[String]:
+	var clean_axis := axis.strip_edges()
+	if clean_axis == "":
+		return []
+	return _evaluate_pressure_axis(clean_axis, _increment_pressure(clean_axis))
 
 
 func _evaluate_pressure_axis(axis: String, count: int) -> Array[String]:
@@ -1843,6 +2069,36 @@ func _evaluate_pressure_axis(axis: String, count: int) -> Array[String]:
 			if count >= warning_threshold:
 				if _enqueue_director_event_once("director_debt_warning", "debt_warning"):
 					lines.append("The ledger starts to breathe behind me.")
+		"hunt_pressure":
+			if count >= warning_threshold:
+				if _enqueue_director_event_once("director_danger_warning", "hunt_pressure_warning"):
+					lines.append("Something has learned the route behind me.")
+			if count >= lock_threshold:
+				if _lock_ending_pressure("hunter"):
+					lines.append("The run tilts. The hunter has the scent.")
+		"body_drift":
+			if count >= warning_threshold:
+				if _enqueue_director_event_once("director_corruption_warning", "body_drift_warning"):
+					lines.append("The walls accept the new shape too quickly.")
+			if count >= lock_threshold:
+				if _lock_ending_pressure("corruption"):
+					lines.append("The run tilts. The changed body has the stronger claim.")
+		"baseline_discipline":
+			if count >= warning_threshold:
+				if _enqueue_director_event_once("director_safety_warning", "baseline_discipline_warning"):
+					lines.append("The quiet route is starting to recognize my restraint.")
+		"wound_debt":
+			if count >= warning_threshold:
+				if _enqueue_director_event_once("director_danger_warning", "wound_debt_warning"):
+					lines.append("The old marks are changing how the rooms touch me.")
+		"recognition":
+			if count >= warning_threshold:
+				if _enqueue_director_event_once("director_combat_warning", "recognition_warning"):
+					lines.append("The deeper body is starting to know my method.")
+		"route_memory":
+			if count >= warning_threshold:
+				if _enqueue_director_event_once("director_safety_warning", "route_memory_warning"):
+					lines.append("The route remembers the kind of answer I keep giving.")
 
 	return lines
 
@@ -2286,7 +2542,7 @@ func _build_damage_summary(raw_damage: int, damage_result: Dictionary) -> String
 
 
 func _can_mitosis_trigger() -> bool:
-	return owned_symbiotes.has("mitosis_unit") and int(symbiote_health.get("mitosis_unit", 0)) > 0 and active_symbiotes.has("mitosis_unit")
+	return owned_symbiotes.has("mitosis_unit") and int(symbiote_health.get("mitosis_unit", 0)) > 0
 
 
 func _add_danger(amount: int) -> void:

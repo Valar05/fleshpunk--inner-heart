@@ -107,18 +107,61 @@
       "mutation_hooks": [
         {
           "capability": "brace_pressure",
-          "effect": "Hold a rib seam open without breaking it."
+          "effect": "Hold a rib seam open without breaking it.",
+          "in_encounter_use": "Anchor stance against charges, contractions, or forced movement without losing the line.",
+          "out_of_encounter_use": "Hold seams, pressure locks, or launch rings open long enough to pass or work.",
+          "surprising_second_use": "Serve as a living brace for another body, door, or failing organ during a timed choice."
         },
         {
           "capability": "thin_body",
-          "effect": "Pass a partially opened lock without payment or forced damage."
+          "effect": "Pass a partially opened lock without payment or forced damage.",
+          "in_encounter_use": "Slip past a committed strike or squeeze through a closing angle before recovery.",
+          "out_of_encounter_use": "Pass narrow ribs, drains, or half-open locks without payment or rupture.",
+          "surprising_second_use": "Hide inside spaces that normally read as empty tissue and ambush or overhear from there."
         }
       ],
       "progression_state": {
         "early": "The lock offers passage by pulse, payment, or force.",
         "mid": "Later locks show marks that correspond to payment, pulse matching, or forced damage.",
         "late": "Quiet transit can open a rebel route if Hymn has not overfed debt, authority, or noise."
-      }
+      },
+      "room_role": "starter_pressure_gate",
+      "playtest_focus": "First-room test of readable apparatus, payment/force/pulse branching, and whether later transit rooms echo the choice.",
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "merritt_moon_pool_pg765",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/merritt_moon_pool_pg765.txt",
+          "source_locator": "lines 2870-2925, apparatus opening under timed pressure",
+          "source_moment": "A sealed stone door opens through visible mechanism, timed observation, and sudden bodily risk as the passage closes.",
+          "story_element": "The tally gate is not a vague threshold. It is a working lock whose pad, mouth, cord, and seam each communicate how passage will be purchased or forced.",
+          "scenario_application": "Keep the first room concrete: the player should understand what is moving, what is measuring Hymn, and how each branch changes later transit pressure."
+        },
+        {
+          "tier": 0,
+          "source_id": "haggard_king_solomons_mines_pg2166",
+          "source_title": "King Solomon's Mines",
+          "source_author": "H. Rider Haggard",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/haggard_king_solomons_mines_pg2166.txt",
+          "source_locator": "lines 2136-2192, water scarcity and forced travel decisions",
+          "source_moment": "A journey becomes suspenseful because supplies, exhaustion, and route distance are counted against survival.",
+          "story_element": "The toll is a survival account, not just a spooky mouth. Payment, underpayment, and forced passage should feel like expedition arithmetic.",
+          "scenario_application": "Let the player feel why spending biomass, taking debt, or damaging the lock is a practical route choice with future cost."
+        },
+        {
+          "tier": 0,
+          "source_id": "roguelike_route_resource_pressure",
+          "source_title": "Fleshpunk Roguelike Systems Research",
+          "source_author": "internal",
+          "source_file": ".agent-memory/fleshpunk_research_roguelike_systems.md",
+          "source_locator": "sections: Resource Pressure, Encounter Pacing, Procedural Traversal",
+          "source_moment": "A first branch teaches the run economy by making movement, resource spend, and future danger legible.",
+          "story_element": "The lock introduces the run's core pressure loop: pass clean, pay, or leave damage for later rooms to remember.",
+          "scenario_application": "Use this as the starter-room contract for playtesting multiple scenarios in one run."
+        }
+      ]
     },
     {
       "id": "rib_lock_larval_cradle",
@@ -217,18 +260,48 @@
       "mutation_hooks": [
         {
           "capability": "wet_breath",
-          "effect": "Use submerged ferry routes without needing a larva to surface."
+          "effect": "Use submerged ferry routes without needing a larva to surface.",
+          "in_encounter_use": "Keep fighting while submerged, choked, or breathing through fouled fluid.",
+          "out_of_encounter_use": "Traverse flooded locks, drowned harbors, and spore-wet passages without immediate panic.",
+          "surprising_second_use": "Use held breath and fluid tolerance to fake death or pass as cargo in a living channel."
         },
         {
           "capability": "scent_mask",
-          "effect": "Ride a ferry without giving later locks a reliable weight-and-scent profile."
+          "effect": "Ride a ferry without giving later locks a reliable weight-and-scent profile.",
+          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
+          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
+          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
         }
       ],
       "progression_state": {
         "early": "The ferry lock offers careful transport, fast transport, or signal muting.",
         "mid": "Later ferry locks show matching weight marks and pulse timing.",
         "late": "Careful ferry treatment can route Hymn through pressure locks if she has not turned them into bait."
-      }
+      },
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "verne_twenty_thousand_leagues_02_sealed_vessel",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
+          "source_locator": "verne_twenty_thousand_leagues_02_sealed_vessel",
+          "source_moment": "A secondary vessel is described through cavities, matched openings, closures, and the step-by-step method of entering and releasing it.",
+          "story_element": "Verne turns equipment into adventure by making each component legible before movement begins.",
+          "scenario_application": "Write the larval ferry as living equipment: cartilage harness, tendon closure, pressure gap, pulse check, and launch sequence."
+        },
+        {
+          "tier": 0,
+          "source_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
+          "source_locator": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_moment": "Pressure is not atmosphere; it is a calculable condition the machine must answer.",
+          "story_element": "Physical conditions are dramatic because the narration explains what the body and machine must endure.",
+          "scenario_application": "Make pressure and pulse the scene's grammar. Choices should feel like manipulating a hostile medium."
+        }
+      ]
     },
     {
       "id": "rib_lock_clot_bypass",
@@ -327,52 +400,94 @@
       "mutation_hooks": [
         {
           "capability": "hard_shell",
-          "effect": "Crawl through beetle shellac without taking a sample wound."
+          "effect": "Crawl through beetle shellac without taking a sample wound.",
+          "in_encounter_use": "Accept glancing cuts, bites, or bone scrape while maintaining pressure.",
+          "out_of_encounter_use": "Cross abrasive plates, spiked passages, and tool-rests without losing as much flesh.",
+          "surprising_second_use": "Offer shell as a wedge, shield, or proof of hardening to a room that respects armor."
         },
         {
           "capability": "scent_mask",
-          "effect": "Make a false blood trail more reliable in later pursuit echoes."
+          "effect": "Make a false blood trail more reliable in later pursuit echoes.",
+          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
+          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
+          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
         }
       ],
       "progression_state": {
         "early": "The bypass offers a choice between using damage, preserving repair, or placing a false blood mark.",
         "mid": "Later beetle repairs show whether Hymn broke, preserved, or marked the damaged seam.",
         "late": "Pursuit events can follow broken repairs unless a false blood mark redirects them."
-      }
+      },
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "verne_survivors_chancellor_02_sealed_vessel",
+          "source_title": "The Survivors of the Chancellor",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_survivors_chancellor_pg1698.txt",
+          "source_locator": "verne_survivors_chancellor_02_sealed_vessel",
+          "source_moment": "A disaster changes phase: fire, hull damage, water ingress, and the urgent problem of what can still be done now.",
+          "story_element": "The momentum comes from practical crisis management. The narrator tracks changing conditions rather than moralizing them.",
+          "scenario_application": "Write the clot bypass as a live repair problem: the crack, beetles, narrowing space, and the cost of acting before the repair closes."
+        },
+        {
+          "tier": 0,
+          "source_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
+          "source_locator": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_moment": "Protective apparatus is described through fit, material, weight, and the specific pressure it answers.",
+          "story_element": "Body technology feels alive because every detail has a use under stress.",
+          "scenario_application": "Mutations should read as physical apparatus: shell, brace, scent mask, lung, grip. They change how the room can be handled."
+        }
+      ]
     },
     {
       "id": "white_marrow_field",
       "environment_id": "route_navigation_organs",
       "name": "White Marrow Field",
-      "instance_premise": "A cold marrow field where survey cuts, marrow lice, and step lanes make route obedience measurable.",
-      "first_visit_description": "Chorus, the corridor opens into white marrow. The floor is hard enough to click under my boot and cold enough to stiffen the glove edge. Survey cuts cross it at regular intervals. Marrow lice keep the cuts clean by eating loose warmth. One lane fits my stride too closely.",
-      "return_description": "A marrow field opens ahead: cold floor, cleaned cuts, lice working inside the lanes.",
+      "instance_premise": "A cold marrow survey field narrows around Hymn's stride while a leukocyte hound uses the cleaned cuts to predict where she will step.",
+      "first_visit_description": "Chorus, the corridor opens into white marrow. Survey cuts cross the floor in clean lanes. Marrow lice work inside them, taking warmth from every exposed edge. One lane fits my stride too neatly. Farther down it, a leukocyte hound lowers its nose and steps where my next boot wants to land.",
+      "return_description": "A white marrow field opens ahead: clean survey cuts, warmth-eating lice, and lanes that remember foot placement.",
       "tags": [
         "route",
         "isolation",
-        "bone"
+        "bone",
+        "corpus_anchored",
+        "pursuit",
+        "movement_progression",
+        "active_terrain"
       ],
       "source_seed_ids": [
-        "lovecraft_at_mountains_of_madness_01_polar_expedition",
-        "verne_antarctic_mystery_02_polar_expedition",
-        "lovecraft_at_mountains_of_madness_02_ancient_ruin"
+        "blackwood_willows_pg11438",
+        "sabatini_scaramouche_pg1947",
+        "howard_red_shadows_pg70570"
       ],
       "corpus_influences": [
         {
-          "seed_id": "lovecraft_at_mountains_of_madness_01_polar_expedition",
-          "source_title": "At the Mountains of Madness",
-          "source_author": "H. P. Lovecraft",
-          "source_moment": "The Antarctic approach builds dread through measured cold, visible tracks, exposed strata, and evidence interpreted before the hidden cause is named.",
-          "writing_influence": "Lovecraft's strength here is evidentiary pressure: the surface record becomes frightening because it is precise.",
-          "room_application": "Write the marrow field as a readable cold record. Hymn should report cuts, lanes, lice behavior, and gait evidence before any larger conclusion."
+          "source_id": "blackwood_willows_pg11438",
+          "source_title": "The Willows",
+          "source_author": "Algernon Blackwood",
+          "source_moment": "A temporary refuge becomes unsafe as water, wind, and vegetation press inward and alter available ground.",
+          "writing_influence": "The marrow field is active terrain: cleaned cuts, lice, and cold lanes reduce Hymn's usable ground as she moves.",
+          "scenario_application": "Show the field pressing inward through floor behavior, lice motion, and narrowing step choices."
         },
         {
-          "seed_id": "verne_antarctic_mystery_02_polar_expedition",
-          "source_title": "An Antarctic Mystery",
-          "source_author": "Jules Verne",
-          "source_moment": "Travel through polar hazard is driven by route discipline, instruments, scarcity, and the practical decision to continue or turn aside.",
-          "writing_influence": "Verne gives movement a procedure: route choice is dramatic because conditions can be measured.",
-          "room_application": "Make each choice a field decision: follow the lane, spoil the lane, or take material from the field."
+          "source_id": "sabatini_scaramouche_pg1947",
+          "source_title": "Scaramouche",
+          "source_author": "Rafael Sabatini",
+          "source_moment": "Training turns survival into repeatable footwork, line, counter, and recovery.",
+          "writing_influence": "The progression prize is cold-step footwork: where to put weight so the field cannot predict the next step.",
+          "scenario_application": "Choices should teach, reject, or violently spoil a practical movement discipline."
+        },
+        {
+          "source_id": "howard_red_shadows_pg70570",
+          "source_title": "Red Shadows",
+          "source_author": "Robert E. Howard",
+          "source_moment": "Pursuit reverses through blood cost, close action, and refusing to keep running.",
+          "writing_influence": "A leukocyte hound follows the clean lane. Hymn can stay readable, break the field's prediction, or fight at a cost.",
+          "scenario_application": "Make pursuit immediate and physical: foot placement, cold, bite distance, and blood on white marrow."
         }
       ],
       "faction_ids": [
@@ -424,48 +539,92 @@
         "Archive lenses can turn old expedition evidence into dangerous forecasts."
       ],
       "environment_echoes": [
-        "Later marrow fields can pre-score the lane Hymn tends to choose.",
-        "Spoiled survey cuts can make later cold fields less efficient but less predictive.",
-        "Harvested marrow can draw lice into later rooms where warmth should have stayed hidden."
+        "Later marrow fields can place clean cuts where Hymn tends to step.",
+        "Dirty lanes can make future marrow rooms less readable but less predictive.",
+        "A hound blood trail can draw leukocyte pursuit into later cold rooms.",
+        "Cold-step success can let future bone terrain offer a quieter footwork option."
       ],
       "ending_vectors": [
         {
           "id": "ending_pell_white_route",
           "label": "The White Route",
           "pulls_toward": [
-            "following survey lanes",
-            "trusting cold evidence",
-            "letting route marks anticipate her"
+            "learning cold-step footwork",
+            "trusting cold evidence without becoming predictable",
+            "crossing survey lanes without giving the field a clean stride record"
           ],
           "diverts_to": [
-            "opened hunt from repeated track discipline",
-            "archive dependence from over-reading evidence"
+            "opened hunt from bloody hound fights",
+            "archive dependence from over-reading evidence",
+            "route collapse from spoiling every lane"
           ]
         }
       ],
       "mutation_hooks": [
         {
           "capability": "cold_blood",
-          "effect": "Cross a marrow field without giving lice enough heat to map gait."
+          "effect": "Cross a marrow field without giving lice enough heat to map gait.",
+          "in_encounter_use": "Slow pulse and heat signature so ambushers misread timing or commitment.",
+          "out_of_encounter_use": "Pass sensing fields and marrow thermals with a quieter metabolic profile.",
+          "surprising_second_use": "Feign corpse-temperature stillness to let scavengers or sentries pass over Hymn."
         },
         {
           "capability": "soft_step",
-          "effect": "Spoil survey lanes without leaving a readable counter-pattern."
+          "effect": "Spoil survey lanes without leaving a readable counter-pattern.",
+          "in_encounter_use": "Shift weight quietly around a threat pocket before it can set its counter.",
+          "out_of_encounter_use": "Cross brittle eggs, marked plates, or listening floors without announcing the route.",
+          "surprising_second_use": "Leave a false weight pattern that sends a follower or room memory toward the wrong branch."
         }
       ],
       "progression_state": {
-        "early": "Survey cuts make the room readable.",
-        "mid": "The same cuts narrow future routes and let the field pre-place cold pressure.",
-        "late": "The Opened Hunt follows the survey grammar unless Hymn abandons the repeated pattern."
-      }
+        "early": "The field reads Hymn's stride through cleaned cuts and warmth loss.",
+        "mid": "Hymn can learn cold-step footwork, foul the field's prediction, or answer pursuit with blood.",
+        "late": "Repeated cold-step choices can grow into route discipline, while repeated hound fights feed pursuit pressure."
+      },
+      "room_role": "corpus_anchored_route_pressure",
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "blackwood_willows_pg11438",
+          "source_title": "The Willows",
+          "source_author": "Algernon Blackwood",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/blackwood_willows_pg11438.txt",
+          "source_locator": "lines 259-320, 370-486",
+          "source_moment": "A temporary refuge becomes unsafe as water, wind, and vegetation press inward and alter available ground.",
+          "story_element": "The marrow field is active terrain: cleaned cuts, lice, and cold lanes reduce Hymn's usable ground as she moves.",
+          "scenario_application": "Show the field pressing inward through floor behavior, lice motion, and narrowing step choices."
+        },
+        {
+          "tier": 0,
+          "source_id": "sabatini_scaramouche_pg1947",
+          "source_title": "Scaramouche",
+          "source_author": "Rafael Sabatini",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/sabatini_scaramouche_pg1947.txt",
+          "source_locator": "lines 8841-8859",
+          "source_moment": "Training turns survival into repeatable footwork, line, counter, and recovery.",
+          "story_element": "The progression prize is cold-step footwork: where to put weight so the field cannot predict the next step.",
+          "scenario_application": "Choices should teach, reject, or violently spoil a practical movement discipline."
+        },
+        {
+          "tier": 0,
+          "source_id": "howard_red_shadows_pg70570",
+          "source_title": "Red Shadows",
+          "source_author": "Robert E. Howard",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/howard_red_shadows_pg70570.txt",
+          "source_locator": "lines 682-688, 1040-1111",
+          "source_moment": "Pursuit reverses through blood cost, close action, and refusing to keep running.",
+          "story_element": "A leukocyte hound follows the clean lane. Hymn can stay readable, break the field's prediction, or fight at a cost.",
+          "scenario_application": "Make pursuit immediate and physical: foot placement, cold, bite distance, and blood on white marrow."
+        }
+      ]
     },
     {
       "id": "operator_cellar",
       "environment_id": "operator_procedure_cellars",
       "name": "Operator Cellar",
-      "instance_premise": "A maintenance cellar where wall tissue repeats operator procedure after the operators are gone.",
-      "first_visit_description": "Chorus, this chamber sits below the transit tissue like a cellar under skin. The ceiling sweats through old tool holes. Lens amoebae hold in the wall at hand height. They pulse in the order an operator hand would use, then pause when my fingers come near.",
-      "return_description": "An operator cellar waits with wet tool holes and lens amoebae open at hand height.",
+      "instance_premise": "A maintenance predator has threaded its limbs into the tool holes and learned the old operator grip-sequence from residual tissue memory. It uses that rhythm as lure and anchor. When Hymn enters, it is already oriented, already braced, and the low ceiling removes her vertical options. The fight is close, committed, and decided by who breaks grip first.",
+      "first_visit_description": "Chorus, I have reached an operator cellar: a low maintenance room where human hands used to steer repair tissue through wall holes. Something else is using those holes now. It has threaded its limbs into the old controls and repeats the repair order, one press after another, like it learned from the last body that came through. When I step inside, it stops working and turns the sequence on me.",
+      "return_description": "The operator cellar is low, scarred, and quiet. The wall holes still smell like the thing that used them.",
       "tags": [
         "operator",
         "procedure",
@@ -478,12 +637,28 @@
       ],
       "corpus_influences": [
         {
-          "seed_id": "lovecraft_shunned_house_01_sealed_house_or_lab",
-          "source_title": "The Shunned House",
-          "source_author": "H. P. Lovecraft",
-          "source_moment": "Investigation of a house proceeds through cellar evidence, measurements, local record, and visible contamination rather than immediate explanation.",
-          "writing_influence": "Lovecraft's useful force is methodical investigation under bodily threat.",
-          "room_application": "Write the cellar as a procedure site: holes, lenses, sampling tissue, and step order reveal what the room can do."
+          "source_id": "merritt_moon_pool",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_moment": "An entity mimics familiar human rhythm to draw contact before revealing its predatory nature; the lure is indistinguishable from the real sequence until the witness is already inside striking range.",
+          "writing_influence": "The predator has absorbed the operator grip-sequence from the wall's tissue memory and replays it as bait. The mimicry is accurate enough that a new player could mistake it for a room mechanic rather than a threat.",
+          "scenario_application": "Establishes the predator's anchor behavior and explains why it has not already struck: it is still running the lure. This gives Hymn one breath of read-time before contact, which the choices exploit."
+        },
+        {
+          "source_id": "howard_shadow_kingdom",
+          "source_title": "The Shadow Kingdom",
+          "source_author": "Robert E. Howard",
+          "source_moment": "A chamber fight compresses action into slash, thrust, parry, and immediate exposure; standing into pressure wins space but leaves the body open.",
+          "writing_influence": "The cellar's low ceiling and wall holes compress the fight to body-level commitment. Hymn cannot solve it from a clean distance; every branch is a close exchange with recovery cost.",
+          "scenario_application": "Drives the choice architecture: every option is a close-range body decision. Bracing, driving through, reading, and breaking rhythm all answer the same chamber-pressure problem."
+        },
+        {
+          "source_id": "combat_research_grip_and_leverage",
+          "source_title": "Fleshpunk Combat Research: Grip, Leverage, and Commitment",
+          "source_author": "internal",
+          "source_moment": "A wall-braced opponent has superior leverage on the first exchange but is slow to reposition; the counter-window opens immediately after their committed pull, not before.",
+          "writing_influence": "The predator's grip on the wall is its strength and its constraint. It can anchor and pull but cannot pivot quickly. Hymn's choices map onto this: read the structure, break the rhythm before it sets, drive through before it anchors deeper, or absorb the pull and hold ground.",
+          "scenario_application": "Each choice is a real leverage decision, not a stat check. The predator's wall-anchor is the mechanical fact every choice responds to. This keeps combat physical and readable without becoming a puzzle."
         }
       ],
       "faction_ids": [
@@ -537,40 +712,109 @@
         "Repeated repair lets maintenance tissue treat Hymn as a replacement tool."
       ],
       "environment_echoes": [
-        "Later cellars can start one step ahead if Hymn lets the wall sample her.",
-        "Refused procedures can remain sealed in other operator sites, blocking easy repair.",
-        "Recorded procedure choices can make Dr. Silt Vey's later diagnostics more exact and more invasive."
+        "Tool holes in later rooms may carry the same residual grip-sequence, flagging predator territory before the threat is visible.",
+        "Hymn's wound debt from this fight may be readable by faction scouts or scavengers in adjacent rooms.",
+        "If Hymn broke the predator's anchor cleanly, the scarred wall becomes a route marker she can follow back without light."
       ],
       "ending_vectors": [
         {
-          "id": "ending_operator_component",
-          "label": "The Operator Component",
+          "id": "ev_clean_break",
+          "label": "Clean Break",
           "pulls_toward": [
-            "letting procedure sample Hymn",
-            "accepting clean repairs",
-            "using diagnostic forecasts"
+            "Reading the predator's limb structure before committing",
+            "Breaking the grip rhythm at the right moment",
+            "Exiting with low wound debt"
           ],
           "diverts_to": [
-            "chorus authority from strict mission obedience",
-            "maintenance rejection from repeated refusal"
+            "Absorbing the first strike without reading",
+            "Driving through without checking anchor depth"
+          ]
+        },
+        {
+          "id": "ev_wound_carrier",
+          "label": "Wound Carrier",
+          "pulls_toward": [
+            "Bracing through the strike to hold ground",
+            "Driving through before the anchor sets and taking contact",
+            "Symbiote shell expended on a heavy pull"
+          ],
+          "diverts_to": [
+            "Reading first and finding the counter-window",
+            "Breaking rhythm before the predator can commit"
+          ]
+        },
+        {
+          "id": "ev_body_reader",
+          "label": "Body Reader",
+          "pulls_toward": [
+            "Probing the predator's structure and using that knowledge to choose entry",
+            "Route memory of the tool-hole spacing carried forward"
+          ],
+          "diverts_to": [
+            "Committing immediately without reading",
+            "Retreating before contact"
           ]
         }
       ],
       "mutation_hooks": [
         {
-          "capability": "seal_sense",
-          "effect": "Read whether a procedure will seal, sample, or revise before touching it."
-        },
-        {
-          "capability": "hard_shell",
-          "effect": "Let cellar tissue test pressure without entering Hymn's soft tissue."
+          "capability": "grip_break_and_drive",
+          "capability_tags": [
+            "cut",
+            "speed",
+            "brace",
+            "barrier"
+          ],
+          "baseline_route": "Hymn reads the predator's limb structure, identifies the counter-window after its committed pull, and breaks the grip rhythm with body leverage and pain tolerance. She takes narrow margins and exits with wound debt but intact discipline.",
+          "mutation_branch": "A speed or cut mutation changes the entry. Speed lets Hymn close before the predator finishes anchoring, removing its leverage advantage before the first exchange. Cut lets her sever the limb-to-wall contact on the committed pull, collapsing the anchor entirely and ending the fight faster at the cost of recognition pressure.",
+          "symbiote_branch": "The barrier symbiote can be woken before the predator's committed pull lands, absorbing the grip-force and letting Hymn hold ground without wound debt. If the shell is expended, the symbiote takes damage and may refuse the next activation. The predator's pull is real force, which satisfies the symbiote's need for impact, but repeated use teaches it that Hymn defaults to coverage rather than reading.",
+          "effect": "Baseline: wound_debt rises, baseline_discipline rises, route_memory of tool-hole spacing is recorded. Speed mutation: wound_debt stays low, hunt_pressure rises slightly as the fast entry is visible. Cut mutation: wound_debt low, recognition rises, predator anchor is permanently destroyed. Barrier symbiote: wound_debt absorbed by symbiote health, body_drift nudges toward coverage dependency if used without reading first.",
+          "in_encounter_use": "Absorb or break the predator's wall-anchor pull at close range under a low ceiling.",
+          "out_of_encounter_use": "Speed mutation crosses the cellar's exposed approach before the room finishes orienting. Cut mutation opens sealed wall tissue in adjacent maintenance rooms. Barrier symbiote passes crush or pressure hazards in later corridors.",
+          "surprising_second_use": "Route memory of the tool-hole spacing lets Hymn navigate a later dark room by touch, following the scar pattern she recorded here."
         }
       ],
       "progression_state": {
-        "early": "Old procedures explain one mechanism safely enough to tempt use.",
-        "mid": "The cellar starts correcting Hymn's movement before she chooses.",
-        "late": "The Maintenance Orders try to preserve Hymn as procedure rather than person."
-      }
+        "early": "Hymn enters the cellar without knowing the predator is already oriented. The lure is still running. She has one moment to read or commit.",
+        "mid": "The fight is decided at close range under the low ceiling. Wound debt, stance discipline, or body capability determines the margin.",
+        "late": "The predator is down or driven off. The wall remembers the fight. Hymn's body carries the cost or the confidence forward."
+      },
+      "room_role": "corpus_anchored_combat_site",
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "merritt_moon_pool",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/merritt_moon_pool_pg765.txt",
+          "source_locator": "lines 608-690 and 1060-1165, rhythmic lure and threshold contact",
+          "source_moment": "An entity mimics familiar human rhythm to draw contact before revealing its predatory nature; the lure is indistinguishable from the real sequence until the witness is already inside striking range.",
+          "story_element": "The predator has absorbed the operator grip-sequence from the wall's tissue memory and replays it as bait. The mimicry is accurate enough that a new player could mistake it for a room mechanic rather than a threat.",
+          "scenario_application": "Establishes the predator's anchor behavior and explains why it has not already struck: it is still running the lure. This gives Hymn one breath of read-time before contact, which the choices exploit."
+        },
+        {
+          "tier": 0,
+          "source_id": "howard_shadow_kingdom",
+          "source_title": "The Shadow Kingdom",
+          "source_author": "Robert E. Howard",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/howard_shadow_kingdom_pg70830.txt",
+          "source_locator": "lines 1164-1208, close chamber fight",
+          "source_moment": "A chamber fight compresses action into slash, thrust, parry, and immediate exposure; standing into pressure wins space but leaves the body open.",
+          "story_element": "The cellar's low ceiling and wall holes compress the fight to body-level commitment. Hymn cannot solve it from a clean distance; every branch is a close exchange with recovery cost.",
+          "scenario_application": "Drives the choice architecture: every option is a close-range body decision. Bracing, driving through, reading, and breaking rhythm all answer the same chamber-pressure problem."
+        },
+        {
+          "tier": 0,
+          "source_id": "combat_research_grip_and_leverage",
+          "source_title": "Fleshpunk Combat Research: Grip, Leverage, and Commitment",
+          "source_author": "internal",
+          "source_file": ".agent-memory/fleshpunk_research_combat_intelligence.md",
+          "source_locator": "sections: Range And Measure, Tempo And Recovery, Grappling And Clinch Translation",
+          "source_moment": "A wall-braced opponent has superior leverage on the first exchange but is slow to reposition; the counter-window opens immediately after their committed pull, not before.",
+          "story_element": "The predator's grip on the wall is its strength and its constraint. It can anchor and pull but cannot pivot quickly. Hymn's choices map onto this: read the structure, break the rhythm before it sets, drive through before it anchors deeper, or absorb the pull and hold ground.",
+          "scenario_application": "Each choice is a real leverage decision, not a stat check. The predator's wall-anchor is the mechanical fact every choice responds to. This keeps combat physical and readable without becoming a puzzle."
+        }
+      ]
     },
     {
       "id": "scar_map_junction",
@@ -679,18 +923,61 @@
       "mutation_hooks": [
         {
           "capability": "scent_mask",
-          "effect": "Mark a route without leaving enough body data for a hunt map."
+          "effect": "Mark a route without leaving enough body data for a hunt map.",
+          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
+          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
+          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
         },
         {
           "capability": "split_gait",
-          "effect": "Make two scar routes look equally likely."
+          "effect": "Make two scar routes look equally likely.",
+          "in_encounter_use": "Change rhythm mid-exchange so line, reach, and recovery arrive off-beat.",
+          "out_of_encounter_use": "Move across split routes, shifting plates, or unstable launch tissue without matching their rhythm.",
+          "surprising_second_use": "Imitate two bodies of footfall and confuse patrol counts or pressure ledgers."
         }
       ],
       "progression_state": {
         "early": "The map gives three readable route logics.",
         "mid": "Marked routes become safer and more predictable.",
         "late": "The map anticipates Hymn before she moves unless she breaks the route grammar."
-      }
+      },
+      "room_role": "corpus_anchored_route_memory",
+      "playtest_focus": "Route-choice test for delayed story followups, map memory, and whether prediction pressure remains readable without becoming a puzzle.",
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "haggard_king_solomons_mines_pg2166",
+          "source_title": "King Solomon's Mines",
+          "source_author": "H. Rider Haggard",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/haggard_king_solomons_mines_pg2166.txt",
+          "source_locator": "lines 2154-2169 and 2676, old map directions tested against living route pressure",
+          "source_moment": "A rough map and old directions matter because they must be trusted while the body is already failing.",
+          "story_element": "The scar map should make route data useful but compromised: old marks point somewhere real, while Hymn's present gait changes what the map records.",
+          "scenario_application": "Choices should read as navigation under pressure: mark a route, trust a route, or spoil the map before it learns too much."
+        },
+        {
+          "tier": 0,
+          "source_id": "blackwood_willows_pg11438",
+          "source_title": "The Willows",
+          "source_author": "Algernon Blackwood",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/blackwood_willows_pg11438.txt",
+          "source_locator": "lines 259-320 and 895-934, ground and vegetation changing available space",
+          "source_moment": "The environment alters distance, pressure, and the safety of assumed ground.",
+          "story_element": "The junction is an active place, not a menu. Scar mites revise the map while Hymn watches and reduce certainty through physical motion.",
+          "scenario_application": "Keep route pressure visible through moving marks, cleaned paths, dull seams, and pursuit grammar."
+        },
+        {
+          "tier": 0,
+          "source_id": "merritt_moon_pool_pg765",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/merritt_moon_pool_pg765.txt",
+          "source_locator": "lines 2870-2925, timed threshold and narrowing portal",
+          "source_moment": "A route opens only inside a time-sensitive apparatus, turning observation into commitment.",
+          "story_element": "The blank seam and bright scar should feel like mechanisms the player can commit to, not abstract prophecy.",
+          "scenario_application": "Give each branch a physical route consequence that can echo in later rooms."
+        }
+      ]
     },
     {
       "id": "biomass_larder",
@@ -789,18 +1076,61 @@
       "mutation_hooks": [
         {
           "capability": "slow_metabolism",
-          "effect": "Leave a larder hungry without losing route strength."
+          "effect": "Leave a larder hungry without losing route strength.",
+          "in_encounter_use": "Outlast starvation, poison, or exhaustion pressure during a long exchange.",
+          "out_of_encounter_use": "Delay hunger costs in larders, tunnels, and sealed chambers where supply is bait.",
+          "surprising_second_use": "Let Hymn appear less valuable to feeders that hunt hot, urgent biomass."
         },
         {
           "capability": "ledger_tongue",
-          "effect": "Taste whether a ration pocket is food, payment, or debt bait."
+          "effect": "Taste whether a ration pocket is food, payment, or debt bait.",
+          "in_encounter_use": "Read threat displays and debt marks before a mouth or toll-organ commits to violence.",
+          "out_of_encounter_use": "Negotiate with toll mouths, credit grubs, and debt tissue instead of only paying or forcing.",
+          "surprising_second_use": "Redirect a minor debt mark onto an object, corpse, or room process for one future pass."
         }
       ],
       "progression_state": {
         "early": "The larder tests whether Hymn feeds herself, the room, or the debt.",
         "mid": "Prices shift and animal workers react to hunger versus greed.",
         "late": "The Quartermaster and Merchant dispute who owns the debt."
-      }
+      },
+      "room_role": "corpus_anchored_resource_pressure",
+      "playtest_focus": "Resource-room test for biomass gain/cost, debt memory, and whether hunger choices create story pressure without requiring combat.",
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "haggard_king_solomons_mines_pg2166",
+          "source_title": "King Solomon's Mines",
+          "source_author": "H. Rider Haggard",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/haggard_king_solomons_mines_pg2166.txt",
+          "source_locator": "lines 2136-2192 and 2482-2507, measured hunger and water scarcity",
+          "source_moment": "Scarcity becomes dramatic because desire, ration discipline, route distance, and bodily failure are counted together.",
+          "story_element": "The larder is a counting organ. Food is visible, the scale can be read, and every branch says who pays for missing mass.",
+          "scenario_application": "Write the room around practical hunger: take mass, pay cleanly, or leave hungry, with later debt or restraint echoes."
+        },
+        {
+          "tier": 0,
+          "source_id": "dunsany_gods_of_pegana_pg8395",
+          "source_title": "The Gods of Pegana",
+          "source_author": "Lord Dunsany",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/dunsany_gods_of_pegana_pg8395.txt",
+          "source_locator": "lines 972-1003, destiny as a force that drives chosen bodies",
+          "source_moment": "A harsh cosmic order turns people into subjects of an account they did not choose.",
+          "story_element": "Debt should feel like a small local law that outlives the room, not an arbitrary penalty.",
+          "scenario_application": "Use the Quartermaster and Merchant pressure as institutional consequence, while keeping the moment grounded in meat, scale, and hunger."
+        },
+        {
+          "tier": 0,
+          "source_id": "roguelike_resource_pressure",
+          "source_title": "Fleshpunk Roguelike Systems Research",
+          "source_author": "internal",
+          "source_file": ".agent-memory/fleshpunk_research_roguelike_systems.md",
+          "source_locator": "sections: Resource Economy, Encounter Variety, Replayable Consequence",
+          "source_moment": "Resource rooms should offer a tempting immediate gain, a restraint option, and a future consequence hook.",
+          "story_element": "The larder supplies a non-combat progression/destabilization beat for the run.",
+          "scenario_application": "Use this room to test whether noncombat choices still feel like advancement fantasy."
+        }
+      ]
     },
     {
       "id": "drowned_toll_harbor",
@@ -911,18 +1241,61 @@
       "mutation_hooks": [
         {
           "capability": "wet_breath",
-          "effect": "Use lower harbor routes without taking fluid through open cuts."
+          "effect": "Use lower harbor routes without taking fluid through open cuts.",
+          "in_encounter_use": "Keep fighting while submerged, choked, or breathing through fouled fluid.",
+          "out_of_encounter_use": "Traverse flooded locks, drowned harbors, and spore-wet passages without immediate panic.",
+          "surprising_second_use": "Use held breath and fluid tolerance to fake death or pass as cargo in a living channel."
         },
         {
           "capability": "scent_mask",
-          "effect": "Drain a harbor without leaving a strong wet trail."
+          "effect": "Drain a harbor without leaving a strong wet trail.",
+          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
+          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
+          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
         }
       ],
       "progression_state": {
         "early": "The harbor offers paid passage, contaminated wading, or noisy drainage.",
         "mid": "Water level, dock prices, and contamination markers respond to prior treatment.",
         "late": "Quiet transit can move Hymn through if ledger and contamination pressures are balanced."
-      }
+      },
+      "room_role": "corpus_anchored_recovery_toll",
+      "playtest_focus": "Recovery/toll test for contamination marks, paid transit, and whether healing pressure can enrich and destabilize at the same time.",
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "blackwood_willows_pg11438",
+          "source_title": "The Willows",
+          "source_author": "Algernon Blackwood",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/blackwood_willows_pg11438.txt",
+          "source_locator": "lines 54-131 and 947-962, waterline, current, landing difficulty, and shrinking ground",
+          "source_moment": "A wet landscape controls movement through current, wind, waterline, and disappearing footing.",
+          "story_element": "The harbor's danger is physical: black fluid level, dock ribs, payment mouths, and contamination marks alter how Hymn can cross.",
+          "scenario_application": "Make wading, paying, draining, and riding feel like different movement choices with different residues."
+        },
+        {
+          "tier": 0,
+          "source_id": "merritt_moon_pool_pg765",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/merritt_moon_pool_pg765.txt",
+          "source_locator": "lines 763-779 and 2870-2925, water-gate, threshold, and timed passage",
+          "source_moment": "Water, gate, and passage combine into a dangerous crossing where timing and apparatus matter.",
+          "story_element": "The drowned harbor is a functioning dock, not atmosphere: mouths lower ribs, larvae ferry bodies, and fluid carries information.",
+          "scenario_application": "Use apparatus detail to make contamination and transit accounting legible."
+        },
+        {
+          "tier": 0,
+          "source_id": "biology_mutation_fluid_adaptation",
+          "source_title": "Fleshpunk Biology and Mutation Research",
+          "source_author": "internal",
+          "source_file": ".agent-memory/fleshpunk_research_biology_mutation.md",
+          "source_locator": "sections: Deep Sea Organisms, Cephalopods, Environmental Adaptation",
+          "source_moment": "A body adaptation should solve a real environmental problem while creating new classification and cost.",
+          "story_element": "Wet breath, scent masking, and contamination tolerance are multiuse tools, not isolated keys.",
+          "scenario_application": "Let recovery and mutation options change both crossing behavior and later social/biological recognition."
+        }
+      ]
     },
     {
       "id": "maintenance_rite_chapel",
@@ -1023,18 +1396,61 @@
       "mutation_hooks": [
         {
           "capability": "joint_lock",
-          "effect": "Hold rite posture without letting tool-rest larvae enter the joint."
+          "effect": "Hold rite posture without letting tool-rest larvae enter the joint.",
+          "in_encounter_use": "Trap a limb, hinge, or tool-organ at the point where its leverage fails.",
+          "out_of_encounter_use": "Secure moving architecture, tool rests, and maintenance organs long enough to inspect them.",
+          "surprising_second_use": "Use a locked joint as a temporary handle, ladder rung, or bargaining restraint."
         },
         {
           "capability": "purge_larvae",
-          "effect": "Reject a body edit after seeing what procedure it serves."
+          "effect": "Reject a body edit after seeing what procedure it serves.",
+          "in_encounter_use": "Expel parasites or brood matter before they can turn contact into control.",
+          "out_of_encounter_use": "Clean infected pools, egg residue, or tool tissue enough to use them safely.",
+          "surprising_second_use": "Seed purged larvae as bait, warning, or false evidence in a later room."
         }
       ],
       "progression_state": {
         "early": "The room frames ritual as machinery that still works.",
         "mid": "The maintenance protocol learns Hymn's obedience or refusal pattern.",
         "late": "The rite tries to install Hymn as an operator component."
-      }
+      },
+      "room_role": "corpus_anchored_institutional_pressure",
+      "playtest_focus": "Knowledge/interpersonal pressure test for procedure obedience, repair claims, and whether lore choices still create concrete body consequences.",
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "machen_great_god_pan_pg389",
+          "source_title": "The Great God Pan",
+          "source_author": "Arthur Machen",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/machen_great_god_pan_pg389.txt",
+          "source_locator": "lines 185-245, laboratory threshold and bodily apparatus",
+          "source_moment": "A ritualized threshold becomes frightening through ordinary procedure: passage, door, lamp, slab, chair, levers, phials, and preparation.",
+          "story_element": "The chapel should read as maintenance procedure wearing ritual posture, with tool-rests and drain cuts doing actual work.",
+          "scenario_application": "Keep the rite physical. Kneeling, hand placement, larvae, and drainage must explain the consequence before any lore flourish."
+        },
+        {
+          "tier": 0,
+          "source_id": "dunsany_gods_of_pegana_pg8395",
+          "source_title": "The Gods of Pegana",
+          "source_author": "Lord Dunsany",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/dunsany_gods_of_pegana_pg8395.txt",
+          "source_locator": "lines 2030-2048, temple law that forbids ordinary action",
+          "source_moment": "A temple is governed by rules so absolute that action and inaction become part of the ritual system.",
+          "story_element": "The maintenance order should feel institutional: the room enforces posture and sequence because its old law still has machinery behind it.",
+          "scenario_application": "Use this anchor for Mother Chancel pressure and the way obedience lowers local danger while increasing claim."
+        },
+        {
+          "tier": 0,
+          "source_id": "combat_research_joint_lock_and_commitment",
+          "source_title": "Fleshpunk Combat Research: Grip, Leverage, and Commitment",
+          "source_author": "internal",
+          "source_file": ".agent-memory/fleshpunk_research_combat_intelligence.md",
+          "source_locator": "sections: Grappling And Clinch Translation, Tempo And Recovery",
+          "source_moment": "A fixed posture or joint commitment can become leverage, restraint, vulnerability, or escape depending on timing.",
+          "story_element": "Joint-lock and purge-larvae options should affect both maintenance procedure and close-action consequences later.",
+          "scenario_application": "Make body discipline matter without turning the chapel into a puzzle."
+        }
+      ]
     },
     {
       "id": "launch_bore",
@@ -1143,18 +1559,48 @@
       "mutation_hooks": [
         {
           "capability": "brace_pressure",
-          "effect": "Hold the bore mouth open long enough to inspect its destination."
+          "effect": "Hold the bore mouth open long enough to inspect its destination.",
+          "in_encounter_use": "Anchor stance against charges, contractions, or forced movement without losing the line.",
+          "out_of_encounter_use": "Hold seams, pressure locks, or launch rings open long enough to pass or work.",
+          "surprising_second_use": "Serve as a living brace for another body, door, or failing organ during a timed choice."
         },
         {
           "capability": "split_gait",
-          "effect": "Let rings measure a false launch rhythm."
+          "effect": "Let rings measure a false launch rhythm.",
+          "in_encounter_use": "Change rhythm mid-exchange so line, reach, and recovery arrive off-beat.",
+          "out_of_encounter_use": "Move across split routes, shifting plates, or unstable launch tissue without matching their rhythm.",
+          "surprising_second_use": "Imitate two bodies of footfall and confuse patrol counts or pressure ledgers."
         }
       ],
       "progression_state": {
         "early": "The bore offers authority, measurement, or damage as launch methods.",
         "mid": "Repeated authorization narrows the mission and changes future route text.",
         "late": "Command authority offers conditional extraction while quiet transit offers a costlier neutral route."
-      }
+      },
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "verne_moon_voyage_02_mission_commander",
+          "source_title": "From the Earth to the Moon",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_moon_voyage_pg12901.txt",
+          "source_locator": "verne_moon_voyage_02_mission_commander",
+          "source_moment": "Launch preparation turns authority, calculation, pressure, and bodily risk into one practical sequence.",
+          "story_element": "Verne's launch energy comes from procedure under acceleration: timing matters because the machine will act.",
+          "scenario_application": "Write the bore as a launch apparatus of living rings, signal polyps, and measured body timing."
+        },
+        {
+          "tier": 0,
+          "source_id": "verne_journey_into_interior_earth_03_subterranean_route",
+          "source_title": "Journey to the Center of the Earth",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_journey_into_interior_earth_pg3748.txt",
+          "source_locator": "verne_journey_into_interior_earth_03_subterranean_route",
+          "source_moment": "Subterranean movement is made concrete through shafts, descent routes, pressure, and forced decisions about direction.",
+          "story_element": "Route danger has physical orientation: up, deeper, blocked, fired, or cut open.",
+          "scenario_application": "Make the launch choice about direction and measurement, not abstract obedience."
+        }
+      ]
     },
     {
       "id": "red_corridor",
@@ -1228,18 +1674,48 @@
       "mutation_hooks": [
         {
           "capability": "thin_body",
-          "effect": "Turning past narrow ribs without brushing the host becomes easier if already acquired."
+          "effect": "Turning past narrow ribs without brushing the host becomes easier if already acquired.",
+          "in_encounter_use": "Slip past a committed strike or squeeze through a closing angle before recovery.",
+          "out_of_encounter_use": "Pass narrow ribs, drains, or half-open locks without payment or rupture.",
+          "surprising_second_use": "Hide inside spaces that normally read as empty tissue and ambush or overhear from there."
         },
         {
           "capability": "wet_breath",
-          "effect": "Holding face close to read the chest scent without coughing or noise."
+          "effect": "Holding face close to read the chest scent without coughing or noise.",
+          "in_encounter_use": "Keep fighting while submerged, choked, or breathing through fouled fluid.",
+          "out_of_encounter_use": "Traverse flooded locks, drowned harbors, and spore-wet passages without immediate panic.",
+          "surprising_second_use": "Use held breath and fluid tolerance to fake death or pass as cargo in a living channel."
         }
       ],
       "progression_state": {
         "early": "A single, legible symbiote opportunity appears in a constrained corridor.",
         "mid": "Later corridors and nurse organs note bond scent or its absence.",
         "late": "Repeated edits can pressure a dependence ending or pull repair rites if paired with operator residues."
-      }
+      },
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "lovecraft_shunned_house_01_cellar_record",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_file": "generated/corpus/texts/lovecraft_shunned_house_pg31469.txt",
+          "source_locator": "lovecraft_shunned_house_01_cellar_record",
+          "source_moment": "A cellar scene where accumulated stains, odors, and tool traces build a record of prior attempts before the narrator commits to another test.",
+          "story_element": "Evidence over mood: dried residue, medicinal odor, and repeated-use marks imply a failed procedure without declaring intent. The decision turns on bodily risk the room makes legible.",
+          "scenario_application": "The corridor stays a corridor. The body shows a prior operation through armor split and rotkill trace. Symbiote bonding text stresses dependency and loss of alternate options without making new machinery."
+        },
+        {
+          "tier": 0,
+          "source_id": "verne_survivors_chancellor_02_sealed_vessel",
+          "source_title": "The Survivors of the Chancellor",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_survivors_chancellor_pg1698.txt",
+          "source_locator": "verne_survivors_chancellor_02_sealed_vessel",
+          "source_moment": "Damage management under pressure where each action changes the situation’s later stability.",
+          "story_element": "Practical crisis tone: short, operational sentences, and consequence as altered stability rather than prophecy.",
+          "scenario_application": "Hymn’s choice reads as a field operation: bond, refuse, or move. Text names sensory facts (heat, slope, touch clearance) and the cost of making the corridor tighter or safer later."
+        }
+      ]
     },
     {
       "id": "healing_pool",
@@ -1338,18 +1814,48 @@
       "mutation_hooks": [
         {
           "capability": "wet_breath",
-          "effect": "Breathe through the glow cycle and drink deeper without surfacing during dim periods."
+          "effect": "Breathe through the glow cycle and drink deeper without surfacing during dim periods.",
+          "in_encounter_use": "Keep fighting while submerged, choked, or breathing through fouled fluid.",
+          "out_of_encounter_use": "Traverse flooded locks, drowned harbors, and spore-wet passages without immediate panic.",
+          "surprising_second_use": "Use held breath and fluid tolerance to fake death or pass as cargo in a living channel."
         },
         {
           "capability": "scent_mask",
-          "effect": "Hide the sterile marker after drinking so later wet rooms do not pre-open intake."
+          "effect": "Hide the sterile marker after drinking so later wet rooms do not pre-open intake.",
+          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
+          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
+          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
         }
       ],
       "progression_state": {
         "early": "Pool cycles open and shut; threads gather under shadow. Choice between drink, study, or withdraw.",
         "mid": "Later wet rooms reference intake rhythm or sterile marker depending on action.",
         "late": "Stacked wet markers can bias routes toward the Lumen ending; repeated refusals can raise hunt attention in wet spaces."
-      }
+      },
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "verne_survivors_chancellor_02_sealed_vessel",
+          "source_title": "The Survivors of the Chancellor",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_survivors_chancellor_pg1698.txt",
+          "source_locator": "verne_survivors_chancellor_02_sealed_vessel",
+          "source_moment": "A damaged hold’s water ingress is tracked by smell, level, and timing until action is possible.",
+          "story_element": "Procedure framed by measurement: watch the breathing light and the intake pores; act on the peak or during stillness for different outcomes.",
+          "scenario_application": "Make the pool’s cycle operational. Choices feel like timing a clean intake versus sampling residue at the rim."
+        },
+        {
+          "tier": 0,
+          "source_id": "lovecraft_shunned_house_01_cellar_contamination",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_file": "generated/corpus/texts/lovecraft_shunned_house_pg31469.txt",
+          "source_locator": "lovecraft_shunned_house_01_cellar_contamination",
+          "source_moment": "Accumulated cellar evidence—odors, stains, growth—signals a long, bad interaction between cure and corruption.",
+          "story_element": "Evidence-first contamination: sterile smell that isn’t safe, threads that answer shadow, bone smoothed by repeat use.",
+          "scenario_application": "Healing is suspect by residue. Studying can lower corruption but marks the pool’s attention elsewhere."
+        }
+      ]
     },
     {
       "id": "egg_corridor",
@@ -1456,18 +1962,48 @@
       "mutation_hooks": [
         {
           "capability": "wet_breath",
-          "effect": "Slip longer lanes without coughing resin air after burns or ruptures."
+          "effect": "Slip longer lanes without coughing resin air after burns or ruptures.",
+          "in_encounter_use": "Keep fighting while submerged, choked, or breathing through fouled fluid.",
+          "out_of_encounter_use": "Traverse flooded locks, drowned harbors, and spore-wet passages without immediate panic.",
+          "surprising_second_use": "Use held breath and fluid tolerance to fake death or pass as cargo in a living channel."
         },
         {
           "capability": "scent_mask",
-          "effect": "Harvest or track without leaving a strong nursery profile."
+          "effect": "Harvest or track without leaving a strong nursery profile.",
+          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
+          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
+          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
         }
       ],
       "progression_state": {
         "early": "Brood lane offers harvest, burn, or slip; a cracked shell offers residue or pursuit.",
         "mid": "Later brood lanes echo resin lanes, scent, or scheduled hatchling pressure.",
         "late": "Repeated disturbance can pull a specialized nursery hunter; repeated quiet slips keep the organism’s brood learning thin."
-      }
+      },
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "verne_survivors_chancellor_02_sealed_vessel",
+          "source_title": "The Survivors of the Chancellor",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_survivors_chancellor_pg1698.txt",
+          "source_locator": "verne_survivors_chancellor_02_sealed_vessel",
+          "source_moment": "A damaged space is crossed by managing phase-change hazards: heat, smoke, water ingress; the narrator tracks condition shifts rather than sermonizing.",
+          "story_element": "Procedural crisis tone: name the changing medium (sweet air, rupture heat, resin bubbles), make each action alter that medium in a legible way.",
+          "scenario_application": "Burning eggs changes air and leaves resin record; slipping controls disturbance; harvesting alters scent and draws nursery attention."
+        },
+        {
+          "tier": 0,
+          "source_id": "lovecraft_shunned_house_01_contamination_record",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_file": "generated/corpus/texts/lovecraft_shunned_house_pg31469.txt",
+          "source_locator": "lovecraft_shunned_house_01_contamination_record",
+          "source_moment": "Accumulated small evidences—ooze, stains, smell—build a record of prior events and exposure without declaring conclusions.",
+          "story_element": "Evidence-first dread: shell drips, drag ridges, open film; the room reads as a record that can be added to.",
+          "scenario_application": "Checking a cracked shell yields residue and a quiet ledger of contact; following drag marks trades safety for a learned trail."
+        }
+      ]
     },
     {
       "id": "bone_corridor",
@@ -1561,18 +2097,48 @@
       "mutation_hooks": [
         {
           "capability": "thin_body",
-          "effect": "Squeeze through strictures without full barb contact."
+          "effect": "Squeeze through strictures without full barb contact.",
+          "in_encounter_use": "Slip past a committed strike or squeeze through a closing angle before recovery.",
+          "out_of_encounter_use": "Pass narrow ribs, drains, or half-open locks without payment or rupture.",
+          "surprising_second_use": "Hide inside spaces that normally read as empty tissue and ambush or overhear from there."
         },
         {
           "capability": "hard_shell",
-          "effect": "Scrape through barbs with reduced wound."
+          "effect": "Scrape through barbs with reduced wound.",
+          "in_encounter_use": "Accept glancing cuts, bites, or bone scrape while maintaining pressure.",
+          "out_of_encounter_use": "Cross abrasive plates, spiked passages, and tool-rests without losing as much flesh.",
+          "surprising_second_use": "Offer shell as a wedge, shield, or proof of hardening to a room that respects armor."
         }
       ],
       "progression_state": {
         "early": "Readable bones: cache, marks, and a narrow stricture.",
         "mid": "Plates and barbs start answering her stride or her force habit.",
         "late": "Route narrows into either snare obedience or carved, noisy passages that attract hunters."
-      }
+      },
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "lovecraft_at_mountains_of_madness_02_ancient_ruin",
+          "source_title": "At the Mountains of Madness",
+          "source_author": "H. P. Lovecraft",
+          "source_file": "generated/corpus/texts/lovecraft_at_mountains_of_madness_pg70652.txt",
+          "source_locator": "lovecraft_at_mountains_of_madness_02_ancient_ruin",
+          "source_moment": "Architecture read through wear, dust, and residue that implies prior use and failed exits.",
+          "story_element": "Evidence-first dread: dry powder, fused heaps, precise footmarks, and rib wear give history before I move.",
+          "scenario_application": "Describe the corridor as accumulated bone work with readable traces: dust grind, stride marks, fused caches, polished barbs."
+        },
+        {
+          "tier": 0,
+          "source_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
+          "source_locator": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_moment": "Pressure and fit described as calculable conditions the body must answer.",
+          "story_element": "Mechanism under stress: plate seams, inward barbs, shoulder clearance, and guard posture written as operations I can test.",
+          "scenario_application": "Make forcing, probing, and marked-lane obedience feel like procedure: count stride, read barb angle, decide cache vs passage."
+        }
+      ]
     },
     {
       "id": "amber_corridor",
@@ -1749,18 +2315,48 @@
       "mutation_hooks": [
         {
           "capability": "scent_mask",
-          "effect": "Reduce how much a cut sac’s sweetness marks the lane for hunters."
+          "effect": "Reduce how much a cut sac’s sweetness marks the lane for hunters.",
+          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
+          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
+          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
         },
         {
           "capability": "hard_shell",
-          "effect": "Press against hot resin without opening a new wound."
+          "effect": "Press against hot resin without opening a new wound.",
+          "in_encounter_use": "Accept glancing cuts, bites, or bone scrape while maintaining pressure.",
+          "out_of_encounter_use": "Cross abrasive plates, spiked passages, and tool-rests without losing as much flesh.",
+          "surprising_second_use": "Offer shell as a wedge, shield, or proof of hardening to a room that respects armor."
         }
       ],
       "progression_state": {
         "early": "Amber offers biomass, shield, or quiet passage with readable residue.",
         "mid": "Later corridors mirror paid counts, scent marks, or sealed seams.",
         "late": "Consistent quieting and measured siphons can bias routes toward low-noise transit, unless debt or scent pressure tips a reckoning."
-      }
+      },
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
+          "source_locator": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_moment": "External pressure is treated as a calculable condition the hull must answer.",
+          "story_element": "Make corridor pressure legible: sacs as reservoirs, plaque as count, actions as adjustments to noise and seal.",
+          "scenario_application": "Describe sacs and plaque as working parts storing route pressure. Cutting relieves and leaves scent; sealing restores shield with residue; paying keeps the lane quiet."
+        },
+        {
+          "tier": 0,
+          "source_id": "lovecraft_shunned_house_01_contamination_record",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_file": "generated/corpus/texts/lovecraft_shunned_house_pg31469.txt",
+          "source_locator": "lovecraft_shunned_house_01_contamination_record",
+          "source_moment": "Accumulated stains, odors, and growths build evidence of prior use and contamination.",
+          "story_element": "Let resin smell, clouding, and plaque-ticks serve as records. Dread comes from residue that other organs can read.",
+          "scenario_application": "When Hymn takes or pays, the amber keeps a tell: scent print, click count, clouded patch that later tolls and hunters can use."
+        }
+      ]
     },
     {
       "id": "spiked_red_corridor",
@@ -1848,11 +2444,17 @@
       "mutation_hooks": [
         {
           "capability": "thin_body",
-          "effect": "Fit the low crawl without scraping shield or skin."
+          "effect": "Fit the low crawl without scraping shield or skin.",
+          "in_encounter_use": "Slip past a committed strike or squeeze through a closing angle before recovery.",
+          "out_of_encounter_use": "Pass narrow ribs, drains, or half-open locks without payment or rupture.",
+          "surprising_second_use": "Hide inside spaces that normally read as empty tissue and ambush or overhear from there."
         },
         {
           "capability": "hard_shell",
-          "effect": "Take shoulder scrapes with less wound when forcing a lane."
+          "effect": "Take shoulder scrapes with less wound when forcing a lane.",
+          "in_encounter_use": "Accept glancing cuts, bites, or bone scrape while maintaining pressure.",
+          "out_of_encounter_use": "Cross abrasive plates, spiked passages, and tool-rests without losing as much flesh.",
+          "surprising_second_use": "Offer shell as a wedge, shield, or proof of hardening to a room that respects armor."
         }
       ],
       "progression_state": {
@@ -1949,7 +2551,31 @@
           },
           "later_text_variant": "Fresh hardening ridges make the next rows close sooner than the count suggests."
         }
-      }
+      },
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
+          "source_locator": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_moment": "Pressure made legible through named parts and sequence before the danger resolves.",
+          "story_element": "Make closure a countable sequence: alternating spine rows, notch-by-notch lane loss, and timing a pass between closes.",
+          "scenario_application": "Describe the corridor as rows that close in order. Choices test brace/timing/clearance instead of abstract risk."
+        },
+        {
+          "tier": 0,
+          "source_id": "lovecraft_shunned_house_01_residue_cellar",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_file": "generated/corpus/texts/lovecraft_shunned_house_pg31469.txt",
+          "source_locator": "lovecraft_shunned_house_01_residue_cellar",
+          "source_moment": "Dread from accumulated stains and structural clues in a cellar before contact.",
+          "story_element": "Let prior scrapes, stains, and the patient click build evidence of a waiting predator.",
+          "scenario_application": "Show old shoulder gouges and a crawl scrape as records. The stalker’s click is evidence, not an announcement."
+        }
+      ]
     },
     {
       "id": "organ_chamber_red",
@@ -2040,18 +2666,48 @@
       "mutation_hooks": [
         {
           "capability": "brace_pressure",
-          "effect": "Stabilize breath and stance during beat spikes in this family, holding through a vent surge without staggering."
+          "effect": "Stabilize breath and stance during beat spikes in this family, holding through a vent surge without staggering.",
+          "in_encounter_use": "Anchor stance against charges, contractions, or forced movement without losing the line.",
+          "out_of_encounter_use": "Hold seams, pressure locks, or launch rings open long enough to pass or work.",
+          "surprising_second_use": "Serve as a living brace for another body, door, or failing organ during a timed choice."
         },
         {
           "capability": "thin_body",
-          "effect": "Reduce target window at on-beat seams so the keeper’s reach clips past while you slip the opening."
+          "effect": "Reduce target window at on-beat seams so the keeper’s reach clips past while you slip the opening.",
+          "in_encounter_use": "Slip past a committed strike or squeeze through a closing angle before recovery.",
+          "out_of_encounter_use": "Pass narrow ribs, drains, or half-open locks without payment or rupture.",
+          "surprising_second_use": "Hide inside spaces that normally read as empty tissue and ambush or overhear from there."
         }
       ],
       "progression_state": {
         "early": "The keeper holds the vent. Hymn can fight or time a bypass.",
         "mid": "Red corridors echo recorded rhythm or spilled plate residue.",
         "late": "Measured red timing can combine with other transit measurements toward a quiet route if combat was avoided."
-      }
+      },
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
+          "source_locator": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_moment": "Pressure described as a calculable condition the machine must answer, not ambiance.",
+          "story_element": "Name the parts that answer pressure and make beat-timing a legible risk.",
+          "scenario_application": "The heart’s pulse is a measurable interval that affects approach, attack rhythm, and bypass timing."
+        },
+        {
+          "tier": 0,
+          "source_id": "lovecraft_shunned_house_01_residue",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_file": "generated/corpus/texts/lovecraft_shunned_house_pg31469.txt",
+          "source_locator": "lovecraft_shunned_house_01_residue",
+          "source_moment": "Accumulated stains and growths that testify to prior use and failed procedures.",
+          "story_element": "Let residue mark previous entries and keeper work without declaring motive.",
+          "scenario_application": "Old splash arcs on the wall and cord polish at grasp-height show how intruders were handled here."
+        }
+      ]
     },
     {
       "id": "split_green_corridor",
@@ -2145,11 +2801,17 @@
       "mutation_hooks": [
         {
           "capability": "wet_breath",
-          "effect": "Hold breath and pass muted-air corridors without triggering diaphragm attention."
+          "effect": "Hold breath and pass muted-air corridors without triggering diaphragm attention.",
+          "in_encounter_use": "Keep fighting while submerged, choked, or breathing through fouled fluid.",
+          "out_of_encounter_use": "Traverse flooded locks, drowned harbors, and spore-wet passages without immediate panic.",
+          "surprising_second_use": "Use held breath and fluid tolerance to fake death or pass as cargo in a living channel."
         },
         {
           "capability": "scent_mask",
-          "effect": "Cross spore fields with fewer readable prints after careful movement."
+          "effect": "Cross spore fields with fewer readable prints after careful movement.",
+          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
+          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
+          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
         }
       ],
       "progression_state": {
@@ -2158,7 +2820,31 @@
         "late": "Repeated muting or disturbance can bend route selection toward constriction hunters or quiet lanes if handled gently."
       },
       "room_role": "route_choice / transit apparatus",
-      "apparatus_function": "Route airway balancing via wheel, tissue contact registration, spore record-making when Hymn is absent."
+      "apparatus_function": "Route airway balancing via wheel, tissue contact registration, spore record-making when Hymn is absent.",
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "verne_twenty_thousand_leagues_02_sealed_vessel",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
+          "source_locator": "verne_twenty_thousand_leagues_02_sealed_vessel",
+          "source_moment": "Narration slows to name parts and explain how a compartment answers pressure before movement begins.",
+          "story_element": "Procedure made legible: parts, sequence, failure modes. The split reads as lanes managed by tissue and airflow.",
+          "scenario_application": "Name the soft lane, dry shell, spores, and airway wheel. Choices manipulate airflow, tissue contact, or disturbance with concrete, testable outcomes."
+        },
+        {
+          "tier": 0,
+          "source_id": "lovecraft_shunned_house_01_fungus_record",
+          "source_title": "The Shunned House",
+          "source_author": "H. P. Lovecraft",
+          "source_file": "generated/corpus/texts/lovecraft_shunned_house_pg31469.txt",
+          "source_locator": "lovecraft_shunned_house_01_fungus_record",
+          "source_moment": "Fungal growth and lingering contamination are catalogued through stains, odors, and repeated attempts to suppress them.",
+          "story_element": "Evidence-first contamination: spores hold to prints; suppression has residue and can draw future attention.",
+          "scenario_application": "Let spore prints and muted airflow become readable tells that can echo in later corridors and hunter pressure without stating future mechanics."
+        }
+      ]
     },
     {
       "id": "split_red_corridor",
@@ -2262,18 +2948,225 @@
       "mutation_hooks": [
         {
           "capability": "brace_pressure",
-          "effect": "Hold the dry lane plates without deep cutting her stride."
+          "effect": "Hold the dry lane plates without deep cutting her stride.",
+          "in_encounter_use": "Anchor stance against charges, contractions, or forced movement without losing the line.",
+          "out_of_encounter_use": "Hold seams, pressure locks, or launch rings open long enough to pass or work.",
+          "surprising_second_use": "Serve as a living brace for another body, door, or failing organ during a timed choice."
         },
         {
           "capability": "thin_body",
-          "effect": "Slip past a half-open artery without dumping fresh scent on the wall."
+          "effect": "Slip past a half-open artery without dumping fresh scent on the wall.",
+          "in_encounter_use": "Slip past a committed strike or squeeze through a closing angle before recovery.",
+          "out_of_encounter_use": "Pass narrow ribs, drains, or half-open locks without payment or rupture.",
+          "surprising_second_use": "Hide inside spaces that normally read as empty tissue and ambush or overhear from there."
         }
       ],
       "progression_state": {
         "early": "The fork offers artery, dry plates, or marking for a quieter later path.",
         "mid": "Repeated wet handling pre-wets later arteries; plate bracing repeats stride in later dry forks.",
         "late": "Quiet marked branches aggregate into safer red corridors unless heat and rush have already trained hunters."
-      }
+      },
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_title": "Twenty Thousand Leagues Under the Seas",
+          "source_author": "Jules Verne",
+          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
+          "source_locator": "verne_twenty_thousand_leagues_01_ocean_pressure",
+          "source_moment": "Pressure as measurable condition that a vessel must answer; narration makes danger legible through parts and sequence.",
+          "story_element": "Name pressure vectors and failure modes: artery pulse, wall bead, plate edge, breath cost. Choices read like managing medium, not guessing.",
+          "scenario_application": "Describe the fork as two pressure languages: fluid pulse versus brittle plates. Each option states physical cost, timing, and what the corridor learns (scent, stride, noise)."
+        },
+        {
+          "tier": 0,
+          "source_id": "lovecraft_at_mountains_of_madness_02_ancient_ruin",
+          "source_title": "At the Mountains of Madness",
+          "source_author": "H. P. Lovecraft",
+          "source_file": "generated/corpus/texts/lovecraft_at_mountains_of_madness_pg70652.txt",
+          "source_locator": "lovecraft_at_mountains_of_madness_02_ancient_ruin",
+          "source_moment": "Accumulated evidence from architecture and wear builds dread without declaring intent.",
+          "story_element": "Let old heel dust, plate scratches, and bead lines imply prior use and surveillance. Mark inference as inference.",
+          "scenario_application": "Recordable traces matter: opening the artery leaves a scent record; bracing through plates leaves a stride cut; marking leaves a route tell that later corridors can copy."
+        }
+      ]
+    },
+    {
+      "id": "amar_creepstride_red_chapel",
+      "environment_id": "red_corridor",
+      "name": "Red Chapel Pocket",
+      "room_role": "corpus_anchored_combat_progression",
+      "instance_premise": "A red maintenance chapel is closing under hunter pressure while Amar Creepstride offers Hymn a saw timing discipline: learn when the wall opens, kill him and take the route alone, or leave as prey.",
+      "first_visit_description": "Chorus, the red corridor pinches into a chapel pocket. The floor is narrow enough that my heel and Amar's saw cannot both have room. Three tendon cuts mark the wall. They open, close, and open again in a three-beat rhythm I can feel through my boots. Behind me, something heavy tests the same corridor with its teeth. Amar Creepstride keeps his saw low at wrist height and watches whether I step like prey.",
+      "return_description": "The red chapel pocket waits with three tendon cuts, a closing floor rhythm, and hunter scent in the seam.",
+      "tags": [
+        "character",
+        "cultist",
+        "red_corridor",
+        "story_pilot",
+        "corpus_anchored",
+        "combat_pressure",
+        "progression_scenario",
+        "hunter_prey_reversal"
+      ],
+      "source_seed_ids": [
+        "howard_red_shadows_pg70570",
+        "sabatini_scaramouche_pg1947",
+        "blackwood_willows_pg11438"
+      ],
+      "corpus_influences": [
+        {
+          "source_id": "howard_red_shadows_pg70570",
+          "source_title": "Red Shadows",
+          "source_author": "Robert E. Howard",
+          "source_moment": "The hunted man names the reversal into hunter, then the pursuit resolves through a close blade exchange where blood loss, reach, and recovery matter.",
+          "writing_influence": "Amar is not color. He is the living hinge between prey-route and hunter-route; each choice decides whether Hymn hunts, learns, or is driven.",
+          "scenario_application": "Open with immediate pursuit pressure and write every result as a change in stance, blood cost, noise, or predator recognition."
+        },
+        {
+          "source_id": "sabatini_scaramouche_pg1947",
+          "source_title": "Scaramouche",
+          "source_author": "Rafael Sabatini",
+          "source_moment": "Sword training becomes a repeatable discipline: eye, wrist, line, counter, and planned lunge rather than raw bravery.",
+          "writing_influence": "The progression prize is not Amar's friendship. It is a saw timing discipline Hymn can carry into red anatomy.",
+          "scenario_application": "Choices should teach or refuse a practical fighting method: find tendon-line, set weight, cut on count, and recover before the room closes."
+        },
+        {
+          "source_id": "blackwood_willows_pg11438",
+          "source_title": "The Willows",
+          "source_author": "Algernon Blackwood",
+          "source_moment": "A small temporary refuge becomes unsafe as water, wind, and vegetation press inward and alter the available ground.",
+          "writing_influence": "The chapel is not a backdrop. It is shrinking red ground: wall, lung, and seam make the fight worse each beat.",
+          "scenario_application": "Every beat must show the room taking space away: closing seam, changing pressure, moving hunter route, or making the wrong posture dangerous."
+        }
+      ],
+      "faction_ids": [
+        "the_organism",
+        "opened_hunt",
+        "maintenance_orders"
+      ],
+      "storyline_ids": [
+        "amar_creepstride_pursuit",
+        "animal_city_moves",
+        "chorus_narrows_mission"
+      ],
+      "recurring_character_ids": [
+        "amar_creepstride"
+      ],
+      "animal_infrastructure": [
+        {
+          "id": "red_pressure_wall",
+          "function": "Closes on a three-beat tendon rhythm and punishes any body that enters without matching weight, wrist angle, and timing.",
+          "possible_interactions": [
+            "read count",
+            "cut tendon",
+            "brace seam",
+            "force passage"
+          ]
+        },
+        {
+          "id": "chapel_lung",
+          "function": "Vents scent and pressure into the hunter lane; cut correctly, it blinds pursuit for one beat; cut badly, it calls the hunter closer.",
+          "possible_interactions": [
+            "count pulse",
+            "cut cords",
+            "misdirect hunter",
+            "abandon"
+          ]
+        },
+        {
+          "id": "saw_line_discipline",
+          "function": "A practical red-corridor fighting method: set the wrist, read the wall-opening rhythm, cut the line, recover before the seam bites.",
+          "possible_interactions": [
+            "learn",
+            "steal",
+            "refuse",
+            "teach body"
+          ]
+        }
+      ],
+      "cross_run_story_hooks": [
+        "If Hymn learns the saw timing, later red corridors can offer wall-opening choices without Amar present.",
+        "If Hymn kills Amar, hunter rooms can read the noisy route and treat her as a rival predator rather than lost prey.",
+        "If Hymn repeatedly uses Amar as cover, red corridor endings can pull toward debt to Amar instead of clean body mastery."
+      ],
+      "environment_echoes": [
+        "Later red seams can show three tendon cuts and open only when Hymn uses the learned timing.",
+        "Hunter routes can arrive one room earlier after noisy kills or forced seam breaks.",
+        "A future mutation offer can translate saw timing into wrist-spur or tendon-sense anatomy."
+      ],
+      "ending_vectors": [
+        {
+          "id": "ending_saw_line_predator",
+          "label": "Saw-Line Predator",
+          "pulls_toward": [
+            "learning when living walls open under pressure",
+            "winning close fights by line and recovery",
+            "turning pursuit into disciplined counter-hunt"
+          ],
+          "diverts_to": [
+            "debt from relying on Amar's body",
+            "opened hunt from killing without control",
+            "route collapse from refusing pressure discipline"
+          ]
+        }
+      ],
+      "mutation_hooks": [
+        {
+          "capability": "brace_pressure",
+          "effect": "Hold the red pinch seam open long enough to pass without relying on Amar's mark.",
+          "in_encounter_use": "Anchor stance against charges, contractions, or forced movement without losing the line.",
+          "out_of_encounter_use": "Hold seams, pressure locks, or launch rings open long enough to pass or work.",
+          "surprising_second_use": "Serve as a living brace for another body, door, or failing organ during a timed choice."
+        },
+        {
+          "capability": "thin_body",
+          "effect": "Slip through the chapel wall's shoulder-thin opening before it clamps shut.",
+          "in_encounter_use": "Slip past a committed strike or squeeze through a closing angle before recovery.",
+          "out_of_encounter_use": "Pass narrow ribs, drains, or half-open locks without payment or rupture.",
+          "surprising_second_use": "Hide inside spaces that normally read as empty tissue and ambush or overhear from there."
+        }
+      ],
+      "progression_state": {
+        "early": "Hymn sees Amar's saw timing as a hostile skill being used in a shrinking red room.",
+        "mid": "Using Amar's count teaches her to read tendon pressure before a seam closes or an enemy recovers.",
+        "late": "Consistent saw timing choices can mature into a red-corridor stance, mutation appetite, or predator ending vector."
+      },
+      "corpus_anchors": [
+        {
+          "tier": 0,
+          "source_id": "howard_red_shadows_pg70570",
+          "source_title": "Red Shadows",
+          "source_author": "Robert E. Howard",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/howard_red_shadows_pg70570.txt",
+          "source_locator": "lines 682-688, 1040-1111",
+          "source_moment": "The hunted man names the reversal into hunter, then the pursuit resolves through a close blade exchange where blood loss, reach, and recovery matter.",
+          "story_element": "Amar is not color. He is the living hinge between prey-route and hunter-route; each choice decides whether Hymn hunts, learns, or is driven.",
+          "scenario_application": "Open with immediate pursuit pressure and write every result as a change in stance, blood cost, noise, or predator recognition."
+        },
+        {
+          "tier": 0,
+          "source_id": "sabatini_scaramouche_pg1947",
+          "source_title": "Scaramouche",
+          "source_author": "Rafael Sabatini",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/sabatini_scaramouche_pg1947.txt",
+          "source_locator": "lines 8841-8859",
+          "source_moment": "Sword training becomes a repeatable discipline: eye, wrist, line, counter, and planned lunge rather than raw bravery.",
+          "story_element": "The progression prize is not Amar's friendship. It is a saw timing discipline Hymn can carry into red anatomy.",
+          "scenario_application": "Choices should teach or refuse a practical fighting method: find tendon-line, set weight, cut on count, and recover before the room closes."
+        },
+        {
+          "tier": 0,
+          "source_id": "blackwood_willows_pg11438",
+          "source_title": "The Willows",
+          "source_author": "Algernon Blackwood",
+          "source_file": "generated/corpus/pulp_pre_1930/texts/blackwood_willows_pg11438.txt",
+          "source_locator": "lines 259-320, 370-486",
+          "source_moment": "A small temporary refuge becomes unsafe as water, wind, and vegetation press inward and alter the available ground.",
+          "story_element": "The chapel is not a backdrop. It is shrinking red ground: wall, lung, and seam make the fight worse each beat.",
+          "scenario_application": "Every beat must show the room taking space away: closing seam, changing pressure, moving hunter route, or making the wrong posture dangerous."
+        }
+      ]
     }
   ]
 }

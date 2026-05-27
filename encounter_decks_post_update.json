@@ -3,32 +3,38 @@
   "content_track": "post_update_text_only",
   "legacy_replaces": "encounter_decks.json",
   "base_bpm": 20.0,
+  "playtest_slice": "corpus_anchored_martial_progression",
+  "playtest_note": "Temporary constrained deck for first multi-scenario playtest. Keep room pools limited to corpus-anchored rooms until the migration backlog is resolved.",
   "corruption_spike_threshold": 3,
   "danger_notice_threshold": 2,
   "danger_bpm_step": 5.0,
   "pressure_warning_threshold": 3,
   "pressure_lock_threshold": 6,
   "corruption_warning_threshold": 3,
-  "corruption_ending_threshold": 8,
+  "corruption_ending_threshold": 6,
   "danger_warning_threshold": 3,
-  "hunter_ending_threshold": 8,
+  "hunter_ending_threshold": 6,
   "hunter_avoidance_threshold": 4,
-  "ending_reckoning_min_rooms": 12,
+  "ending_reckoning_min_rooms": 8,
+  "named_ending_state_threshold": 3,
   "balanced_corruption_limit": 5,
   "balanced_danger_limit": 5,
   "balanced_pressure_limit": 4,
   "symbiote_card_per_deck": false,
-  "max_enemy_cards_per_deck": 2,
-  "branch_cards_min": 1,
+  "max_enemy_cards_per_deck": 0,
+  "branch_cards_min": 2,
   "branch_cards_max": 2,
-  "straight_cards_min": 3,
+  "straight_cards_min": 4,
   "straight_cards_max": 4,
+  "symbiote_first_after_rooms": -1,
   "symbiote_every": 0,
-  "merchant_every": 0,
+  "symbiote_offer_limit": 1,
+  "merchant_every": 4,
   "merchant_refusal_limit": 2,
   "merchant_claim_limit": 3,
-  "opening_room_id": "rib_lock_tally_gate",
-  "opening_event_id": "rib_lock_tally_gate_account",
+  "opening_room_id": "operator_cellar",
+  "opening_event_id": "game_opening_descent",
+  "first_room_after_opening": "operator_cellar",
   "base_player_stats": {
     "damage": 8,
     "armor": 2,
@@ -39,7 +45,12 @@
     "speed": 1.0
   },
   "starter_rooms": [
-    "rib_lock_tally_gate"
+    "operator_cellar"
+  ],
+  "playtest_event_ids": [
+    "operator_cellar_grip_predator",
+    "operator_cellar_wall_reader",
+    "white_marrow_field_hound_lanes"
   ],
   "draw_rules": [
     {
@@ -48,7 +59,7 @@
     },
     {
       "pool": "resource",
-      "count": 1
+      "count": 0
     },
     {
       "pool": "knowledge",
@@ -56,78 +67,24 @@
     }
   ],
   "room_pools": {
-    "enemy": [
-      "white_marrow_field",
-      "drowned_toll_harbor",
-      "healing_pool",
-      "spiked_red_corridor"
-    ],
+    "enemy": [],
     "branch": [
-      "scar_map_junction",
-      "launch_bore"
+      "white_marrow_field"
     ],
     "straight_noncombat": [
-      "rib_lock_tally_gate",
-      "rib_lock_larval_cradle",
-      "rib_lock_clot_bypass",
-      "operator_cellar",
-      "biomass_larder",
-      "maintenance_rite_chapel",
-      "red_corridor",
-      "healing_pool",
-      "egg_corridor",
-      "bone_corridor",
-      "amber_corridor",
-      "organ_chamber_red",
-      "split_green_corridor",
-      "split_red_corridor"
+      "operator_cellar"
     ],
     "route": [
-      "rib_lock_tally_gate",
-      "rib_lock_larval_cradle",
-      "rib_lock_clot_bypass",
       "white_marrow_field",
-      "scar_map_junction",
-      "launch_bore",
-      "red_corridor",
-      "healing_pool",
-      "egg_corridor",
-      "bone_corridor",
-      "amber_corridor",
-      "spiked_red_corridor",
-      "organ_chamber_red",
-      "split_green_corridor",
-      "split_red_corridor"
+      "operator_cellar"
     ],
-    "resource": [
-      "biomass_larder",
-      "drowned_toll_harbor",
-      "healing_pool"
-    ],
+    "resource": [],
     "knowledge": [
-      "operator_cellar",
-      "maintenance_rite_chapel"
+      "operator_cellar"
     ],
     "random_non_special": [
-      "rib_lock_tally_gate",
-      "rib_lock_larval_cradle",
-      "rib_lock_clot_bypass",
       "white_marrow_field",
-      "operator_cellar",
-      "scar_map_junction",
-      "biomass_larder",
-      "drowned_toll_harbor",
-      "maintenance_rite_chapel",
-      "launch_bore",
-      "red_corridor",
-      "healing_pool",
-      "egg_corridor",
-      "bone_corridor",
-      "amber_corridor",
-      "spiked_red_corridor",
-      "organ_chamber_red",
-      "split_green_corridor",
-      "split_red_corridor"
+      "operator_cellar"
     ]
   }
 }

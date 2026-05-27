@@ -194,7 +194,14 @@
               }
             }
           }
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Let it count my pulse: Hymn learns the room as apparatus before committing her body.",
+          "Pay the mouth: Hymn buys passage and teaches the ledger she can pay.",
+          "Break the rib: Hymn forces passage and makes injury part of the route record."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "rib_lock_larval_cradle": [
@@ -227,22 +234,22 @@
             "label": "Overload the large ferries",
             "action": "brace_through_red_split",
             "voice_aliases": [
+              "brace through red split",
               "force ferry",
               "large ferries",
               "overload",
-              "ride fast",
-              "brace through red split"
+              "ride fast"
             ]
           },
           {
             "label": "Mute the bell polyps",
             "action": "turn_baffle",
             "voice_aliases": [
+              "bell polyps",
               "mute",
               "mute bells",
               "quiet signal",
-              "turn baffle",
-              "bell polyps"
+              "turn baffle"
             ]
           }
         ],
@@ -347,7 +354,14 @@
               }
             }
           }
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Ride the small larva gently: Hymn learns the room as apparatus before committing her body.",
+          "Overload the large ferries: Hymn survives by stance and pressure discipline, but leaves strain behind.",
+          "Mute the bell polyps: Hymn changes the room mechanism and redirects future pressure."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "rib_lock_clot_bypass": [
@@ -368,33 +382,33 @@
             "label": "Crawl through the damage",
             "action": "brace_through_red_split",
             "voice_aliases": [
+              "brace through red split",
               "crawl",
               "crawl through",
               "shortcut",
-              "use damage",
-              "brace through red split"
+              "use damage"
             ]
           },
           {
             "label": "Leave the beetles working",
             "action": "retreat",
             "voice_aliases": [
+              "withdraw",
               "fall back",
               "leave",
               "pull back",
-              "retreat",
-              "walk away"
+              "retreat"
             ]
           },
           {
             "label": "Bleed a false trail",
             "action": "break_marked_pattern",
             "voice_aliases": [
-              "select branch",
-              "branch",
-              "mark",
               "tag",
-              "trace"
+              "branch",
+              "break marked pattern",
+              "mark",
+              "select branch"
             ]
           }
         ],
@@ -449,7 +463,14 @@
             "delay_rooms": 2,
             "queued_line": "The false wound dries on the wrong face of the seam."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Crawl through the damage: Hymn survives by stance and pressure discipline, but leaves strain behind.",
+          "Leave the beetles working: Hymn preserves the body now and leaves the room unresolved.",
+          "Bleed a false trail: Hymn rejects inherited routing and creates a new uncertainty."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "white_marrow_field": [
@@ -471,6 +492,17 @@
             "label": "Follow the cuts",
             "action": "follow_marked_plates",
             "voice_aliases": [
+              "follow marked plates",
+              "follow cuts",
+              "cuts",
+              "follow",
+              "cuts cross"
+            ]
+          },
+          {
+            "label": "Break the pattern",
+            "action": "break_marked_pattern",
+            "voice_aliases": [
               "select branch",
               "branch",
               "mark",
@@ -479,23 +511,12 @@
             ]
           },
           {
-            "label": "Break the pattern",
-            "action": "break_marked_pattern",
-            "voice_aliases": [
-              "avoid marks",
-              "break marked pattern",
-              "break marks",
-              "break pattern",
-              "change route"
-            ]
-          },
-          {
             "label": "Scavenge marrow",
             "action": "scavenge_bones",
             "voice_aliases": [
-              "scavenge bones",
               "marrow",
               "scavenge",
+              "scavenge bones",
               "strip bones",
               "take marrow"
             ]
@@ -552,7 +573,164 @@
             "delay_rooms": 2,
             "queued_line": "The marrow I took leaves a warm absence. Lice gather around it."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Follow the cuts: Hymn trusts inherited route marks and accepts their old logic.",
+          "Break the pattern: Hymn rejects inherited routing and creates a new uncertainty.",
+          "Scavenge marrow: Hymn turns remains into supply and leaves evidence of hunger."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
+      },
+      {
+        "id": "white_marrow_field_hound_lanes",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "route_navigation_organs",
+        "infrastructure_actor": "leukocyte_hounds",
+        "line_1": "A leukocyte hound works the survey-cut lane ahead of me: nose down, stepping exactly where the lice have stripped the bone clean and left pale edges where my boots want to land.",
+        "line_2": "The hound is not fast yet. It is waiting for my stride to confirm the field's prediction. If I step where the cuts say to, its jaws will be in position before I clear the lane.",
+        "environment_memory_flags": [
+          "white_marrow_hound_lane_seen"
+        ],
+        "buttons": [
+          {
+            "label": "Step on the cold edges",
+            "action": "follow_marked_plates",
+            "voice_aliases": [
+              "select branch",
+              "branch",
+              "mark",
+              "tag",
+              "trace"
+            ]
+          },
+          {
+            "label": "Dirty the clean cuts",
+            "action": "break_marked_pattern",
+            "voice_aliases": [
+              "break marked pattern",
+              "break pattern",
+              "dirty cuts",
+              "foul lane",
+              "scatter lice"
+            ]
+          },
+          {
+            "label": "Meet the hound head-on",
+            "action": "combat",
+            "voice_aliases": [
+              "engage",
+              "fight",
+              "kill",
+              "strike",
+              "attack"
+            ]
+          }
+        ],
+        "action_results": {
+          "follow_marked_plates": {
+            "preview": "Immediate: learn safer foot placement. Echo: future marrow lanes may offer cold-step movement.",
+            "lines": [
+              "I put weight on the cold cut instead of the warm flat where my foot wants to fall.",
+              "The hound checks the wrong place. My next step lands before its jaws commit. The lane has a trick I can repeat."
+            ],
+            "environment_state_changes": [
+              "white_marrow_cold_step_learned",
+              "hound_prediction_broken"
+            ],
+            "progression_tags": [
+              "cold_step_footwork",
+              "route_discipline"
+            ]
+          },
+          "break_marked_pattern": {
+            "preview": "Immediate: spoil pursuit lane. Echo: later survey cuts may be less reliable.",
+            "lines": [
+              "I rake loose marrow across the clean cuts and stamp once where the lice are thickest.",
+              "The hound noses three possible trails and loses the clean one. The field is messier behind me, and less useful ahead."
+            ],
+            "environment_state_changes": [
+              "white_marrow_lane_dirtied",
+              "survey_prediction_spoiled"
+            ],
+            "progression_tags": [
+              "route_noise",
+              "anti_survey"
+            ]
+          },
+          "combat": {
+            "preview": "Immediate: stop running and take a wound. Echo: leukocyte pursuit remembers blood.",
+            "lines": [
+              "I stop before the lane can choose for me. The hound hits low and opens my forearm against the white floor.",
+              "I drive my knee into its throat ridge and shove it across the cuts. The lice leave my bootprints and gather on the blood instead."
+            ],
+            "environment_state_changes": [
+              "white_marrow_hound_blooded",
+              "opened_hunt_blood_notice"
+            ],
+            "actor_state_changes": [
+              "leukocyte_hounds_marked_by_blood"
+            ],
+            "progression_tags": [
+              "pursuit_reversal",
+              "blood_cost"
+            ]
+          }
+        },
+        "story_followups": {
+          "follow_marked_plates": {
+            "event_id": "story_white_marrow_cold_step",
+            "trigger_key": "white_marrow_cold_step",
+            "delay_rooms": 2,
+            "queued_line": "The cold edge keeps its shape in my foot after I leave the field."
+          },
+          "break_marked_pattern": {
+            "event_id": "story_white_marrow_dirty_lane",
+            "trigger_key": "white_marrow_dirty_lane",
+            "delay_rooms": 2,
+            "queued_line": "Marrow dust stays in the cuts behind me. The clean lane does not close clean."
+          },
+          "combat": {
+            "event_id": "story_white_marrow_blood_hound",
+            "trigger_key": "white_marrow_blood_hound",
+            "delay_rooms": 1,
+            "queued_line": "The hound blood cools fast on the marrow. Other noses will find that."
+          }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Step on the cold edges: Hymn gains repeatable footwork while letting the field see a controlled version of her stride.",
+          "Dirty the clean cuts: Hymn escapes prediction now but makes future survey evidence less trustworthy.",
+          "Meet the hound head-on: Hymn reverses pursuit through blood cost and draws leukocyte attention."
+        ],
+        "progression_vector": "Hymn can leave with cold-step footwork, route noise, or a blood-marked predator response.",
+        "corpus_influences": [
+          {
+            "source_id": "blackwood_willows_pg11438",
+            "source_title": "The Willows",
+            "source_author": "Algernon Blackwood",
+            "source_moment": "A temporary refuge becomes unsafe as water, wind, and vegetation press inward and alter available ground.",
+            "writing_influence": "The marrow field is active terrain: cleaned cuts, lice, and cold lanes reduce Hymn's usable ground as she moves.",
+            "scenario_application": "Show the field pressing inward through floor behavior, lice motion, and narrowing step choices."
+          },
+          {
+            "source_id": "sabatini_scaramouche_pg1947",
+            "source_title": "Scaramouche",
+            "source_author": "Rafael Sabatini",
+            "source_moment": "Training turns survival into repeatable footwork, line, counter, and recovery.",
+            "writing_influence": "The progression prize is cold-step footwork: where to put weight so the field cannot predict the next step.",
+            "scenario_application": "Choices should teach, reject, or violently spoil a practical movement discipline."
+          },
+          {
+            "source_id": "howard_red_shadows_pg70570",
+            "source_title": "Red Shadows",
+            "source_author": "Robert E. Howard",
+            "source_moment": "Pursuit reverses through blood cost, close action, and refusing to keep running.",
+            "writing_influence": "A leukocyte hound follows the clean lane. Hymn can stay readable, break the field's prediction, or fight at a cost.",
+            "scenario_application": "Make pursuit immediate and physical: foot placement, cold, bite distance, and blood on white marrow."
+          }
+        ]
       }
     ],
     "operator_cellar": [
@@ -573,10 +751,10 @@
             "label": "Read the procedure",
             "action": "study_pool",
             "voice_aliases": [
-              "listen",
-              "sample",
-              "study pool",
+              "read",
+              "study",
               "inspect",
+              "listen",
               "procedure"
             ]
           },
@@ -595,11 +773,11 @@
             "label": "Leave it sealed",
             "action": "leave_mutation",
             "voice_aliases": [
-              "leave mutation",
-              "retreat",
               "walk away",
-              "withdraw",
-              "back away"
+              "back away",
+              "leave",
+              "leave mutation",
+              "retreat"
             ]
           }
         ],
@@ -654,7 +832,14 @@
             "delay_rooms": 2,
             "queued_line": "The sealed procedure stays shut behind me."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Read the procedure: Hymn gains biological knowledge without immediately feeding the system.",
+          "Let it seal me: Hymn repairs a living leak and earns quieter future passage.",
+          "Leave it sealed: Hymn preserves body boundaries and leaves a refused adaptation behind."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "operator_cellar_sample_vat",
@@ -676,30 +861,30 @@
               "accept",
               "choose",
               "claim",
-              "take",
-              "patch"
+              "patch",
+              "seal amber wound"
             ]
           },
           {
             "label": "Give it wall tissue",
             "action": "study_pool",
             "voice_aliases": [
+              "study",
               "inspect",
               "listen",
               "read",
-              "study",
-              "study pool"
+              "sample"
             ]
           },
           {
             "label": "Leave the vat closed",
             "action": "retreat",
             "voice_aliases": [
+              "walk away",
               "fall back",
               "leave",
               "pull back",
-              "walk away",
-              "withdraw"
+              "retreat"
             ]
           }
         ],
@@ -754,7 +939,417 @@
             "delay_rooms": 2,
             "queued_line": "The closed vat settles without a sample."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Take the patch: Hymn repairs a living leak and earns quieter future passage.",
+          "Give it wall tissue: Hymn gains biological knowledge without immediately feeding the system.",
+          "Leave the vat closed: Hymn preserves the body now and leaves the room unresolved."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
+      },
+      {
+        "id": "operator_cellar_grip_predator",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "operator_cellar",
+        "infrastructure_actor": "grip predator",
+        "line_1": "A predator has threaded its limbs into the wall-control holes and is running the old operator grip-sequence. When my boot crosses the threshold it stops and locks onto me: body flush to the wall, low, already angled for a strike.",
+        "line_2": "The ceiling is close enough to cut off any upward move. Three limbs are anchored in the holes; the fourth hangs free and cocked toward my face. That free limb is the strike. If I wait, it commits. If I go now, I beat it to the anchor.",
+        "environment_memory_flags": [
+          "operator_cellar_grip_predator_seen"
+        ],
+        "buttons": [
+          {
+            "label": "Read its limb structure before committing",
+            "action": "probe_bones",
+            "voice_aliases": [
+              "its",
+              "its limb",
+              "limb structure",
+              "probe bones",
+              "read its"
+            ]
+          },
+          {
+            "label": "Break its grip rhythm before it can set",
+            "action": "break_marked_pattern",
+            "voice_aliases": [
+              "trace",
+              "branch",
+              "break marked pattern",
+              "mark",
+              "select branch"
+            ]
+          },
+          {
+            "label": "Drive straight through before it can anchor deeper",
+            "action": "push_through_spikes",
+            "voice_aliases": [
+              "before",
+              "drive straight",
+              "push through spikes",
+              "straight through",
+              "through before"
+            ]
+          },
+          {
+            "label": "Take the strike and hold your ground",
+            "action": "brace_through_red_split",
+            "voice_aliases": [
+              "accept",
+              "brace through red split",
+              "choose",
+              "claim",
+              "take"
+            ]
+          },
+          {
+            "label": "Pull back and give it the room",
+            "action": "retreat",
+            "voice_aliases": [
+              "fall back",
+              "give room",
+              "pull back",
+              "retreat",
+              "withdraw"
+            ]
+          }
+        ],
+        "action_results": {
+          "probe_bones": {
+            "preview": "Hymn delays commitment to study the predator's anchor points and load-bearing limbs, gaining tactical information at the cost of giving the predator time to act.",
+            "lines": [
+              "I hold my position and watch where its weight is. Three limbs are load-bearing inside the wall holes. The fourth is free and cocked toward my face. That is the strike limb.",
+              "It launches the free limb. I am already moving off the line. The strike hits wall tissue instead of me. Its grip pattern is exposed: it cannot reload that limb without releasing one anchor. I know where to go next."
+            ],
+            "environment_state_changes": [
+              "grip_predator_pattern_read",
+              "predator_strike_limb_identified"
+            ],
+            "actor_state_changes": [
+              "hymn_has_predator_read",
+              "predator_exposed_reload_window"
+            ]
+          },
+          "break_marked_pattern": {
+            "preview": "Hymn disrupts the predator's established grip sequence, collapsing its tempo and forcing a recovery pause that opens a window for follow-through.",
+            "lines": [
+              "I move toward the wall and knock the nearest anchor limb out of its hole before the sequence can complete. The predator's body shudders. It was braced for me to wait, not close.",
+              "It scrambles to reset its grip. For two full seconds it is not a predator, it is just a body trying to find purchase on a wall it no longer controls. I use those seconds. It releases the wall and drops. The room is mine."
+            ],
+            "environment_state_changes": [
+              "grip_predator_expelled",
+              "tool_holes_scarred_by_contact"
+            ],
+            "actor_state_changes": [
+              "hymn_pattern_disruption_logged",
+              "hymn_minor_contact_cost"
+            ]
+          },
+          "push_through_spikes": {
+            "preview": "Hymn commits to forward pressure, accepting contact damage to deny the predator time to fully brace, forcing it off the wall through sheer displacement.",
+            "lines": [
+              "I go forward instead of back. Its free limb catches my shoulder on the way in. The grip is strong but I am already past the angle where it can use the wall for leverage.",
+              "Without the wall it is lighter than I expected. I push it off its anchor and it hits the far side of the cellar. It does not come back. My shoulder is marked where it held. The mark is deep but the room is clear."
+            ],
+            "environment_state_changes": [
+              "grip_predator_expelled",
+              "tool_holes_scarred_by_contact"
+            ],
+            "actor_state_changes": [
+              "hymn_contact_mark_shoulder",
+              "hymn_forward_pressure_logged"
+            ]
+          },
+          "brace_through_red_split": {
+            "preview": "Hymn absorbs the predator's committed strike to bait it into a full extension, then exploits the recovery gap while it reloads.",
+            "lines": [
+              "I let it hit me. The free limb lands across my forearm and the grip is immediate, tight, and pulling. I do not move back. It has committed everything to that grip and now it cannot release without losing its wall anchor too.",
+              "It holds for three seconds before the wall tissue starts to pull away from its anchor limbs. It chose the grip over the anchor. That was the wrong choice. It drops. My forearm is split along the contact line but the split is already closing. I have been in worse rooms."
+            ],
+            "environment_state_changes": [
+              "grip_predator_expelled",
+              "tool_holes_scarred_by_contact"
+            ],
+            "actor_state_changes": [
+              "hymn_forearm_split_closing",
+              "hymn_brace_tolerance_logged"
+            ]
+          },
+          "retreat": {
+            "preview": "Hymn exits before the predator can close, ceding the cellar but avoiding contact cost. The predator remains active as a future hazard.",
+            "lines": [
+              "I back through the doorway before it can commit. It does not follow past the threshold. It returns to the wall holes and resumes the grip sequence like I was never here.",
+              "The cellar is still running the lure. I will have to come back through it or find another route. The predator knows I read it. Next time it will not wait as long before striking."
+            ],
+            "environment_state_changes": [
+              "grip_predator_active_lure_running",
+              "operator_cellar_route_blocked"
+            ],
+            "actor_state_changes": [
+              "hymn_cellar_route_debt",
+              "predator_alerted_to_hymn"
+            ]
+          }
+        },
+        "story_followups": {
+          "probe_bones": {
+            "event_id": "operator_cellar_grip_predator_reload_window",
+            "trigger_key": "predator_exposed_reload_window",
+            "delay_rooms": 2,
+            "queued_line": "The reload window I saw in the cellar keeps surfacing when I watch things that grip walls. I think I can use it again."
+          },
+          "break_marked_pattern": {
+            "event_id": "operator_cellar_grip_predator_reload_window",
+            "trigger_key": "grip_predator_expelled",
+            "delay_rooms": 2,
+            "queued_line": "The reload window I saw in the cellar keeps surfacing when I watch things that grip walls. I think I can use it again."
+          },
+          "push_through_spikes": {
+            "event_id": "operator_cellar_grip_predator_reload_window",
+            "trigger_key": "grip_predator_expelled",
+            "delay_rooms": 2,
+            "queued_line": "The reload window I saw in the cellar keeps surfacing when I watch things that grip walls. I think I can use it again."
+          },
+          "brace_through_red_split": {
+            "event_id": "operator_cellar_grip_predator_reload_window",
+            "trigger_key": "grip_predator_expelled",
+            "delay_rooms": 2,
+            "queued_line": "The reload window I saw in the cellar keeps surfacing when I watch things that grip walls. I think I can use it again."
+          }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Probe then exploit: Hymn reads the predator's reload window and avoids contact, gaining clean tactical information and a reusable pattern read for future grip-anchor organisms.",
+          "Disrupt and expel: Hymn breaks the grip rhythm, takes minor contact cost, and clears the room with a pattern-disruption reflex that may surface in later combat.",
+          "Push through: Hymn accepts a contact mark to deny the predator leverage, clearing the room at a body cost that may be read by later organisms as evidence of what Hymn has survived.",
+          "Brace and bait: Hymn absorbs a committed strike, exploits the recovery gap, and clears the room with a split that closes, logging brace tolerance at a temporary body cost.",
+          "Retreat: Hymn exits clean but the cellar remains a live hazard, the predator is alerted, and the route debt must be resolved in a later room."
+        ],
+        "progression_vector": "Hymn gains a read on grip-lure infrastructure and grip-anchor predator mechanics, or absorbs contact marks that change how later organisms and operators recognize Hymn's body, or accumulates a route debt that forces a harder resolution later.",
+        "corpus_influences": [
+          {
+            "source_id": "merritt_moon_pool",
+            "source_title": "The Moon Pool",
+            "source_author": "Abraham Merritt",
+            "source_moment": "A pursuing entity closes distance by mimicking familiar environmental rhythm before contact; the protagonist must read the difference between infrastructure and predator before the gap closes.",
+            "writing_influence": "The maintenance predator uses the grip-sequence rhythm as a lure. It is indistinguishable from the room's normal pulse until Hymn is already inside striking range.",
+            "scenario_application": "Establishes the predator's ambush identity and the room's compressed geometry. Forces Hymn to act before full information is available, which is the core combat pressure."
+          },
+          {
+            "source_id": "haggard_king_solomons_mines",
+            "source_title": "King Solomon's Mines",
+            "source_author": "H. Rider Haggard",
+            "source_moment": "A fight in a narrow corridor where retreat is possible but costs position; pressing forward is dangerous but the only way to clear the route. Commitment to a line determines survival.",
+            "writing_influence": "The cellar's low ceiling and tool-hole walls function as the narrow corridor. Retreat is available but surrenders the room. Pressing through costs contact damage but can break the predator's grip on the infrastructure.",
+            "scenario_application": "Grounds the push_through_spikes and brace_through_red_split choices in physical geometry. The room itself is the constraint, not a rule."
+          },
+          {
+            "source_id": "combat_research_grip_and_leverage",
+            "source_title": "Fleshpunk Combat Research: Grip, Leverage, and Commitment",
+            "source_author": "internal research",
+            "source_moment": "A committed strike or grab at close range exposes the attacker during recovery. Breaking an opponent's established grip pattern disrupts their tempo and opens a window. Probing before committing reads the opponent's structure without full exposure.",
+            "writing_influence": "The predator's grip on the wall holes is both its weapon and its anchor. Disrupting the pattern breaks its tempo. Probing its limb structure before committing reveals where it is vulnerable and where it is braced.",
+            "scenario_application": "Directly shapes the probe_bones, break_marked_pattern, and combat choices. Each choice maps to a real tactical concept: read, disrupt, or commit. Recovery windows and exposure are visible in result lines."
+          }
+        ]
+      },
+      {
+        "id": "operator_cellar_wall_reader",
+        "type": "choice",
+        "speaker": "Hymn",
+        "environment_id": "operator_cellar",
+        "infrastructure_actor": "wall-fused mimicry predator",
+        "primary_pressure": "hunt_pressure",
+        "body_path_pressure": "The low ceiling removes vertical options and compresses every choice to body-level commitment. Baseline Hymn must read and time. Mutation identity changes the entry angle or the cut. The barrier symbiote can absorb the first pull but risks dependency drift if used without reading.",
+        "avoidance_route": "Retreat before the predator finishes anchoring is possible but costs the angle on the doorway and leaves the predator in the wall, active, for the next visit. It is a route cost, not a skip.",
+        "recognition_effect": "If Hymn breaks the anchor cleanly, the scarred wall pattern is readable to any body that passes through later. If she exits with heavy wound debt, scavengers in adjacent rooms may orient on the blood trace. If she uses a cut mutation, the severed limb marks her as a body that destroys anchors, not just survives them.",
+        "line_1": "The predator has stopped pressing the wall-control holes and is bracing instead: limbs still threaded into the wall, grip tightening, body turned toward me as I stand two steps inside the door.",
+        "line_2": "The ceiling keeps my arms below shoulder height. The doorway is narrowing my angle behind me. The wall is the only leverage it has; if I break that leverage before it fires, the fight changes.",
+        "environment_memory_flags": [
+          "operator_cellar_wall_reader_seen"
+        ],
+        "buttons": [
+          {
+            "label": "Read its limb structure before committing",
+            "action": "probe_bones",
+            "voice_aliases": [
+              "its",
+              "its limb",
+              "limb structure",
+              "probe bones",
+              "read its"
+            ]
+          },
+          {
+            "label": "Break its grip rhythm before it can set",
+            "action": "break_marked_pattern",
+            "voice_aliases": [
+              "trace",
+              "branch",
+              "break marked pattern",
+              "mark",
+              "select branch"
+            ]
+          },
+          {
+            "label": "Drive straight through before it can anchor deeper",
+            "action": "push_through_spikes",
+            "voice_aliases": [
+              "before",
+              "drive straight",
+              "push through spikes",
+              "straight through",
+              "through before"
+            ]
+          },
+          {
+            "label": "Take the strike and hold your ground",
+            "action": "brace_through_red_split",
+            "voice_aliases": [
+              "accept",
+              "brace through red split",
+              "choose",
+              "claim",
+              "take"
+            ]
+          }
+        ],
+        "action_results": {
+          "probe_bones": {
+            "preview": "Baseline discipline route. Hymn spends a breath reading the anchor geometry, identifies the counter-window after the committed pull, and enters on her terms. Costs time, raises baseline_discipline, records route_memory of tool-hole spacing.",
+            "lines": [
+              "Its limbs are threaded deep but the angle is wrong for a sustained pull. It has to commit fully to move me, and the moment after that commitment is open.",
+              "I wait for it. It pulls. I step inside the pull and the wall takes the force instead of me. The grip breaks at the third hole from the left. I remember that."
+            ],
+            "environment_state_changes": [
+              "predator_anchor_broken",
+              "tool_hole_spacing_memorized"
+            ],
+            "pressure_axis_changes": [
+              "baseline_discipline_up",
+              "route_memory_recorded"
+            ],
+            "actor_state_changes": [
+              "predator_driven_off"
+            ]
+          },
+          "break_marked_pattern": {
+            "preview": "Aggressive baseline route. Hymn disrupts the predator's anchor sequence before it finishes locking, forcing it into an unbraced exchange. Costs wound_debt on contact, raises hunt_pressure as the disruption is loud.",
+            "lines": [
+              "I move before it finishes the sequence. It is not fully anchored and the disruption pulls two of its limbs free. The third holds and it swings with that.",
+              "The contact is hard and low. I take it on the side and push through. It loses the wall. The fight is short after that but I am bleeding."
+            ],
+            "environment_state_changes": [
+              "predator_anchor_broken",
+              "wound_debt_incurred"
+            ],
+            "pressure_axis_changes": [
+              "wound_debt_up",
+              "hunt_pressure_up"
+            ],
+            "actor_state_changes": [
+              "predator_driven_off"
+            ]
+          },
+          "push_through_spikes": {
+            "preview": "High-commitment baseline route. Hymn closes distance immediately, accepting contact to deny the predator its leverage advantage. Speed or cut mutation tags open a cleaner version of this branch. Wound debt is likely.",
+            "lines": [
+              "I close before it can finish setting. The ceiling keeps me low and that is actually right for this. I hit it at the wall and the anchor does not hold against direct pressure from inside its own angle.",
+              "It tears free. Some of that is mine. The room is quiet after."
+            ],
+            "environment_state_changes": [
+              "predator_anchor_destroyed",
+              "wound_debt_incurred"
+            ],
+            "pressure_axis_changes": [
+              "wound_debt_up",
+              "recognition_up"
+            ],
+            "actor_state_changes": [
+              "predator_destroyed"
+            ]
+          },
+          "brace_through_red_split": {
+            "preview": "Wound-debt route with brace or barrier symbiote tag. Baseline Hymn absorbs the pull and holds position, raising baseline_discipline but incurring significant wound_debt. Barrier symbiote absorbs the force at cost to symbiote health.",
+            "lines": [
+              "It pulls. I do not move. The force is real and it costs me but the wall gets nothing from this exchange and neither does the predator.",
+              "It releases when it cannot shift me. I am still standing. The damage is mine to carry but the ground is mine too."
+            ],
+            "environment_state_changes": [
+              "predator_retreated",
+              "wound_debt_incurred"
+            ],
+            "pressure_axis_changes": [
+              "wound_debt_up",
+              "baseline_discipline_up"
+            ],
+            "actor_state_changes": [
+              "predator_retreated_into_wall"
+            ]
+          }
+        },
+        "story_followups": {
+          "probe_bones": {
+            "event_id": "operator_cellar_scar_navigation",
+            "trigger_key": "tool_hole_spacing_memorized",
+            "delay_rooms": 2,
+            "queued_line": "The wall here has the same hole spacing. My hands find the pattern before I think to look for it."
+          },
+          "break_marked_pattern": {
+            "event_id": "operator_cellar_blood_trace_attention",
+            "trigger_key": "wound_debt_incurred",
+            "delay_rooms": 2,
+            "queued_line": "A low feeder in the next corridor has stopped with its snout to my blood."
+          },
+          "push_through_spikes": {
+            "event_id": "operator_cellar_scar_navigation",
+            "trigger_key": "predator_anchor_destroyed",
+            "delay_rooms": 2,
+            "queued_line": "The wall here has the same hole spacing. My hands find the pattern before I think to look for it."
+          },
+          "brace_through_red_split": {
+            "event_id": "operator_cellar_blood_trace_attention",
+            "trigger_key": "wound_debt_incurred",
+            "delay_rooms": 2,
+            "queued_line": "A low feeder in the next corridor has stopped with its snout to my blood."
+          }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Read first, enter on the counter-window: low wound debt, high baseline_discipline, route_memory recorded, predator driven off cleanly",
+          "Break rhythm early: moderate wound debt, hunt_pressure rises, predator driven off with noise cost",
+          "Drive through immediately: wound debt likely, recognition rises, predator anchor destroyed permanently, speed or cut mutation opens cleaner version",
+          "Brace and hold: high wound debt, high baseline_discipline, predator retreats but is not destroyed, barrier symbiote absorbs force at symbiote health cost"
+        ],
+        "progression_vector": "Hymn exits with some combination of wound debt, baseline discipline, route memory of the tool-hole spacing, and recognition pressure. The predator's anchor state determines whether the room is safe on return. The fight is recorded in the wall.",
+        "corpus_influences": [
+          {
+            "source_id": "merritt_moon_pool",
+            "source_title": "The Moon Pool",
+            "source_author": "A. Merritt",
+            "source_moment": "An entity mimics familiar human rhythm to draw contact before revealing its predatory nature; the lure is indistinguishable from the real sequence until the witness is already inside striking range.",
+            "writing_influence": "The predator has absorbed the operator grip-sequence from the wall's tissue memory and replays it as bait. The mimicry is accurate enough that a new player could mistake it for a room mechanic rather than a threat.",
+            "scenario_application": "Establishes the predator's anchor behavior and explains why it has not already struck: it is still running the lure. This gives Hymn one breath of read-time before contact, which the choices exploit."
+          },
+          {
+            "source_id": "howard_shadow_kingdom",
+            "source_title": "The Shadow Kingdom",
+            "source_author": "Robert E. Howard",
+            "source_moment": "A chamber fight compresses action into slash, thrust, parry, and immediate exposure; standing into pressure wins space but leaves the body open.",
+            "writing_influence": "The cellar's low ceiling and wall holes compress the fight to body-level commitment. Hymn cannot solve it from a clean distance; every branch is a close exchange with recovery cost.",
+            "scenario_application": "Drives the choice architecture: every option is a close-range body decision. Bracing, driving through, reading, and breaking rhythm all answer the same chamber-pressure problem."
+          },
+          {
+            "source_id": "combat_research_grip_and_leverage",
+            "source_title": "Fleshpunk Combat Research: Grip, Leverage, and Commitment",
+            "source_author": "internal",
+            "source_moment": "A wall-braced opponent has superior leverage on the first exchange but is slow to reposition; the counter-window opens immediately after their committed pull, not before.",
+            "writing_influence": "The predator's grip on the wall is its strength and its constraint. It can anchor and pull but cannot pivot quickly. Hymn's choices map onto this: read the structure, break the rhythm before it sets, drive through before it anchors deeper, or absorb the pull and hold ground.",
+            "scenario_application": "Each choice is a real leverage decision, not a stat check. The predator's wall-anchor is the mechanical fact every choice responds to. This keeps combat physical and readable without becoming a puzzle."
+          }
+        ]
       }
     ],
     "scar_map_junction": [
@@ -774,33 +1369,33 @@
             "label": "Mark the quiet route",
             "action": "mark_red_branch",
             "voice_aliases": [
-              "select branch",
-              "branch",
-              "tag",
+              "mark",
+              "trace",
+              "mark quiet",
               "mark red branch",
-              "mark route"
+              "quiet route"
             ]
           },
           {
             "label": "Trust the bright scar",
             "action": "proceed",
             "voice_aliases": [
+              "proceed",
               "advance",
               "carry on",
               "go forward",
-              "move on",
-              "step through"
+              "move on"
             ]
           },
           {
             "label": "Break the route pattern",
             "action": "break_marked_pattern",
             "voice_aliases": [
-              "mark",
-              "trace",
+              "select branch",
+              "branch",
+              "tag",
               "break marked pattern",
-              "break pattern",
-              "break route"
+              "break pattern"
             ]
           }
         ],
@@ -947,7 +1542,14 @@
               }
             }
           }
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Mark the quiet route: Hymn leaves route memory that can guide or accuse her later.",
+          "Trust the bright scar: Hymn carries the visible pressure forward without resolving it.",
+          "Break the route pattern: Hymn rejects inherited routing and creates a new uncertainty."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "biomass_larder": [
@@ -991,11 +1593,11 @@
             "label": "Leave hungry",
             "action": "retreat",
             "voice_aliases": [
-              "fall back",
               "pull back",
-              "walk away",
-              "withdraw",
-              "back away"
+              "retreat",
+              "back away",
+              "fall back",
+              "leave"
             ]
           }
         ],
@@ -1187,7 +1789,14 @@
               }
             }
           }
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Take ration mass: Hymn converts nursery matter into resource and creates social debt.",
+          "Pay into the scale: Hymn buys passage and teaches the ledger she can pay.",
+          "Leave hungry: Hymn preserves the body now and leaves the room unresolved."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "biomass_larder_credit_grub",
@@ -1206,9 +1815,9 @@
             "label": "Use the grub credit",
             "action": "harvest_eggs",
             "voice_aliases": [
-              "harvest eggs",
               "credit",
               "grub",
+              "harvest eggs",
               "take food",
               "use credit"
             ]
@@ -1228,11 +1837,11 @@
             "label": "Close the membrane",
             "action": "retreat",
             "voice_aliases": [
-              "fall back",
-              "pull back",
-              "withdraw",
+              "retreat",
               "close membrane",
-              "leave"
+              "fall back",
+              "leave",
+              "pull back"
             ]
           }
         ],
@@ -1358,7 +1967,14 @@
               }
             }
           }
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Use the grub credit: Hymn converts nursery matter into resource and creates social debt.",
+          "Feed the grub: Hymn buys passage and teaches the ledger she can pay.",
+          "Close the membrane: Hymn preserves the body now and leaves the room unresolved."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "drowned_toll_harbor": [
@@ -1402,11 +2018,11 @@
             "label": "Drain the harbor",
             "action": "vent_red_split",
             "voice_aliases": [
-              "cut a vent",
-              "cut vent",
-              "breach",
-              "cut",
-              "sever"
+              "open vent",
+              "slice",
+              "vent",
+              "vent the wall",
+              "breach"
             ]
           }
         ],
@@ -1511,7 +2127,14 @@
               }
             }
           }
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Pay the dock mouths: Hymn buys passage and teaches the ledger she can pay.",
+          "Wade through: Hymn agitates hidden life and turns recovery into evidence.",
+          "Drain the harbor: Hymn spends the room pressure now to change later movement."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "maintenance_rite_chapel": [
@@ -1543,22 +2166,22 @@
             "label": "Take the body edit",
             "action": "take_mutation",
             "voice_aliases": [
-              "claim mutation",
-              "buy mutation",
-              "choose mutation",
-              "accept",
-              "buy"
+              "take mutation",
+              "mutation",
+              "choose",
+              "claim",
+              "purchase"
             ]
           },
           {
             "label": "Break rite order",
             "action": "break_marked_pattern",
             "voice_aliases": [
-              "select branch",
-              "branch",
-              "mark",
               "tag",
-              "trace"
+              "branch",
+              "break marked pattern",
+              "mark",
+              "select branch"
             ]
           }
         ],
@@ -1613,7 +2236,14 @@
             "delay_rooms": 2,
             "queued_line": "The broken rite leaks into the drain cuts. Beetles answer from inside the wall."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Perform the maintenance rite: Hymn learns the room as apparatus before committing her body.",
+          "Take the body edit: Hymn accepts a body answer that changes later tactics and recognition.",
+          "Break rite order: Hymn rejects inherited routing and creates a new uncertainty."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "launch_bore": [
@@ -1635,11 +2265,11 @@
             "label": "Authorize launch",
             "action": "proceed",
             "voice_aliases": [
+              "proceed",
               "advance",
               "carry on",
               "go forward",
-              "move on",
-              "step through"
+              "move on"
             ]
           },
           {
@@ -1657,11 +2287,11 @@
             "label": "Cut the launch ring",
             "action": "cut_heart_cords",
             "voice_aliases": [
-              "open vent",
               "slice",
-              "vent",
               "cut",
-              "cut heart cords"
+              "cut heart cords",
+              "open vent",
+              "sever"
             ]
           }
         ],
@@ -1716,7 +2346,14 @@
             "delay_rooms": 2,
             "queued_line": "The cut ring bleeds after launch. The shortcut stays open and visible."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Authorize launch: Hymn carries the visible pressure forward without resolving it.",
+          "Let rings measure me: Hymn learns the room as apparatus before committing her body.",
+          "Cut the launch ring: Hymn attacks the room function directly and invites systemic retaliation."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "red_corridor": [
@@ -1734,11 +2371,11 @@
             "label": "Leave them",
             "action": "leave_symbiote",
             "voice_aliases": [
-              "accept symbiote",
-              "choose symbiote",
-              "claim symbiote",
-              "take symbiote",
-              "bond"
+              "decline symbiote",
+              "leave symbiote",
+              "refuse symbiote",
+              "leave",
+              "retreat"
             ]
           }
         ],
@@ -1760,7 +2397,13 @@
         },
         "environment_memory_flags": [
           "red_corridor_symbiote_site_seen"
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Leave them: Hymn refuses attachment and keeps later needs unanswered.",
+          "Refusing or delaying would preserve body boundaries while leaving the room pressure unresolved."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "healing_pool": [
@@ -1779,8 +2422,8 @@
             "label": "Drink from the pool",
             "action": "drink_pool",
             "voice_aliases": [
-              "drink pool",
-              "sip",
+              "take a sip",
+              "pool",
               "breathe",
               "clean pulse",
               "drink"
@@ -1790,7 +2433,7 @@
             "label": "Study the fluid",
             "action": "study_pool",
             "voice_aliases": [
-              "study",
+              "study pool",
               "inspect",
               "listen",
               "read",
@@ -1801,11 +2444,11 @@
             "label": "Back away slowly",
             "action": "retreat",
             "voice_aliases": [
+              "withdraw",
               "back off",
-              "pull back",
               "fall back",
               "leave",
-              "leave pool"
+              "pull back"
             ]
           }
         ],
@@ -1862,7 +2505,14 @@
             "delay_rooms": 2,
             "queued_line": "The peak passed unused. Air behind me keeps that gap like a trail."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Drink from the pool: Hymn uses drink pool and changes how this environment reads her.",
+          "Study the fluid: Hymn gains biological knowledge without immediately feeding the system.",
+          "Back away slowly: Hymn preserves the body now and leaves the room unresolved."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "healing_pool_surface_motion_v2",
@@ -1890,7 +2540,7 @@
             "label": "Sample the edge",
             "action": "study_pool",
             "voice_aliases": [
-              "study",
+              "study pool",
               "inspect",
               "listen",
               "read",
@@ -1901,8 +2551,8 @@
             "label": "Leave the pool",
             "action": "retreat",
             "voice_aliases": [
-              "pull back",
-              "walk away",
+              "retreat",
+              "withdraw",
               "fall back",
               "leave",
               "leave pool"
@@ -1962,7 +2612,14 @@
             "delay_rooms": 2,
             "queued_line": "I left the swell unused. The corridor keeps that silence."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Break the surface: Hymn agitates hidden life and turns recovery into evidence.",
+          "Sample the edge: Hymn gains biological knowledge without immediately feeding the system.",
+          "Leave the pool: Hymn preserves the body now and leaves the room unresolved."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "egg_corridor": [
@@ -1992,11 +2649,11 @@
             "label": "Pass on one breath and keep moving",
             "action": "retreat",
             "voice_aliases": [
+              "do not test",
               "fall back",
               "pull back",
               "retreat",
-              "withdraw",
-              "do not test"
+              "withdraw"
             ]
           }
         ],
@@ -2021,7 +2678,13 @@
               "brood_quiet_slip"
             ]
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Draw a measured breath and read the air: Hymn reads pressure and pursuit through the living wall.",
+          "Pass on one breath and keep moving: Hymn preserves the body now and leaves the room unresolved."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "egg_corridor_nest_choice",
@@ -2061,10 +2724,10 @@
             "action": "slip_between_eggs",
             "voice_aliases": [
               "between",
+              "flatten shoulders",
               "slip",
               "slip between",
-              "slip between eggs",
-              "flatten shoulders"
+              "slip between eggs"
             ]
           }
         ],
@@ -2119,7 +2782,14 @@
             "delay_rooms": 2,
             "queued_line": "The lane keeps a low count. Nothing here hurries to my profile."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Pierce low and harvest yolk: Hymn converts nursery matter into resource and creates social debt.",
+          "Seal a shoulder lane with heat: Hymn prevents future hatch pressure at the cost of noise and violence.",
+          "Flatten shoulders and slip: Hymn uses careful movement to pass without harvest or rupture."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "egg_corridor_cracked_shell",
@@ -2136,7 +2806,7 @@
             "label": "Sample residue and seal the edge",
             "action": "inspect_cracked_egg",
             "voice_aliases": [
-              "study",
+              "sample",
               "inspect",
               "inspect cracked egg",
               "listen",
@@ -2158,11 +2828,11 @@
             "label": "Step wide and leave it drying",
             "action": "proceed",
             "voice_aliases": [
-              "leave",
-              "proceed",
-              "retreat",
-              "step through",
-              "walk away"
+              "advance",
+              "carry on",
+              "go forward",
+              "move on",
+              "withdraw"
             ]
           }
         ],
@@ -2217,7 +2887,14 @@
             "delay_rooms": 2,
             "queued_line": "The wet ridges settle and dull. The mark will be harder to read downstream."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Sample residue and seal the edge: Hymn trades speed for knowledge of what is hatching nearby.",
+          "Set my palm on the ridges and follow: Hymn follows a smaller survivor and lets its path revise hers.",
+          "Step wide and leave it drying: Hymn carries the visible pressure forward without resolving it."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "bone_corridor": [
@@ -2235,19 +2912,19 @@
             "label": "Cut the sentinel off the screen",
             "action": "combat",
             "voice_aliases": [
-              "open vent",
-              "cut",
-              "sever",
-              "slice",
-              "vent"
+              "attack",
+              "combat",
+              "engage",
+              "fight",
+              "kill"
             ]
           },
           {
             "label": "Keep the ribs closed and move on",
             "action": "proceed",
             "voice_aliases": [
-              "step through",
-              "proceed",
+              "move",
+              "move on",
               "advance",
               "carry on",
               "go forward"
@@ -2292,7 +2969,13 @@
             "delay_rooms": 2,
             "queued_line": "The guarded cache stays behind me. The dust line I left across its mouth will read as mine."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Cut the sentinel off the screen: Hymn answers as a fighter; wounds, noise, and rival recognition can follow.",
+          "Keep the ribs closed and move on: Hymn carries the visible pressure forward without resolving it."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "bone_corridor_scavenge",
@@ -2327,11 +3010,11 @@
             "label": "Leave the bones",
             "action": "proceed",
             "voice_aliases": [
-              "advance",
-              "leave",
-              "retreat",
-              "walk away",
-              "withdraw"
+              "carry on",
+              "go forward",
+              "move on",
+              "proceed",
+              "step through"
             ]
           }
         ],
@@ -2369,7 +3052,14 @@
         },
         "environment_memory_flags": [
           "bone_corridor_cache_seen"
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Scavenge the bones: Hymn turns remains into supply and leaves evidence of hunger.",
+          "Probe the heap: Hymn tests structure and discovers how the corridor failed before her.",
+          "Leave the bones: Hymn carries the visible pressure forward without resolving it."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "bone_corridor_marked_plate_lane",
@@ -2384,6 +3074,17 @@
             "label": "Follow the marks",
             "action": "follow_marked_plates",
             "voice_aliases": [
+              "follow marked plates",
+              "follow marks",
+              "follow",
+              "marks",
+              "chorus pale"
+            ]
+          },
+          {
+            "label": "Break the pattern",
+            "action": "break_marked_pattern",
+            "voice_aliases": [
               "select branch",
               "branch",
               "mark",
@@ -2392,24 +3093,14 @@
             ]
           },
           {
-            "label": "Break the pattern",
-            "action": "break_marked_pattern",
-            "voice_aliases": [
-              "break marked pattern",
-              "break pattern",
-              "break",
-              "pattern"
-            ]
-          },
-          {
             "label": "Leave the marks",
             "action": "proceed",
             "voice_aliases": [
-              "advance",
-              "leave",
-              "retreat",
-              "walk away",
-              "withdraw"
+              "carry on",
+              "go forward",
+              "move on",
+              "proceed",
+              "step through"
             ]
           }
         ],
@@ -2523,7 +3214,14 @@
               }
             }
           }
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Follow the marks: Hymn trusts inherited route marks and accepts their old logic.",
+          "Break the pattern: Hymn rejects inherited routing and creates a new uncertainty.",
+          "Leave the marks: Hymn carries the visible pressure forward without resolving it."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "bone_corridor_quiet",
@@ -2538,21 +3236,21 @@
             "action": "proceed",
             "voice_aliases": [
               "proceed",
-              "step through",
               "advance",
               "carry on",
-              "go forward"
+              "go forward",
+              "move on"
             ]
           },
           {
             "label": "Scavenge the bones",
             "action": "scavenge_bones",
             "voice_aliases": [
-              "scavenge bones",
               "bones",
               "cache",
               "loot",
-              "scavenge"
+              "scavenge",
+              "scavenge bones"
             ]
           }
         ],
@@ -2588,7 +3286,13 @@
             "delay_rooms": 2,
             "queued_line": "The next dry floor keeps a fine single-file print."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Cross the old intake: Hymn carries the visible pressure forward without resolving it.",
+          "Scavenge the bones: Hymn turns remains into supply and leaves evidence of hunger."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "bone_corridor_plate_sprout",
@@ -2608,7 +3312,7 @@
             "label": "Provoke the ward",
             "action": "combat",
             "voice_aliases": [
-              "strike",
+              "kill",
               "attack",
               "combat",
               "engage",
@@ -2619,22 +3323,22 @@
             "label": "Leave them cold",
             "action": "leave_symbiote",
             "voice_aliases": [
-              "accept symbiote",
-              "choose symbiote",
-              "claim symbiote",
-              "take symbiote",
-              "bond"
+              "decline symbiote",
+              "leave symbiote",
+              "refuse symbiote",
+              "leave",
+              "retreat"
             ]
           },
           {
             "label": "Take one and kill the rest",
             "action": "take_symbiote",
             "voice_aliases": [
-              "accept",
-              "choose",
-              "claim",
-              "take",
-              "graft"
+              "accept symbiote",
+              "choose symbiote",
+              "claim symbiote",
+              "take symbiote",
+              "bond"
             ]
           }
         ],
@@ -2672,7 +3376,14 @@
         },
         "environment_memory_flags": [
           "bone_corridor_plate_sprout_seen"
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Provoke the ward: Hymn answers as a fighter; wounds, noise, and rival recognition can follow.",
+          "Leave them cold: Hymn refuses attachment and keeps later needs unanswered.",
+          "Take one and kill the rest: Hymn accepts help that can become dependence or leverage."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "bone_corridor_ridge_lathe",
@@ -2698,7 +3409,7 @@
             "label": "Jam the lathe",
             "action": "combat",
             "voice_aliases": [
-              "strike",
+              "kill",
               "attack",
               "combat",
               "engage",
@@ -2770,7 +3481,14 @@
             "delay_rooms": 2,
             "queued_line": "I hear the same tooth interval down a different wall."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Strip the shavings: Hymn turns remains into supply and leaves evidence of hunger.",
+          "Jam the lathe: Hymn answers as a fighter; wounds, noise, and rival recognition can follow.",
+          "Probe the mechanism: Hymn tests structure and discovers how the corridor failed before her."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "bone_corridor_stricture_choke",
@@ -2796,7 +3514,7 @@
             "label": "Fight the hunter",
             "action": "combat",
             "voice_aliases": [
-              "strike",
+              "kill",
               "attack",
               "combat",
               "engage",
@@ -2857,7 +3575,14 @@
             "delay_rooms": 2,
             "queued_line": "Drying warmth on my sleeve fixes a scent line in these corridors."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Force through: Hymn forces passage and makes injury part of the route record.",
+          "Fight the hunter: Hymn answers as a fighter; wounds, noise, and rival recognition can follow.",
+          "Withdraw: Hymn preserves the body now and leaves the room unresolved."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "amber_corridor": [
@@ -2876,11 +3601,11 @@
             "label": "Cut out the amber",
             "action": "siphon_amber",
             "voice_aliases": [
-              "clean pulse",
-              "open vent",
-              "take a sip",
-              "breathe",
-              "drink"
+              "cut",
+              "sever",
+              "sip",
+              "siphon amber",
+              "slice"
             ]
           },
           {
@@ -2971,7 +3696,14 @@
             "delay_rooms": 2,
             "queued_line": "The sweetness does not fade. It sits in the seam like a kept breath."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Cut out the amber: Hymn takes sealed resource and leaves the wound hungry.",
+          "Seal myself with it: Hymn repairs a living leak and earns quieter future passage.",
+          "Leave the pressure sealed: Hymn leaves sealed resource untouched and keeps the wound quiet."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "amber_corridor_resin_toll_script",
@@ -3009,7 +3741,7 @@
             "label": "Leave the plaque",
             "action": "leave_amber",
             "voice_aliases": [
-              "withdraw",
+              "walk away",
               "leave",
               "leave amber",
               "leave plaque",
@@ -3076,7 +3808,14 @@
             "queued_line": "That small cough does not leave the seam.",
             "reactivate_on_reshuffle": false
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Pay 5 biomass: Hymn buys passage and teaches the ledger she can pay.",
+          "Refuse the toll: Hymn keeps biomass and lets debt or pursuit pressure follow.",
+          "Leave the plaque: Hymn leaves sealed resource untouched and keeps the wound quiet."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "spiked_red_corridor": [
@@ -3115,11 +3854,11 @@
             "label": "Time the open beat and proceed",
             "action": "proceed",
             "voice_aliases": [
+              "proceed",
               "advance",
               "carry on",
               "go forward",
-              "move on",
-              "step through"
+              "move on"
             ]
           }
         ],
@@ -3203,7 +3942,14 @@
             "one_shot": true,
             "queued_line_hint": "My legs keep the count after the lane closes."
           }
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Push through the spikes: Hymn forces passage and makes injury part of the route record.",
+          "Break a path: Hymn damages the obstacle and leaves a louder, altered path behind.",
+          "Time the open beat and proceed: Hymn carries the visible pressure forward without resolving it."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "spiked_red_corridor_stalker_contact",
@@ -3224,11 +3970,11 @@
             "label": "Cut inside the rising row",
             "action": "combat",
             "voice_aliases": [
-              "open vent",
-              "cut",
-              "sever",
-              "slice",
-              "vent"
+              "attack",
+              "combat",
+              "engage",
+              "fight",
+              "kill"
             ]
           },
           {
@@ -3236,9 +3982,9 @@
             "action": "run",
             "voice_aliases": [
               "move now",
+              "open tick",
               "run",
               "slip past",
-              "open tick",
               "slip through"
             ]
           },
@@ -3246,10 +3992,10 @@
             "label": "Back out and lose this lane",
             "action": "retreat",
             "voice_aliases": [
-              "back off",
-              "leave",
-              "pull back",
+              "retreat",
+              "withdraw",
               "back away",
+              "back off",
               "fall back"
             ]
           },
@@ -3371,7 +4117,15 @@
             "one_shot": true,
             "queued_line_hint": "Chipped tips and grit mark the lane I rattled."
           }
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Cut inside the rising row: Hymn answers as a fighter; wounds, noise, and rival recognition can follow.",
+          "Slip through on the open tick: Hymn escapes contact but lets pursuit define the next beat.",
+          "Back out and lose this lane: Hymn preserves the body now and leaves the room unresolved.",
+          "Rattle the tips and warn it off: Hymn damages the obstacle and leaves a louder, altered path behind."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "organ_chamber_red": [
@@ -3386,22 +4140,22 @@
             "label": "Cut down the heart keeper",
             "action": "combat",
             "voice_aliases": [
-              "open vent",
-              "cut",
-              "sever",
-              "slice",
-              "vent"
+              "attack",
+              "combat",
+              "engage",
+              "fight",
+              "kill"
             ]
           },
           {
             "label": "Avoid the keeper",
             "action": "proceed",
             "voice_aliases": [
-              "go forward",
               "proceed",
-              "step through",
               "advance",
-              "carry on"
+              "carry on",
+              "go forward",
+              "move on"
             ]
           }
         ],
@@ -3433,7 +4187,13 @@
         },
         "environment_memory_flags": [
           "red_keeper_seen"
-        ]
+        ],
+        "character_change": "both",
+        "possibility_tree": [
+          "Cut down the heart keeper: Hymn answers as a fighter; wounds, noise, and rival recognition can follow.",
+          "Avoid the keeper: Hymn carries the visible pressure forward without resolving it."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "organ_chamber_pulse_sync",
@@ -3446,11 +4206,11 @@
             "label": "Hold my breath to the ring and move on the long gap",
             "action": "observe_organ_chamber",
             "voice_aliases": [
-              "step through",
               "advance",
-              "move",
               "breathing",
-              "observe"
+              "move",
+              "observe",
+              "observe organ chamber"
             ]
           },
           {
@@ -3458,21 +4218,21 @@
             "action": "cut_heart_cords",
             "voice_aliases": [
               "open vent",
-              "slice",
-              "vent",
+              "sever",
               "cords",
-              "cut"
+              "cut",
+              "cut heart cords"
             ]
           },
           {
             "label": "Back off fast while the count is wrong",
             "action": "retreat",
             "voice_aliases": [
+              "withdraw",
               "back off",
+              "fall back",
               "leave",
-              "pull back",
-              "retreat",
-              "fall back"
+              "pull back"
             ]
           }
         ],
@@ -3482,7 +4242,7 @@
             "echo_notes": "Enables one on-beat opening in a later red corridor.",
             "lines": [
               "I count four full beats and sync the fifth with my breath.",
-              "The far seam answers on the same count and lifts a finger-width longer. The vent ring taps once after I pass."
+              "The far seam answers on the same rhythm and lifts a finger-width longer. The vent ring taps once after I pass."
             ],
             "environment_state_changes": [
               "red_pulse_interval_recorded"
@@ -3524,7 +4284,14 @@
             "queued_line": "The chamber noise does not die when I clear it. A thin ring keeps time with my uneven breath.",
             "reactivate_on_reshuffle": false
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Hold my breath to the ring and move on the long gap: Hymn learns the room as apparatus before committing her body.",
+          "Score one cord to drag the next beat low: Hymn attacks the room function directly and invites systemic retaliation.",
+          "Back off fast while the count is wrong: Hymn preserves the body now and leaves the room unresolved."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "vent_ring_postcheck",
@@ -3553,11 +4320,11 @@
             "label": "Move on before the next surge",
             "action": "proceed",
             "voice_aliases": [
-              "step through",
-              "carry on",
-              "go forward",
+              "move",
               "move on",
-              "proceed"
+              "advance",
+              "carry on",
+              "go forward"
             ]
           }
         ],
@@ -3582,7 +4349,13 @@
             ],
             "environment_state_changes": []
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Hold still at the vent and finish a full count: Hymn learns the room as apparatus before committing her body.",
+          "Move on before the next surge: Hymn carries the visible pressure forward without resolving it."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "split_green_corridor": [
@@ -3611,9 +4384,9 @@
             "label": "Cut the green spine",
             "action": "cut_green_spine",
             "voice_aliases": [
-              "open vent",
-              "slice",
-              "vent",
+              "green spine",
+              "spine",
+              "sever",
               "cut",
               "cut green spine"
             ]
@@ -3632,11 +4405,11 @@
             "label": "Back away and take another route",
             "action": "retreat",
             "voice_aliases": [
+              "withdraw",
               "back off",
               "fall back",
               "leave",
-              "pull back",
-              "retreat"
+              "pull back"
             ]
           }
         ],
@@ -3681,7 +4454,15 @@
               "carry_noise_minor"
             ]
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Enter the soft branch: Hymn chooses the altered route and lets it shape future traversal.",
+          "Cut the green spine: Hymn wounds the alternate route to make it obey.",
+          "Wait and listen: Hymn studies the alternate route before choosing a body risk.",
+          "Back away and take another route: Hymn preserves the body now and leaves the room unresolved."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "split_green_corridor_spore_air_migrated",
@@ -3698,11 +4479,11 @@
             "label": "Move carefully",
             "action": "slip_green_spores",
             "voice_aliases": [
-              "step through",
               "advance",
               "carefully",
               "drift ankle",
-              "move"
+              "move",
+              "slip green spores"
             ]
           },
           {
@@ -3768,7 +4549,14 @@
             "delay_rooms": 2,
             "queued_line": "Fine filaments lift near the wheel and hold their bend after the air goes flat."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Move carefully: Hymn accepts stealthy exposure instead of open struggle.",
+          "Disturb the spores: Hymn accepts exposure for access through the green route.",
+          "Mute the airway wheel: Hymn changes the room mechanism and redirects future pressure."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "split_green_corridor_bell_polyps_leak",
@@ -3806,11 +4594,11 @@
             "label": "Back away from the bells",
             "action": "retreat",
             "voice_aliases": [
+              "withdraw",
+              "back off",
               "fall back",
               "leave",
-              "pull back",
-              "retreat",
-              "back off"
+              "pull back"
             ]
           }
         ],
@@ -3845,7 +4633,14 @@
               "carry_noise_minor"
             ]
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Hold still and listen: Hymn studies the alternate route before choosing a body risk.",
+          "Turn the wheel flatter: Hymn changes the room mechanism and redirects future pressure.",
+          "Back away from the bells: Hymn preserves the body now and leaves the room unresolved."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       }
     ],
     "split_red_corridor": [
@@ -3885,11 +4680,11 @@
             "label": "Mark the branch",
             "action": "mark_red_branch",
             "voice_aliases": [
-              "tag",
-              "trace",
+              "select branch",
               "branch",
               "mark",
-              "mark branch"
+              "mark branch",
+              "mark red branch"
             ]
           }
         ],
@@ -3924,7 +4719,14 @@
               "red_branch_marked"
             ]
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Open the artery: Hymn opens the violent route and lets pursuit read the fresh wound.",
+          "Brace through the dry lane: Hymn survives by stance and pressure discipline, but leaves strain behind.",
+          "Mark the branch: Hymn leaves route memory that can guide or accuse her later."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "split_red_corridor_pressure_rise",
@@ -3951,10 +4753,10 @@
             "label": "Cut a vent",
             "action": "vent_red_split",
             "voice_aliases": [
-              "cut a vent",
-              "cut",
-              "sever",
-              "slice",
+              "cut vent",
+              "open vent",
+              "vent",
+              "vent the wall",
               "breach"
             ]
           },
@@ -3962,11 +4764,11 @@
             "label": "Mark the branch",
             "action": "mark_red_branch",
             "voice_aliases": [
-              "tag",
-              "trace",
+              "select branch",
               "branch",
               "mark",
-              "mark branch"
+              "mark branch",
+              "mark red branch"
             ]
           }
         ],
@@ -4001,7 +4803,14 @@
               "red_branch_marked"
             ]
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Rush through: Hymn chooses speed over control and carries pressure forward.",
+          "Cut a vent: Hymn spends the room pressure now to change later movement.",
+          "Mark the branch: Hymn leaves route memory that can guide or accuse her later."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "split_red_corridor_hunter",
@@ -4021,7 +4830,7 @@
             "label": "Fight the hunter",
             "action": "combat",
             "voice_aliases": [
-              "strike",
+              "kill",
               "attack",
               "combat",
               "engage",
@@ -4033,10 +4842,10 @@
             "action": "proceed",
             "voice_aliases": [
               "proceed",
-              "step through",
               "advance",
               "carry on",
-              "go forward"
+              "go forward",
+              "move on"
             ]
           }
         ],
@@ -4075,7 +4884,13 @@
             "delay_rooms": 2,
             "queued_line": "The wet wall keeps the hunter's angle after I leave."
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Fight the hunter: Hymn answers as a fighter; wounds, noise, and rival recognition can follow.",
+          "Avoid the hunter: Hymn carries the visible pressure forward without resolving it."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
       },
       {
         "id": "split_red_corridor_branch",
@@ -4091,22 +4906,22 @@
             "label": "Leave the split",
             "action": "proceed",
             "voice_aliases": [
-              "advance",
-              "leave",
-              "retreat",
-              "walk away",
-              "withdraw"
+              "carry on",
+              "go forward",
+              "move on",
+              "proceed",
+              "step through"
             ]
           },
           {
             "label": "Mark the split",
             "action": "mark_red_branch",
             "voice_aliases": [
-              "select branch",
+              "trace",
               "branch",
-              "tag",
               "line",
-              "mark"
+              "mark",
+              "mark red branch"
             ]
           }
         ],
@@ -4131,60 +4946,389 @@
               "red_branch_marked"
             ]
           }
-        }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Leave the split: Hymn carries the visible pressure forward without resolving it.",
+          "Mark the split: Hymn leaves route memory that can guide or accuse her later."
+        ],
+        "progression_vector": "The scenario can improve Hymn's knowledge, resources, or anatomy while also adding debt, exposure, injury, or pursuit pressure."
+      }
+    ],
+    "amar_creepstride_red_chapel": [
+      {
+        "id": "amar_creepstride_first_contact",
+        "type": "combat",
+        "speaker": "Hymn",
+        "infrastructure_actor": "saw_line_discipline",
+        "line_1": "The chapel gives us three strides. Amar owns the middle one. His saw waits low, where my wrist has to pass if I want the seam.",
+        "line_2": "The hunter behind me hits the corridor once. The floor rhythm stutters. Amar smiles because pressure makes students honest.",
+        "environment_memory_flags": [
+          "amar_creepstride_first_contact_seen"
+        ],
+        "buttons": [
+          {
+            "label": "Step inside his saw",
+            "action": "combat",
+            "voice_aliases": [
+              "engage",
+              "strike",
+              "attack",
+              "combat",
+              "enter measure"
+            ]
+          },
+          {
+            "label": "Learn when the wall opens",
+            "action": "listen_red_wall",
+            "voice_aliases": [
+              "learn",
+              "listen",
+              "listen red wall",
+              "read tendon",
+              "take count"
+            ]
+          },
+          {
+            "label": "Let Amar hold the door",
+            "action": "retreat",
+            "voice_aliases": [
+              "pull back",
+              "withdraw",
+              "bait",
+              "fall back",
+              "leave"
+            ]
+          }
+        ],
+        "action_results": {
+          "combat": {
+            "preview": "Immediate: close fight. Echo: the hunter hears Hymn stop running.",
+            "lines": [
+              "I step inside the saw before it can bite my wrist. Too close for his full cut. Close enough for his elbow to split my cheek.",
+              "I put him into the wall on the second count. The tendon opens, but the hunter behind me hears me stop running and answer with violence."
+            ],
+            "environment_state_changes": [
+              "amar_creepstride_killed",
+              "amar_creepstride_arc_closed",
+              "red_chapel_noisy_predator"
+            ],
+            "actor_state_changes": [
+              "hunter_reads_hymn_as_rival"
+            ],
+            "progression_tags": [
+              "close_measure",
+              "predator_recognition"
+            ]
+          },
+          "listen_red_wall": {
+            "preview": "Immediate: learn the wall's opening rhythm. Follow-up: pressure test in two rooms.",
+            "lines": [
+              "I keep my wrist out of his saw and set my boot where his bad foot taps. The wall answers on the third beat.",
+              "Amar does not become safer. He becomes legible. The timing stays in my wrist after the seam opens."
+            ],
+            "environment_state_changes": [
+              "amar_creepstride_spared",
+              "amar_creepstride_wall_read",
+              "hymn_saw_line_seed"
+            ],
+            "actor_state_changes": [
+              "amar_marks_hymn_as_student"
+            ],
+            "progression_tags": [
+              "saw_line_seed",
+              "tendon_count"
+            ]
+          },
+          "retreat": {
+            "preview": "Immediate: keep distance. Echo: Amar and hunter decide the pressure without Hymn.",
+            "lines": [
+              "I give him the middle stride and drop back as the hunter strikes the corridor again.",
+              "Amar turns his saw toward the seam. For one breath he is the door. After that, his limp follows my route."
+            ],
+            "environment_state_changes": [
+              "amar_creepstride_spared",
+              "amar_creepstride_shadowing",
+              "hymn_refused_saw_line"
+            ],
+            "actor_state_changes": [
+              "amar_reads_hymn_as_precarious_prey"
+            ],
+            "progression_tags": [
+              "refused_training",
+              "prey_pressure"
+            ]
+          }
+        },
+        "story_followups": {
+          "listen_red_wall": {
+            "event_id": "amar_creepstride_pinch_gate",
+            "trigger_key": "amar_creepstride_pinch_gate",
+            "delay_rooms": 2,
+            "queued_line": "The third beat stays in my wrist after the chapel opens. It is not a prayer. It is timing."
+          },
+          "retreat": {
+            "event_id": "amar_creepstride_pinch_gate",
+            "trigger_key": "amar_creepstride_pinch_gate",
+            "delay_rooms": 2,
+            "queued_line": "Amar's limp keeps time behind the wall. The hunter keeps worse time behind him."
+          }
+        },
+        "character_change": "both",
+        "possibility_tree": [
+          "Step inside his saw: Hymn proves close-measure violence and attracts hunter attention.",
+          "Learn when the wall opens: Hymn gains a repeatable red-corridor discipline under Amar's dangerous tutelage.",
+          "Let Amar hold the door: Hymn survives the room while letting someone else define her route pressure."
+        ],
+        "progression_vector": "Hymn can begin learning saw timing body discipline, become recognized as a close fighter, or remain mobile at the cost of dependence and pursuit pressure."
       }
     ]
   },
   "special_events": {
-    "story_soft_captain_pulse_mark": {
-      "id": "story_soft_captain_pulse_mark",
-      "type": "story",
-      "speaker": "Her",
+    "game_opening_descent": {
+      "id": "game_opening_descent",
+      "type": "transition",
+      "speaker": "Hymn",
+      "line_1": "Chorus, I am inside. The outer membrane sealed behind me. No clean exit. The walls breathe. The slope pulls down.",
+      "line_2": "Something died at the bottom. Armor cracked open, ribs exposed. Three things move in the cavity. They noticed me first.",
       "reactivate_on_reshuffle": false,
-      "line_1": "A transit cord drops and matches my wrist. It holds the count I let it take.",
-      "line_2": "One lock nearby answers on that beat. If I hold now, it will open quiet next time.",
       "buttons": [
         {
-          "label": "Match the beat",
+          "label": "Approach the body",
           "action": "proceed",
           "voice_aliases": [
+            "merchant",
             "advance",
+            "barter",
             "carry on",
-            "go forward",
-            "move on",
-            "proceed"
-          ]
-        },
-        {
-          "label": "Refuse the cord",
-          "action": "retreat",
-          "voice_aliases": [
-            "pull back",
-            "retreat",
-            "withdraw",
-            "fall back",
-            "ignore cord"
+            "exchange"
           ]
         }
       ],
       "action_results": {
         "proceed": {
           "lines": [
-            "I hold breath to the long gap. The cord slackens when I release.",
-            "Next rib shows the quiet slip only."
+            "I descend toward the split armor.",
+            "The three symbiotes pause under the ribs and wait for my hand."
+          ],
+          "next_special_event_id": "symbiote_host_offer",
+          "environment_state_changes": [
+            "game_opening_descent_seen"
+          ]
+        }
+      }
+    },
+    "symbiote_host_offer": {
+      "id": "symbiote_host_offer",
+      "type": "symbiote",
+      "speaker": "Hymn",
+      "line_1": "Chorus, body at the foot of the slope. Armor split open. Three symbiotes are still moving under the ribs.",
+      "line_2": "One bond is possible. The shock will kill the others and make the survivor dependent on me.",
+      "scene_path": "res://symbiotehost.tscn",
+      "symbiote_choice_count": 3,
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Leave them",
+          "action": "leave_symbiote",
+          "voice_aliases": [
+            "accept symbiote",
+            "choose symbiote",
+            "claim symbiote",
+            "take symbiote",
+            "bond"
+          ]
+        }
+      ],
+      "action_results": {
+        "take_symbiote": {
+          "preview": "Immediate: one partner survives. Echo: dependency rhythm carried into later rooms.",
+          "lines": [
+            "I open the ribs enough to expose the wet hinge and let one latch at the shoulder.",
+            "Two others seize and go still. The survivor waits under my skin with its own timing."
+          ],
+          "environment_state_changes": [
+            "red_corridor_symbiote_site_seen",
+            "symbiote_host_path_opened",
+            "body_drift_plus_one"
+          ]
+        },
+        "leave_symbiote": {
+          "preview": "Immediate: preserve body boundary. Echo: the host cavity records a solitary body.",
+          "lines": [
+            "I seal the split plate and step past without touching the cage.",
+            "Heat from the floor drops on the far side of the slope. I keep my own timing and the chest stays open behind me."
+          ],
+          "environment_state_changes": [
+            "red_corridor_symbiote_site_seen",
+            "red_corridor_symbiote_refused",
+            "pure_body_first_mark",
+            "baseline_discipline_plus_one"
+          ]
+        }
+      },
+      "story_followups": {
+        "take_symbiote": {
+          "event_id": "story_symbiote_expectation_twitch",
+          "trigger_key": "symbiote_expectation_twitch_intro",
+          "delay_rooms": 2,
+          "queued_line": "The shoulder seam tightens before I ask. The symbiote has learned the shape of danger faster than I wanted."
+        }
+      }
+    },
+    "merchant_arrival": {
+      "id": "merchant_arrival",
+      "type": "merchant",
+      "speaker": "Her",
+      "line_1": "Chorus, contact. The spider-bodied merchant waits in the crossing with six hands, a scale, and a sealed egg behind him.",
+      "line_2": "No reply from Chorus. His prices are already set in wet weights.",
+      "buttons": [
+        {
+          "label": "Approach the scales",
+          "action": "browse_wares",
+          "voice_aliases": [
+            "browse wares",
+            "trade",
+            "approach scales",
+            "scales",
+            "chorus contact"
+          ]
+        },
+        {
+          "label": "Withdraw",
+          "action": "leave_merchant",
+          "voice_aliases": [
+            "merchant",
+            "approach",
+            "barter",
+            "exchange",
+            "leave"
+          ]
+        }
+      ],
+      "reactivate_on_reshuffle": false
+    },
+    "merchant_reckoning": {
+      "id": "merchant_reckoning",
+      "type": "merchant",
+      "speaker": "Her",
+      "line_1": "Chorus, the corridor opens into the merchant's scale room. Side paths seal behind curtains of red muscle.",
+      "line_2": "I ran from him too often. Now he wants all of me on the scale.",
+      "enemy_id": "merchant",
+      "game_over_on_combat": true,
+      "buttons": [
+        {
+          "label": "Face the merchant",
+          "action": "combat",
+          "voice_aliases": [
+            "merchant",
+            "approach",
+            "barter",
+            "exchange",
+            "trade"
+          ]
+        }
+      ],
+      "reactivate_on_reshuffle": false
+    },
+    "hunter_reckoning": {
+      "id": "hunter_reckoning",
+      "type": "danger",
+      "speaker": "Her",
+      "line_1": "Chorus, the buzzing stops behind me. The blood hunter drops into the lane ahead, blocking the only open route.",
+      "line_2": "This is the bill for all that distance.",
+      "enemy_id": "blood_hunter",
+      "scene_path": "res://blood_hunter.tscn",
+      "game_over_on_combat": true,
+      "buttons": [
+        {
+          "label": "Face the hunter",
+          "action": "combat",
+          "voice_aliases": [
+            "strike",
+            "attack",
+            "combat",
+            "engage",
+            "fight"
+          ]
+        }
+      ],
+      "reactivate_on_reshuffle": false
+    },
+    "corruption_claim": {
+      "id": "corruption_claim",
+      "type": "corruption",
+      "speaker": "Her",
+      "line_1": "Chorus, my hands open without asking me. The wall tissue opens with them, matching the shape of my fingers.",
+      "line_2": "Too much of this place fits me. I lose the boundary.",
+      "scene_path": "res://mutation.tscn",
+      "spawn_animation": "open",
+      "buttons": [
+        {
+          "label": "Wake again",
+          "action": "restart_run",
+          "voice_aliases": [
+            "again",
+            "chorus hands",
+            "restart run",
+            "wake",
+            "wake again"
+          ]
+        }
+      ],
+      "reactivate_on_reshuffle": false
+    },
+    "story_soft_captain_pulse_mark": {
+      "id": "story_soft_captain_pulse_mark",
+      "type": "story",
+      "speaker": "Hymn",
+      "reactivate_on_reshuffle": false,
+      "line_1": "A transit cord drops beside my wrist and holds the beat I let the lock take.",
+      "line_2": "One nearby rib answers on that count. It will open quiet, but not wide.",
+      "buttons": [
+        {
+          "label": "Match the beat",
+          "action": "proceed",
+          "voice_aliases": [
+            "step through",
+            "advance",
+            "carry on",
+            "go forward",
+            "move on"
+          ]
+        },
+        {
+          "label": "Refuse the cord",
+          "action": "retreat",
+          "voice_aliases": [
+            "fall back",
+            "ignore cord",
+            "pull back",
+            "retreat",
+            "withdraw"
+          ]
+        }
+      ],
+      "action_results": {
+        "proceed": {
+          "lines": [
+            "I hold breath through the long gap. The cord slackens when I release.",
+            "The next rib keeps a narrow quiet slip for that rhythm."
           ],
           "environment_state_changes": [
             "next_rib_lock_mask_soft",
-            "soft_captain_trust_up"
+            "soft_captain_trust_up",
+            "route_memory_plus_one"
           ]
         },
         "retreat": {
           "lines": [
-            "I let the cord finish without me.",
-            "No favor owed. I keep all options, louder."
+            "I break the count with my thumb and let the cord finish without me.",
+            "No favor owed. The next route stays wider and louder."
           ],
           "environment_state_changes": [
-            "soft_captain_trust_hold"
+            "soft_captain_trust_hold",
+            "baseline_discipline_plus_one"
           ]
         }
       }
@@ -4202,21 +5346,21 @@
           "label": "Accept the receipt",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
           "label": "Refuse the account",
           "action": "retreat",
           "voice_aliases": [
+            "retreat",
+            "deny",
             "fall back",
             "pull back",
-            "withdraw",
-            "deny",
             "refuse"
           ]
         }
@@ -4236,21 +5380,21 @@
           "action": "run",
           "voice_aliases": [
             "go",
+            "keep",
             "keep moving",
             "move",
-            "run",
-            "keep"
+            "run"
           ]
         },
         {
           "label": "Slow my route",
           "action": "retreat",
           "voice_aliases": [
-            "fall back",
-            "pull back",
-            "withdraw",
+            "retreat",
             "back away",
-            "hide"
+            "fall back",
+            "hide",
+            "pull back"
           ]
         }
       ]
@@ -4268,22 +5412,22 @@
           "label": "Ride the service larva",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
           "label": "Leave it untrusted",
           "action": "retreat",
           "voice_aliases": [
+            "walk away",
             "fall back",
             "leave",
             "pull back",
-            "walk away",
-            "withdraw"
+            "retreat"
           ]
         }
       ]
@@ -4301,22 +5445,22 @@
           "label": "Ride anyway",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
           "label": "Spoil the measure",
           "action": "break_marked_pattern",
           "voice_aliases": [
-            "select branch",
-            "branch",
-            "mark",
             "tag",
-            "trace"
+            "branch",
+            "break marked pattern",
+            "mark",
+            "select branch"
           ]
         }
       ]
@@ -4334,11 +5478,11 @@
           "label": "Trust the silence",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
@@ -4346,10 +5490,10 @@
           "action": "turn_baffle",
           "voice_aliases": [
             "open signal",
+            "reopen",
             "reopen signal",
             "signal",
-            "turn baffle",
-            "reopen"
+            "turn baffle"
           ]
         }
       ]
@@ -4367,22 +5511,22 @@
           "label": "Follow the repair marks",
           "action": "follow_marked_plates",
           "voice_aliases": [
-            "select branch",
-            "branch",
-            "mark",
-            "tag",
-            "trace"
+            "follow marked plates",
+            "follow repair",
+            "repair marks",
+            "follow",
+            "marks"
           ]
         },
         {
           "label": "Break from the marks",
           "action": "break_marked_pattern",
           "voice_aliases": [
-            "avoid marks",
-            "break marked pattern",
-            "break marks",
-            "break pattern",
-            "break"
+            "select branch",
+            "branch",
+            "mark",
+            "tag",
+            "trace"
           ]
         }
       ]
@@ -4400,22 +5544,22 @@
           "label": "Leave the lie working",
           "action": "proceed",
           "voice_aliases": [
-            "advance",
-            "carry on",
-            "go forward",
-            "leave",
-            "move on"
+            "proceed",
+            "retreat",
+            "step through",
+            "walk away",
+            "withdraw"
           ]
         },
         {
           "label": "Cut a second lie",
           "action": "break_marked_pattern",
           "voice_aliases": [
-            "open vent",
-            "select branch",
-            "branch",
-            "cut",
-            "mark"
+            "sever",
+            "slice",
+            "tag",
+            "trace",
+            "vent"
           ]
         }
       ]
@@ -4434,9 +5578,9 @@
           "label": "Let the route carry me",
           "action": "restart_run",
           "voice_aliases": [
-            "restart run",
             "let route carry me",
             "restart",
+            "restart run",
             "route carry",
             "wake again"
           ]
@@ -4456,25 +5600,55 @@
           "label": "Trust the survey",
           "action": "follow_marked_plates",
           "voice_aliases": [
-            "select branch",
-            "branch",
-            "mark",
-            "tag",
-            "trace"
+            "follow marked plates",
+            "trust survey",
+            "survey",
+            "trust",
+            "chorus cold"
           ]
         },
         {
           "label": "Break from the survey",
           "action": "break_marked_pattern",
           "voice_aliases": [
-            "break marked pattern",
-            "break path",
-            "break survey",
-            "leave marks",
-            "break"
+            "select branch",
+            "branch",
+            "mark",
+            "tag",
+            "trace"
           ]
         }
-      ]
+      ],
+      "action_results": {
+        "follow_marked_plates": {
+          "lines": [
+            "I keep my boots inside the old cuts.",
+            "The marrow accepts the same stride twice. The cleaner lane narrows around it."
+          ],
+          "environment_state_changes": [
+            "survey_marks_followed_again",
+            "route_memory_plus_one"
+          ]
+        },
+        "break_marked_pattern": {
+          "lines": [
+            "I scuff the nearest cut and step across its clean edge.",
+            "The survey marks no longer agree about where my next foot should land."
+          ],
+          "environment_state_changes": [
+            "survey_marks_broken",
+            "baseline_discipline_plus_one"
+          ]
+        }
+      },
+      "story_followups": {
+        "follow_marked_plates": {
+          "event_id": "story_pell_second_mark_warning",
+          "trigger_key": "pell_second_mark_warning",
+          "delay_rooms": 1,
+          "queued_line": "The next plates lift before I step. They already know the length of my stride."
+        }
+      }
     },
     "story_silt_procedure_answer": {
       "id": "story_silt_procedure_answer",
@@ -4489,25 +5663,134 @@
           "label": "Read the answer",
           "action": "study_pool",
           "voice_aliases": [
+            "study",
             "inspect",
             "listen",
-            "sample",
-            "study pool",
-            "read"
+            "read",
+            "sample"
           ]
         },
         {
           "label": "Seal the procedure",
           "action": "leave_mutation",
           "voice_aliases": [
-            "leave mutation",
             "leave",
+            "leave mutation",
             "retreat",
             "walk away",
             "withdraw"
           ]
         }
       ]
+    },
+    "story_pell_second_mark_warning": {
+      "id": "story_pell_second_mark_warning",
+      "type": "story",
+      "speaker": "Hymn",
+      "room_id": "white_marrow_field",
+      "line_1": "The next plates lift before I step. They already know the length of my stride.",
+      "line_2": "The marked line is cleaner than the floor around it. The teeth are ready too.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Keep the marked pace",
+          "action": "follow_marked_plates",
+          "voice_aliases": [
+            "select branch",
+            "branch",
+            "mark",
+            "tag",
+            "trace"
+          ]
+        },
+        {
+          "label": "Scuff the plates",
+          "action": "break_marked_pattern",
+          "voice_aliases": [
+            "break marked pattern",
+            "break pattern",
+            "scuff plates",
+            "spoil the marks",
+            "plates"
+          ]
+        }
+      ],
+      "action_results": {
+        "follow_marked_plates": {
+          "lines": [
+            "I keep the pace the plates prepared.",
+            "The lane opens clean and leaves a second row of teeth upright behind me."
+          ],
+          "environment_state_changes": [
+            "plate_snare_next",
+            "route_memory_plus_one"
+          ]
+        },
+        "break_marked_pattern": {
+          "lines": [
+            "I drag my heel across the clean line and make the plate teeth disagree.",
+            "The next step is rougher, but the floor has to read me again."
+          ],
+          "environment_state_changes": [
+            "marked_streak_reset",
+            "baseline_discipline_plus_one"
+          ]
+        }
+      }
+    },
+    "story_symbiote_expectation_twitch": {
+      "id": "story_symbiote_expectation_twitch",
+      "type": "story",
+      "speaker": "Hymn",
+      "line_1": "The shoulder seam tightens before I ask. The symbiote has already chosen where the next hit should land.",
+      "line_2": "Skin pulls toward its answer before my stance changes. It would work. That is the problem.",
+      "reactivate_on_reshuffle": false,
+      "buttons": [
+        {
+          "label": "Let it answer first",
+          "action": "proceed",
+          "voice_aliases": [
+            "advance",
+            "carry on",
+            "go forward",
+            "move on",
+            "step through"
+          ]
+        },
+        {
+          "label": "Hold it under the skin",
+          "action": "retreat",
+          "voice_aliases": [
+            "fall back",
+            "pull back",
+            "withdraw",
+            "hold it",
+            "hold symbiote"
+          ]
+        }
+      ],
+      "action_results": {
+        "proceed": {
+          "lines": [
+            "I let it move first. The answer is fast and too eager.",
+            "It settles after the danger passes, but it keeps the shape of that decision."
+          ],
+          "environment_state_changes": [
+            "symbiote_trust_up",
+            "body_drift_plus_one"
+          ]
+        },
+        "retreat": {
+          "lines": [
+            "I hold it under the skin until its rhythm falls behind mine.",
+            "The next movement is slower, but it is mine."
+          ],
+          "environment_state_changes": [
+            "symbiote_need_unmet",
+            "baseline_discipline_plus_one"
+          ]
+        }
+      }
     },
     "story_commandant_missing_checksum": {
       "id": "story_commandant_missing_checksum",
@@ -4521,22 +5804,22 @@
           "label": "Use the packet",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         },
         {
           "label": "Refuse the packet",
           "action": "retreat",
           "voice_aliases": [
+            "decline",
             "fall back",
             "pull back",
             "retreat",
-            "withdraw",
-            "decline"
+            "withdraw"
           ]
         }
       ],
@@ -4586,11 +5869,11 @@
           "label": "Lift my hand and walk",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -4630,22 +5913,22 @@
           "label": "Study the marker",
           "action": "study_pool",
           "voice_aliases": [
-            "select branch",
-            "branch",
-            "listen",
-            "mark",
-            "read"
+            "inspect",
+            "sample",
+            "study",
+            "study pool",
+            "tag"
           ]
         },
         {
           "label": "Cover the marker",
           "action": "retreat",
           "voice_aliases": [
-            "fall back",
-            "pull back",
-            "withdraw",
-            "cover marker",
-            "hide mark"
+            "select branch",
+            "branch",
+            "mark",
+            "retreat",
+            "cover marker"
           ]
         }
       ]
@@ -4663,22 +5946,22 @@
           "label": "Close the tools",
           "action": "observe_organ_chamber",
           "voice_aliases": [
+            "close",
             "close tools",
             "observe",
             "observe organ chamber",
-            "perform rite",
-            "close"
+            "perform rite"
           ]
         },
         {
           "label": "Leave them open",
           "action": "break_marked_pattern",
           "voice_aliases": [
-            "select branch",
-            "branch",
-            "leave",
-            "mark",
-            "retreat"
+            "tag",
+            "trace",
+            "walk away",
+            "withdraw",
+            "branch"
           ]
         }
       ]
@@ -4696,11 +5979,11 @@
           "label": "Accept authority",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         },
         {
@@ -4709,9 +5992,9 @@
           "voice_aliases": [
             "open vent",
             "sever",
-            "slice",
-            "vent",
-            "break measure"
+            "break measure",
+            "cut",
+            "cut heart cords"
           ]
         }
       ]
@@ -4729,22 +6012,22 @@
           "label": "Use the dirty lane",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
           "label": "Spoil it again",
           "action": "break_marked_pattern",
           "voice_aliases": [
-            "select branch",
-            "branch",
-            "mark",
             "tag",
-            "trace"
+            "branch",
+            "break marked pattern",
+            "mark",
+            "select branch"
           ]
         }
       ]
@@ -4762,22 +6045,22 @@
           "label": "Cross cold",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
           "label": "Feed the lice",
           "action": "scavenge_bones",
           "voice_aliases": [
-            "scavenge bones",
+            "feed",
             "feed lice",
             "lice",
             "marrow",
-            "feed"
+            "scavenge bones"
           ]
         }
       ]
@@ -4795,21 +6078,21 @@
           "label": "Let it compare",
           "action": "study_pool",
           "voice_aliases": [
+            "sample",
+            "study",
+            "compare",
             "inspect",
-            "listen",
-            "read",
-            "study pool",
-            "compare"
+            "listen"
           ]
         },
         {
           "label": "Close the pore",
           "action": "retreat",
           "voice_aliases": [
+            "retreat",
+            "close pore",
             "fall back",
             "pull back",
-            "withdraw",
-            "close pore",
             "refuse"
           ]
         }
@@ -4828,22 +6111,22 @@
           "label": "Work blind",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
           "label": "Open one pore",
           "action": "study_pool",
           "voice_aliases": [
+            "study",
+            "inspect",
             "listen",
             "read",
-            "sample",
-            "study pool",
-            "inspect"
+            "sample"
           ]
         }
       ]
@@ -4861,11 +6144,11 @@
           "label": "Use the error",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
@@ -4876,7 +6159,7 @@
             "listen",
             "read",
             "sample",
-            "study"
+            "seal amber wound"
           ]
         }
       ]
@@ -4894,22 +6177,22 @@
           "label": "Take the fast scar",
           "action": "proceed",
           "voice_aliases": [
-            "accept",
-            "advance",
-            "carry on",
-            "choose",
-            "claim"
+            "go forward",
+            "move on",
+            "proceed",
+            "step through",
+            "take"
           ]
         },
         {
           "label": "Cut across it",
           "action": "break_marked_pattern",
           "voice_aliases": [
-            "open vent",
-            "select branch",
-            "branch",
-            "cut",
-            "mark"
+            "sever",
+            "slice",
+            "tag",
+            "trace",
+            "vent"
           ]
         }
       ]
@@ -4927,22 +6210,22 @@
           "label": "Use the blank",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
           "label": "Mark it myself",
           "action": "mark_red_branch",
           "voice_aliases": [
-            "select branch",
-            "branch",
             "tag",
-            "trace",
-            "mark"
+            "branch",
+            "mark",
+            "mark red branch",
+            "select branch"
           ]
         }
       ]
@@ -4959,11 +6242,11 @@
           "label": "Take the clean open",
           "action": "proceed",
           "voice_aliases": [
-            "accept",
-            "advance",
-            "carry on",
-            "choose",
-            "claim"
+            "go forward",
+            "move on",
+            "proceed",
+            "step through",
+            "take"
           ]
         },
         {
@@ -5023,11 +6306,11 @@
           "label": "Leave it open",
           "action": "retreat",
           "voice_aliases": [
+            "walk away",
             "fall back",
             "leave",
             "pull back",
-            "walk away",
-            "withdraw"
+            "retreat"
           ]
         }
       ]
@@ -5045,22 +6328,22 @@
           "label": "Keep moving hungry",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
           "label": "Open it anyway",
           "action": "harvest_eggs",
           "voice_aliases": [
-            "harvest eggs",
+            "anyway",
             "harvest",
+            "harvest eggs",
             "open anyway",
-            "take",
-            "anyway"
+            "take"
           ]
         }
       ]
@@ -5078,21 +6361,21 @@
           "label": "Use the dry dock",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
           "label": "Refuse the charge",
           "action": "retreat",
           "voice_aliases": [
+            "retreat",
+            "deny",
             "fall back",
             "pull back",
-            "withdraw",
-            "deny",
             "refuse charge"
           ]
         }
@@ -5111,11 +6394,11 @@
           "label": "Cross the mud",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
@@ -5123,10 +6406,10 @@
           "action": "disturb_pool",
           "voice_aliases": [
             "disturb pool",
+            "flood",
             "flood trace",
             "pool",
-            "water",
-            "flood"
+            "water"
           ]
         }
       ]
@@ -5147,19 +6430,19 @@
             "observe",
             "observe organ chamber",
             "open order",
-            "use order",
-            "use open"
+            "use open",
+            "use order"
           ]
         },
         {
           "label": "Leave the posture",
           "action": "retreat",
           "voice_aliases": [
+            "walk away",
             "fall back",
             "leave",
             "pull back",
-            "walk away",
-            "withdraw"
+            "retreat"
           ]
         }
       ]
@@ -5177,22 +6460,22 @@
           "label": "Let them repair",
           "action": "retreat",
           "voice_aliases": [
+            "retreat",
             "fall back",
-            "pull back",
-            "withdraw",
             "leave",
-            "let repair"
+            "let repair",
+            "pull back"
           ]
         },
         {
           "label": "Scrape the repair",
           "action": "break_marked_pattern",
           "voice_aliases": [
-            "select branch",
-            "branch",
-            "mark",
             "tag",
-            "trace"
+            "branch",
+            "break marked pattern",
+            "mark",
+            "select branch"
           ]
         }
       ]
@@ -5210,22 +6493,22 @@
           "label": "Use the interval",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
           "label": "Spoil the timing",
           "action": "break_marked_pattern",
           "voice_aliases": [
-            "select branch",
-            "branch",
-            "mark",
             "tag",
-            "trace"
+            "branch",
+            "break marked pattern",
+            "mark",
+            "select branch"
           ]
         }
       ]
@@ -5245,20 +6528,20 @@
           "voice_aliases": [
             "run",
             "shortcut",
+            "use",
             "use route",
-            "use shortcut",
-            "use"
+            "use shortcut"
           ]
         },
         {
           "label": "Leave it bleeding",
           "action": "retreat",
           "voice_aliases": [
+            "walk away",
             "fall back",
             "leave",
             "pull back",
-            "walk away",
-            "withdraw"
+            "retreat"
           ]
         }
       ]
@@ -5277,11 +6560,11 @@
           "label": "Enter the white route",
           "action": "restart_run",
           "voice_aliases": [
-            "restart run",
             "enter route",
+            "enter white",
             "restart",
-            "white route",
-            "enter white"
+            "restart run",
+            "white route"
           ]
         }
       ]
@@ -5300,11 +6583,11 @@
           "label": "Accept the procedure",
           "action": "restart_run",
           "voice_aliases": [
-            "restart run",
+            "accept",
             "accept procedure",
             "operator",
             "restart",
-            "accept"
+            "restart run"
           ]
         }
       ]
@@ -5369,11 +6652,11 @@
           "label": "Enter the rising harbor",
           "action": "restart_run",
           "voice_aliases": [
-            "restart run",
+            "enter rising",
             "enter water",
             "restart",
-            "rising harbor",
-            "enter rising"
+            "restart run",
+            "rising harbor"
           ]
         }
       ]
@@ -5392,11 +6675,11 @@
           "label": "Fit the tool rests",
           "action": "restart_run",
           "voice_aliases": [
-            "restart run",
             "fit",
+            "fit tool",
             "restart",
-            "tool rests",
-            "fit tool"
+            "restart run",
+            "tool rests"
           ]
         }
       ]
@@ -5415,11 +6698,11 @@
           "label": "Accept launch command",
           "action": "restart_run",
           "voice_aliases": [
-            "restart run",
             "accept command",
+            "accept launch",
             "launch command",
             "restart",
-            "accept launch"
+            "restart run"
           ]
         }
       ]
@@ -5448,10 +6731,10 @@
           "label": "Break the count with short steps",
           "action": "run",
           "voice_aliases": [
-            "move fast",
-            "run",
             "break count",
             "count short",
+            "move fast",
+            "run",
             "short steps"
           ]
         },
@@ -5460,9 +6743,9 @@
           "action": "brace_through_red_split",
           "voice_aliases": [
             "brace",
-            "hold",
-            "brace through red split",
             "brace slow",
+            "brace through red split",
+            "hold",
             "hold brace"
           ]
         }
@@ -5505,22 +6788,22 @@
           "label": "Present the scented glove",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         },
         {
           "label": "Hide my hand and pass wide",
           "action": "retreat",
           "voice_aliases": [
+            "avoid dock",
             "fall back",
             "pull back",
             "retreat",
-            "withdraw",
-            "avoid dock"
+            "withdraw"
           ]
         }
       ],
@@ -5557,7 +6840,7 @@
           "label": "Hold my breath through the pause",
           "action": "proceed",
           "voice_aliases": [
-            "advance",
+            "step through",
             "carry on",
             "go forward",
             "move on",
@@ -5568,11 +6851,11 @@
           "label": "Move through without testing",
           "action": "run",
           "voice_aliases": [
-            "step through",
-            "move",
-            "run",
+            "advance",
             "ignore pause",
-            "keep moving"
+            "keep moving",
+            "move",
+            "run"
           ]
         }
       ],
@@ -5580,7 +6863,7 @@
         "proceed": {
           "preview": "System takes my cadence.",
           "lines": [
-            "I keep the same count. The pores follow the held beat and open on the second.",
+            "I keep the same rhythm. The pores follow the held beat and open on the second.",
             "Threads part cleanly and fall behind my wrist like trained cilia."
           ],
           "environment_state_changes": [
@@ -5602,22 +6885,22 @@
           "label": "Hold the corner and let the blank pass",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         },
         {
           "label": "Slip out before anything arrives",
           "action": "run",
           "voice_aliases": [
-            "run",
+            "anything arrives",
             "break contact",
             "leave now",
             "move off",
-            "anything arrives"
+            "run"
           ]
         }
       ],
@@ -5647,11 +6930,11 @@
           "label": "Go on under their lean",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -5678,11 +6961,11 @@
           "label": "Set boots on the bead line",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -5709,11 +6992,11 @@
           "label": "Keep my shoulders flat and go on",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -5740,11 +7023,11 @@
           "label": "Take the fold under that sign",
           "action": "proceed",
           "voice_aliases": [
-            "accept",
-            "advance",
-            "carry on",
-            "choose",
-            "claim"
+            "go forward",
+            "move on",
+            "proceed",
+            "step through",
+            "take"
           ]
         }
       ],
@@ -5771,11 +7054,11 @@
           "label": "Press the hinge and move on",
           "action": "proceed",
           "voice_aliases": [
-            "step through",
+            "move on",
+            "proceed",
             "advance",
             "carry on",
-            "go forward",
-            "move"
+            "go forward"
           ]
         }
       ],
@@ -5802,11 +7085,11 @@
           "label": "Keep the main lane",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -5833,11 +7116,11 @@
           "label": "Keep the set pace",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -5855,11 +7138,11 @@
           "label": "Move before it closes",
           "action": "run",
           "voice_aliases": [
-            "step through",
             "advance",
+            "before closes",
             "move",
             "run",
-            "before closes"
+            "step through"
           ]
         }
       ],
@@ -5877,11 +7160,11 @@
           "label": "Advance along the tight line",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -5899,11 +7182,11 @@
           "label": "Carry my print forward",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -5921,11 +7204,11 @@
           "label": "Carry the ticked pace",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -5943,11 +7226,11 @@
           "label": "Match the dry tick and move",
           "action": "proceed",
           "voice_aliases": [
-            "step through",
+            "move on",
+            "proceed",
             "advance",
             "carry on",
-            "go forward",
-            "move"
+            "go forward"
           ]
         }
       ],
@@ -5965,11 +7248,11 @@
           "label": "Carry the half-click forward",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -5987,11 +7270,11 @@
           "label": "Keep my clean line",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -6009,11 +7292,11 @@
           "label": "Leave the plate ticking",
           "action": "proceed",
           "voice_aliases": [
-            "advance",
-            "carry on",
-            "go forward",
-            "leave",
-            "move on"
+            "proceed",
+            "retreat",
+            "step through",
+            "walk away",
+            "withdraw"
           ]
         }
       ],
@@ -6031,11 +7314,11 @@
           "label": "Keep the count and pass quiet",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
@@ -6043,21 +7326,21 @@
           "action": "push_through_spikes",
           "voice_aliases": [
             "force",
+            "gap through",
             "push through",
             "push through spikes",
-            "shoulder gap",
-            "gap through"
+            "shoulder gap"
           ]
         },
         {
           "label": "Back off and let the rows settle",
           "action": "retreat",
           "voice_aliases": [
+            "retreat",
+            "back off",
             "fall back",
             "leave",
-            "pull back",
-            "withdraw",
-            "back off"
+            "pull back"
           ]
         }
       ],
@@ -6075,11 +7358,11 @@
           "label": "Step back into my broken line",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
@@ -6088,20 +7371,20 @@
           "voice_aliases": [
             "break spike lane",
             "break tips",
+            "chips widen",
             "kick chips",
-            "widen",
-            "chips widen"
+            "widen"
           ]
         },
         {
           "label": "Withdraw and leave the trace short",
           "action": "retreat",
           "voice_aliases": [
+            "walk away",
             "fall back",
             "leave",
             "pull back",
-            "walk away",
-            "withdraw"
+            "retreat"
           ]
         }
       ],
@@ -6119,11 +7402,11 @@
           "label": "Match the long window and go",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
@@ -6131,10 +7414,10 @@
           "action": "push_through_spikes",
           "voice_aliases": [
             "break count",
+            "count hard",
             "push through",
             "push through spikes",
-            "shove",
-            "count hard"
+            "shove"
           ]
         },
         {
@@ -6142,10 +7425,10 @@
           "action": "retreat",
           "voice_aliases": [
             "fall back",
-            "pull back",
-            "withdraw",
             "lose rhythm",
-            "retreat"
+            "pull back",
+            "retreat",
+            "withdraw"
           ]
         }
       ],
@@ -6163,21 +7446,21 @@
           "label": "Cut forward before it fixes me",
           "action": "combat",
           "voice_aliases": [
-            "open vent",
-            "cut",
-            "sever",
-            "slice",
-            "vent"
+            "attack",
+            "combat",
+            "engage",
+            "fight",
+            "kill"
           ]
         },
         {
           "label": "Slip on the counted open",
           "action": "run",
           "voice_aliases": [
+            "counted open",
             "move now",
             "run",
             "slip",
-            "counted open",
             "slip counted"
           ]
         },
@@ -6185,11 +7468,11 @@
           "label": "Fall back and let the scent drift",
           "action": "retreat",
           "voice_aliases": [
-            "pull back",
-            "withdraw",
             "back out",
             "fall back",
-            "retreat"
+            "pull back",
+            "retreat",
+            "withdraw"
           ]
         }
       ],
@@ -6207,22 +7490,22 @@
           "label": "Move on the off-time slip",
           "action": "run",
           "voice_aliases": [
-            "step through",
             "advance",
             "move",
             "move on slip",
-            "run"
+            "run",
+            "step through"
           ]
         },
         {
           "label": "Jam the flaw open with a shove",
           "action": "push_through_spikes",
           "voice_aliases": [
+            "flaw open",
             "force",
             "jam open",
             "push through",
-            "push through spikes",
-            "flaw open"
+            "push through spikes"
           ]
         },
         {
@@ -6230,10 +7513,10 @@
           "action": "retreat",
           "voice_aliases": [
             "fall back",
-            "pull back",
-            "withdraw",
             "hold",
-            "retreat"
+            "pull back",
+            "retreat",
+            "withdraw"
           ]
         }
       ],
@@ -6252,9 +7535,9 @@
           "action": "run",
           "voice_aliases": [
             "go now",
+            "narrowing lane",
             "run",
             "rush",
-            "narrowing lane",
             "rush narrowing"
           ]
         },
@@ -6263,21 +7546,21 @@
           "action": "push_through_spikes",
           "voice_aliases": [
             "force",
+            "force gap",
             "push through",
             "push through spikes",
-            "shoulder",
-            "force gap"
+            "shoulder"
           ]
         },
         {
           "label": "Back out from the fast close",
           "action": "retreat",
           "voice_aliases": [
+            "retreat",
+            "withdraw",
             "back off",
-            "fall back",
-            "leave",
-            "pull back",
-            "back out"
+            "back out",
+            "fall back"
           ]
         }
       ],
@@ -6297,22 +7580,22 @@
           "label": "Proceed between the closing breaths",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
           "label": "Back away and reset my pace",
           "action": "retreat",
           "voice_aliases": [
+            "retreat",
             "back off",
             "fall back",
             "leave",
-            "pull back",
-            "withdraw"
+            "pull back"
           ]
         }
       ],
@@ -6350,11 +7633,11 @@
           "label": "Follow the warm stripe",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         }
       ],
@@ -6372,22 +7655,22 @@
           "label": "Cross the groove shallow",
           "action": "proceed",
           "voice_aliases": [
+            "proceed",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "step through"
+            "move on"
           ]
         },
         {
           "label": "Run the dry edge",
           "action": "run",
           "voice_aliases": [
+            "dry edge",
             "move fast",
             "run",
-            "run edge",
-            "dry edge",
-            "run dry"
+            "run dry",
+            "run edge"
           ]
         }
       ],
@@ -6405,11 +7688,11 @@
           "label": "Pass while it soft-cuts",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -6427,11 +7710,11 @@
           "label": "Skirt the watcher",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -6449,11 +7732,11 @@
           "label": "Take the counted step",
           "action": "proceed",
           "voice_aliases": [
-            "accept",
-            "advance",
-            "carry on",
-            "choose",
-            "claim"
+            "go forward",
+            "move on",
+            "proceed",
+            "step through",
+            "take"
           ]
         }
       ],
@@ -6471,11 +7754,11 @@
           "label": "Keep moving before they align",
           "action": "run",
           "voice_aliases": [
-            "run",
+            "before",
             "before they",
             "keep moving",
             "moving before",
-            "before"
+            "run"
           ]
         }
       ],
@@ -6493,11 +7776,11 @@
           "label": "Leave it as record",
           "action": "proceed",
           "voice_aliases": [
-            "advance",
-            "carry on",
-            "go forward",
-            "leave",
-            "move on"
+            "proceed",
+            "retreat",
+            "step through",
+            "walk away",
+            "withdraw"
           ]
         }
       ],
@@ -6515,11 +7798,11 @@
           "label": "Carry my sweet print onward",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -6538,22 +7821,22 @@
           "label": "Break pattern now",
           "action": "retreat",
           "voice_aliases": [
+            "break",
             "fall back",
             "pull back",
             "retreat",
-            "withdraw",
-            "break"
+            "withdraw"
           ]
         },
         {
           "label": "Keep the set pace",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         }
       ],
@@ -6591,22 +7874,22 @@
           "label": "Show the clean edge",
           "action": "proceed",
           "voice_aliases": [
+            "step through",
             "advance",
             "carry on",
             "go forward",
-            "move on",
-            "proceed"
+            "move on"
           ]
         },
         {
           "label": "Cover the edge",
           "action": "retreat",
           "voice_aliases": [
-            "fall back",
             "retreat",
-            "withdraw",
             "cover edge",
-            "hide proof"
+            "fall back",
+            "hide proof",
+            "pull back"
           ]
         }
       ],
@@ -6628,6 +7911,577 @@
           ],
           "environment_state_changes": [
             "heal_instability_cool"
+          ]
+        }
+      }
+    },
+    "amar_creepstride_pinch_gate": {
+      "id": "amar_creepstride_pinch_gate",
+      "type": "story",
+      "speaker": "Hymn",
+      "reactivate_on_reshuffle": false,
+      "line_1": "Two rooms later the corridor narrows to one red seam. The wall opens on the same third beat, but faster. Amar comes out of a side duct with his saw already wet.",
+      "line_2": "The hunter is close enough that the seam flexes toward its breath. If I cut late, the wall keeps my arm. If I cut early, Amar gets the opening.",
+      "buttons": [
+        {
+          "label": "Cut on Amar's third beat",
+          "action": "mark_red_branch",
+          "voice_aliases": [
+            "open vent",
+            "select branch",
+            "branch",
+            "cut",
+            "mark"
+          ]
+        },
+        {
+          "label": "Brace and take the line alone",
+          "action": "brace_through_red_split",
+          "voice_aliases": [
+            "alone",
+            "brace",
+            "brace through red split",
+            "force seam",
+            "take line"
+          ]
+        },
+        {
+          "label": "Kill Amar for the opening",
+          "action": "combat",
+          "voice_aliases": [
+            "engage",
+            "fight",
+            "attack",
+            "combat",
+            "kill"
+          ]
+        }
+      ],
+      "action_results": {
+        "mark_red_branch": {
+          "preview": "Immediate: clean passage with learned timing. Echo: wall timing advances.",
+          "lines": [
+            "I cut when his bad foot lands. The tendon opens under my wrist instead of against it.",
+            "Amar passes after me, not before me. That matters. I know the opening now, even if the saw is still his."
+          ],
+          "environment_state_changes": [
+            "amar_creepstride_gate_marked",
+            "amar_creepstride_trust_one",
+            "hymn_saw_line_count_learned"
+          ],
+          "progression_tags": [
+            "saw_line_count",
+            "controlled_recovery"
+          ]
+        },
+        "brace_through_red_split": {
+          "preview": "Immediate: solo breakthrough. Echo: wrist strain invites body adaptation.",
+          "lines": [
+            "I set my shoulder in the seam and take the tendon on my wrist guard.",
+            "The passage opens ugly. A hot line crawls under my forearm, shaped almost like a future spur."
+          ],
+          "environment_state_changes": [
+            "amar_creepstride_lost",
+            "amar_creepstride_arc_closed",
+            "hymn_wrist_spur_appetite"
+          ],
+          "progression_tags": [
+            "body_debt",
+            "mutation_appetite"
+          ]
+        },
+        "combat": {
+          "preview": "Immediate: kill Amar under pressure. Echo: the hunter learns the timing.",
+          "lines": [
+            "I let him make the opening and put my blade through him as the seam starts to relax.",
+            "His saw falls on the third beat. The hunter behind us learns the timing before I clear the gap."
+          ],
+          "environment_state_changes": [
+            "amar_creepstride_killed_late",
+            "amar_creepstride_arc_closed",
+            "hunter_learned_third_beat"
+          ],
+          "actor_state_changes": [
+            "hunter_pressure_accelerates"
+          ]
+        }
+      },
+      "story_followups": {
+        "mark_red_branch": {
+          "event_id": "amar_creepstride_chapel_lung",
+          "trigger_key": "amar_creepstride_chapel_lung",
+          "delay_rooms": 2,
+          "queued_line": "My wrist remembers when the cut tendon opens. A chamber ahead breathes on the same rhythm."
+        },
+        "brace_through_red_split": {
+          "event_id": "amar_creepstride_chapel_lung",
+          "trigger_key": "amar_creepstride_chapel_lung",
+          "delay_rooms": 2,
+          "queued_line": "The line under my forearm heats whenever red tissue contracts. Something in me wants a harder wrist."
+        }
+      },
+      "infrastructure_actor": "red_pressure_wall",
+      "character_change": "both",
+      "possibility_tree": [
+        "Cut on Amar's third beat: Hymn turns instruction into owned technique.",
+        "Brace and take the line alone: Hymn survives by body debt and opens mutation appetite.",
+        "Kill Amar for the opening: Hymn removes the teacher but teaches the hunter her timing."
+      ],
+      "progression_vector": "This beat decides whether wall timing becomes discipline, mutation hunger, or hunter-readable habit."
+    },
+    "amar_creepstride_chapel_lung": {
+      "id": "amar_creepstride_chapel_lung",
+      "type": "story",
+      "speaker": "Hymn",
+      "reactivate_on_reshuffle": false,
+      "line_1": "The next chamber is a lung with ribs too close for a full swing. Warm bags swell from the wall. Each breath pulls hunter scent through the side duct.",
+      "line_2": "Amar kneels because the floor hooks his shins on purpose. He puts the saw across two cords and waits for me to choose the count or the bite.",
+      "buttons": [
+        {
+          "label": "Watch the lung breathe",
+          "action": "observe_organ_chamber",
+          "voice_aliases": [
+            "hold measure",
+            "observe",
+            "observe organ chamber",
+            "read lung",
+            "watch organ"
+          ]
+        },
+        {
+          "label": "Cut opposite cords with Amar",
+          "action": "cut_heart_cords",
+          "voice_aliases": [
+            "open vent",
+            "sever",
+            "slice",
+            "cut",
+            "cut cords"
+          ]
+        },
+        {
+          "label": "Leave Amar in the narrow space",
+          "action": "retreat",
+          "voice_aliases": [
+            "fall back",
+            "pull back",
+            "walk away",
+            "withdraw",
+            "bait"
+          ]
+        }
+      ],
+      "action_results": {
+        "observe_organ_chamber": {
+          "preview": "Immediate: learn breath timing. Follow-up: controlled escape.",
+          "lines": [
+            "I keep the saw, cords, and side duct in one line until the lung shows its slow breath.",
+            "The hunter route opens only on the downbeat. I leave with its breathing rhythm under my ribs."
+          ],
+          "environment_state_changes": [
+            "amar_creepstride_lung_observed",
+            "amar_creepstride_trust_two",
+            "hymn_lung_count_learned"
+          ],
+          "progression_tags": [
+            "breath_measure",
+            "route_timing"
+          ]
+        },
+        "cut_heart_cords": {
+          "preview": "Immediate: shared cut misdirects pursuit. Echo: debt to Amar and saw timing both rise.",
+          "lines": [
+            "We cut opposite cords on the same beat. His saw binds. My blade finishes the line before the lung can inhale.",
+            "Cold red air pours across us and takes our scent sideways. For one room the hunter follows the wrong breath."
+          ],
+          "environment_state_changes": [
+            "amar_creepstride_cords_cut",
+            "amar_creepstride_trust_two",
+            "amar_creepstride_hunter_misdirected",
+            "hymn_saw_line_confirmed"
+          ],
+          "progression_tags": [
+            "saw_line_confirmed",
+            "pursuit_misdirection"
+          ]
+        },
+        "retreat": {
+          "preview": "Immediate: escape by sacrifice. Echo: debt to Amar follows the route.",
+          "lines": [
+            "I step out of the narrow gap and let the lung pull him into it.",
+            "The hunter bites where Amar has to be. The route opens, but the saw keeps knocking inside the wall after I pass."
+          ],
+          "environment_state_changes": [
+            "amar_creepstride_rite_refused",
+            "amar_creepstride_arc_closed",
+            "cult_debt_pressure"
+          ],
+          "actor_state_changes": [
+            "amar_consumed_as_cover"
+          ]
+        }
+      },
+      "story_followups": {
+        "observe_organ_chamber": {
+          "event_id": "amar_creepstride_last_stride",
+          "trigger_key": "amar_creepstride_last_stride",
+          "delay_rooms": 2,
+          "queued_line": "The lung rhythm stays under my ribs. The next red seam breathes before it moves."
+        },
+        "cut_heart_cords": {
+          "event_id": "amar_creepstride_last_stride",
+          "trigger_key": "amar_creepstride_last_stride",
+          "delay_rooms": 1,
+          "queued_line": "Cold red air follows the cord-cut. The hunter takes the false route first."
+        }
+      },
+      "infrastructure_actor": "chapel_lung",
+      "character_change": "both",
+      "possibility_tree": [
+        "Watch the lung breathe: Hymn gains route timing and keeps the fight controlled.",
+        "Cut opposite cords with Amar: Hymn accepts shared technique and pursuit misdirection.",
+        "Leave Amar in the narrow space: Hymn survives through sacrifice and deepens debt to Amar pressure."
+      ],
+      "progression_vector": "This beat converts the wall timing from seam-reading into breath-reading under pursuit, or turns Amar into the cost of passage."
+    },
+    "amar_creepstride_last_stride": {
+      "id": "amar_creepstride_last_stride",
+      "type": "transition",
+      "speaker": "Hymn",
+      "reactivate_on_reshuffle": false,
+      "ending_id": "ending_amar_creepstride_cult_debt",
+      "line_1": "Final pinch. The seam closes too fast for Amar's limp and too narrow for my old stance. The hunter comes in low, nose first, where the wall has learned our timing.",
+      "line_2": "I set my wrist on the third beat. The tendon opens before the bite lands. Amar sees me do it without his saw and lowers his head once.",
+      "buttons": [
+        {
+          "label": "Wake with the wall timing",
+          "action": "restart_run",
+          "voice_aliases": [
+            "again",
+            "restart",
+            "restart run",
+            "wake",
+            "wake again"
+          ]
+        }
+      ],
+      "infrastructure_actor": "saw_line_discipline",
+      "character_change": "enrich",
+      "possibility_tree": [
+        "Wake with the wall timing: Hymn carries a red-corridor stance into future runs.",
+        "If the chain was broken earlier, this ending pressure diverts into hunter noise, mutation appetite, or debt to Amar instead."
+      ],
+      "progression_vector": "The scenario pays out as learned martial anatomy: a route-reading wrist discipline that can later become stance, reputation, or mutation."
+    },
+    "story_white_marrow_cold_step": {
+      "id": "story_white_marrow_cold_step",
+      "type": "story",
+      "speaker": "Hymn",
+      "reactivate_on_reshuffle": false,
+      "line_1": "Another marrow floor clicks under me. Lice wait inside the clean cuts, leaving pale cold edges beside warmer flats.",
+      "line_2": "My foot finds the cold edge before the lane can take a full print. The marked floor waits for the rest of my weight.",
+      "buttons": [
+        {
+          "label": "Keep the cold step",
+          "action": "proceed",
+          "voice_aliases": [
+            "advance",
+            "carry on",
+            "go forward",
+            "step through",
+            "cold step"
+          ]
+        },
+        {
+          "label": "Leave the marked floor",
+          "action": "retreat",
+          "voice_aliases": [
+            "select branch",
+            "branch",
+            "fall back",
+            "mark",
+            "pull back"
+          ]
+        }
+      ],
+      "action_results": {
+        "proceed": {
+          "lines": [
+            "I touch the cold edge first and lift before warmth settles. The lane loses the full shape of my stride."
+          ],
+          "environment_state_changes": [
+            "white_marrow_cold_step_reinforced"
+          ]
+        },
+        "retreat": {
+          "lines": [
+            "I leave the cut floor before it finishes reading me. The trick stays partial, but so does the field's record."
+          ],
+          "environment_state_changes": [
+            "white_marrow_cold_step_uncommitted"
+          ]
+        }
+      }
+    },
+    "story_white_marrow_dirty_lane": {
+      "id": "story_white_marrow_dirty_lane",
+      "type": "story",
+      "speaker": "Hymn",
+      "reactivate_on_reshuffle": false,
+      "line_1": "The next survey cuts are dirty before I reach them. Lice drag marrow dust from one lane into another.",
+      "line_2": "The cleanest cut is only half clean. It gives a route and asks for a fresh mark in the same motion.",
+      "buttons": [
+        {
+          "label": "Cross the dirty cuts",
+          "action": "proceed",
+          "voice_aliases": [
+            "advance",
+            "carry on",
+            "go forward",
+            "step through",
+            "cross cuts"
+          ]
+        },
+        {
+          "label": "Scrape one line clean",
+          "action": "probe_bones",
+          "voice_aliases": [
+            "clean line",
+            "probe bones",
+            "scrape",
+            "scrape line",
+            "line clean"
+          ]
+        }
+      ],
+      "action_results": {
+        "proceed": {
+          "lines": [
+            "I cross through dust and broken marks. Nothing follows cleanly, including me."
+          ],
+          "environment_state_changes": [
+            "white_marrow_dirty_crossing"
+          ]
+        },
+        "probe_bones": {
+          "lines": [
+            "I scrape one narrow line with the edge of my glove. It gives me a route and gives the field a fresh mark."
+          ],
+          "environment_state_changes": [
+            "white_marrow_line_recleaned"
+          ]
+        }
+      }
+    },
+    "story_white_marrow_blood_hound": {
+      "id": "story_white_marrow_blood_hound",
+      "type": "story",
+      "speaker": "Hymn",
+      "reactivate_on_reshuffle": false,
+      "line_1": "A hound shape pauses at the far end of the next cold lane. It lowers its nose to an old red scrape in the white floor.",
+      "line_2": "It has my blood direction, not my stride. Its head is still down, but the hallway is short.",
+      "buttons": [
+        {
+          "label": "Move before it commits",
+          "action": "proceed",
+          "voice_aliases": [
+            "step through",
+            "advance",
+            "carry on",
+            "go forward",
+            "move on"
+          ]
+        },
+        {
+          "label": "Strike while it smells blood",
+          "action": "combat",
+          "voice_aliases": [
+            "engage",
+            "fight",
+            "kill",
+            "attack",
+            "combat"
+          ]
+        }
+      ],
+      "action_results": {
+        "proceed": {
+          "lines": [
+            "I move while its nose is still on the scrape. The first bite closes on old blood instead of my ankle."
+          ],
+          "environment_state_changes": [
+            "white_marrow_blood_pursuit_evaded"
+          ]
+        },
+        "combat": {
+          "lines": [
+            "I strike while its head is low. The lane gives me one clean hit and takes another red mark in payment."
+          ],
+          "environment_state_changes": [
+            "white_marrow_second_hound_struck",
+            "opened_hunt_blood_notice"
+          ]
+        }
+      }
+    },
+    "operator_cellar_grip_predator_reload_window": {
+      "id": "operator_cellar_grip_predator_reload_window",
+      "type": "story",
+      "speaker": "Hymn",
+      "reactivate_on_reshuffle": false,
+      "line_1": "Two rooms later, another wall body holds low above a corridor bend. Three limbs are sunk into tool holes. The fourth hangs loose and ready.",
+      "line_2": "It has not seen me. When that free limb fires, its wall grip will weaken.",
+      "buttons": [
+        {
+          "label": "Use the reload window",
+          "action": "combat",
+          "voice_aliases": [
+            "attack",
+            "engage",
+            "fight",
+            "kill",
+            "strike"
+          ]
+        },
+        {
+          "label": "Move past it quietly",
+          "action": "retreat",
+          "voice_aliases": [
+            "step through",
+            "advance",
+            "fall back",
+            "move",
+            "pull back"
+          ]
+        }
+      ],
+      "action_results": {
+        "combat": {
+          "lines": [
+            "I time the free limb's extension and move into the gap before it can reload. The organism does not get a second strike. The window was exactly where I expected it.",
+            "The cellar taught me something real. I can read grip-anchor bodies now. That changes how I move through rooms that have them."
+          ],
+          "environment_state_changes": [
+            "grip_anchor_organism_cleared",
+            "hymn_grip_read_confirmed_transferable"
+          ]
+        },
+        "retreat": {
+          "lines": [
+            "I let it stay on the wall and move past the edge of its range. It tracks me but does not commit. I keep the knowledge and spend nothing.",
+            "The window is still there if I need it later. I do not have to use every read the moment I have it."
+          ],
+          "environment_state_changes": [
+            "grip_anchor_organism_bypassed",
+            "hymn_grip_read_held_in_reserve"
+          ]
+        }
+      }
+    },
+    "operator_cellar_scar_navigation": {
+      "id": "operator_cellar_scar_navigation",
+      "type": "story",
+      "speaker": "Hymn",
+      "reactivate_on_reshuffle": false,
+      "line_1": "The wall here has the same hole spacing. My hands find the pattern before I think to look for it.",
+      "line_2": "I know which hole is third from the left without counting. The room is dark but the route is already in my body.",
+      "buttons": [
+        {
+          "label": "Follow the pattern through",
+          "action": "proceed",
+          "voice_aliases": [
+            "advance",
+            "carry on",
+            "go forward",
+            "move on",
+            "step through"
+          ]
+        },
+        {
+          "label": "Stop and check what else is using it",
+          "action": "probe_bones",
+          "voice_aliases": [
+            "probe bones",
+            "check what",
+            "stop check",
+            "what else",
+            "check"
+          ]
+        }
+      ],
+      "action_results": {
+        "proceed": {
+          "lines": [
+            "I move through the dark by touch. The spacing is exact. Whatever built these rooms used the same interval everywhere.",
+            "I come out the other side without having to slow down. The route is mine now."
+          ],
+          "environment_state_changes": [
+            "dark_corridor_crossed_by_touch",
+            "route_memory_deepened"
+          ]
+        },
+        "probe_bones": {
+          "lines": [
+            "Something else has been pressing these holes. The residue is fresh and it is not operator tissue.",
+            "There is another one in this wall. It has not finished learning the sequence yet."
+          ],
+          "environment_state_changes": [
+            "second_predator_detected_early",
+            "hunt_pressure_up"
+          ]
+        }
+      }
+    },
+    "operator_cellar_blood_trace_attention": {
+      "id": "operator_cellar_blood_trace_attention",
+      "type": "story",
+      "speaker": "Hymn",
+      "reactivate_on_reshuffle": false,
+      "line_1": "A low feeder in the next corridor has stopped with its snout to my blood.",
+      "line_2": "It is not the cellar predator. It reads the floor before it reads me.",
+      "buttons": [
+        {
+          "label": "Move before it finishes reading",
+          "action": "proceed",
+          "voice_aliases": [
+            "step through",
+            "advance",
+            "carry on",
+            "go forward",
+            "move"
+          ]
+        },
+        {
+          "label": "Pull back and let it pass",
+          "action": "retreat",
+          "voice_aliases": [
+            "fall back",
+            "pull back",
+            "withdraw",
+            "retreat",
+            "let pass"
+          ]
+        }
+      ],
+      "action_results": {
+        "proceed": {
+          "lines": [
+            "I move fast and low. It lifts its head when I pass but I am already through its angle.",
+            "It does not follow. It goes back to the floor. It is still reading."
+          ],
+          "environment_state_changes": [
+            "blood_trace_reader_bypassed",
+            "hunt_pressure_stable"
+          ]
+        },
+        "retreat": {
+          "lines": [
+            "I hold position until it moves on. It takes longer than I want.",
+            "When it goes, it goes toward the cellar. It will find the wall. It will find what I left there."
+          ],
+          "environment_state_changes": [
+            "blood_trace_reader_reaches_cellar",
+            "hunt_pressure_up"
           ]
         }
       }

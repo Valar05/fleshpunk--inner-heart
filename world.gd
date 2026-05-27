@@ -329,8 +329,14 @@ func _on_console_option_selected(action_id: String, room_id: String) -> void:
 
 	if action_id == "combat":
 		var combat_encounter: Dictionary = run_manager.get_current_encounter()
+		var enemy_data: Dictionary = combat_encounter.get("enemy_data", {})
 		run_manager.consume_current_event("combat")
-		_begin_room_combat(combat_encounter.get("enemy_data", {}), combat_encounter.get("event_data", {}))
+		if enemy_data.is_empty():
+			var combat_action_result := _get_last_action_result(run_manager)
+			if not combat_action_result.is_empty():
+				_show_action_result(combat_action_result, room_id)
+				return
+		_begin_room_combat(enemy_data, combat_encounter.get("event_data", {}))
 		return
 
 	if action_id == "restart_run":
@@ -787,20 +793,46 @@ func _play_encounter_audio(encounter: Dictionary, lines: Array, buttons: Array, 
 
 	var clip_ids: Array[String] = []
 	for line_index in range(lines.size()):
-		var line_clip_id := "%s_line_%d" % [event_id, line_index + 1]
-		if _tts_clip_files.has(line_clip_id):
-			clip_ids.append(line_clip_id)
+		var line_text := str(lines[line_index])
+		var line_clip := _resolve_encounter_line_tts_clip(event_id, line_index + 1, line_text)
+		if line_clip != "":
+			clip_ids.append(line_clip)
 
 	for button_index in range(buttons.size()):
+		var button = buttons[button_index]
+		if not button is Dictionary:
+			continue
+		var label := str(button.get("label", "")).strip_edges()
+		if label == "":
+			continue
 		var choice_clip_id := "%s_choice_%d" % [event_id, button_index + 1]
 		if _tts_clip_files.has(choice_clip_id):
 			clip_ids.append(choice_clip_id)
+		else:
+			var number_word := str(button_index + 1)
+			if button_index < CHOICE_NUMBER_WORDS.size():
+				number_word = str(CHOICE_NUMBER_WORDS[button_index])
+			var choice_text_key := _tts_text_key("Choice %s. %s." % [number_word, label.trim_suffix(".")])
+			if _tts_text_clip_files.has(choice_text_key):
+				clip_ids.append(str(_tts_text_clip_files[choice_text_key]))
 
 	_log_tts("Encounter %s queued %d TTS clips." % [event_id, clip_ids.size()])
 	if clip_ids.is_empty():
 		_play_generated_console_audio(lines, buttons, sequence_token)
 	else:
 		_play_tts_clip_sequence(clip_ids)
+
+
+func _resolve_encounter_line_tts_clip(event_id: String, line_number: int, line_text: String) -> String:
+	var line_text_key := _tts_text_key(line_text)
+	if _tts_text_clip_files.has(line_text_key):
+		return str(_tts_text_clip_files[line_text_key])
+
+	var line_clip_id := "%s_line_%d" % [event_id, line_number]
+	if _tts_clip_files.has(line_clip_id):
+		return line_clip_id
+
+	return ""
 
 
 func _play_generated_console_audio(lines: Array, buttons: Array, sequence_token: int) -> void:
@@ -814,7 +846,7 @@ func _play_tts_clip_sequence(clip_ids: Array[String]) -> void:
 	_stop_tts_playback_only()
 
 	for clip_id in clip_ids:
-		var clip_file := str(_tts_clip_files.get(clip_id, ""))
+		var clip_file := str(_tts_clip_files.get(clip_id, clip_id))
 		if _tts_clip_available(clip_file):
 			_tts_queue.append(clip_id)
 		else:
@@ -975,8 +1007,20 @@ func _canonical_tts_phrase(phrase: String) -> String:
 	if combat_result_pattern.search(normalized) != null:
 		return "Combat result."
 
+	var confirmation_pattern := RegEx.new()
+	confirmation_pattern.compile("^I think you meant .+\\.$")
+	if confirmation_pattern.search(normalized) != null:
+		return "Confirm that action."
+
+	var ambiguity_pattern := RegEx.new()
+	ambiguity_pattern.compile("^I matched two commands:.+\\.$")
+	if ambiguity_pattern.search(normalized) != null:
+		return "I matched more than one command."
+
 	var label_patterns := [
 		{"pattern": "^(\\d+) damage hit\\.$", "template": "Damage hit %s."},
+		{"pattern": "^Health: (\\d+)\\.$", "template": "Health now %s."},
+		{"pattern": "^Shield: (\\d+)\\.$", "template": "Shield now %s."},
 		{"pattern": "^Biomass: (\\d+)\\.$", "template": "Biomass now %s."},
 		{"pattern": "^Corruption: (\\d+)\\.$", "template": "Corruption now %s."},
 		{"pattern": "^Danger: (\\d+)\\.$", "template": "Danger now %s."},

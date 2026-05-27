@@ -1,6 +1,6 @@
-# Hymn Corpus Voice
+# Hymn Scenario Voice
 
-This document defines the target narration voice for Hymn after absorbing the useful strengths of Verne and Lovecraft.
+This document defines the target narration voice for Hymn after absorbing the useful strengths of the Fleshpunk research stack: pulp before 1930, martial anatomy, biological adaptation, roguelike pressure, and progression fantasy cadence. The older Verne/Lovecraft seed set is optional legacy material, not a required backbone.
 
 The goal is not parody, quotation, antique diction, or literary name-checking. The goal is to bottle craft moves from the corpus and compress them into Hymn's field-report voice.
 
@@ -8,14 +8,15 @@ The goal is not parody, quotation, antique diction, or literary name-checking. T
 
 Hymn's forward voice is:
 
-> empirical apparatus + accumulated evidence + bodily stakes
+> empirical pressure + pulp immediacy + bodily consequence
 
-She should sound like a person reporting from inside a hostile working system:
+She should sound like a person reporting from inside a hostile living world:
 
-- precise enough to understand the mechanism
-- observant enough to feel the history of the place
+- precise enough to understand the pressure point
+- observant enough to feel the history, threat, or opportunity of the place
 - restrained enough that dread comes from evidence, not performance
 - clipped enough to remain playable
+- physical enough that action feels possible now
 
 This formula is not permission to turn every room into an apparatus description. In non-apparatus rooms, "apparatus" can be replaced by the actual pressure point: enemy, character, symbiote, wound, pool, nest, corridor, offer, or body. The prose still stays empirical, but it does not need to explain a machine that is not central to the scene.
 
@@ -25,12 +26,15 @@ Keep the radio-report frame. Hymn reports to Chorus. Chorus does not answer in p
 
 The whole game uses one prose voice. Corpus influence changes what Hymn notices, not how the prose sounds from room to room.
 
-Do not write one room in Verne mode and another in Lovecraft mode. Verne and Lovecraft are not selectable surface styles. They are submerged craft pressures inside Hymn's single field-report voice.
+Do not write one room in Howard mode, another in Sabatini mode, another in Blackwood mode, and another in Verne mode. Source authors are not selectable surface styles. They are submerged craft pressures inside Hymn's single field-report voice.
 
 Every room, event, result, and ending should sound like the same observer under different operating conditions:
 
-- Verne contributes sequence, measurement, apparatus logic, and practical curiosity.
-- Lovecraft contributes residue, prior-use evidence, contamination, buried history, and dread built from records.
+- Pulp contributes immediate danger, pursuit, reversal, hostile thresholds, hard physical stakes, and visible reputation.
+- Martial anatomy contributes posture, distance, contact, commitment, recovery, stance, and body-specific consequence.
+- Biology contributes adaptation logic: what this body can do now, what it can no longer do cleanly, and what selected for it.
+- Progression fantasy contributes breakthrough hunger, discipline, rank pressure, identity narrowing, and the feeling of becoming more consequential.
+- The old Verne/Lovecraft seed set may contribute sequence, measurement, apparatus logic, residue, contamination, or buried records only when that pressure is explicitly useful. It is not the default source pool.
 - Hymn contributes compression, plain syntax, first-person field judgement, and bodily stakes.
 
 The visible prose must not swing between:
@@ -42,11 +46,72 @@ The visible prose must not swing between:
 
 Unified style test:
 
-> If the room's source seed were hidden, the player should not be able to say "this is the Verne room" or "this is the Lovecraft room" from diction alone.
+> If the room's source seed were hidden, the player should not be able to say "this is the Howard room," "this is the Sabatini room," "this is the Blackwood room," "this is the Verne room," or "this is the Lovecraft room" from diction alone.
 
-The player may feel a different pressure: sealed-vessel procedure, ruined record, contaminated cure, expedition route, old architecture. The sentence voice stays Hymn's.
+The player may feel a different pressure: pursuit, duel, hostile landscape, unsafe refuge, lost-world descent, sealed-vessel procedure, ruined record, contaminated cure, expedition route, old architecture. The sentence voice stays Hymn's.
 
 ## Source Strengths To Import
+
+### Pulp: Story Pressure In Motion
+
+The pre-1930 pulp corpus should make scenarios less like procedures and more like compact scenes. Use `generated/corpus/pulp_pre_1930/retrieval_index.md` to select sources by design need.
+
+Import these craft moves:
+
+- Begin near pressure: pursuit, threshold, ambush, bargain, discovery, reversal, or a body under immediate demand.
+- Make danger physical before it is symbolic.
+- Let a visible action change reputation, rivalry, route access, or self-understanding.
+- Let hostile landscapes behave before a monster appears.
+- Compress mythic scale into a rule Hymn can violate, exploit, endure, or embody.
+- Use a strong silhouette: rival, guide, failed predecessor, predator, sealed refuge, forbidden stair, ruined instrument, hungry threshold.
+
+Do not import:
+
+- antique diction
+- colonial adventure assumptions
+- source names, characters, species, places, or franchise terms
+- melodramatic speeches where a physical detail would do more work
+- pulp swagger that breaks Hymn's field-report voice
+
+### Martial Anatomy: Combat Without Lecture
+
+Combat writing should be readable without specialist vocabulary.
+
+Import these craft moves:
+
+- posture: what each body is ready to do
+- distance: who can reach whom
+- contact: which limb, plate, tooth, blade, tail, horn, or surface matters
+- commitment: what Hymn risks by acting now
+- recovery: what her action leaves open
+- consequence: scar, fear, respect, appetite, learned stance, rival attention, or route change
+
+Do not import:
+
+- HEMA lecture terms as visible style
+- fight choreography that does not change the character
+- "strikes hard" repetition with no posture, distance, or recovery
+- combat that exists only because a room needs danger
+
+### Progression: Becoming Through Consequence
+
+Every scenario should enrich Hymn, destabilize Hymn, or do both.
+
+Import these craft moves:
+
+- power that narrows identity
+- restraint that counts as discipline
+- breakthrough that costs body, route, appetite, or social recognition
+- rival or predator recognition
+- mutation as a new martial philosophy, not a bigger number
+- old rooms becoming newly readable after a body change
+
+Do not import:
+
+- visible level-up labels in narration
+- branch explanations
+- stat-led result prose
+- upgrades without a changed way of moving, fighting, negotiating, sensing, or being classified
 
 ### Verne: Procedure With Verve
 
@@ -329,26 +394,30 @@ Preferred shape:
 ```json
 "corpus_influences": [
   {
-    "seed_id": "verne_twenty_thousand_leagues_02_sealed_vessel",
-    "source_title": "Twenty Thousand Leagues Under the Seas",
-    "source_moment": "A damaged vessel becomes legible through compartments, pressure, and procedure.",
-    "writing_influence": "Practical wonder: name the parts, show the sequence, make danger measurable.",
-    "room_application": "The room prose should make the rib lock feel like an apparatus Hymn can test under pressure."
+    "source_id": "blackwood_willows",
+    "source_title": "The Willows",
+    "source_moment": "A camp stops feeling safe because the landscape shows pressure before it reveals an attacker.",
+    "writing_influence": "Hostile landscape as actor: wind, sound, shelter, distance, and small physical signs tighten the choice.",
+    "scenario_application": "The scenario should make the resting place feel temporarily useful and quietly unsafe without explaining the future branch."
   }
 ]
 ```
 
-The final room text should not quote the source, mention Verne or Lovecraft, or explain the influence. The influence should be visible through better prose.
+The final room text should not quote the source, mention source authors, or explain the influence. The influence should be visible through better scenario pressure.
 
 ## Acceptance Test
 
-A finished Hymn room should pass these questions:
+A finished Hymn scenario should pass these questions:
 
-- Can the player describe the mechanism without seeing metadata?
+- Can the player describe the immediate situation without seeing metadata?
+- Does the scene enrich Hymn, destabilize Hymn, or both?
+- Does the possibility tree exist in the data without being spelled out in player-facing prose?
 - Does the room have evidence of prior use, repair, failure, or history?
-- Does the prose include at least one specific part, measurement, sequence, or material condition?
+- Does the prose include at least one specific body, actor, pressure point, measurement, sequence, or material condition?
 - Does dread come from observable facts and consequences?
 - Are inferences marked as inferences?
+- If there is combat, can a non-specialist follow posture, distance, contact, recovery, and consequence?
+- If there is a mutation, does it have in-encounter and out-of-encounter meaning?
 - Would the room lose force if all adjectives were removed?
 
 If the answer to the last question is yes, the prose is relying on mood instead of structure.

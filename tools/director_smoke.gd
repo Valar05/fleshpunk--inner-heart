@@ -108,8 +108,8 @@ func _init() -> void:
 		baffle_manager.consume_current_event("turn_baffle")
 
 	var baffle_next := baffle_manager.advance_to_next_encounter()
-	if str(baffle_next.get("event_id", "")) != "smother_hunter_arrival":
-		push_error("Repeated baffle use did not schedule the Smother Hunter.")
+	if str(baffle_next.get("event_id", "")) != "story_smother_flat_air_warning":
+		push_error("Repeated baffle use did not schedule the flat-air warning.")
 		quit(1)
 		return
 
@@ -131,8 +131,8 @@ func _init() -> void:
 		plate_manager.consume_current_event("follow_marked_plates")
 
 	var plate_next := plate_manager.advance_to_next_encounter()
-	if str(plate_next.get("event_id", "")) != "plate_snare":
-		push_error("Repeated marked plate use did not schedule Plate Snare.")
+	if str(plate_next.get("event_id", "")) != "plate_snare_warning_v1":
+		push_error("Repeated marked plate use did not schedule Plate Snare warning.")
 		quit(1)
 		return
 
