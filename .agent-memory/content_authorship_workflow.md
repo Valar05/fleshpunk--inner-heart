@@ -35,23 +35,25 @@ python tools/scenario_agent.py hymn-corpus-voice
 python tools/scenario_agent.py story-room-contract
 ```
 
-2. Generate candidate prose/data through `tools/scenario_agent.py generate` or an equivalent dedicated writing agent using the same memory docs.
+2. For from-scratch scenarios, recurring-character arcs, endings, delayed follow-ups, or substantial rewrites, build a source packet before generation. Use `.agent-memory/source_packet_workflow.md`. Do not send the whole repo or a broad freeform prompt to an external writing agent.
 
-3. Critique the candidate before applying:
+3. Generate candidate prose/data through `tools/scenario_agent.py generate` or an equivalent dedicated writing agent using the approved source packet and the same memory docs.
+
+4. Critique the candidate before applying:
 
 ```sh
 python tools/scenario_agent.py critique --patch generated/scenario_patch.json
 python tools/scenario_agent.py lore-critique
 ```
 
-4. Validate and apply only accepted patches:
+5. Validate and apply only accepted patches:
 
 ```sh
 python tools/scenario_agent.py validate generated/scenario_patch.json --strict-tradeoffs
 python tools/scenario_agent.py apply generated/scenario_patch.json --strict-tradeoffs
 ```
 
-5. Run active content gates:
+6. Run active content gates:
 
 ```sh
 python tools/scenario_agent.py audit-writing
@@ -60,7 +62,7 @@ python tools/scenario_agent.py validate-events --strict-actions
 python tools/project_bootstrap.py --strict
 ```
 
-6. Run Godot smoke tests when room/event behavior changes:
+7. Run Godot smoke tests when room/event behavior changes:
 
 ```sh
 godot --headless --path /storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart --script /storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart/tools/post_update_room_smoke.gd

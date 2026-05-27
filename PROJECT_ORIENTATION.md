@@ -54,6 +54,7 @@ python tools/room_doc_browser.py --host 127.0.0.1 --port 3000
 - Setting, faction, character, animal-infrastructure, and cross-run story architecture lives in `.agent-memory/setting_backbone.md`.
 - Test post-update rooms in text/decision form before refreshing or generating TTS audio.
 - Content authorship workflow lives in `.agent-memory/content_authorship_workflow.md`. Codex agents should not be the primary author of player-facing prose; use the scenario/writing agent path for drafting and revision, then let Codex integrate and verify accepted patches.
+- External writing-agent work must start from a narrow source packet, not a broad repo prompt. Use `.agent-memory/source_packet_workflow.md` before asking Claude/OpenAI/another writer to draft from-scratch scenarios, major rewrites, recurring character arcs, endings, or delayed follow-ups.
 - The forward story-room quality bar lives in `.agent-memory/story_room_contract.md`; use it before accepting new room/event content.
 - Ending-maze structure lives in `.agent-memory/ending_maze_architecture.md`; every environment family should be able to culminate in at least one ending vector.
 - Hymn's corpus-blended prose target lives in `.agent-memory/hymn_corpus_voice.md`; use it when rewriting descriptions, events, results, and choice text.
