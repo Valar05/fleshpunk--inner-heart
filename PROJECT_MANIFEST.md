@@ -1,6 +1,6 @@
 # Project Manifest: fleshpunk--inner-heart
 
-- Generated: 2026-06-20T17:00:50-05:00
+- Generated: 2026-06-20T17:47:30-05:00
 - Workspace path: `/storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart`
 - Git repository: yes
 - Git remote: `git@github.com:Valar05/fleshpunk--inner-heart.git`
@@ -21,6 +21,12 @@
 > python tools/project_bootstrap.py --strict
 > ```
 > Smoke test post-update room descriptions:
+> ```sh
+> godot --headless --path /storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart --script /storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart/tools/post_update_room_smoke.gd
+> ```
+> Smoke test delayed story follow-up insertion:
+> ```sh
+> godot --headless --path /storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart --script /storage/emulated/0/Documents/GodotProjects/fleshpunk--inner-heart/tools/story_followup_smoke.gd
 
 ## Entrypoints And Validation Clues
 - `tools/project_bootstrap.py`
@@ -100,16 +106,15 @@
 - `player.gd`
 - `player.gd.uid`
 - `project.godot`
+- `PROJECT_MANIFEST.md`
 - `PROJECT_ORIENTATION.md`
 - `red_corridor.png`
 - `red_corridor.png.import`
 - `room_dialogue.json`
 - `RoomPulse.gdshader`
-- `RoomPulse.gdshader.uid`
 - `...`
 
 ## Git Hygiene
 - `.gitignore` contains a Codex workspace hygiene block for credentials, caches, and local build outputs.
 - `.gitattributes` contains a Codex Git LFS block for common binary assets, models, audio, video, archives, fonts, and PDFs.
 - `git lfs install --local` was attempted for this repository during the manifest pass.
-
