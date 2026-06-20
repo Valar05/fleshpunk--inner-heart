@@ -48,40 +48,21 @@ func _init() -> void:
 		quit(1)
 		return
 
-	var first_intervening: Dictionary = _advance_to_next_room_counting_encounter(run_manager)
-	if str(first_intervening.get("event_id", "")) == expected_followup_id:
-		push_error("Story follow-up appeared without enough intervening rooms.")
+	var pending_followup: Dictionary = _pending_story_followup(run_manager, expected_followup_id)
+	if pending_followup.is_empty():
+		push_error("Story follow-up was not queued: %s." % expected_followup_id)
 		quit(1)
 		return
-	if not bool(first_intervening.get("counts_as_room", false)):
-		push_error("Expected a first intervening normal room before the story follow-up.")
-		quit(1)
-		return
-
-	var buttons: Array = first_intervening.get("buttons", [])
-	if buttons.is_empty() or not buttons[0] is Dictionary:
-		push_error("First intervening room had no legal first button.")
+	var available_after_rooms := int(pending_followup.get("available_after_rooms", 0))
+	if available_after_rooms <= int(run_manager.rooms_cleared):
+		push_error("Story follow-up was available immediately instead of delayed: %s." % str(pending_followup))
 		quit(1)
 		return
 
-	run_manager.consume_current_event(str(buttons[0].get("action", "proceed")))
-	var second_intervening: Dictionary = _advance_to_next_room_counting_encounter(run_manager)
-	if str(second_intervening.get("event_id", "")) == expected_followup_id:
-		push_error("Story follow-up appeared after only one intervening room.")
-		quit(1)
-		return
-	if not bool(second_intervening.get("counts_as_room", false)):
-		push_error("Expected a second intervening normal room before the story follow-up.")
-		quit(1)
-		return
-
-	buttons = second_intervening.get("buttons", [])
-	if buttons.is_empty() or not buttons[0] is Dictionary:
-		push_error("Second intervening room had no legal first button.")
-		quit(1)
-		return
-
-	run_manager.consume_current_event(str(buttons[0].get("action", "proceed")))
+	run_manager.current_encounter = {}
+	run_manager.set("_pending_room_id_after_transition", "")
+	run_manager.set("_pending_encounter_after_overlay", {})
+	run_manager.rooms_cleared = available_after_rooms
 	var followup: Dictionary = run_manager.advance_to_next_encounter()
 	if str(followup.get("event_id", "")) != expected_followup_id:
 		push_error("Expected delayed %s; got %s." % [expected_followup_id, str(followup.get("event_id", ""))])
@@ -130,13 +111,9 @@ func _followup_for_action(encounter: Dictionary, action_id: String) -> Dictionar
 	return {}
 
 
-func _advance_to_next_room_counting_encounter(run_manager) -> Dictionary:
-	for _index in range(16):
-		var encounter: Dictionary = run_manager.advance_to_next_encounter()
-		if bool(encounter.get("counts_as_room", false)):
-			return encounter
-		var buttons: Array = encounter.get("buttons", [])
-		if buttons.is_empty() or not buttons[0] is Dictionary:
-			return encounter
-		run_manager.consume_current_event(str(buttons[0].get("action", "proceed")))
+func _pending_story_followup(run_manager, expected_event_id: String) -> Dictionary:
+	var pending_events: Array = run_manager.get("_pending_story_events")
+	for pending in pending_events:
+		if pending is Dictionary and str(pending.get("event_id", "")) == expected_event_id:
+			return pending
 	return {}

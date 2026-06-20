@@ -90,6 +90,11 @@ func _init() -> void:
 		push_error("Command input is too small for the text-only layout.")
 		quit(1)
 		return
+	var command_line := command_input as LineEdit
+	if command_line != null and command_line.placeholder_text.length() > 36:
+		push_error("Command input placeholder is too long for portrait: %s." % command_line.placeholder_text)
+		quit(1)
+		return
 
 	var first_button: Button = null
 	if console_content != null:

@@ -324,6 +324,10 @@ func _on_console_option_selected(action_id: String, room_id: String) -> void:
 
 	if action_id == "proceed":
 		run_manager.consume_current_event("proceed")
+		var proceed_result := _get_last_action_result(run_manager)
+		if not proceed_result.is_empty():
+			_show_action_result(proceed_result, room_id)
+			return
 		_transition_to_encounter(run_manager.advance_to_next_encounter())
 		return
 
@@ -964,7 +968,7 @@ func _expand_spoken_line(line: String) -> Array[String]:
 		return []
 	if _is_zero_value_tts_phrase(normalized):
 		return []
-	if normalized.find(":") == -1 and _tts_has_generated_phrase(normalized):
+	if _tts_has_generated_phrase(normalized):
 		return [normalized]
 
 	var damage_pattern := RegEx.new()
@@ -1016,6 +1020,19 @@ func _canonical_tts_phrase(phrase: String) -> String:
 	ambiguity_pattern.compile("^I matched two commands:.+\\.$")
 	if ambiguity_pattern.search(normalized) != null:
 		return "I matched more than one command."
+
+	var result_delta_pattern := RegEx.new()
+	result_delta_pattern.compile("^(?:Result: )?(Health|Shield|Biomass|Danger|Corruption|Claim) ([+-])(\\d+)\\.$")
+	var result_delta_match := result_delta_pattern.search(normalized)
+	if result_delta_match != null:
+		var label := result_delta_match.get_string(1)
+		var sign := result_delta_match.get_string(2)
+		var amount := result_delta_match.get_string(3)
+		if int(amount) == 0:
+			return ""
+		if sign == "-":
+			return "%s decreased by %s." % [label, amount]
+		return "%s increased by %s." % [label, amount]
 
 	var label_patterns := [
 		{"pattern": "^(\\d+) damage hit\\.$", "template": "Damage hit %s."},

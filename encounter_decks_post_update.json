@@ -48,8 +48,32 @@
     "operator_cellar"
   ],
   "playtest_event_ids": [
+    "amar_red_chapel_root",
+    "amber_corridor_silt_confrontation",
+    "amber_corridor_silt_return_paid",
+    "amber_corridor_silt_return_read",
+    "amber_corridor_silt_return_spoiled",
+    "biomass_larder_collector_confrontation",
+    "bone_corridor_toll_keeper",
+    "drowned_toll_harbor_collector_block",
+    "egg_corridor_brood_witness",
+    "egg_corridor_followup_cold_record",
+    "egg_corridor_followup_full_record",
+    "egg_corridor_followup_sleeve_marker",
+    "healing_pool_custodian_contest",
+    "healing_pool_parasite_mark_followup",
+    "healing_pool_patient_mark_followup",
+    "healing_pool_unresolved_followup",
+    "heart_keeper_encounter_2",
+    "maintenance_rite_chapel_warden_confrontation_2",
     "operator_cellar_grip_predator",
     "operator_cellar_wall_reader",
+    "scar_map_junction_cartographer_toll",
+    "spiked_red_corridor_broken_tip_return",
+    "spiked_red_corridor_patience_return",
+    "spiked_red_corridor_watcher_followup",
+    "spiked_red_corridor_spine_duel",
+    "spiked_red_corridor_wound_debt_return",
     "white_marrow_field_hound_lanes"
   ],
   "draw_rules": [
@@ -69,22 +93,72 @@
   "room_pools": {
     "enemy": [],
     "branch": [
+      "amar_creepstride_red_chapel",
+      "amber_corridor",
+      "biomass_larder",
+      "bone_corridor",
+      "drowned_toll_harbor",
+      "egg_corridor",
+      "maintenance_rite_chapel",
+      "organ_chamber_red",
+      "scar_map_junction",
+      "spiked_red_corridor",
       "white_marrow_field"
     ],
     "straight_noncombat": [
-      "operator_cellar"
+      "amber_corridor",
+      "biomass_larder",
+      "bone_corridor",
+      "drowned_toll_harbor",
+      "egg_corridor",
+      "healing_pool",
+      "maintenance_rite_chapel",
+      "operator_cellar",
+      "scar_map_junction"
     ],
     "route": [
-      "white_marrow_field",
-      "operator_cellar"
+      "amar_creepstride_red_chapel",
+      "amber_corridor",
+      "biomass_larder",
+      "bone_corridor",
+      "drowned_toll_harbor",
+      "egg_corridor",
+      "healing_pool",
+      "maintenance_rite_chapel",
+      "operator_cellar",
+      "organ_chamber_red",
+      "scar_map_junction",
+      "spiked_red_corridor",
+      "white_marrow_field"
     ],
-    "resource": [],
+    "resource": [
+      "amber_corridor",
+      "biomass_larder",
+      "drowned_toll_harbor",
+      "healing_pool"
+    ],
     "knowledge": [
-      "operator_cellar"
+      "amber_corridor",
+      "egg_corridor",
+      "maintenance_rite_chapel",
+      "operator_cellar",
+      "organ_chamber_red",
+      "scar_map_junction"
     ],
     "random_non_special": [
-      "white_marrow_field",
-      "operator_cellar"
+      "amar_creepstride_red_chapel",
+      "amber_corridor",
+      "biomass_larder",
+      "bone_corridor",
+      "drowned_toll_harbor",
+      "egg_corridor",
+      "healing_pool",
+      "maintenance_rite_chapel",
+      "operator_cellar",
+      "organ_chamber_red",
+      "scar_map_junction",
+      "spiked_red_corridor",
+      "white_marrow_field"
     ]
   }
 }

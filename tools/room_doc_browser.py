@@ -21,13 +21,47 @@ POST_UPDATE_ROOMS_PATH = ROOT / "rooms_post_update.json"
 POST_UPDATE_EVENTS_PATH = ROOT / "events_post_update.json"
 SYMBIOTES_PATH = ROOT / "symbiotes.json"
 FEATURED_SCENARIO_ROOMS = [
+    "amber_corridor",
+    "egg_corridor",
+    "healing_pool",
+    "organ_chamber_red",
+    "spiked_red_corridor",
+    "amar_creepstride_red_chapel",
+    "biomass_larder",
+    "bone_corridor",
+    "drowned_toll_harbor",
+    "maintenance_rite_chapel",
     "operator_cellar",
+    "scar_map_junction",
     "white_marrow_field",
 ]
 ACTIVE_ROOM_IDS = set(FEATURED_SCENARIO_ROOMS)
 ACTIVE_EVENT_IDS = {
+    "amber_corridor_silt_return_paid",
+    "amber_corridor_silt_return_spoiled",
+    "amber_corridor_silt_return_read",
+    "spiked_red_corridor_broken_tip_return",
+    "spiked_red_corridor_wound_debt_return",
+    "spiked_red_corridor_patience_return",
+    "egg_corridor_followup_sleeve_marker",
+    "egg_corridor_followup_cold_record",
+    "egg_corridor_followup_full_record",
+    "healing_pool_patient_mark_followup",
+    "healing_pool_parasite_mark_followup",
+    "healing_pool_unresolved_followup",
+    "amber_corridor_silt_confrontation",
+    "egg_corridor_brood_witness",
+    "healing_pool_custodian_contest",
+    "heart_keeper_encounter_2",
+    "spiked_red_corridor_spine_duel",
+    "amar_red_chapel_root",
+    "biomass_larder_collector_confrontation",
+    "bone_corridor_toll_keeper",
+    "drowned_toll_harbor_collector_block",
+    "maintenance_rite_chapel_warden_confrontation_2",
     "operator_cellar_grip_predator",
     "operator_cellar_wall_reader",
+    "scar_map_junction_cartographer_toll",
     "white_marrow_field_hound_lanes",
 }
 

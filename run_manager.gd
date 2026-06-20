@@ -1121,6 +1121,8 @@ func _build_special_encounter(event_id: String, room_id_override: String = "", r
 	var event_data: Dictionary = _prepare_event_data(special_events.get(event_id, {}))
 	var room_id := room_id_override if room_id_override != "" else str(event_data.get("room_id", current_room_id))
 	var room_data := room_data_override if not room_data_override.is_empty() else get_room_data(room_id)
+	var counts_as_room := bool(event_data.get("counts_as_room", false))
+	var include_room_description := bool(event_data.get("include_room_description", false))
 	return {
 		"kind": "special_event",
 		"room_id": room_id,
@@ -1128,10 +1130,10 @@ func _build_special_encounter(event_id: String, room_id_override: String = "", r
 		"event_id": event_id,
 		"event_data": event_data,
 		"scene_path": str(event_data.get("scene_path", "")),
-		"lines": _build_lines({}, event_data, false),
+		"lines": _build_lines(room_data, event_data, include_room_description),
 		"buttons": _build_buttons(event_data),
 		"enemy_data": _resolve_enemy_data(event_data),
-		"counts_as_room": false,
+		"counts_as_room": counts_as_room,
 		"consumed": false
 	}
 
@@ -1918,6 +1920,10 @@ func _apply_environment_state_effect(state_key: String) -> void:
 			_add_danger(1)
 		"heal_instability_push":
 			_add_corruption(1)
+		"feeder_resource_released":
+			_add_biomass(4)
+		"watcher_attention_broken":
+			_add_danger(-1)
 
 
 func _get_event_action_result(action_id: String, event_data: Dictionary) -> Dictionary:

@@ -32,6 +32,7 @@ var _command_submission_in_progress := false
 var _last_command_input_text := ""
 var _fullscreen_size := Vector2(1080, 1920)
 var _background_scale := Vector2.ONE
+var _virtual_keyboard_height := 0.0
 
 
 func _ready() -> void:
@@ -60,8 +61,11 @@ func _load_portrait_dashboard_texture() -> void:
 
 
 func _process(_delta: float) -> void:
-	if _command_input != null and _command_input.visible and not _command_input.has_focus():
-		_command_input.grab_focus()
+	if _fullscreen_size.x <= 0.0 or _fullscreen_size.y <= 0.0:
+		return
+	var keyboard_height := _get_virtual_keyboard_height_for_viewport(_fullscreen_size)
+	if absf(keyboard_height - _virtual_keyboard_height) > 1.0:
+		set_fullscreen_console_layout(_fullscreen_size)
 
 
 func set_room_data(room_data: Dictionary) -> void:
@@ -98,7 +102,8 @@ func set_fullscreen_console_layout(viewport_size: Vector2) -> void:
 	var content_left := TERMINAL_MARGIN_X
 	var content_top := TERMINAL_MARGIN_TOP
 	var content_right := viewport_size.x - TERMINAL_MARGIN_X
-	var content_bottom := viewport_size.y - TERMINAL_MARGIN_BOTTOM
+	_virtual_keyboard_height = _get_virtual_keyboard_height_for_viewport(viewport_size)
+	var content_bottom := viewport_size.y - TERMINAL_MARGIN_BOTTOM - _virtual_keyboard_height
 	var control_width: float = max(content_right - content_left, 0.0)
 	var input_top := content_bottom - FULLSCREEN_INPUT_HEIGHT
 	var console_bottom := input_top - COMMAND_GAP
@@ -126,6 +131,19 @@ func _calculate_background_cover_scale(viewport_size: Vector2) -> Vector2:
 		return Vector2.ONE
 	var cover_scale: float = max(viewport_size.x / texture_size.x, viewport_size.y / texture_size.y)
 	return Vector2(cover_scale, cover_scale)
+
+
+func _get_virtual_keyboard_height_for_viewport(viewport_size: Vector2) -> float:
+	var os_name := OS.get_name()
+	if os_name != "Android" and os_name != "iOS":
+		return 0.0
+	var keyboard_height := float(DisplayServer.virtual_keyboard_get_height())
+	if keyboard_height <= 0.0:
+		return 0.0
+	var window_size := DisplayServer.window_get_size()
+	if window_size.y <= 0:
+		return keyboard_height
+	return keyboard_height * viewport_size.y / float(window_size.y)
 
 
 func _place_control_in_viewport(control: Control, viewport_rect: Rect2) -> void:
@@ -286,7 +304,7 @@ func _ensure_command_input() -> void:
 	_command_input.layout_mode = 2
 	_command_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-	_command_input.placeholder_text = "Type a command, next, choice number, status, or repeat."
+	_command_input.placeholder_text = "Command: next, #, status, repeat"
 	_command_input.clear_button_enabled = true
 	_command_input.focus_mode = Control.FOCUS_ALL
 	_command_input.add_theme_font_size_override("font_size", INPUT_FONT_SIZE)

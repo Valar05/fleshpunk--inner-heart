@@ -98,6 +98,11 @@ func _run() -> void:
 			"buttons": [{"label": "Proceed.", "action": "proceed"}],
 		},
 		{
+			"name": "result delta summary",
+			"lines": ["Result: Biomass +5. Danger +1."],
+			"buttons": [{"label": "Proceed.", "action": "proceed"}],
+		},
+		{
 			"name": "late pheromones button",
 			"lines": ["I keep moving."],
 			"buttons": [

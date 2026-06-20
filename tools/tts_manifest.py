@@ -73,13 +73,35 @@ SYSTEM_CLIPS = [
 ]
 
 PLAYTEST_ROOMS = {
+    "amber_corridor",
+    "amar_creepstride_red_chapel",
+    "biomass_larder",
+    "bone_corridor",
+    "drowned_toll_harbor",
+    "egg_corridor",
+    "healing_pool",
+    "maintenance_rite_chapel",
     "operator_cellar",
+    "organ_chamber_red",
+    "scar_map_junction",
+    "spiked_red_corridor",
     "white_marrow_field",
 }
 
 PLAYTEST_EVENT_IDS = {
+    "amber_corridor_silt_confrontation",
+    "amar_red_chapel_root",
+    "biomass_larder_collector_confrontation",
+    "bone_corridor_toll_keeper",
+    "drowned_toll_harbor_collector_block",
+    "egg_corridor_brood_witness",
+    "healing_pool_custodian_contest",
+    "heart_keeper_encounter_2",
+    "maintenance_rite_chapel_warden_confrontation_2",
     "operator_cellar_grip_predator",
     "operator_cellar_wall_reader",
+    "scar_map_junction_cartographer_toll",
+    "spiked_red_corridor_spine_duel",
     "white_marrow_field_hound_lanes",
 }
 
@@ -108,9 +130,42 @@ PLAYTEST_SPECIAL_EVENTS = {
     "ending_lumen_wet_claim",
     "ending_mother_chancel_tool",
     "ending_commandant_launch",
+    "amar_debt_collection",
+    "amar_resentment_return",
+    "amber_corridor_silt_return_paid",
+    "amber_corridor_silt_return_read",
+    "amber_corridor_silt_return_spoiled",
+    "biomass_larder_collection_feeder_arrives",
+    "biomass_larder_route_favor_packet",
+    "bone_corridor_keeper_report",
+    "chapel_drift_receipt",
+    "chapel_recognition_return",
+    "chapel_repair_retaliation",
+    "chapel_shaft_access",
+    "contamination_surfaces",
+    "drowned_toll_harbor_collector_return",
+    "dust_trace_predator_followup",
+    "egg_corridor_followup_cold_record",
+    "egg_corridor_followup_full_record",
+    "egg_corridor_followup_sleeve_marker",
+    "harbor_ledger_recognition",
+    "healing_pool_parasite_mark_followup",
+    "healing_pool_patient_mark_followup",
+    "healing_pool_unresolved_followup",
+    "larder_credit_return",
+    "larder_debt_collector",
+    "larder_restraint_signal",
     "operator_cellar_grip_predator_reload_window",
     "operator_cellar_scar_navigation",
     "operator_cellar_blood_trace_attention",
+    "plate_stride_recognition_followup",
+    "scar_map_clean_route_revision",
+    "scar_map_marked_branch_recognition",
+    "solt_debt_return",
+    "spiked_red_corridor_broken_tip_return",
+    "spiked_red_corridor_patience_return",
+    "spiked_red_corridor_wound_debt_return",
+    "warden_residue_patrol_read",
 }
 
 
@@ -327,6 +382,11 @@ def stat_phrases() -> list[str]:
         add(f"The pool knits {value} health back into place.")
         add(f"The amber hardens over me and restores {value} shield.")
         add(f"The soft tunnel carries me forward and mends {value} health.")
+
+    for value in range(1, 41):
+        for label in ("Health", "Shield", "Biomass", "Danger", "Corruption", "Claim"):
+            add(f"{label} increased by {value}.")
+            add(f"{label} decreased by {value}.")
 
     for mutation_name, mutation_cost in (
         ("Lean Muscle", 6),

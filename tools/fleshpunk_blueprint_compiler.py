@@ -113,6 +113,8 @@ def validate_blueprint(blueprint: dict[str, Any]) -> list[str]:
     if not isinstance(choices, list) or len(choices) < 2:
         errors.append("event.choices must have at least two choices")
     else:
+        if not any(isinstance(choice, dict) and (choice.get("payoff_hook") or choice.get("story_followup")) for choice in choices):
+            errors.append("event.choices must leave at least one payoff_hook or story_followup")
         for index, choice in enumerate(choices):
             if not isinstance(choice, dict):
                 errors.append(f"choices[{index}] is not an object")
@@ -167,6 +169,7 @@ def compile_patch(blueprint: dict[str, Any]) -> dict[str, Any]:
     buttons: list[dict[str, Any]] = []
     action_results: dict[str, Any] = {}
     story_followups: dict[str, Any] = {}
+    payoff_hooks: dict[str, Any] = {}
     for choice in event_blueprint.get("choices", []):
         action = str(choice["action"])
         buttons.append({
@@ -182,6 +185,11 @@ def compile_patch(blueprint: dict[str, Any]) -> dict[str, Any]:
         }
         if choice.get("actor_state_changes"):
             action_results[action]["actor_state_changes"] = choice["actor_state_changes"]
+        hook = choice.get("payoff_hook")
+        if isinstance(hook, dict):
+            rewritten_hook = dict(hook)
+            rewritten_hook.setdefault("source_action", action)
+            payoff_hooks[action] = rewritten_hook
         followup = choice.get("story_followup")
         if isinstance(followup, dict) and followup.get("event_id"):
             rewritten_followup = dict(followup)
@@ -205,6 +213,7 @@ def compile_patch(blueprint: dict[str, Any]) -> dict[str, Any]:
         "buttons": buttons,
         "action_results": action_results,
         "story_followups": story_followups,
+        "payoff_hooks": payoff_hooks,
         "character_change": event_blueprint.get("character_change", "both"),
         "possibility_tree": event_blueprint.get("possibility_tree", []),
         "progression_vector": event_blueprint.get("progression_vector", ""),
@@ -243,6 +252,7 @@ def compile_patch(blueprint: dict[str, Any]) -> dict[str, Any]:
                 "progression_vector": event["progression_vector"],
                 "corpus_anchors": anchors,
                 "research_influences": room_update["corpus_influences"],
+                "payoff_hooks": payoff_hooks,
             }
         ],
         "required_engine_changes": blueprint.get("required_engine_changes", []),

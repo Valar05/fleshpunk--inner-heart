@@ -60,13 +60,14 @@ http://127.0.0.1:3000/scenarios
 - Presentation direction is text-only for required play. Room/environment visuals are deprecated as design requirements.
 - Rooms are instances grouped by environment family. Do not design the dungeon around revisiting one literal room; later rooms may echo prior choices through shared environment state.
 - Rooms should move toward player-facing first-read descriptions, narrated by Hymn, with event narration layered after room text. `return_description` is legacy compatibility, not the forward story structure.
-- Character and faction progression uses delayed `story_followups`: room events enqueue one-shot special events into the run stack after at least one intervening room. Do not rely on revisiting the originating room for progression, and do not use follow-ups as instant result text.
+- Character and faction progression uses a two-step payoff stack. Root scenario passes leave explicit `payoff_hooks` for branches that need future payoff. Separate follow-up passes consume those hooks and wire concrete delayed `story_followups` into the run stack after at least one intervening room. Do not rely on revisiting the originating room for progression, and do not use follow-ups as instant result text.
 - Existing `room_dialogue.json` and `events.json` content is legacy content. Use it for runtime/reference/migration only.
 - Forward content starts from generated post-update rooms in `generated/room_mechanics_brainstorm.json`.
 - Setting, faction, character, animal-infrastructure, and cross-run story architecture lives in `.agent-memory/setting_backbone.md`.
 - Test post-update rooms in text/decision form before refreshing or generating TTS audio.
 - Content authorship workflow lives in `.agent-memory/content_authorship_workflow.md`. Codex agents should not be the primary author of player-facing prose; use the scenario/writing agent path for drafting and revision, then let Codex integrate and verify accepted patches.
 - External writing-agent work must start from a narrow source packet, not a broad repo prompt. Use `.agent-memory/source_packet_workflow.md` before asking Claude/OpenAI/another writer to draft from-scratch scenarios, major rewrites, recurring character arcs, endings, or delayed follow-ups.
+- Repeatable Claude scenario generation lives in the `fleshpunk-claude-scenarios` Codex skill, mirrored at `.agent-memory/skills/fleshpunk-claude-scenarios/`. Use it for source-packet, 7k input-token, validation, deck wiring, and docs refresh workflow.
 - The forward story-scenario quality bar lives in `.agent-memory/story_room_contract.md`; use it before accepting new room/event content. Scenarios should be Revelation-scale: compact, playable, story-rich, and built around implicit possibility trees.
 - Ending-maze structure lives in `.agent-memory/ending_maze_architecture.md`; every environment family should be able to culminate in at least one ending vector.
 - Hymn's scenario voice target lives in `.agent-memory/hymn_corpus_voice.md`; use it when rewriting descriptions, events, results, and choice text.
@@ -76,7 +77,8 @@ http://127.0.0.1:3000/scenarios
 - Every scenario should enrich Hymn, destabilize Hymn, or both. Do not spell out risk trees, branch labels, or future consequences in player-facing text.
 - Combat is optional. When present, it should be readable physical action: posture, distance, contact, commitment, recovery, and consequence.
 - Major mutations should be multi-use: one in-encounter use, one out-of-encounter use, and one later surprising second use.
-- Validate new generation patches with `python tools/scenario_agent.py validate PATCH --strict-scenario-contract`.
+- Validate new generation patches with `python tools/scenario_agent.py validate PATCH --strict-scenario-contract --strict-payoffs`.
+- Audit follow-through debt with `python tools/scenario_agent.py audit-payoffs --json --include-pending-hooks`, audit immediate choice acknowledgments with `python tools/scenario_agent.py audit-feedback --json`, then classify grow/prune work with `python tools/scenario_agent.py triage-payoffs --include-pending-hooks --out generated/payoff_triage_report.md`.
 - Applied-content audits default to migration mode so old metadata debt is grouped. Use `--mode strict` on `audit-depth` or `audit-writing` only when auditing newly migrated/generated content.
 
 ## Core Runtime Files
@@ -130,6 +132,9 @@ python tools/scenario_agent.py content-authorship
 python tools/scenario_agent.py setting-backbone
 python tools/scenario_agent.py hymn-corpus-voice
 python tools/scenario_agent.py audit-story --json
+python tools/scenario_agent.py audit-payoffs --json --include-pending-hooks
+python tools/scenario_agent.py audit-feedback --json
+python tools/scenario_agent.py triage-payoffs --include-pending-hooks --out generated/payoff_triage_report.md
 python tools/scenario_agent.py generate --room rib_lock_tally_gate --category choice --strict-tradeoffs --mock
 python tools/scenario_agent.py generate --mock --room rib_lock_tally_gate --category choice --source-work verne_twenty_thousand_leagues --source-motif sealed_vessel --strict-tradeoffs --out generated/corpus_seed_scenario_patch.json
 python tools/scenario_agent.py validate generated/scenario_patch.json
@@ -181,6 +186,9 @@ Required acceptance gate for generated or migrated content:
 ```sh
 python tools/scenario_agent.py audit-writing
 python tools/scenario_agent.py audit-story --json
+python tools/scenario_agent.py audit-payoffs --json --include-pending-hooks
+python tools/scenario_agent.py audit-feedback --json
+python tools/scenario_agent.py triage-payoffs --include-pending-hooks --out generated/payoff_triage_report.md
 python tools/scenario_agent.py validate-events --strict-actions
 python tools/project_bootstrap.py --strict
 ```

@@ -30,6 +30,10 @@ Use `story_room_contract.md` as the acceptance standard for forward room scenari
 
 The target scenario size is closer to Revelation than to a procedural room spec: compact, playable, and story-rich. Prefer one vivid pulp-fed situation with a meaningful possibility tree over a large apparatus diagram.
 
+Current taste target: make future generation feel closer to `operator_cellar` and `amar_creepstride_red_chapel` than to the scar-mite/maintenance/procedural rooms. The desired shape is a concrete dramatic pressure scene: a present actor or force, a readable body problem, a tactical/moral posture choice, and consequences that feel personal to Hymn. Use Operator Cellar and Amar as quality references for immediacy, confrontation, readable stakes, and character pressure. Do not copy their corridors, pursuers, or exact branch structures.
+
+Avoid the "mite room" drift: rooms that read mainly as apparatus, ritual procedure, ecology diagram, toll mechanism, or abstract biological puzzle. Environmental intelligence is useful only when it creates a live scene with leverage. If a premise starts with a mechanism, add an actor, threat, rival, witness, debt-holder, predator, or bodily commitment that makes the choice feel like a scene rather than maintenance.
+
 Use `ending_maze_architecture.md` for run structure. Every environment family should have at least one possible ending vector. Not every path reaches that ending, but every room family should be able to culminate somewhere.
 
 Use `hymn_corpus_voice.md` for prose, but do not treat the old Verne/Lovecraft seed set as required. It is optional legacy material for procedure, evidence, contamination, and buried-history pressure only. The target is not generic weird fiction, citation metadata, HEMA lecture, biology textbook, or direct source homage. Hymn's voice should compress concrete procedural observation, hostile-world pressure, and tactical body consequence into clean field-report narration.
@@ -124,7 +128,7 @@ When generating scenarios, mechanics, or lore:
 Use strict checks for new generation patches:
 
 ```sh
-python tools/scenario_agent.py validate generated/prototype_pulp_scenario_patch.json --strict-scenario-contract
+python tools/scenario_agent.py validate generated/prototype_pulp_scenario_patch.json --strict-scenario-contract --strict-payoffs
 ```
 
 Use migration-mode audits for the current applied deck while old content is being converted:
@@ -189,3 +193,18 @@ Critiques must flag:
 Test post-update rooms in text/decision form before making audio.
 
 Do not refresh or generate TTS for post-update rooms until the room loop, descriptions, and choices are accepted.
+
+## Over-Observation Cap
+
+The project now has enough rooms where the organism observes, records, weighs, profiles, scents, prints, heat-reads, gait-reads, or otherwise passively classifies Hymn. Treat that pattern as overused. Future scenarios should not default to rooms watching Hymn, registering her trace, or turning her footprint/weight/scent/heat into the main consequence.
+
+Recognition is still allowed, but it should usually come from active conduct: a rival saw her spare someone, a debt-holder was cheated, a predator was wounded and changed tactics, a faction lost a route, a patient was abandoned, a guard survived, a bargain was honored, or a body technique became publicly consequential. Use biometric observation only when it is the point of a specific room, not as a default glue or follow-up engine.
+
+Normalize any observation consequence into a concrete result before accepting it. Replace vague outcomes like "the room tracks Hymn" or "the organism records her" with the exact changed thing: a price rises, a route opens or closes, a hunter changes tactics, a later option is removed, a follow-up event is scheduled, a faction changes leverage, or a marked-lane pressure counter moves. If no concrete result exists, cut the observation.
+
+## Branch Follow-Through Rule
+
+
+Use payoff triage before growing dangling hooks. `audit-payoffs` finds missing payoff shape; `audit-feedback` finds choices that advance without visible acknowledgement; `triage-payoffs` decides whether the fix should be an inserted scenario, a delayed scenario, a concrete response, or a closed/pruned branch. Do not send `concrete_response` or `closed_pruned` rows to Claude as new rooms by default.
+
+Strong primary scenes are not enough. Major choices need visible aftermath. A branch should usually produce immediate result feedback and then either: a delayed playable escalation scenario, a state override in a later room, a changed deck/route pressure, or a specific ending pull. Avoid one-off trailing echoes that merely restate the original event. If a follow-up is substantial, mark it as a counted scenario (`counts_as_room`) and give it new choices, not just narration.

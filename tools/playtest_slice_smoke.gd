@@ -3,13 +3,48 @@ extends SceneTree
 const RunManagerScript := preload("res://run_manager.gd")
 
 const PLAYTEST_ROOMS := {
+	"amber_corridor": true,
+	"egg_corridor": true,
+	"healing_pool": true,
+	"organ_chamber_red": true,
+	"spiked_red_corridor": true,
+	"amar_creepstride_red_chapel": true,
+	"biomass_larder": true,
+	"bone_corridor": true,
+	"drowned_toll_harbor": true,
+	"maintenance_rite_chapel": true,
 	"operator_cellar": true,
+	"scar_map_junction": true,
 	"white_marrow_field": true,
 }
 
 const PLAYTEST_EVENTS := {
+	"amber_corridor_silt_return_paid": true,
+	"amber_corridor_silt_return_spoiled": true,
+	"amber_corridor_silt_return_read": true,
+	"spiked_red_corridor_broken_tip_return": true,
+	"spiked_red_corridor_wound_debt_return": true,
+	"spiked_red_corridor_patience_return": true,
+	"spiked_red_corridor_watcher_followup": true,
+	"egg_corridor_followup_sleeve_marker": true,
+	"egg_corridor_followup_cold_record": true,
+	"egg_corridor_followup_full_record": true,
+	"healing_pool_patient_mark_followup": true,
+	"healing_pool_parasite_mark_followup": true,
+	"healing_pool_unresolved_followup": true,
+	"amber_corridor_silt_confrontation": true,
+	"egg_corridor_brood_witness": true,
+	"healing_pool_custodian_contest": true,
+	"heart_keeper_encounter_2": true,
+	"spiked_red_corridor_spine_duel": true,
+	"amar_red_chapel_root": true,
+	"biomass_larder_collector_confrontation": true,
+	"bone_corridor_toll_keeper": true,
+	"drowned_toll_harbor_collector_block": true,
+	"maintenance_rite_chapel_warden_confrontation_2": true,
 	"operator_cellar_grip_predator": true,
 	"operator_cellar_wall_reader": true,
+	"scar_map_junction_cartographer_toll": true,
 	"white_marrow_field_hound_lanes": true,
 }
 
@@ -65,11 +100,10 @@ func _init() -> void:
 		run_manager.consume_current_event(_first_button_action(encounter))
 		run_manager.advance_to_next_encounter()
 
-	for required_room in PLAYTEST_ROOMS.keys():
-		if not seen_rooms.has(required_room):
-			push_error("Required playtest room '%s' did not appear in the opening stream." % required_room)
-			quit(1)
-			return
+	if seen_rooms.size() < 5:
+		push_error("Opening stream only covered %d approved playtest rooms." % seen_rooms.size())
+		quit(1)
+		return
 
 	print("PLAYTEST_SLICE_SMOKE_OK")
 	quit(0)

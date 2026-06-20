@@ -1837,6 +1837,762 @@ def _story_followup_entries(event: dict[str, Any]) -> list[dict[str, Any]]:
     return entries
 
 
+
+PAYOFF_HOOK_REQUIRED_KEYS = {
+    "hook_id",
+    "payoff_type",
+    "promise",
+    "followup_pressure",
+    "generation_prompt",
+}
+PAYOFF_CONCRETE_RESULT_KEYS = {
+    "biomass_delta",
+    "cards",
+    "corruption_delta",
+    "danger_delta",
+    "health_delta",
+    "items",
+    "next_room_id",
+    "next_special_event_id",
+    "pressure_axis_changes",
+    "status_effects",
+    "story_followups",
+}
+
+
+def _event_buttons(event: dict[str, Any]) -> list[dict[str, Any]]:
+    buttons = event.get("buttons", [])
+    if not isinstance(buttons, list):
+        return []
+    return [button for button in buttons if isinstance(button, dict)]
+
+
+def _button_action_id(button: dict[str, Any]) -> str:
+    return str(button.get("action", "")).strip()
+
+
+def _button_label(button: dict[str, Any]) -> str:
+    return str(button.get("label", "")).strip() or _button_action_id(button)
+
+
+def _action_result_for_button(event: dict[str, Any], button: dict[str, Any]) -> dict[str, Any]:
+    action_id = _button_action_id(button)
+    action_results = event.get("action_results", {})
+    if isinstance(action_results, dict):
+        result = action_results.get(action_id, {})
+        if isinstance(result, dict):
+            return result
+    for key in ("action_result", "result"):
+        result = button.get(key, {})
+        if isinstance(result, dict):
+            return result
+    return {}
+
+
+def _handled_environment_state_keys() -> set[str]:
+    source = read_text(RUN_MANAGER_PATH)
+    function_start = source.find("func _apply_environment_state_effect")
+    if function_start == -1:
+        return set()
+    function_tail = source[function_start:]
+    next_function = re.search(r"\nfunc\s+", function_tail[1:])
+    if next_function:
+        function_tail = function_tail[: next_function.start() + 1]
+    return set(re.findall(r'^\s*"([^"]+)":\s*$', function_tail, re.MULTILINE))
+
+
+def _result_payoff_bits(result: dict[str, Any], handled_states: set[str]) -> list[str]:
+    bits: list[str] = []
+    for key in sorted(PAYOFF_CONCRETE_RESULT_KEYS):
+        value = result.get(key)
+        if value not in (None, [], {}, "", 0):
+            bits.append(key)
+    environment_changes = result.get("environment_state_changes", [])
+    if isinstance(environment_changes, list):
+        for state_key in environment_changes:
+            state_text = str(state_key)
+            if state_text in handled_states:
+                bits.append(f"handled_environment_state:{state_text}")
+    return sorted(set(bits))
+
+
+def _event_payoff_bits(event: dict[str, Any], handled_states: set[str]) -> list[str]:
+    bits: list[str] = []
+    if event.get("state_overrides"):
+        bits.append("state_overrides")
+    if event.get("payoff_hooks"):
+        bits.append("payoff_hooks")
+    for button in _event_buttons(event):
+        bits.extend(_result_payoff_bits(_action_result_for_button(event, button), handled_states))
+    return sorted(set(bits))
+
+
+def _story_followup_entries_by_action(event: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
+    followups = event.get("story_followups")
+    entries: list[tuple[str, dict[str, Any]]] = []
+
+    def add_from_value(action_id: str, value: Any) -> None:
+        if isinstance(value, str) and value:
+            entries.append((action_id, {"event_id": value}))
+        elif isinstance(value, dict):
+            entries.append((action_id, value))
+
+    if isinstance(followups, str):
+        add_from_value("default", followups)
+    elif isinstance(followups, dict):
+        for action_id, value in followups.items():
+            if isinstance(value, list):
+                for item in value:
+                    add_from_value(str(action_id), item)
+            else:
+                add_from_value(str(action_id), value)
+    elif isinstance(followups, list):
+        for value in followups:
+            add_from_value("default", value)
+    return entries
+
+
+def _payoff_hooks_by_action(event: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
+    hooks = event.get("payoff_hooks", {})
+    normalized: dict[str, list[dict[str, Any]]] = {}
+    if isinstance(hooks, dict):
+        for action_id, value in hooks.items():
+            if isinstance(value, dict):
+                normalized.setdefault(str(action_id), []).append(value)
+            elif isinstance(value, list):
+                normalized.setdefault(str(action_id), []).extend(item for item in value if isinstance(item, dict))
+    elif isinstance(hooks, list):
+        for hook in hooks:
+            if not isinstance(hook, dict):
+                continue
+            action_id = str(hook.get("source_action", "default")).strip() or "default"
+            normalized.setdefault(action_id, []).append(hook)
+    return normalized
+
+
+def _payoff_hook_errors(event: dict[str, Any], location: str) -> list[str]:
+    errors: list[str] = []
+    hooks_by_action = _payoff_hooks_by_action(event)
+    if not hooks_by_action:
+        return [f"{location}: missing payoff_hooks for separately generated follow-up"]
+    legal_actions = {_button_action_id(button) for button in _event_buttons(event)}
+    for action_id, hooks in hooks_by_action.items():
+        if action_id not in legal_actions and action_id != "default":
+            errors.append(f"{location}.payoff_hooks.{action_id}: hook action does not match a button action")
+        if not hooks:
+            errors.append(f"{location}.payoff_hooks.{action_id}: hook list is empty")
+            continue
+        for hook_index, hook in enumerate(hooks):
+            missing = [key for key in sorted(PAYOFF_HOOK_REQUIRED_KEYS) if not str(hook.get(key, "")).strip()]
+            if missing:
+                errors.append(
+                    f"{location}.payoff_hooks.{action_id}[{hook_index}]: missing {', '.join(missing)}"
+                )
+    return errors
+
+
+def _iter_events_with_locations(payload: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
+    events: list[tuple[str, dict[str, Any]]] = []
+    room_events = payload.get("room_events", {})
+    if isinstance(room_events, dict):
+        for room_id, room_event_list in room_events.items():
+            if not isinstance(room_event_list, list):
+                continue
+            for event in room_event_list:
+                if isinstance(event, dict):
+                    events.append((f"room_events.{room_id}.{event.get('id', 'unknown')}", event))
+    special_events = payload.get("special_events", {})
+    if isinstance(special_events, dict):
+        for event_id, event in special_events.items():
+            if isinstance(event, dict):
+                events.append((f"special_events.{event_id}", event))
+    return events
+
+
+SYSTEM_UI_ACTIONS = {
+    "browse_wares",
+    "cancel",
+    "confirm",
+    "continue_audio",
+    "restart_run",
+}
+SYSTEM_UI_ACTION_PREFIXES = (
+    "activate_symbiote:",
+    "buy_mutation:",
+    "take_symbiote:",
+)
+
+
+def _runtime_action_result_for_button(event: dict[str, Any], button: dict[str, Any]) -> dict[str, Any]:
+    action_id = _button_action_id(button)
+    action_results = event.get("action_results", {})
+    if isinstance(action_results, dict):
+        for key in (action_id, "default"):
+            result = action_results.get(key, {})
+            if isinstance(result, dict):
+                return result
+    for key in ("action_result", "result"):
+        result = button.get(key, {})
+        if isinstance(result, dict):
+            return result
+    return {}
+
+
+def _has_visible_result_lines(result: dict[str, Any]) -> bool:
+    lines = result.get("lines", [])
+    return isinstance(lines, list) and any(str(line).strip() for line in lines)
+
+
+def immediate_feedback_findings(
+    payload: dict[str, Any] | None = None,
+    require_specific_results: bool = False,
+) -> list[dict[str, Any]]:
+    payload = payload or load_json(EVENTS_PATH)
+    runtime_actions = existing_actions()
+    findings: list[dict[str, Any]] = []
+
+    def add(location: str, severity: str, issue: str, recommendation: str, **extra: Any) -> None:
+        finding = {
+            "severity": severity,
+            "location": location,
+            "issue": issue,
+            "recommendation": recommendation,
+        }
+        finding.update(extra)
+        findings.append(finding)
+
+    for location, event in _iter_events_with_locations(payload):
+        button_count = commandable_button_count(event)
+        for button in _event_buttons(event):
+            action_id = _button_action_id(button)
+            if not action_id:
+                continue
+            if action_id in SYSTEM_UI_ACTIONS or action_id.startswith(SYSTEM_UI_ACTION_PREFIXES):
+                continue
+
+            result = _runtime_action_result_for_button(event, button)
+            button_location = f"{location}.buttons.{action_id}"
+            if result:
+                if not _has_visible_result_lines(result):
+                    add(
+                        button_location,
+                        "high",
+                        "action result has no visible feedback lines",
+                        "Add action_results lines so the acknowledgement screen says what happened before advancing.",
+                        label=_button_label(button),
+                    )
+                continue
+
+            if action_id == "proceed" and button_count > 1 and not is_tradeoff_exempt_event(event):
+                add(
+                    button_location,
+                    "high",
+                    "multi-choice proceed branch advances without acknowledgement",
+                    "Add action_results.proceed.lines, or use a non-proceed action with a result, so this choice has feedback before the next encounter.",
+                    label=_button_label(button),
+                )
+                continue
+
+            if action_id not in runtime_actions:
+                add(
+                    button_location,
+                    "high",
+                    "button has no visible action result and no runtime action handler",
+                    "Add action_results lines/state changes or implement a runtime handler before this button is shipped.",
+                    label=_button_label(button),
+                )
+                continue
+
+            if require_specific_results and not is_tradeoff_exempt_event(event):
+                add(
+                    button_location,
+                    "low",
+                    "branch relies on generic runtime feedback",
+                    "Add event-specific action_results lines when this choice needs scene-specific acknowledgement.",
+                    label=_button_label(button),
+                )
+
+    return findings
+
+
+def payoff_findings(payload: dict[str, Any] | None = None, include_pending_hooks: bool = False) -> list[dict[str, Any]]:
+    payload = payload or load_json(EVENTS_PATH)
+    special_events = payload.get("special_events", {})
+    if not isinstance(special_events, dict):
+        special_events = {}
+    handled_states = _handled_environment_state_keys()
+    findings: list[dict[str, Any]] = []
+    seen_findings: set[tuple[str, str]] = set()
+
+    def add(location: str, severity: str, issue: str, recommendation: str) -> None:
+        dedupe_key = (location, issue)
+        if dedupe_key in seen_findings:
+            return
+        seen_findings.add(dedupe_key)
+        findings.append(
+            {
+                "location": location,
+                "severity": severity,
+                "issue": issue,
+                "recommendation": recommendation,
+            }
+        )
+
+    for location, event in _iter_events_with_locations(payload):
+        hook_count = sum(len(hooks) for hooks in _payoff_hooks_by_action(event).values())
+        followup_refs = _story_followup_entries_by_action(event)
+        if include_pending_hooks and hook_count and not followup_refs:
+            add(
+                f"{location}.payoff_hooks",
+                "info",
+                f"{hook_count} pending payoff hook{'s' if hook_count != 1 else ''}",
+                "Generate the follow-up as a separate pass, then wire it through story_followups when the special event exists.",
+            )
+
+        for action_id, followup in followup_refs:
+            followup_id = str(followup.get("event_id", "")).strip()
+            followup_location = f"{location}.story_followups.{action_id}"
+            if not followup_id:
+                add(followup_location, "high", "story follow-up has no event_id", "Name the special_event to schedule.")
+                continue
+            target = special_events.get(followup_id, {})
+            if not isinstance(target, dict):
+                add(
+                    followup_location,
+                    "high",
+                    f"story follow-up target '{followup_id}' is missing",
+                    "Generate the follow-up special event before wiring this story_followups entry.",
+                )
+                continue
+            target_bits = _event_payoff_bits(target, handled_states)
+            target_buttons = _event_buttons(target)
+            target_location = f"special_events.{followup_id}"
+            if not bool(target.get("counts_as_room")) and not target_bits:
+                add(
+                    target_location,
+                    "high",
+                    "follow-up is a trailing echo, not a playable or concrete payoff",
+                    "Either promote it to a counted scenario with choices or make its result change a handled state, pressure, route, price, option mask, next room, or next special event.",
+                )
+            if bool(target.get("counts_as_room")) and not str(target.get("room_id", "")).strip():
+                add(
+                    target_location,
+                    "high",
+                    "counted follow-up has no room_id",
+                    "Set room_id so the delayed scenario has a concrete place in the run stack.",
+                )
+            if bool(target.get("counts_as_room")) and len(target_buttons) < 2:
+                add(
+                    target_location,
+                    "medium",
+                    "counted follow-up has fewer than two choices",
+                    "Give the follow-up a new playable pressure, not a single acknowledgement button.",
+                )
+            if bool(target.get("counts_as_room")) and not target_bits:
+                add(
+                    target_location,
+                    "high",
+                    "counted follow-up choices do not leave a concrete payoff",
+                    "Its result branches should queue another hook/follow-up, alter a handled state, shift pressure, change a route/price/option, or explicitly close the arc.",
+                )
+    return findings
+
+
+
+PAYOFF_TRIAGE_CLASSES = {
+    "inserted_scenario",
+    "delayed_scenario",
+    "concrete_response",
+    "closed_pruned",
+    "needs_manual",
+}
+
+PAYOFF_OBSERVATION_TERMS = {
+    "gait",
+    "heat",
+    "measure",
+    "measured",
+    "profile",
+    "record",
+    "recorded",
+    "scent",
+    "smell",
+    "trace",
+    "tracks",
+    "weigh",
+    "weight",
+    "print",
+}
+
+PAYOFF_ACTIVE_THREAT_TERMS = {
+    "ambush",
+    "blood",
+    "chase",
+    "hound",
+    "hunt",
+    "hunter",
+    "kill",
+    "predator",
+    "pursuit",
+    "stalk",
+    "wound",
+}
+
+PAYOFF_ACTOR_TERMS = {
+    "amar",
+    "apostle",
+    "captain",
+    "collector",
+    "commandant",
+    "feeder",
+    "keeper",
+    "merchant",
+    "operator",
+    "pell",
+    "quartermaster",
+    "silt",
+    "warden",
+    "watcher",
+}
+
+PAYOFF_ROUTE_TERMS = {
+    "bridge",
+    "cellar",
+    "cord",
+    "door",
+    "ferry",
+    "gate",
+    "lane",
+    "lock",
+    "passage",
+    "path",
+    "route",
+}
+
+PAYOFF_DEBT_TERMS = {
+    "account",
+    "bargain",
+    "debt",
+    "owed",
+    "payment",
+    "price",
+    "ration",
+    "receipt",
+    "toll",
+}
+
+PAYOFF_CLOSURE_TERMS = {
+    "break",
+    "close",
+    "closed",
+    "correct",
+    "deny",
+    "leave",
+    "refuse",
+    "seal",
+    "sever",
+    "spoil",
+    "withdraw",
+}
+
+PAYOFF_MECHANISM_TERMS = {
+    "checksum",
+    "pore",
+    "procedure",
+    "sample",
+    "tally",
+    "valve",
+}
+
+
+def _location_event_id(location: str) -> str:
+    if not location:
+        return ""
+    parts = location.split(".")
+    if len(parts) >= 2 and parts[0] == "special_events":
+        return parts[1]
+    if len(parts) >= 3 and parts[0] == "room_events":
+        return parts[2]
+    return parts[-1]
+
+
+def _event_text_chunks(event: dict[str, Any]) -> list[str]:
+    chunks: list[str] = []
+    for key in ("id", "room_id", "speaker", "line_1", "line_2", "line_3", "description", "text"):
+        value = event.get(key)
+        if isinstance(value, str):
+            chunks.append(value)
+    lines = event.get("lines", [])
+    if isinstance(lines, list):
+        chunks.extend(str(line) for line in lines if isinstance(line, str))
+    for button in _event_buttons(event):
+        chunks.append(_button_label(button))
+        action_id = _button_action_id(button)
+        if action_id:
+            chunks.append(action_id)
+        result = _action_result_for_button(event, button)
+        result_lines = result.get("lines", [])
+        if isinstance(result_lines, list):
+            chunks.extend(str(line) for line in result_lines if isinstance(line, str))
+        for key in ("next_room_id", "next_special_event_id"):
+            if isinstance(result.get(key), str):
+                chunks.append(result[key])
+        for key in ("environment_state_changes", "pressure_axis_changes", "status_effects"):
+            values = result.get(key, [])
+            if isinstance(values, list):
+                chunks.extend(str(value) for value in values)
+    return chunks
+
+
+def _matching_terms(text: str, terms: set[str]) -> list[str]:
+    return sorted(term for term in terms if re.search(rf"\b{re.escape(term)}\b", text))
+
+
+def _incoming_story_followups(payload: dict[str, Any]) -> dict[str, list[dict[str, str]]]:
+    incoming: dict[str, list[dict[str, str]]] = {}
+    for location, event in _iter_events_with_locations(payload):
+        buttons_by_action = {_button_action_id(button): button for button in _event_buttons(event)}
+        for action_id, followup in _story_followup_entries_by_action(event):
+            followup_id = str(followup.get("event_id", "")).strip()
+            if not followup_id:
+                continue
+            button = buttons_by_action.get(action_id, {})
+            incoming.setdefault(followup_id, []).append(
+                {
+                    "source_location": location,
+                    "source_action": action_id,
+                    "source_label": _button_label(button) if button else action_id,
+                }
+            )
+    return incoming
+
+
+def _payoff_triage_for_finding(
+    finding: dict[str, Any],
+    payload: dict[str, Any],
+    incoming: dict[str, list[dict[str, str]]],
+    handled_states: set[str],
+) -> dict[str, Any]:
+    special_events = payload.get("special_events", {})
+    if not isinstance(special_events, dict):
+        special_events = {}
+    event_id = _location_event_id(str(finding.get("location", "")))
+    event = special_events.get(event_id, {})
+    if not isinstance(event, dict):
+        event = {}
+
+    text = " ".join(_event_text_chunks(event)).lower()
+    buttons = _event_buttons(event)
+    target_bits = _event_payoff_bits(event, handled_states) if event else []
+    observation_terms = _matching_terms(text, PAYOFF_OBSERVATION_TERMS)
+    active_terms = _matching_terms(text, PAYOFF_ACTIVE_THREAT_TERMS)
+    actor_terms = _matching_terms(text, PAYOFF_ACTOR_TERMS)
+    route_terms = _matching_terms(text, PAYOFF_ROUTE_TERMS)
+    debt_terms = _matching_terms(text, PAYOFF_DEBT_TERMS)
+    closure_terms = _matching_terms(text, PAYOFF_CLOSURE_TERMS)
+    mechanism_terms = _matching_terms(text, PAYOFF_MECHANISM_TERMS)
+
+    score = 0
+    reasons: list[str] = []
+    if active_terms:
+        score += 2
+        reasons.append("active threat or pursuit pressure: " + ", ".join(active_terms[:5]))
+    if actor_terms:
+        score += 2
+        reasons.append("named actor or faction pressure: " + ", ".join(actor_terms[:5]))
+    if route_terms:
+        score += 2
+        reasons.append("route/access consequence: " + ", ".join(route_terms[:5]))
+    if debt_terms:
+        score += 2
+        reasons.append("debt/price/account consequence: " + ", ".join(debt_terms[:5]))
+    if len(buttons) >= 2:
+        score += 1
+        reasons.append("already has multiple player choices")
+    if target_bits:
+        score += 1
+        reasons.append("already has concrete payoff bits: " + ", ".join(target_bits[:5]))
+    if observation_terms:
+        score -= 2
+        reasons.append("over-observation pattern: " + ", ".join(observation_terms[:5]))
+    if mechanism_terms and not (active_terms or actor_terms):
+        score -= 1
+        reasons.append("mostly mechanism/accounting language: " + ", ".join(mechanism_terms[:5]))
+
+    issue = str(finding.get("issue", ""))
+    counts_as_room = bool(event.get("counts_as_room"))
+    has_missing_target = "target" in issue and "missing" in issue
+    has_no_event = not bool(event)
+    observation_dominant = bool(observation_terms) and not (active_terms or actor_terms or route_terms or debt_terms)
+
+    if has_missing_target or has_no_event:
+        triage_class = "needs_manual"
+        next_step = "Inspect the source branch before choosing whether to generate or remove the missing follow-up."
+    elif counts_as_room and "counted follow-up" in issue:
+        if score >= 4:
+            triage_class = "delayed_scenario"
+            next_step = "Keep it playable, then add concrete branch results or a next follow-up hook."
+        else:
+            triage_class = "concrete_response"
+            next_step = "Keep the scene, but make each choice change state, pressure, route, price, or closure."
+    elif score >= 4 and (active_terms or actor_terms) and not observation_dominant:
+        triage_class = "inserted_scenario"
+        next_step = "Promote this payoff into a counted follow-up scenario with choices and concrete branch results."
+    elif score >= 3 and active_terms and not observation_dominant:
+        triage_class = "delayed_scenario"
+        next_step = "Set a handled state now and consume it in a later pressure scene."
+    elif closure_terms and score <= 2:
+        triage_class = "closed_pruned"
+        next_step = "Add closure result text plus a resolved/severed state flag; do not grow a new scenario."
+    elif observation_dominant or score <= 3:
+        triage_class = "concrete_response"
+        next_step = "Normalize the branch into a concrete response: state, pressure, route, price, option mask, or ending pull."
+    else:
+        triage_class = "concrete_response"
+        next_step = "Treat this as artifact or route feedback unless manual review finds an actor who will act later."
+
+    referenced_by = incoming.get(event_id, [])
+    if not referenced_by and event_id:
+        reasons.append("no incoming story_followups reference found")
+
+    return {
+        "location": finding.get("location", ""),
+        "event_id": event_id,
+        "room_id": event.get("room_id", ""),
+        "severity": finding.get("severity", ""),
+        "issue": issue,
+        "triage_class": triage_class,
+        "score": score,
+        "reasons": reasons,
+        "next_step": next_step,
+        "referenced_by": referenced_by,
+        "button_labels": [_button_label(button) for button in buttons],
+    }
+
+
+def payoff_triage(
+    payload: dict[str, Any] | None = None,
+    include_pending_hooks: bool = False,
+) -> list[dict[str, Any]]:
+    payload = payload or load_json(EVENTS_PATH)
+    incoming = _incoming_story_followups(payload)
+    findings = payoff_findings(payload=payload, include_pending_hooks=include_pending_hooks)
+    handled_states = _handled_environment_state_keys()
+    return [_payoff_triage_for_finding(finding, payload, incoming, handled_states) for finding in findings]
+
+
+def payoff_triage_markdown(rows: list[dict[str, Any]]) -> str:
+    by_class: dict[str, list[dict[str, Any]]] = {key: [] for key in sorted(PAYOFF_TRIAGE_CLASSES)}
+    for row in rows:
+        by_class.setdefault(str(row.get("triage_class", "needs_manual")), []).append(row)
+
+    lines: list[str] = [
+        "# Payoff Triage Report",
+        "",
+        "This report classifies payoff audit findings into generation and pruning work.",
+        "",
+        "## Summary",
+        "",
+    ]
+    for triage_class in ("inserted_scenario", "delayed_scenario", "concrete_response", "closed_pruned", "needs_manual"):
+        lines.append(f"- {triage_class}: {len(by_class.get(triage_class, []))}")
+    lines.append("")
+
+    for triage_class in ("inserted_scenario", "delayed_scenario", "concrete_response", "closed_pruned", "needs_manual"):
+        entries = by_class.get(triage_class, [])
+        lines.extend([f"## {triage_class}", ""])
+        if not entries:
+            lines.extend(["None.", ""])
+            continue
+        for row in entries:
+            title = row.get("event_id") or row.get("location")
+            lines.append(f"### {title}")
+            lines.append("")
+            lines.append(f"- location: `{row.get('location', '')}`")
+            if row.get("room_id"):
+                lines.append(f"- room: `{row.get('room_id')}`")
+            lines.append(f"- score: {row.get('score')}")
+            lines.append(f"- issue: {row.get('issue')}")
+            lines.append(f"- next: {row.get('next_step')}")
+            if row.get("button_labels"):
+                labels = ", ".join(f"`{label}`" for label in row.get("button_labels", []))
+                lines.append(f"- buttons: {labels}")
+            if row.get("referenced_by"):
+                refs = ", ".join(
+                    f"`{ref.get('source_location')}:{ref.get('source_action')}`"
+                    for ref in row.get("referenced_by", [])
+                )
+                lines.append(f"- referenced by: {refs}")
+            if row.get("reasons"):
+                lines.append("- reasons: " + "; ".join(str(reason) for reason in row.get("reasons", [])))
+            lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def _story_followup_payoff_errors(
+    event: dict[str, Any],
+    location: str,
+    special_events: dict[str, Any],
+    handled_states: set[str],
+) -> list[str]:
+    errors: list[str] = []
+    for action_id, followup in _story_followup_entries_by_action(event):
+        followup_id = str(followup.get("event_id", "")).strip()
+        followup_location = f"{location}.story_followups.{action_id}"
+        if not followup_id:
+            errors.append(f"{followup_location}: story follow-up has no event_id")
+            continue
+        target = special_events.get(followup_id, {})
+        if not isinstance(target, dict):
+            errors.append(
+                f"{followup_location}: target '{followup_id}' is missing; leave a payoff_hooks entry until the follow-up special_event is generated"
+            )
+            continue
+        target_bits = _event_payoff_bits(target, handled_states)
+        if not bool(target.get("counts_as_room")) and not target_bits:
+            errors.append(f"special_events.{followup_id}: follow-up is a trailing echo, not a playable or concrete payoff")
+        if bool(target.get("counts_as_room")) and not str(target.get("room_id", "")).strip():
+            errors.append(f"special_events.{followup_id}: counted follow-up has no room_id")
+        if bool(target.get("counts_as_room")) and len(_event_buttons(target)) < 2:
+            errors.append(f"special_events.{followup_id}: counted follow-up has fewer than two choices")
+        if bool(target.get("counts_as_room")) and not target_bits:
+            errors.append(f"special_events.{followup_id}: counted follow-up choices do not leave a concrete payoff")
+    return errors
+
+
+def patch_payoff_errors(patch: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    active_events = load_json(EVENTS_PATH)
+    active_specials = active_events.get("special_events", {})
+    special_events: dict[str, Any] = dict(active_specials) if isinstance(active_specials, dict) else {}
+    for event in patch.get("special_events", []) or []:
+        if isinstance(event, dict) and event.get("id"):
+            special_events[str(event["id"])] = event
+
+    handled_states = _handled_environment_state_keys()
+    for index, item in enumerate(patch.get("events", []) or []):
+        if not isinstance(item, dict):
+            continue
+        event = item.get("event", {})
+        if not isinstance(event, dict):
+            continue
+        location = f"events[{index}].event.{event.get('id', 'unknown')}"
+        if commandable_button_count(event) > 1 and not _payoff_hooks_by_action(event) and not _story_followup_entries_by_action(event):
+            errors.append(f"{location}: missing payoff_hooks or story_followups for future follow-through")
+        if _payoff_hooks_by_action(event):
+            errors.extend(_payoff_hook_errors(event, location))
+        errors.extend(_story_followup_payoff_errors(event, location, special_events, handled_states))
+
+    for index, event in enumerate(patch.get("special_events", []) or []):
+        if not isinstance(event, dict):
+            continue
+        location = f"special_events[{index}].{event.get('id', 'unknown')}"
+        if _payoff_hooks_by_action(event):
+            errors.extend(_payoff_hook_errors(event, location))
+        errors.extend(_story_followup_payoff_errors(event, location, special_events, handled_states))
+    return errors
+
+
 def action_balance_notes() -> dict[str, Any]:
     return {
         "danger": {
@@ -4819,6 +5575,7 @@ def validation_errors(
     expected_category: str = "",
     strict_tradeoffs: bool = False,
     strict_scenario_contract: bool = False,
+    strict_payoffs: bool = False,
 ) -> list[str]:
     errors: list[str] = []
     rooms = set(room_ids())
@@ -5027,6 +5784,9 @@ def validation_errors(
             action = str(button.get("action", "")).strip()
             if action and action not in actions and not allow_new_actions:
                 errors.append(f"special_events.{event_id}: unknown action '{action}'")
+
+    if strict_payoffs:
+        errors.extend(patch_payoff_errors(patch))
 
     if not allow_new_actions:
         required_changes = patch.get("required_engine_changes", [])
@@ -5707,6 +6467,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
         allow_new_actions=args.allow_new_actions,
         strict_tradeoffs=args.strict_tradeoffs,
         strict_scenario_contract=args.strict_scenario_contract,
+        strict_payoffs=getattr(args, "strict_payoffs", False),
     )
     if not errors:
         print("ok")
@@ -6104,6 +6865,78 @@ def cmd_audit_story(args: argparse.Namespace) -> int:
     return 1 if args.fail_on_findings else 0
 
 
+
+def cmd_audit_payoffs(args: argparse.Namespace) -> int:
+    findings = payoff_findings(include_pending_hooks=args.include_pending_hooks)
+    if args.json:
+        print(json.dumps({"findings": findings}, indent=2, ensure_ascii=False))
+        return 1 if findings and args.fail_on_findings else 0
+    if not findings:
+        print("ok")
+        return 0
+    for finding in findings:
+        print(
+            "{severity}: {location}: {issue} -> {recommendation}".format(
+                severity=finding["severity"],
+                location=finding["location"],
+                issue=finding["issue"],
+                recommendation=finding["recommendation"],
+            )
+        )
+    return 1 if args.fail_on_findings else 0
+
+
+def cmd_audit_feedback(args: argparse.Namespace) -> int:
+    findings = immediate_feedback_findings(require_specific_results=args.require_specific_results)
+    if args.json:
+        print(json.dumps({"findings": findings}, indent=2, ensure_ascii=False))
+        return 1 if findings and args.fail_on_findings else 0
+    if not findings:
+        print("ok")
+        return 0
+    for finding in findings:
+        print(
+            "{severity}: {location}: {issue} -> {recommendation}".format(
+                severity=finding["severity"],
+                location=finding["location"],
+                issue=finding["issue"],
+                recommendation=finding["recommendation"],
+            )
+        )
+    return 1 if findings and args.fail_on_findings else 0
+
+
+def cmd_triage_payoffs(args: argparse.Namespace) -> int:
+    rows = payoff_triage(include_pending_hooks=args.include_pending_hooks)
+    if args.out:
+        out_path = Path(args.out)
+        if not out_path.is_absolute():
+            out_path = ROOT / out_path
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        if args.json:
+            out_path.write_text(json.dumps({"triage": rows}, indent=2, ensure_ascii=False) + "\n")
+        else:
+            out_path.write_text(payoff_triage_markdown(rows))
+
+    if args.json:
+        print(json.dumps({"triage": rows}, indent=2, ensure_ascii=False))
+        return 1 if rows and args.fail_on_findings else 0
+
+    if not rows:
+        print("ok")
+        return 0
+
+    by_class: dict[str, int] = {}
+    for row in rows:
+        triage_class = str(row.get("triage_class", "needs_manual"))
+        by_class[triage_class] = by_class.get(triage_class, 0) + 1
+    for triage_class in ("inserted_scenario", "delayed_scenario", "concrete_response", "closed_pruned", "needs_manual"):
+        print(f"{triage_class}: {by_class.get(triage_class, 0)}")
+    if args.out:
+        print(f"wrote {args.out}")
+    return 1 if args.fail_on_findings else 0
+
+
 def cmd_audit_writing(args: argparse.Namespace) -> int:
     findings = event_writing_findings(mode=args.mode, playtest_slice=args.playtest_slice)
     if args.json:
@@ -6153,6 +6986,7 @@ def cmd_apply(args: argparse.Namespace) -> int:
         allow_new_actions=args.allow_new_actions,
         strict_tradeoffs=args.strict_tradeoffs,
         strict_scenario_contract=args.strict_scenario_contract,
+        strict_payoffs=getattr(args, "strict_payoffs", False),
     )
     if errors:
         for error in errors:
@@ -6568,6 +7402,7 @@ def build_parser() -> argparse.ArgumentParser:
     validate.add_argument("--allow-new-actions", action="store_true")
     validate.add_argument("--strict-tradeoffs", action="store_true", help="Require every non-transition room event in the patch to have at least two commandable buttons.")
     validate.add_argument("--strict-scenario-contract", action="store_true", help="Require new scenario metadata: character_change, possibility_tree, research influence, scenario_design_notes, and multi-use mutation hooks.")
+    validate.add_argument("--strict-payoffs", action="store_true", help="Require new scenarios to leave payoff_hooks or concrete follow-up wiring.")
     validate.set_defaults(func=cmd_validate)
 
     validate_events = sub.add_parser("validate-events", help="Validate events.json against broad categories.")
@@ -6592,6 +7427,25 @@ def build_parser() -> argparse.ArgumentParser:
     audit_tradeoffs.add_argument("--fail-on-findings", action="store_true", help="Exit nonzero when tradeoff findings are present.")
     audit_tradeoffs.set_defaults(func=cmd_audit_tradeoffs)
 
+    audit_payoffs = sub.add_parser("audit-payoffs", help="Audit delayed follow-ups for concrete playable payoff and list pending payoff hooks.")
+    audit_payoffs.add_argument("--json", action="store_true", help="Print JSON findings.")
+    audit_payoffs.add_argument("--include-pending-hooks", action="store_true", help="Include informational findings for payoff_hooks not wired to story_followups yet.")
+    audit_payoffs.add_argument("--fail-on-findings", action="store_true", help="Exit nonzero when payoff findings are present.")
+    audit_payoffs.set_defaults(func=cmd_audit_payoffs)
+
+    audit_feedback = sub.add_parser("audit-feedback", help="Audit choices for immediate visible acknowledgement before advancing.")
+    audit_feedback.add_argument("--json", action="store_true", help="Print JSON findings.")
+    audit_feedback.add_argument("--require-specific-results", action="store_true", help="Also report branches that rely on generic runtime action feedback.")
+    audit_feedback.add_argument("--fail-on-findings", action="store_true", help="Exit nonzero when feedback findings are present.")
+    audit_feedback.set_defaults(func=cmd_audit_feedback)
+
+    triage_payoffs = sub.add_parser("triage-payoffs", help="Classify payoff findings into grow, micro-response, prune, and manual-review buckets.")
+    triage_payoffs.add_argument("--json", action="store_true", help="Print JSON triage rows instead of a summary.")
+    triage_payoffs.add_argument("--include-pending-hooks", action="store_true", help="Include informational findings for payoff_hooks not wired to story_followups yet.")
+    triage_payoffs.add_argument("--out", help="Write a markdown report, or JSON when combined with --json.")
+    triage_payoffs.add_argument("--fail-on-findings", action="store_true", help="Exit nonzero when payoff triage rows are present.")
+    triage_payoffs.set_defaults(func=cmd_triage_payoffs)
+
     audit_depth = sub.add_parser("audit-depth", help="Audit room depth, delayed consequence, memory hooks, and interactable actors.")
     audit_depth.add_argument("--json", action="store_true", help="Print JSON findings.")
     audit_depth.add_argument("--mode", choices=["migration", "strict"], default="migration", help="Migration groups known legacy metadata debt; strict reports every new-contract gap.")
@@ -6608,6 +7462,7 @@ def build_parser() -> argparse.ArgumentParser:
     apply.add_argument("--allow-new-actions", action="store_true")
     apply.add_argument("--strict-tradeoffs", action="store_true", help="Require every non-transition room event in the patch to have at least two commandable buttons.")
     apply.add_argument("--strict-scenario-contract", action="store_true", help="Require new scenario metadata before applying the patch.")
+    apply.add_argument("--strict-payoffs", action="store_true", help="Require new scenarios to leave payoff_hooks or concrete follow-up wiring.")
     apply.add_argument("--dry-run", action="store_true")
     apply.set_defaults(func=cmd_apply)
 

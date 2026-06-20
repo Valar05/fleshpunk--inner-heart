@@ -80,7 +80,7 @@
       ],
       "cross_run_story_hooks": [
         "Unpaid lock pressure can reappear as a later toll demand.",
-        "Synchronized passage records Hymn's pulse rhythm in later pressure locks.",
+        "Synchronized passage makes later pressure locks open on Hymn's pulse rhythm.",
         "Forced ribs leave broken transit tissue that pursuit events can reference later."
       ],
       "environment_echoes": [
@@ -577,7 +577,7 @@
         }
       ],
       "progression_state": {
-        "early": "The field reads Hymn's stride through cleaned cuts and warmth loss.",
+        "early": "Cleaned cuts and warmth loss open the first hound lanes ahead.",
         "mid": "Hymn can learn cold-step footwork, foul the field's prediction, or answer pursuit with blood.",
         "late": "Repeated cold-step choices can grow into route discipline, while repeated hound fights feed pursuit pressure."
       },
@@ -820,9 +820,9 @@
       "id": "scar_map_junction",
       "environment_id": "route_navigation_organs",
       "name": "Scar Map Junction",
-      "instance_premise": "A living junction where scar mites revise route marks from gait, signal packets, and old survey cuts.",
-      "first_visit_description": "Chorus, the junction is mapped in scar tissue. Three routes pulse under the skin. Scar mites move grain by grain along the quiet path and leave it clean enough to read. The bright path takes my gait before I choose.",
-      "return_description": "A scar junction waits with revised routes already pulsing under the skin.",
+      "instance_premise": "A junction where scar mites continuously revise three route marks from gait-pressure and embedded signal packets. A rival cartographer named Solt has arrived first, pressed her own cord-feeder into the floor tissue, and is harvesting whoever walks the junction. She wants Hymn's route leverage added to her packet before she lets anyone through. The floor is already under Solt's feeder. Every second standing still gives her cleaner leverage.",
+      "first_visit_description": "Solt is crouched at the center seam, one knee down, a cord-feeder pressed flat against the floor tissue. She does not look up. The scar mites are moving toward my feet. I can feel the floor reading my stride before I take a step. Solt says the walk is hers now; if I refuse, I leave with nothing.",
+      "return_description": "The cord-feeder is still anchored in the seam. Solt is gone but the mites remember my weight.",
       "tags": [
         "route",
         "signal",
@@ -835,20 +835,28 @@
       ],
       "corpus_influences": [
         {
-          "seed_id": "verne_moon_voyage_03_navigation_system",
-          "source_title": "From the Earth to the Moon",
-          "source_author": "Jules Verne",
-          "source_moment": "Navigation and launch decisions gain excitement from numbers, trajectory, timing, and a system that must be trusted before it can be tested.",
-          "writing_influence": "Verne turns route selection into practical suspense by making the calculation visible.",
-          "room_application": "Write the scar map as navigation tissue: paths, marks, signal packets, and revisions should be concrete enough to judge."
+          "source_id": "haggard_king_solomons_mines_pg2166",
+          "source_title": "King Solomon's Mines",
+          "source_author": "H. Rider Haggard",
+          "source_moment": "A map is both a record of prior passage and a claim of ownership over the route; the party must negotiate with the map's keeper before they can proceed.",
+          "writing_influence": "Solt's cord-feeder is the map. She owns the junction's memory and is actively writing Hymn into it as a route asset, not a traveler.",
+          "scenario_application": "The map-as-ownership pressure forces Hymn to decide whether to pay, destroy, or contest the cartographer's claim. Every choice changes what the route remembers about her."
         },
         {
-          "seed_id": "lovecraft_charles_dexter_ward_03_signal_or_record",
-          "source_title": "The Case of Charles Dexter Ward",
-          "source_author": "H. P. Lovecraft",
-          "source_moment": "Records and copied signs become dangerous because they preserve a pattern that can be reactivated.",
-          "writing_influence": "The old mark is not flavor; it is an operating instruction.",
-          "room_application": "Make copied scars useful and suspect at the same time."
+          "source_id": "merritt_moon_pool_pg765",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_moment": "The threshold is not passive architecture; it is an active reader that harvests the traveler's identity and writes it into the structure's memory before the traveler can choose otherwise.",
+          "writing_influence": "Solt's feeder is already copying route timing before Hymn decides anything. The junction is not waiting for her choice; it is already mid-harvest.",
+          "scenario_application": "Immediate body-pressure: standing still costs Hymn route-privacy. The longer she deliberates, the more Solt's feeder captures. This makes every choice feel like it is already late."
+        },
+        {
+          "source_id": "blackwood_willows_pg11438",
+          "source_title": "The Willows",
+          "source_author": "Algernon Blackwood",
+          "source_moment": "The landscape does not threaten through agents alone; it marks the protagonist by attention, and being marked changes what the protagonist is allowed to be in that space.",
+          "writing_influence": "The scar mites moving toward Hymn's feet are not neutral. The junction is making leverage, and Solt is stealing it for her own route packet.",
+          "scenario_application": "Recognition pressure: the room itself is a witness. Whatever Hymn does here, the junction writes it. This makes the recognition_effect structural, not just social."
         }
       ],
       "faction_ids": [
@@ -901,45 +909,73 @@
         "The Glass Apostle can trade exact route knowledge for hunt attention."
       ],
       "environment_echoes": [
-        "Later survey-map tissue can brighten the route Hymn trusted most recently.",
-        "Broken route patterns can create blank scar lanes that resist both Chorus and Hunt prediction.",
-        "Marked quiet routes can let survey grammar reappear in another navigation organ."
+        "A later route-gate opens faster if Solt's packet survives, but that packet is also leverage against Hymn.",
+        "Solt reappears as a debt-holder if Hymn paid the toll; she reappears as a rival if Hymn broke the feeder.",
+        "Scar mites in later rooms move toward Hymn's feet first, a residue of the junction's harvest."
       ],
       "ending_vectors": [
         {
-          "id": "ending_opened_hunt_route",
-          "label": "The Opened Hunt Route",
+          "id": "route_sovereign",
+          "label": "Hymn owns her own map",
           "pulls_toward": [
-            "trusting bright scars",
-            "leaving exact route marks",
-            "letting prediction become convenience"
+            "breaking the feeder",
+            "refusing toll",
+            "destroying route records"
           ],
           "diverts_to": [
-            "white route from cold survey discipline",
-            "commandant route from packet obedience"
+            "paying toll",
+            "letting the print complete",
+            "trading gait for passage"
+          ]
+        },
+        {
+          "id": "debt_cartographer",
+          "label": "Hymn is written into someone else's route",
+          "pulls_toward": [
+            "paying toll",
+            "letting the harvest complete",
+            "trading body data for speed"
+          ],
+          "diverts_to": [
+            "breaking the feeder",
+            "fighting Solt",
+            "leaving no clean print"
           ]
         }
       ],
       "mutation_hooks": [
         {
-          "capability": "scent_mask",
-          "effect": "Mark a route without leaving enough body data for a hunt map.",
-          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
-          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
-          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
+          "capability": "cut",
+          "capability_tags": [
+            "cut"
+          ],
+          "baseline_route": "Hymn stomps the cord-feeder with her heel and drags it free by hand, tearing the seam open. It costs her skin and leaves a wound-debt but the print is broken.",
+          "mutation_branch": "A heavier cutting edge severs the cord-feeder cleanly at the anchor point. The mites scatter. Solt loses the packet and switches from toll to retaliation.",
+          "symbiote_branch": "Not applicable to this hook.",
+          "effect": "Feeder destroyed, route print incomplete, Solt's recognition shifts to threat-category.",
+          "in_encounter_use": "Cut the cord-feeder before Solt can pull it free and use it as a weapon or bargaining chip.",
+          "out_of_encounter_use": "Sever route cords in later rooms to erase prior gait records.",
+          "surprising_second_use": "A severed feeder left in the seam becomes a false print that misdirects hunters using Solt's packet."
         },
         {
-          "capability": "split_gait",
-          "effect": "Make two scar routes look equally likely.",
-          "in_encounter_use": "Change rhythm mid-exchange so line, reach, and recovery arrive off-beat.",
-          "out_of_encounter_use": "Move across split routes, shifting plates, or unstable launch tissue without matching their rhythm.",
-          "surprising_second_use": "Imitate two bodies of footfall and confuse patrol counts or pressure ledgers."
+          "capability": "speed",
+          "capability_tags": [
+            "speed",
+            "quiet_movement"
+          ],
+          "baseline_route": "Hymn can still cross the junction by moving fast and irregular, breaking the mites' sampling rhythm, but she takes a glancing hit from Solt if Solt decides to stop her.",
+          "mutation_branch": "Lean Muscle lets Hymn cross the seam before the mites complete a clean sample. The print is partial and useless. Solt gets nothing she can sell.",
+          "symbiote_branch": "Not applicable to this hook.",
+          "effect": "Route print incomplete, hunt_pressure reduced, baseline_discipline raised.",
+          "in_encounter_use": "Close distance on Solt before she can brace, or break away before she can anchor the feeder deeper.",
+          "out_of_encounter_use": "Cross monitored seams in later rooms without leaving a readable gait sample.",
+          "surprising_second_use": "A partial print in Solt's packet makes Hymn look like a different body type to anyone who buys the route data."
         }
       ],
       "progression_state": {
-        "early": "The map gives three readable route logics.",
-        "mid": "Marked routes become safer and more predictable.",
-        "late": "The map anticipates Hymn before she moves unless she breaks the route grammar."
+        "early": "Hymn learns the junction sells route memory. She leaves with either a debt, a broken map, or a contested pass.",
+        "mid": "Solt's route packet surfaces as leverage in a faction corridor. Hymn's prior choice determines whether the corridor opens as client price, threat response, or unknown body.",
+        "late": "Solt's packet becomes a route-key or hunt-marker depending on who inherits it."
       },
       "room_role": "corpus_anchored_route_memory",
       "playtest_focus": "Route-choice test for delayed story followups, map memory, and whether prediction pressure remains readable without becoming a puzzle.",
@@ -949,33 +985,33 @@
           "source_id": "haggard_king_solomons_mines_pg2166",
           "source_title": "King Solomon's Mines",
           "source_author": "H. Rider Haggard",
-          "source_file": "generated/corpus/pulp_pre_1930/texts/haggard_king_solomons_mines_pg2166.txt",
-          "source_locator": "lines 2154-2169 and 2676, old map directions tested against living route pressure",
-          "source_moment": "A rough map and old directions matter because they must be trusted while the body is already failing.",
-          "story_element": "The scar map should make route data useful but compromised: old marks point somewhere real, while Hymn's present gait changes what the map records.",
-          "scenario_application": "Choices should read as navigation under pressure: mark a route, trust a route, or spoil the map before it learns too much."
-        },
-        {
-          "tier": 0,
-          "source_id": "blackwood_willows_pg11438",
-          "source_title": "The Willows",
-          "source_author": "Algernon Blackwood",
-          "source_file": "generated/corpus/pulp_pre_1930/texts/blackwood_willows_pg11438.txt",
-          "source_locator": "lines 259-320 and 895-934, ground and vegetation changing available space",
-          "source_moment": "The environment alters distance, pressure, and the safety of assumed ground.",
-          "story_element": "The junction is an active place, not a menu. Scar mites revise the map while Hymn watches and reduce certainty through physical motion.",
-          "scenario_application": "Keep route pressure visible through moving marks, cleaned paths, dull seams, and pursuit grammar."
+          "source_file": "haggard_king_solomons_mines",
+          "source_locator": "Chapter VI, map and route-toll confrontation",
+          "source_moment": "A map is both a record of prior passage and a claim of ownership over the route; the party must negotiate with the map's keeper before they can proceed.",
+          "story_element": "Solt's cord-feeder is the map. She owns the junction's memory and is actively writing Hymn into it as a route asset, not a traveler.",
+          "scenario_application": "The map-as-ownership pressure forces Hymn to decide whether to pay, destroy, or contest the cartographer's claim. Every choice changes what the route remembers about her."
         },
         {
           "tier": 0,
           "source_id": "merritt_moon_pool_pg765",
           "source_title": "The Moon Pool",
           "source_author": "A. Merritt",
-          "source_file": "generated/corpus/pulp_pre_1930/texts/merritt_moon_pool_pg765.txt",
-          "source_locator": "lines 2870-2925, timed threshold and narrowing portal",
-          "source_moment": "A route opens only inside a time-sensitive apparatus, turning observation into commitment.",
-          "story_element": "The blank seam and bright scar should feel like mechanisms the player can commit to, not abstract prophecy.",
-          "scenario_application": "Give each branch a physical route consequence that can echo in later rooms."
+          "source_file": "merritt_moon_pool",
+          "source_locator": "Chapter III, threshold that reads and records the body of whoever crosses it",
+          "source_moment": "The threshold is not passive architecture; it is an active reader that harvests the traveler's identity and writes it into the structure's memory before the traveler can choose otherwise.",
+          "story_element": "Solt's feeder is already copying route timing before Hymn decides anything. The junction is not waiting for her choice; it is already mid-harvest.",
+          "scenario_application": "Immediate body-pressure: standing still costs Hymn route-privacy. The longer she deliberates, the more Solt's feeder captures. This makes every choice feel like it is already late."
+        },
+        {
+          "tier": 0,
+          "source_id": "blackwood_willows_pg11438",
+          "source_title": "The Willows",
+          "source_author": "Algernon Blackwood",
+          "source_file": "blackwood_willows",
+          "source_locator": "Section IV, the environment as an entity that notices and marks the protagonist",
+          "source_moment": "The landscape does not threaten through agents alone; it marks the protagonist by attention, and being marked changes what the protagonist is allowed to be in that space.",
+          "story_element": "The scar mites moving toward Hymn's feet are not neutral. The junction is making leverage, and Solt is stealing it for her own route packet.",
+          "scenario_application": "Recognition pressure: the room itself is a witness. Whatever Hymn does here, the junction writes it. This makes the recognition_effect structural, not just social."
         }
       ]
     },
@@ -983,9 +1019,9 @@
       "id": "biomass_larder",
       "environment_id": "ledger_larder_organs",
       "name": "Biomass Larder",
-      "instance_premise": "A ration organ that opens by weight and records whether Hymn takes, pays, or leaves hungry.",
-      "first_visit_description": "Chorus, a larder grows into the wall. Sealed pockets hold ration meat behind thin membrane. A tongue-scale waits below them with teeth folded under its edge. It lowers when my weight shifts toward the food and clicks once before I touch it.",
-      "return_description": "A larder organ waits with thin ration pockets and a tongue-scale under the meat.",
+      "instance_premise": "A ration organ that records payment, theft, or hunger—and a debt-collector already waiting at the shelf when Hymn arrives, making the ledger a live confrontation rather than a passive system.",
+      "first_visit_description": "The larder shelf runs the full wall, sealed pockets of ration meat behind membrane thin enough to see the mass inside. A tongue-scale waits below the shelf, teeth folded. Someone else is already here. A collector—thick-armed, resin-stained, a receipt blister pressed flat against her forearm—stands between me and the food. She does not move. She is reading my weight before I step.",
+      "return_description": "The shelf and its tongue-scale. The collector's receipt blister is gone or present depending on what I left behind. The teeth are folded or bared.",
       "tags": [
         "biomass",
         "debt",
@@ -998,12 +1034,28 @@
       ],
       "corpus_influences": [
         {
-          "seed_id": "verne_survivors_chancellor_01_hunger_and_ration",
-          "source_title": "The Survivors of the Chancellor",
-          "source_author": "Jules Verne",
-          "source_moment": "Rationing becomes dramatic through exact scarcity, visible stores, and the arithmetic of who eats now against future survival.",
-          "writing_influence": "Verne's hunger writing is procedural and moral without sermon: the count itself creates pressure.",
-          "room_application": "Make the larder a counting organ. The scene should show stored meat, scale behavior, and the cost of taking or paying."
+          "source_id": "haggard_king_solomons_mines_pg2166",
+          "source_title": "King Solomon's Mines",
+          "source_author": "H. Rider Haggard",
+          "source_moment": "A gatekeeper with legitimate authority over stored resources forces the expedition to declare their purpose before access is granted; refusal has route consequences.",
+          "writing_influence": "The collector is the organism's gatekeeper: she has real authority over the larder, a visible record of prior transactions, and the power to route Hymn's conduct forward as debt or credit.",
+          "scenario_application": "Her presence converts the passive ledger into a live confrontation. Hymn must choose posture—pay, push, or negotiate with body cost—and the collector's receipt blister carries that choice into later rooms."
+        },
+        {
+          "source_id": "roguelike_resource_pressure",
+          "source_title": "Fleshpunk Roguelike Systems Research",
+          "source_author": "internal",
+          "source_moment": "Resource rooms that encode player conduct and return it as downstream pressure rather than one-time transactions.",
+          "writing_influence": "The tongue-scale is not a lock. It is a ledger. Whatever Hymn does, the scale closes on that information and sends it somewhere ahead of her.",
+          "scenario_application": "Three distinct conduct postures—pay, force, leave—produce three distinct downstream states: route credit, hunt pressure, or body cost. The collector's receipt blister is the visible carrier."
+        },
+        {
+          "source_id": "merritt_moon_pool",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_moment": "A living threshold agent demands a bodily commitment before passage; the cost is not currency but a piece of the traveler's identity or flesh.",
+          "writing_influence": "The collector's demand is not just resin. She wants Hymn's palm on the receipt blister so payment becomes future price leverage, not a one-room transaction.",
+          "scenario_application": "The pay route requires physical contact with the collector's blister, which encodes Hymn's body signature into the larder's memory. This is the recognition effect: the organism now knows what Hymn's body feels like when it pays."
         }
       ],
       "faction_ids": [
@@ -1054,45 +1106,60 @@
         "Larval credit matures into future animal obligation."
       ],
       "environment_echoes": [
-        "Later larders can open thinner pockets if Hymn takes without payment.",
-        "Paid scales can make toll mouths recognize her as a solvent body.",
-        "Leaving hungry can keep ledger pressure low but make later ration organs less generous."
+        "A receipt blister scar on a later corridor wall, still warm, showing Hymn's palm print if she paid",
+        "A collector's body found two rooms ahead, throat cut, if Hymn forced the shelf—hunt pressure carrier",
+        "A folded ration pocket left at a junction, addressed to Hymn's body signature, if she left hungry—route favor from a different debt-holder who respects restraint"
       ],
       "ending_vectors": [
         {
-          "id": "ending_merchant_debt",
-          "label": "The Merchant Ending",
+          "id": "debt_runner",
+          "label": "Debt Runner",
           "pulls_toward": [
-            "taking ration mass on credit",
-            "accepting larval debt",
-            "letting hunger become account"
+            "forcing the shelf",
+            "ignoring the collector",
+            "taking without paying across multiple rooms"
           ],
           "diverts_to": [
-            "quartermaster balance from paid scales",
-            "soft captain transit from restrained debt"
+            "paying the scale",
+            "accepting receipt contact",
+            "leaving hungry by choice"
+          ]
+        },
+        {
+          "id": "body_ledger",
+          "label": "Body Ledger",
+          "pulls_toward": [
+            "paying with palm contact",
+            "accepting the collector's terms",
+            "leaving hungry to preserve conduct record"
+          ],
+          "diverts_to": [
+            "forcing the shelf",
+            "retreating without engaging",
+            "breaking the scale"
           ]
         }
       ],
       "mutation_hooks": [
         {
-          "capability": "slow_metabolism",
-          "effect": "Leave a larder hungry without losing route strength.",
-          "in_encounter_use": "Outlast starvation, poison, or exhaustion pressure during a long exchange.",
-          "out_of_encounter_use": "Delay hunger costs in larders, tunnels, and sealed chambers where supply is bait.",
-          "surprising_second_use": "Let Hymn appear less valuable to feeders that hunt hot, urgent biomass."
-        },
-        {
-          "capability": "ledger_tongue",
-          "effect": "Taste whether a ration pocket is food, payment, or debt bait.",
-          "in_encounter_use": "Read threat displays and debt marks before a mouth or toll-organ commits to violence.",
-          "out_of_encounter_use": "Negotiate with toll mouths, credit grubs, and debt tissue instead of only paying or forcing.",
-          "surprising_second_use": "Redirect a minor debt mark onto an object, corpse, or room process for one future pass."
+          "capability": "cut",
+          "capability_tags": [
+            "cut",
+            "contact_punish"
+          ],
+          "baseline_route": "Hymn steps into the collector's space, reads her stance, and forces the shelf by sheer pressure and pain tolerance. The collector yields but the receipt blister records a forced transaction.",
+          "mutation_branch": "A heavy cut mutation lets Hymn sever the receipt blister from the collector's arm before it records. The collector backs off. The larder opens. No record is sent—but the collector survives and remembers the cut.",
+          "symbiote_branch": "The barrier symbiote plates over Hymn's palm before contact, blocking the body-signature read. The collector accepts the resin but the blister records nothing. The organism's ledger shows a payment with no identity attached—a ghost transaction that draws different attention later.",
+          "effect": "Cut route raises hunt pressure and recognition. Barrier route creates a ghost record that surfaces as a different kind of collector pressure two rooms ahead.",
+          "in_encounter_use": "Sever the blister arm before the collector can press it to the scale, ending the confrontation fast but loudly.",
+          "out_of_encounter_use": "Cut through sealed ration pockets the collector is guarding without engaging her directly.",
+          "surprising_second_use": "The severed blister, carried forward, can be pressed to a later scale to spoof Hymn's identity as a paying body."
         }
       ],
       "progression_state": {
-        "early": "The larder tests whether Hymn feeds herself, the room, or the debt.",
-        "mid": "Prices shift and animal workers react to hunger versus greed.",
-        "late": "The Quartermaster and Merchant dispute who owns the debt."
+        "early": "Hymn is learning that conduct changes prices, routes, and collectors. The collector is the first face on that system.",
+        "mid": "The receipt blister scar or its absence is visible to other collectors. Hymn's larder conduct is becoming a reputation.",
+        "late": "The tongue-scale network knows Hymn's body signature. It routes food toward her or withholds it based on accumulated conduct. The collector from this room may reappear as ally or predator."
       },
       "room_role": "corpus_anchored_resource_pressure",
       "playtest_focus": "Resource-room test for biomass gain/cost, debt memory, and whether hunger choices create story pressure without requiring combat.",
@@ -1102,33 +1169,33 @@
           "source_id": "haggard_king_solomons_mines_pg2166",
           "source_title": "King Solomon's Mines",
           "source_author": "H. Rider Haggard",
-          "source_file": "generated/corpus/pulp_pre_1930/texts/haggard_king_solomons_mines_pg2166.txt",
-          "source_locator": "lines 2136-2192 and 2482-2507, measured hunger and water scarcity",
-          "source_moment": "Scarcity becomes dramatic because desire, ration discipline, route distance, and bodily failure are counted together.",
-          "story_element": "The larder is a counting organ. Food is visible, the scale can be read, and every branch says who pays for missing mass.",
-          "scenario_application": "Write the room around practical hunger: take mass, pay cleanly, or leave hungry, with later debt or restraint echoes."
-        },
-        {
-          "tier": 0,
-          "source_id": "dunsany_gods_of_pegana_pg8395",
-          "source_title": "The Gods of Pegana",
-          "source_author": "Lord Dunsany",
-          "source_file": "generated/corpus/pulp_pre_1930/texts/dunsany_gods_of_pegana_pg8395.txt",
-          "source_locator": "lines 972-1003, destiny as a force that drives chosen bodies",
-          "source_moment": "A harsh cosmic order turns people into subjects of an account they did not choose.",
-          "story_element": "Debt should feel like a small local law that outlives the room, not an arbitrary penalty.",
-          "scenario_application": "Use the Quartermaster and Merchant pressure as institutional consequence, while keeping the moment grounded in meat, scale, and hunger."
+          "source_file": "gutenberg_pg2166",
+          "source_locator": "Chapter 6, the provision chamber and Infadoos confrontation",
+          "source_moment": "A gatekeeper with legitimate authority over stored resources forces the expedition to declare their purpose before access is granted; refusal has route consequences.",
+          "story_element": "The collector is the organism's gatekeeper: she has real authority over the larder, a visible record of prior transactions, and the power to route Hymn's conduct forward as debt or credit.",
+          "scenario_application": "Her presence converts the passive ledger into a live confrontation. Hymn must choose posture—pay, push, or negotiate with body cost—and the collector's receipt blister carries that choice into later rooms."
         },
         {
           "tier": 0,
           "source_id": "roguelike_resource_pressure",
           "source_title": "Fleshpunk Roguelike Systems Research",
           "source_author": "internal",
-          "source_file": ".agent-memory/fleshpunk_research_roguelike_systems.md",
-          "source_locator": "sections: Resource Economy, Encounter Variety, Replayable Consequence",
-          "source_moment": "Resource rooms should offer a tempting immediate gain, a restraint option, and a future consequence hook.",
-          "story_element": "The larder supplies a non-combat progression/destabilization beat for the run.",
-          "scenario_application": "Use this room to test whether noncombat choices still feel like advancement fantasy."
+          "source_file": "research/roguelike_resource_pressure.md",
+          "source_locator": "Resource scarcity and debt-loop design",
+          "source_moment": "Resource rooms that encode player conduct and return it as downstream pressure rather than one-time transactions.",
+          "story_element": "The tongue-scale is not a lock. It is a ledger. Whatever Hymn does, the scale closes on that information and sends it somewhere ahead of her.",
+          "scenario_application": "Three distinct conduct postures—pay, force, leave—produce three distinct downstream states: route credit, hunt pressure, or body cost. The collector's receipt blister is the visible carrier."
+        },
+        {
+          "tier": 0,
+          "source_id": "merritt_moon_pool",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_file": "gutenberg_pg765",
+          "source_locator": "Chapter 9, the threshold guardian and the cost of passage",
+          "source_moment": "A living threshold agent demands a bodily commitment before passage; the cost is not currency but a piece of the traveler's identity or flesh.",
+          "story_element": "The collector's demand is not just resin. She wants Hymn's palm on the receipt blister so payment becomes future price leverage, not a one-room transaction.",
+          "scenario_application": "The pay route requires physical contact with the collector's blister, which encodes Hymn's body signature into the larder's memory. This is the recognition effect: the organism now knows what Hymn's body feels like when it pays."
         }
       ]
     },
@@ -1136,9 +1203,9 @@
       "id": "drowned_toll_harbor",
       "environment_id": "ledger_larder_organs",
       "name": "Drowned Toll Harbor",
-      "instance_premise": "A wet toll organ where dock mouths, black fluid, and ferry larvae convert passage into contamination or ledger debt.",
-      "first_visit_description": "Chorus, this chamber holds black fluid up to my knees. Dock ribs rise from it in rows. Each rib has a payment mouth above the waterline. Pale abrasions mark the places where bodies came ashore too often.",
-      "return_description": "A drowned harbor stands ahead with black fluid high and dock mouths open above it.",
+      "instance_premise": "A submerged toll organ whose dock mouths are attended by a living collector—a pale, wide-bodied creature that grips the rib bones above the waterline and reads payment by scent. The black fluid below carries slow contamination that finds open cuts. The collector is not hostile by default, but it is large, it is watching, and it has already moved to block the forward rib.",
+      "first_visit_description": "Chorus, black fluid to my knees and rising. Dock ribs in rows, each one with a dry payment mouth above the waterline. The collector is already on the forward rib—pale, wide across the shoulders, gripping the bone with both hands and both feet. It has not attacked. It is watching my legs, where the fluid is finding the cuts. The exit is behind it.",
+      "return_description": "Black fluid, dock ribs, and the collector's pale shape waiting on the forward rib.",
       "tags": [
         "toll",
         "fluid",
@@ -1151,20 +1218,28 @@
       ],
       "corpus_influences": [
         {
-          "seed_id": "lovecraft_shadow_over_innsmouth_01_ocean_pressure",
-          "source_title": "The Shadow over Innsmouth",
-          "source_author": "H. P. Lovecraft",
-          "source_moment": "A wet settlement becomes threatening through physical signs: odor, waterline, local traffic, and bodies adapted to a hidden economy.",
-          "writing_influence": "Lovecraft's useful energy is civic contamination made visible in ordinary infrastructure.",
-          "room_application": "Write the harbor as a working dock, not a mood pool. Payment mouths, waterline marks, ferry bodies, and contamination traces carry the story."
+          "source_id": "merritt_moon_pool_pg765",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_moment": "A living threshold presence that reads the body of the crosser and responds to what it finds—not a lock, a witness.",
+          "writing_influence": "The collector is the toll organ's living agent: it prices resin, wounds, and force differently. Payment is a body transaction it must accept.",
+          "scenario_application": "Drives the three-choice structure: pay and be read, force past and be marked, or offer the wound itself as currency. The collector's response changes what the room remembers about Hymn."
         },
         {
-          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_title": "Twenty Thousand Leagues Under the Seas",
-          "source_author": "Jules Verne",
-          "source_moment": "Underwater pressure is handled through apparatus, timing, and the practical relation between body and medium.",
-          "writing_influence": "The fluid is dramatic because it changes what passage physically requires.",
-          "room_application": "Make wading, paying, and draining distinct operations with distinct residues."
+          "source_id": "blackwood_willows_pg11438",
+          "source_title": "The Willows",
+          "source_author": "Algernon Blackwood",
+          "source_moment": "The environment is not passive—it moves toward the body, finds its margins, and costs something just by contact.",
+          "writing_influence": "The black fluid is not atmosphere. It moves toward Hymn's cuts with directional intent. Wading is a body cost, not a free route.",
+          "scenario_application": "Makes the pure-body wade route a real wound-debt choice rather than a skip. The fluid's behavior is visible and concrete, not abstract contamination."
+        },
+        {
+          "source_id": "biology_mutation_fluid_adaptation",
+          "source_title": "Fleshpunk Biology and Mutation Research",
+          "source_author": "internal",
+          "source_moment": "Fluid that enters through cuts behaves differently than fluid swallowed or absorbed through intact skin—wound-entry is faster and more destabilizing.",
+          "writing_influence": "The contamination pressure is specific to Hymn's current wound state. A clean body wades with less cost. A cut body pays more.",
+          "scenario_application": "Gives the pure-body baseline route a real tradeoff axis: discipline and wound management change the cost of wading, making prior room choices matter here."
         }
       ],
       "faction_ids": [
@@ -1219,81 +1294,119 @@
         "Paid dock mouths can open quiet transit routes at the cost of ledger recognition."
       ],
       "environment_echoes": [
-        "Later harbors can raise or lower waterline based on whether Hymn paid or drained.",
-        "Wet markers can appear in cuts after any contaminated passage.",
-        "Paid dock mouths can coordinate with larder scales and pressure tolls."
+        "A later room's toll mouth is already open when Hymn arrives—the collector passed word forward",
+        "A predator in a downstream room has the collector's scent mark on its attention list if Hymn forced past",
+        "The black fluid's contamination shows up as a slow pressure in the next wound-debt room"
       ],
       "ending_vectors": [
         {
-          "id": "ending_lumen_wet_claim",
-          "label": "The Wet Claim",
+          "id": "clean_body_vector",
+          "label": "Discipline Body",
           "pulls_toward": [
-            "wading for recovery",
-            "letting black fluid mark cuts",
-            "using contaminated passage as medicine"
+            "paying the toll without contact",
+            "wading with wounds sealed",
+            "refusing to let the fluid in"
           ],
           "diverts_to": [
-            "merchant debt from paid mouths",
-            "soft captain transit from clean paid passage"
+            "forcing past the collector",
+            "offering the wound as payment"
+          ]
+        },
+        {
+          "id": "marked_predator_vector",
+          "label": "Marked and Hunted",
+          "pulls_toward": [
+            "forcing past the collector",
+            "leaving it injured on the rib"
+          ],
+          "diverts_to": [
+            "paying resin",
+            "retreating"
+          ]
+        },
+        {
+          "id": "body_transaction_vector",
+          "label": "Organism Currency",
+          "pulls_toward": [
+            "offering the wound as payment",
+            "paying the fluid with open wounds"
+          ],
+          "diverts_to": [
+            "clean payment",
+            "forced crossing"
           ]
         }
       ],
       "mutation_hooks": [
         {
-          "capability": "wet_breath",
-          "effect": "Use lower harbor routes without taking fluid through open cuts.",
-          "in_encounter_use": "Keep fighting while submerged, choked, or breathing through fouled fluid.",
-          "out_of_encounter_use": "Traverse flooded locks, drowned harbors, and spore-wet passages without immediate panic.",
-          "surprising_second_use": "Use held breath and fluid tolerance to fake death or pass as cargo in a living channel."
+          "capability": "cut",
+          "capability_tags": [
+            "cut",
+            "contact_punish"
+          ],
+          "baseline_route": "Hymn reads the collector's grip on the rib and times a single hard shove at its locked elbow—no weapon needed, just leverage and commitment to the contact.",
+          "mutation_branch": "A heavier cutting body opens the collector's grip hand before it can lock. The collector retreats up the rib and does not follow.",
+          "symbiote_branch": "The barrier symbiote plates over Hymn's cuts before the fluid finds them, reducing wound-debt on the wade and keeping the collector from triaging her wound-state accurately.",
+          "effect": "Forces the collector off the forward rib; raises hunt_pressure if the collector survives marked",
+          "in_encounter_use": "Break the collector's grip and create a crossing lane before it can reposition",
+          "out_of_encounter_use": "Cut the rib cord to drop the toll mouth and deny the collector its anchor point",
+          "surprising_second_use": "A later collector recognizes the cut pattern on a rib and opens the mouth before Hymn reaches it"
         },
         {
-          "capability": "scent_mask",
-          "effect": "Drain a harbor without leaving a strong wet trail.",
-          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
-          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
-          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
+          "capability": "brace",
+          "capability_tags": [
+            "brace",
+            "barrier"
+          ],
+          "baseline_route": "Hymn seals her cuts with pressure and wades fast, keeping her body above the fluid's pull line.",
+          "mutation_branch": "Always-on brace identity lets Hymn hold the fluid out of her cuts through the full crossing without stopping.",
+          "symbiote_branch": "Barrier symbiote activated before entry; the fluid finds the shell instead of the wounds. Symbiote takes minor impact stress from the fluid's directional pull.",
+          "effect": "Reduces wound-debt on the wade route; collector cannot price Hymn's wound-state and does not move to block",
+          "in_encounter_use": "Hold position against the collector's body weight without being pushed into the fluid",
+          "out_of_encounter_use": "Cross contaminated fluid rooms without accumulating wound-debt",
+          "surprising_second_use": "A room that prices wound-state cannot price Hymn cleanly and defaults to a lower toll"
         }
       ],
       "progression_state": {
-        "early": "The harbor offers paid passage, contaminated wading, or noisy drainage.",
-        "mid": "Water level, dock prices, and contamination markers respond to prior treatment.",
-        "late": "Quiet transit can move Hymn through if ledger and contamination pressures are balanced."
+        "early": "Hymn is cut and the fluid is already finding the wounds. The collector is large and close. Every option costs something.",
+        "mid": "Hymn has learned that toll organs have living agents. She can spot the price window before the collector moves.",
+        "late": "Hymn's body is recognized by toll collectors before she reaches the rib. The transaction opens differently."
       },
       "room_role": "corpus_anchored_recovery_toll",
       "playtest_focus": "Recovery/toll test for contamination marks, paid transit, and whether healing pressure can enrich and destabilize at the same time.",
       "corpus_anchors": [
         {
           "tier": 0,
-          "source_id": "blackwood_willows_pg11438",
-          "source_title": "The Willows",
-          "source_author": "Algernon Blackwood",
-          "source_file": "generated/corpus/pulp_pre_1930/texts/blackwood_willows_pg11438.txt",
-          "source_locator": "lines 54-131 and 947-962, waterline, current, landing difficulty, and shrinking ground",
-          "source_moment": "A wet landscape controls movement through current, wind, waterline, and disappearing footing.",
-          "story_element": "The harbor's danger is physical: black fluid level, dock ribs, payment mouths, and contamination marks alter how Hymn can cross.",
-          "scenario_application": "Make wading, paying, draining, and riding feel like different movement choices with different residues."
-        },
-        {
-          "tier": 0,
           "source_id": "merritt_moon_pool_pg765",
           "source_title": "The Moon Pool",
           "source_author": "A. Merritt",
-          "source_file": "generated/corpus/pulp_pre_1930/texts/merritt_moon_pool_pg765.txt",
-          "source_locator": "lines 763-779 and 2870-2925, water-gate, threshold, and timed passage",
-          "source_moment": "Water, gate, and passage combine into a dangerous crossing where timing and apparatus matter.",
-          "story_element": "The drowned harbor is a functioning dock, not atmosphere: mouths lower ribs, larvae ferry bodies, and fluid carries information.",
-          "scenario_application": "Use apparatus detail to make contamination and transit accounting legible."
+          "source_file": "merritt_moon_pool",
+          "source_locator": "Chapters 3–5, threshold crossing and pool guardian pressure",
+          "source_moment": "A living threshold presence that reads the body of the crosser and responds to what it finds—not a lock, a witness.",
+          "story_element": "The collector is the toll organ's living agent: it prices resin, wounds, and force differently. Payment is a body transaction it must accept.",
+          "scenario_application": "Drives the three-choice structure: pay and be read, force past and be marked, or offer the wound itself as currency. The collector's response changes what the room remembers about Hymn."
+        },
+        {
+          "tier": 0,
+          "source_id": "blackwood_willows_pg11438",
+          "source_title": "The Willows",
+          "source_author": "Algernon Blackwood",
+          "source_file": "blackwood_willows",
+          "source_locator": "Sections 3–4, the river as active pressure and the body's smallness inside it",
+          "source_moment": "The environment is not passive—it moves toward the body, finds its margins, and costs something just by contact.",
+          "story_element": "The black fluid is not atmosphere. It moves toward Hymn's cuts with directional intent. Wading is a body cost, not a free route.",
+          "scenario_application": "Makes the pure-body wade route a real wound-debt choice rather than a skip. The fluid's behavior is visible and concrete, not abstract contamination."
         },
         {
           "tier": 0,
           "source_id": "biology_mutation_fluid_adaptation",
           "source_title": "Fleshpunk Biology and Mutation Research",
           "source_author": "internal",
-          "source_file": ".agent-memory/fleshpunk_research_biology_mutation.md",
-          "source_locator": "sections: Deep Sea Organisms, Cephalopods, Environmental Adaptation",
-          "source_moment": "A body adaptation should solve a real environmental problem while creating new classification and cost.",
-          "story_element": "Wet breath, scent masking, and contamination tolerance are multiuse tools, not isolated keys.",
-          "scenario_application": "Let recovery and mutation options change both crossing behavior and later social/biological recognition."
+          "source_file": "fleshpunk_biology_research",
+          "source_locator": "Fluid adaptation and wound-contact contamination mechanics",
+          "source_moment": "Fluid that enters through cuts behaves differently than fluid swallowed or absorbed through intact skin—wound-entry is faster and more destabilizing.",
+          "story_element": "The contamination pressure is specific to Hymn's current wound state. A clean body wades with less cost. A cut body pays more.",
+          "scenario_application": "Gives the pure-body baseline route a real tradeoff axis: discipline and wound management change the cost of wading, making prior room choices matter here."
         }
       ]
     },
@@ -1301,9 +1414,9 @@
       "id": "maintenance_rite_chapel",
       "environment_id": "operator_procedure_cellars",
       "name": "Maintenance Rite Chapel",
-      "instance_premise": "A maintenance chamber where ritual posture is only the old shape of a working procedure.",
-      "first_visit_description": "Chorus, the room is arranged like worship, but every mark has a use. Kneel points align with drain cuts worn smooth by repeated weight. Tool-rest larvae hold position where hands used to work. The tissue stays calm while my body matches the old sequence.",
-      "return_description": "A rite chamber waits with tool-rest larvae open and drain cuts cleared for posture.",
+      "instance_premise": "The chapel was built to process bodies through a maintenance sequence: kneel, receive, drain. A Warden—an enforcement organism grown to keep the sequence running after the original workers were replaced—is still active and treats posture as compliance or violation. Hymn has entered upright. The Warden has already turned. It does not distinguish refusal from intrusion. The kneel channels, drain gutter, and tool-rest larvae are all live infrastructure, not decoration. The Warden uses grip and leverage to force compliance; it was built for that, not for killing. Whether Hymn kneels, fights, or fakes the sequence, the chapel leaves a drain-residue outcome and a Warden wound state.",
+      "first_visit_description": "The floor is grooved hip-to-drain in channels worn smooth by weight, not tools. Tool-rest larvae line the walls at grip height, each one shaped open, each one waiting. The drain cuts run from every kneel point to a central gutter that is still wet. A Warden stands at the far end: dense, low-slung, built like a body that learned to enforce by watching the sequence break. It has already turned toward me. It reads stance. Mine is wrong.",
+      "return_description": "The kneel channels are dry. The Warden's station is empty. The tool-rest larvae hold open at grip height, patient and unchanged.",
       "tags": [
         "rite",
         "operator",
@@ -1316,12 +1429,28 @@
       ],
       "corpus_influences": [
         {
-          "seed_id": "lovecraft_shunned_house_03_tainted_family_or_cult",
-          "source_title": "The Shunned House",
-          "source_author": "H. P. Lovecraft",
-          "source_moment": "Inherited contamination is traced through family practice, cellar signs, and the repeated arrangements people accepted as normal.",
-          "writing_influence": "Lovecraft gives old practice weight by making it legible as both habit and evidence.",
-          "room_application": "Write the chapel without mysticism. The rite is a maintenance sequence with posture, drainage, tool rests, and bodily consequences."
+          "source_id": "combat_research_joint_lock_and_commitment",
+          "source_title": "Fleshpunk Combat Research: Grip, Leverage, and Commitment",
+          "source_author": "internal research",
+          "source_moment": "A grappler's advantage collapses the moment the opponent removes the limb being controlled; commitment to a lock is also commitment to a blind side.",
+          "writing_influence": "The Warden enforces through grip and posture correction, not killing. Its enforcement model has a structural blind side: it cannot grip what it cannot reach, and it cannot reach what is already inside its line.",
+          "scenario_application": "Shapes the combat choice as a pre-emption of grip, the compliance choice as a body-cost submission, and the fake-sequence choice as a route through the Warden's commitment window. All three choices are readable as tactical posture decisions, not puzzle inputs."
+        },
+        {
+          "source_id": "mundy_king_of_khyber_rifles",
+          "source_title": "King of the Khyber Rifles",
+          "source_author": "Talbot Mundy",
+          "source_moment": "Authority enforced through visible posture reading: the institution does not ask for credentials, it reads how a body moves through its space and acts on the reading immediately.",
+          "writing_influence": "The Warden does not interrogate. Upright entry is a violation, so it closes distance. The chapel's function is legible in the floor geometry. Compliance is a body posture, not a password.",
+          "scenario_application": "Grounds the confrontation in physical legibility rather than dialogue or puzzle. The player understands the pressure because the room's purpose is visible in the worn channels and wet drain. Shapes the fake-sequence choice as a posture performance under live observation."
+        },
+        {
+          "source_id": "machen_great_god_pan_pg389",
+          "source_title": "The Great God Pan",
+          "source_author": "Arthur Machen",
+          "source_moment": "The body processed by an institution does not leave unchanged; the institution leaves a mark that persists in later rooms as recognition or misrecognition.",
+          "writing_influence": "The chapel's drain residue and the Warden's wound state both carry information forward. Whether Hymn kneeled, fought, or faked, the chapel leaves a visible outcome. This feeds the delayed follow-up: a later enforcement organism changes distance because of the residue blister.",
+          "scenario_application": "Anchors the recognition_effect and the delayed follow-up. The chapel is not just a fight room; it is a body-processing institution that remembers. The follow-up is carried by a drain-residue blister on Hymn's knee or palm, visible as a faint wet mark that a later patrol organism reacts to."
         }
       ],
       "faction_ids": [
@@ -1374,81 +1503,121 @@
         "Taking the body edit makes chapel calm part of Hymn's future body text."
       ],
       "environment_echoes": [
-        "Later rite chambers can open tool rests early if Hymn performs the sequence cleanly.",
-        "Broken rite order can bring platelet beetles into later maintenance sites.",
-        "Accepted body edits can make other procedure rooms treat Hymn as compatible equipment."
+        "A later patrol corridor has an enforcement organism that pauses on the drain-residue blister before deciding whether to close distance",
+        "A body-trade post recognizes the Warden's grip bruise pattern and offers a reduced toll as professional acknowledgment",
+        "A faction checkpoint reads the absence of the compliance mark and flags Hymn as an unprocessed body"
       ],
       "ending_vectors": [
         {
-          "id": "ending_mother_chancel_tool",
-          "label": "Mother Chancel's Tool",
+          "id": "enforced_body",
+          "label": "Processed and Marked",
           "pulls_toward": [
-            "performing maintenance rites",
-            "taking body edits",
-            "letting repair claims accumulate"
+            "kneeling and accepting the sequence",
+            "submitting to grip correction",
+            "letting the drain run"
           ],
           "diverts_to": [
-            "operator component from diagnostic obedience",
-            "opened hunt from repeated disorder"
+            "pre-empting the Warden",
+            "faking the sequence and breaking early"
+          ]
+        },
+        {
+          "id": "enforcement_breaker",
+          "label": "Body That Broke the Warden",
+          "pulls_toward": [
+            "fighting before the grip closes",
+            "cutting the Warden's commitment line",
+            "leaving the Warden wounded at its station"
+          ],
+          "diverts_to": [
+            "kneeling",
+            "completing the fake sequence without violence"
+          ]
+        },
+        {
+          "id": "sequence_ghost",
+          "label": "Body the Chapel Could Not Read",
+          "pulls_toward": [
+            "faking the sequence well enough to pass",
+            "leaving no wound on the Warden",
+            "exiting before the drain finishes"
+          ],
+          "diverts_to": [
+            "open combat",
+            "full compliance kneeling"
           ]
         }
       ],
       "mutation_hooks": [
         {
-          "capability": "joint_lock",
-          "effect": "Hold rite posture without letting tool-rest larvae enter the joint.",
-          "in_encounter_use": "Trap a limb, hinge, or tool-organ at the point where its leverage fails.",
-          "out_of_encounter_use": "Secure moving architecture, tool rests, and maintenance organs long enough to inspect them.",
-          "surprising_second_use": "Use a locked joint as a temporary handle, ladder rung, or bargaining restraint."
+          "capability": "cut",
+          "capability_tags": [
+            "cut",
+            "contact_punish"
+          ],
+          "baseline_route": "Hymn pre-empts the Warden's grip by driving into its commitment line before it can close. She takes the contact but breaks the lock before it seats. Costs wound_debt, raises baseline_discipline.",
+          "mutation_branch": "A cut mutation lets Hymn sever the Warden's grip limb at the commitment moment, ending the fight before the lock seats. The Warden's wound is visible and propagates as a recognition mark in later enforcement rooms.",
+          "symbiote_branch": "A barrier symbiote absorbs the first grip attempt, buying the half-second needed to break the Warden's line without taking the full lock. If the symbiote is already wounded, it may plate too late and Hymn takes the grip anyway.",
+          "effect": "Warden is disabled or driven back; Hymn carries a cut-recognition mark that later enforcement organisms read as dangerous",
+          "in_encounter_use": "Sever the grip limb before the Warden can seat the lock, ending the enforcement attempt immediately",
+          "out_of_encounter_use": "Cut through the tool-rest larvae's grip membrane to take a body-edit without triggering the sequence",
+          "surprising_second_use": "A later enforcement organism sees the cut pattern on the Warden's wound state and gives Hymn a wider berth without being told to"
         },
         {
-          "capability": "purge_larvae",
-          "effect": "Reject a body edit after seeing what procedure it serves.",
-          "in_encounter_use": "Expel parasites or brood matter before they can turn contact into control.",
-          "out_of_encounter_use": "Clean infected pools, egg residue, or tool tissue enough to use them safely.",
-          "surprising_second_use": "Seed purged larvae as bait, warning, or false evidence in a later room."
+          "capability": "speed",
+          "capability_tags": [
+            "speed",
+            "quiet_movement"
+          ],
+          "baseline_route": "Hymn times her entry into the fake-sequence posture to match the Warden's read window, moving before it can confirm the violation. Costs route_memory pressure, requires precise timing.",
+          "mutation_branch": "Lean muscle lets Hymn cross the distance to the Warden's blind side before it can reset its grip stance, making the fake-sequence route nearly clean.",
+          "symbiote_branch": "Not primary for this room; speed symbiote if present reduces the timing window required but does not eliminate the posture-read pressure.",
+          "effect": "Hymn passes through the Warden's read window without triggering full enforcement; raises route_memory",
+          "in_encounter_use": "Close to the Warden's blind side before it can seat a grip",
+          "out_of_encounter_use": "Cross the chapel's open floor before the drain cycle resets and triggers a secondary enforcement response",
+          "surprising_second_use": "Outrun a later patrol organism's prediction pattern by breaking the expected compliance route timing"
         }
       ],
       "progression_state": {
-        "early": "The room frames ritual as machinery that still works.",
-        "mid": "The maintenance protocol learns Hymn's obedience or refusal pattern.",
-        "late": "The rite tries to install Hymn as an operator component."
+        "early": "Hymn is learning that the institution enforces through posture, not words. The Warden is a readable threat with a structural weakness if she moves first.",
+        "mid": "Hymn carries chapel residue. Later enforcement rooms open, close, or hesitate depending on what she did here.",
+        "late": "The chapel's drain residue has propagated. Hymn is either treated as processed, violent, or anomalous. Each outcome changes how institutional actors close distance."
       },
       "room_role": "corpus_anchored_institutional_pressure",
       "playtest_focus": "Knowledge/interpersonal pressure test for procedure obedience, repair claims, and whether lore choices still create concrete body consequences.",
       "corpus_anchors": [
         {
           "tier": 0,
+          "source_id": "combat_research_joint_lock_and_commitment",
+          "source_title": "Fleshpunk Combat Research: Grip, Leverage, and Commitment",
+          "source_author": "internal research",
+          "source_file": "combat_research_joint_lock_and_commitment",
+          "source_locator": "grip and leverage section",
+          "source_moment": "A grappler's advantage collapses the moment the opponent removes the limb being controlled; commitment to a lock is also commitment to a blind side.",
+          "story_element": "The Warden enforces through grip and posture correction, not killing. Its enforcement model has a structural blind side: it cannot grip what it cannot reach, and it cannot reach what is already inside its line.",
+          "scenario_application": "Shapes the combat choice as a pre-emption of grip, the compliance choice as a body-cost submission, and the fake-sequence choice as a route through the Warden's commitment window. All three choices are readable as tactical posture decisions, not puzzle inputs."
+        },
+        {
+          "tier": 0,
+          "source_id": "mundy_king_of_khyber_rifles",
+          "source_title": "King of the Khyber Rifles",
+          "source_author": "Talbot Mundy",
+          "source_file": "mundy_king_of_khyber_rifles",
+          "source_locator": "chapters on institutional authority and body-read compliance",
+          "source_moment": "Authority enforced through visible posture reading: the institution does not ask for credentials, it reads how a body moves through its space and acts on the reading immediately.",
+          "story_element": "The Warden does not interrogate. Upright entry is a violation, so it closes distance. The chapel's function is legible in the floor geometry. Compliance is a body posture, not a password.",
+          "scenario_application": "Grounds the confrontation in physical legibility rather than dialogue or puzzle. The player understands the pressure because the room's purpose is visible in the worn channels and wet drain. Shapes the fake-sequence choice as a posture performance under live observation."
+        },
+        {
+          "tier": 0,
           "source_id": "machen_great_god_pan_pg389",
           "source_title": "The Great God Pan",
           "source_author": "Arthur Machen",
-          "source_file": "generated/corpus/pulp_pre_1930/texts/machen_great_god_pan_pg389.txt",
-          "source_locator": "lines 185-245, laboratory threshold and bodily apparatus",
-          "source_moment": "A ritualized threshold becomes frightening through ordinary procedure: passage, door, lamp, slab, chair, levers, phials, and preparation.",
-          "story_element": "The chapel should read as maintenance procedure wearing ritual posture, with tool-rests and drain cuts doing actual work.",
-          "scenario_application": "Keep the rite physical. Kneeling, hand placement, larvae, and drainage must explain the consequence before any lore flourish."
-        },
-        {
-          "tier": 0,
-          "source_id": "dunsany_gods_of_pegana_pg8395",
-          "source_title": "The Gods of Pegana",
-          "source_author": "Lord Dunsany",
-          "source_file": "generated/corpus/pulp_pre_1930/texts/dunsany_gods_of_pegana_pg8395.txt",
-          "source_locator": "lines 2030-2048, temple law that forbids ordinary action",
-          "source_moment": "A temple is governed by rules so absolute that action and inaction become part of the ritual system.",
-          "story_element": "The maintenance order should feel institutional: the room enforces posture and sequence because its old law still has machinery behind it.",
-          "scenario_application": "Use this anchor for Mother Chancel pressure and the way obedience lowers local danger while increasing claim."
-        },
-        {
-          "tier": 0,
-          "source_id": "combat_research_joint_lock_and_commitment",
-          "source_title": "Fleshpunk Combat Research: Grip, Leverage, and Commitment",
-          "source_author": "internal",
-          "source_file": ".agent-memory/fleshpunk_research_combat_intelligence.md",
-          "source_locator": "sections: Grappling And Clinch Translation, Tempo And Recovery",
-          "source_moment": "A fixed posture or joint commitment can become leverage, restraint, vulnerability, or escape depending on timing.",
-          "story_element": "Joint-lock and purge-larvae options should affect both maintenance procedure and close-action consequences later.",
-          "scenario_application": "Make body discipline matter without turning the chapel into a puzzle."
+          "source_file": "machen_great_god_pan_pg389",
+          "source_locator": "transformation and institutional body-use passages",
+          "source_moment": "The body processed by an institution does not leave unchanged; the institution leaves a mark that persists in later rooms as recognition or misrecognition.",
+          "story_element": "The chapel's drain residue and the Warden's wound state both carry information forward. Whether Hymn kneeled, fought, or faked, the chapel leaves a visible outcome. This feeds the delayed follow-up: a later enforcement organism changes distance because of the residue blister.",
+          "scenario_application": "Anchors the recognition_effect and the delayed follow-up. The chapel is not just a fight room; it is a body-processing institution that remembers. The follow-up is carried by a drain-residue blister on Hymn's knee or palm, visible as a faint wet mark that a later patrol organism reacts to."
         }
       ]
     },
@@ -1721,15 +1890,17 @@
       "id": "healing_pool",
       "environment_id": "drowned_toll_harbor",
       "name": "Sterile Glow Pool",
-      "room_role": "recovery_beat",
-      "instance_premise": "A shallow, round pit holds a pale-glowing fluid that smells clean and carries fine motile threads. The rim is lined with tongue-smooth bone. Intake pores skim the surface only when the light brightens.",
-      "first_visit_description": "Chorus, a circular pit in the floor holds a clear, pale-glowing pool. The light rises and falls like a slow breath. A sterile smell cuts through the corridor odor. Thin white threads move under the surface and gather wherever my shadow falls. The rim bone is worn smooth by mouths and hands. When the glow peaks, narrow pores open along the inner wall and sip the top film. When it dims, the pores shut and the threads float higher.",
-      "return_description": "A round glow pool ahead: sterile smell, polished rim, threads turning toward shadow as the light swells.",
+      "room_role": "corpus_anchored_contested_recovery",
+      "instance_premise": "A shallow glow pool holds motile repair threads that respond to open wounds. A custodian organism crouches at the far rim, already feeding a rival patient whose injuries are worse than Hymn's. The custodian controls entry by wound priority and will treat any body that uses the pool without consent as a parasite rather than a patient.",
+      "first_visit_description": "The pool is lit from inside, pale and slow-breathing. Threads drift under the surface and bunch wherever blood is close. A custodian crouches at the far rim: low, wide-shouldered, covered in repair-scale that catches the glow. It is feeding a second body already half-submerged, one arm trailing, breathing in shallow pulls. The custodian does not look up but its scent-fans open toward me the moment I cross the threshold. The rim bone is worn smooth. The threads are already moving my direction.",
+      "return_description": "The pool glows ahead. The custodian's repair-scale catches the light. It remembers the last body that came through here.",
       "tags": [
         "recovery",
         "contamination",
         "pool",
-        "drowned_toll_harbor"
+        "drowned_toll_harbor",
+        "womb_syndics",
+        "chorus_report"
       ],
       "source_seed_ids": [
         "verne_survivors_chancellor_02_sealed_vessel",
@@ -1737,20 +1908,20 @@
       ],
       "corpus_influences": [
         {
-          "seed_id": "verne_survivors_chancellor_02_sealed_vessel",
-          "source_title": "The Survivors of the Chancellor",
-          "source_author": "Jules Verne",
-          "source_moment": "A damaged hold’s water ingress is tracked by smell, level, and timing until action is possible.",
-          "writing_influence": "Procedure framed by measurement: watch the breathing light and the intake pores; act on the peak or during stillness for different outcomes.",
-          "room_application": "Make the pool’s cycle operational. Choices feel like timing a clean intake versus sampling residue at the rim."
+          "source_id": "merritt_moon_pool_01_threshold_organism",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_moment": "A living system reads the protagonist's body as either permitted or forbidden the moment he crosses a threshold, with no neutral state available.",
+          "writing_influence": "The custodian's scent-fan classification: entering the room is already an act that produces a verdict. There is no observation-only position once Hymn crosses the threshold.",
+          "scenario_application": "Drives the core pressure: Hymn cannot watch neutrally. The custodian has already begun triage. Every choice she makes from this point changes the repair-room outcome, not a first impression."
         },
         {
-          "seed_id": "lovecraft_shunned_house_01_cellar_contamination",
-          "source_title": "The Shunned House",
-          "source_author": "H. P. Lovecraft",
-          "source_moment": "Accumulated cellar evidence—odors, stains, growth—signals a long, bad interaction between cure and corruption.",
-          "writing_influence": "Evidence-first contamination: sterile smell that isn’t safe, threads that answer shadow, bone smoothed by repeat use.",
-          "room_application": "Healing is suspect by residue. Studying can lower corruption but marks the pool’s attention elsewhere."
+          "source_id": "london_iron_heel_01_body_as_resource_contested",
+          "source_title": "The Iron Heel",
+          "source_author": "Jack London",
+          "source_moment": "Scarce medical resource is distributed by a gatekeeper who reads bodies for category before granting access. The protagonist must decide whether to claim a category or contest it.",
+          "writing_influence": "The rival patient already in the pool and the custodian's triage logic: the pool has a current patient, a current custodian, and a finite repair budget. Hymn is the third body in a two-body system.",
+          "scenario_application": "Creates the rival patient as a structural pressure, not flavor. The custodian is not hostile by default but is already committed. Hymn's entry forces a reallocation decision that the custodian will remember."
         }
       ],
       "faction_ids": [
@@ -1791,69 +1962,97 @@
         "Retreating twice at healing sites can raise later pursuit attention: the smell of restraint travels."
       ],
       "environment_echoes": [
-        "Later drowned toll harbors can read a wet marker set here and pre-open intake at approach timing.",
-        "A later rib lock’s wet side can taste for the same sterile marker on her skin.",
-        "If she studies instead of drinks, later wet rooms can hesitate—threads gather but pores delay.",
-        "Quartermaster of Teeth can price the wet marker at a dock mouth, treating it like pre-payment scent."
+        "Later rooms with custodian-class organisms respond faster or slower depending on how the pool classified Hymn: patient, parasite, or unknown.",
+        "The rival patient, if displaced or harmed, may appear as a hostile or neutral actor in a corridor room two to four rooms later.",
+        "Repair rooms change access by custodian outcome: patient opens help, parasite raises guards, unresolved keeps wound debt active."
       ],
       "ending_vectors": [
         {
-          "id": "ending_lumen_wet_claim",
-          "label": "The Lumen Route",
+          "id": "patient_classification",
+          "label": "Recognized as Patient",
           "pulls_toward": [
-            "repeated wet healing",
-            "intake rhythm learned",
-            "clean smell carried"
+            "Waiting for custodian consent before using the pool",
+            "Accepting partial repair rather than forcing full access",
+            "Leaving the rival patient undisturbed"
           ],
           "diverts_to": [
-            "ledger_claim from paid docks",
-            "hunter pressure from repeated refusal at recovery"
+            "Forcing entry while the custodian is occupied",
+            "Displacing the rival patient to take their position",
+            "Using the pool without completing the custodian's read"
+          ]
+        },
+        {
+          "id": "parasite_classification",
+          "label": "Recognized as Parasite",
+          "pulls_toward": [
+            "Entering the pool while the custodian is managing the rival patient",
+            "Taking more repair than the wound debt justifies",
+            "Leaving before the custodian can complete its scent-mark"
+          ],
+          "diverts_to": [
+            "Waiting at the rim until acknowledged",
+            "Retreating without using the pool",
+            "Offering the custodian a body-cost signal of non-threat"
           ]
         }
       ],
       "mutation_hooks": [
         {
-          "capability": "wet_breath",
-          "effect": "Breathe through the glow cycle and drink deeper without surfacing during dim periods.",
-          "in_encounter_use": "Keep fighting while submerged, choked, or breathing through fouled fluid.",
-          "out_of_encounter_use": "Traverse flooded locks, drowned harbors, and spore-wet passages without immediate panic.",
-          "surprising_second_use": "Use held breath and fluid tolerance to fake death or pass as cargo in a living channel."
+          "capability": "read_damage",
+          "capability_tags": [
+            "read_damage",
+            "baseline_discipline"
+          ],
+          "baseline_route": "Hymn reads the rival patient's injury depth by watching their breathing and the thread density around their submerged arm. She can estimate whether the custodian will have repair budget left after the current patient without touching anything.",
+          "mutation_branch": "A cut or brace mutation makes Hymn's own wound signature legible to the custodian faster, which can accelerate classification in either direction depending on wound depth.",
+          "symbiote_branch": "An active barrier symbiote suppresses Hymn's wound scent partially, slowing the custodian's read and buying time to observe before being classified.",
+          "effect": "Hymn learns whether the pool has repair capacity remaining before committing to entry, changing the risk calculus of every choice.",
+          "in_encounter_use": "Read an opponent's injury state to find the window where their guard drops.",
+          "out_of_encounter_use": "Assess whether a room's infrastructure is at capacity before triggering its response.",
+          "surprising_second_use": "Recognize a custodian-class organism's own damage state and use it as leverage or a warning."
         },
         {
-          "capability": "scent_mask",
-          "effect": "Hide the sterile marker after drinking so later wet rooms do not pre-open intake.",
-          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
-          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
-          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
+          "capability": "scent_control",
+          "capability_tags": [
+            "scent_control",
+            "quiet_movement"
+          ],
+          "baseline_route": "Hymn moves slowly along the rim, keeping her wound away from the pool surface, reducing the thread response and slowing the custodian's classification window.",
+          "mutation_branch": "Not applicable to current mutation set.",
+          "symbiote_branch": "A barrier symbiote held close to the wound site reduces the scent gradient the custodian reads, allowing Hymn to approach the pool as a lower-priority body.",
+          "effect": "Delays or softens the custodian's classification, preserving the patient route even when Hymn's wound debt is high.",
+          "in_encounter_use": "Approach a scent-sensitive opponent from a suppressed angle.",
+          "out_of_encounter_use": "Pass through custodian-monitored infrastructure without triggering triage response.",
+          "surprising_second_use": "Arrive at a later room pre-classified as low-threat because the custodian's mark never fully resolved."
         }
       ],
       "progression_state": {
-        "early": "Pool cycles open and shut; threads gather under shadow. Choice between drink, study, or withdraw.",
-        "mid": "Later wet rooms reference intake rhythm or sterile marker depending on action.",
-        "late": "Stacked wet markers can bias routes toward the Lumen ending; repeated refusals can raise hunt attention in wet spaces."
+        "early": "Hymn is injured and the pool is tempting. The custodian is the only obstacle between her and repair. The rival patient is a complication she has to read fast.",
+        "mid": "Hymn has enough body discipline to negotiate or push through without full submersion. The custodian's classification starts mattering in adjacent rooms.",
+        "late": "The custodian's verdict from this room has propagated. Hymn arrives already pre-classified. The pool either opens immediately or refuses her before she reaches the rim."
       },
       "corpus_anchors": [
         {
           "tier": 0,
-          "source_id": "verne_survivors_chancellor_02_sealed_vessel",
-          "source_title": "The Survivors of the Chancellor",
-          "source_author": "Jules Verne",
-          "source_file": "generated/corpus/texts/verne_survivors_chancellor_pg1698.txt",
-          "source_locator": "verne_survivors_chancellor_02_sealed_vessel",
-          "source_moment": "A damaged hold’s water ingress is tracked by smell, level, and timing until action is possible.",
-          "story_element": "Procedure framed by measurement: watch the breathing light and the intake pores; act on the peak or during stillness for different outcomes.",
-          "scenario_application": "Make the pool’s cycle operational. Choices feel like timing a clean intake versus sampling residue at the rim."
+          "source_id": "merritt_moon_pool_01_threshold_organism",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_file": "merritt_moon_pool",
+          "source_locator": "Chapters 3-5, threshold crossing and organism response to living presence",
+          "source_moment": "A living system reads the protagonist's body as either permitted or forbidden the moment he crosses a threshold, with no neutral state available.",
+          "story_element": "The custodian's scent-fan classification: entering the room is already an act that produces a verdict. There is no observation-only position once Hymn crosses the threshold.",
+          "scenario_application": "Drives the core pressure: Hymn cannot watch neutrally. The custodian has already begun triage. Every choice she makes from this point changes the repair-room outcome, not a first impression."
         },
         {
           "tier": 0,
-          "source_id": "lovecraft_shunned_house_01_cellar_contamination",
-          "source_title": "The Shunned House",
-          "source_author": "H. P. Lovecraft",
-          "source_file": "generated/corpus/texts/lovecraft_shunned_house_pg31469.txt",
-          "source_locator": "lovecraft_shunned_house_01_cellar_contamination",
-          "source_moment": "Accumulated cellar evidence—odors, stains, growth—signals a long, bad interaction between cure and corruption.",
-          "story_element": "Evidence-first contamination: sterile smell that isn’t safe, threads that answer shadow, bone smoothed by repeat use.",
-          "scenario_application": "Healing is suspect by residue. Studying can lower corruption but marks the pool’s attention elsewhere."
+          "source_id": "london_iron_heel_01_body_as_resource_contested",
+          "source_title": "The Iron Heel",
+          "source_author": "Jack London",
+          "source_file": "london_iron_heel",
+          "source_locator": "Chapters 7-9, triage and resource allocation under institutional pressure",
+          "source_moment": "Scarce medical resource is distributed by a gatekeeper who reads bodies for category before granting access. The protagonist must decide whether to claim a category or contest it.",
+          "story_element": "The rival patient already in the pool and the custodian's triage logic: the pool has a current patient, a current custodian, and a finite repair budget. Hymn is the third body in a two-body system.",
+          "scenario_application": "Creates the rival patient as a structural pressure, not flavor. The custodian is not hostile by default but is already committed. Hymn's entry forces a reallocation decision that the custodian will remember."
         }
       ]
     },
@@ -1861,15 +2060,17 @@
       "id": "egg_corridor",
       "environment_id": "red_corridor",
       "name": "Egg Corridor",
-      "instance_premise": "A transit vein narrowed by brood-growth. Egg sacs crowd the passage and react to heat, scent, and rupture. Some are near hatching.",
-      "first_visit_description": "Chorus, the corridor pinches into a brood lane. Egg sacs swell from both walls and meet at my shoulders. Their skins hold water-clear yolk with pale threads moving inside. When my sleeve brushes a sac, its cilia tighten and the skin warms under my wrist. A feeder valve at knee height opens and closes on my heat, pulsing yolk smell into the lane. Old burn marks make one narrow route with bubbled resin along the floor. On the right, a single shell is open and dripping; wet drag ridges cross the film toward a side fold. The feeder valve keeps breathing now, and each pulse draws nearby cilia to face my knee.",
-      "return_description": "A brood lane returns: tight sacs, sweet air, one open shell and a side fold scored with wet drag.",
+      "instance_premise": "A transit vein narrowed by brood-growth where one sac has already opened. The hatchling is present, injured, and watching. The lane's cilia react to heat and breath. Hymn's choice of witness, mercy, or passage determines which brood-line follow-up follows her out.",
+      "first_visit_description": "The lane narrows until the sac walls press both my shoulders. Their skins are water-clear and warm, pale threads coiling inside each one. A feeder valve at knee height opens on my heat and pushes sweet air up my front. One sac to my right has already split. The hatchling is still inside the lower half of the shell, one forelimb hooked over the lip, the other folded wrong under its body. It is not moving toward me. It is watching me. Its eye membrane is still wet. The drag ridges on the floor go nowhere: it has not left yet. The intact sacs around it have tightened. They are reading what I do next.",
+      "return_description": "The brood lane again. The split shell is dry now, its lip curled back. The drag ridges are older but still readable. The intact sacs loosen slightly when I enter, then hold.",
       "tags": [
         "transit",
         "nest",
         "hazard",
         "resource",
-        "red_corridor"
+        "red_corridor",
+        "larval_witness",
+        "chorus_report"
       ],
       "source_seed_ids": [
         "verne_survivors_chancellor_02_sealed_vessel",
@@ -1877,20 +2078,20 @@
       ],
       "corpus_influences": [
         {
-          "seed_id": "verne_survivors_chancellor_02_sealed_vessel",
-          "source_title": "The Survivors of the Chancellor",
-          "source_author": "Jules Verne",
-          "source_moment": "A damaged space is crossed by managing phase-change hazards: heat, smoke, water ingress; the narrator tracks condition shifts rather than sermonizing.",
-          "writing_influence": "Procedural crisis tone: name the changing medium (sweet air, rupture heat, resin bubbles), make each action alter that medium in a legible way.",
-          "room_application": "Burning eggs changes air and leaves resin record; slipping controls disturbance; harvesting alters scent and draws nursery attention."
+          "source_id": "cannon_jungle_tales_01_witness_obligation",
+          "source_title": "Jungle Tales",
+          "source_author": "Cornelia Cannon",
+          "source_moment": "A character encounters a wounded creature mid-emergence and must decide whether witnessing obligates intervention, and what intervention costs the witness body and route.",
+          "writing_influence": "The hatchling mid-emergence as a witness-obligation pressure: seeing it creates a claim. The claim has a body cost. Refusing the claim also has a body cost, paid later.",
+          "scenario_application": "Shapes the three-way split between mercy contact, contamination risk, and clean passage. The hatchling's eye membrane being wet is the anchor image: it has seen Hymn before it can move. That seeing is the pressure."
         },
         {
-          "seed_id": "lovecraft_shunned_house_01_contamination_record",
-          "source_title": "The Shunned House",
-          "source_author": "H. P. Lovecraft",
-          "source_moment": "Accumulated small evidences—ooze, stains, smell—build a record of prior events and exposure without declaring conclusions.",
-          "writing_influence": "Evidence-first dread: shell drips, drag ridges, open film; the room reads as a record that can be added to.",
-          "room_application": "Checking a cracked shell yields residue and a quiet ledger of contact; following drag marks trades safety for a learned trail."
+          "source_id": "merritt_moon_pool_02_threshold_organism",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_moment": "A living threshold reads the body of anyone who crosses it and transfers something: not a toll but a biological record. The organism does not ask. It samples.",
+          "writing_influence": "The corridor's cilia and feeder valves are a pressure system. The lane turns heat, breath, and contact into brood-line follow-up states rather than passive flavor.",
+          "scenario_application": "Grounds the contamination pressure axis. Whatever Hymn does here, the intact sacs encode it. That encoding is the carrier for the delayed follow-up. The corridor remembers the body that passed through it."
         }
       ],
       "faction_ids": [
@@ -1940,78 +2141,117 @@
         "Following a fresh trail can schedule a hatchling guard later instead of now."
       ],
       "environment_echoes": [
-        "Another brood lane can show bubbled resin from prior burns, easing passage but making air harsh.",
-        "Later nursery rooms can present pre-aligned sacs that part for her scent if she harvested boldly.",
-        "Side folds elsewhere can present a delayed hatchling guard sourced from a followed trail."
+        "A later room contains a mature version of the same brood-line. If Hymn made contact here, the adults delay their attack. If she passed clean, they treat her as unknown. If she caused rupture, they are already oriented toward the breach before she enters.",
+        "A faction checkpoint later reads the contamination marker on Hymn's sleeve as brood-contact and adjusts its toll or suspicion accordingly."
       ],
       "ending_vectors": [
         {
-          "id": "ending_opened_hunt_pressure",
-          "label": "Opened Hunt Pressure",
+          "id": "vector_mercy_debt",
+          "label": "Mercy Debt",
           "pulls_toward": [
-            "disturbance",
-            "scent marks",
-            "trail following"
+            "Helping the hatchling free its folded limb",
+            "Accepting contamination contact to reduce its distress",
+            "Returning to check the drag ridges on a later pass"
           ],
           "diverts_to": [
-            "soft_captain_transit via quiet slips",
-            "merchant_debt via paying for later clean burns"
+            "Passing clean without contact",
+            "Causing rupture to clear the lane"
+          ]
+        },
+        {
+          "id": "vector_contamination_carrier",
+          "label": "Contamination Carrier",
+          "pulls_toward": [
+            "Allowing cilia contact on skin or sleeve",
+            "Staying in the lane long enough for the feeder valve to sample twice",
+            "Touching the split shell's inner membrane"
+          ],
+          "diverts_to": [
+            "Breath-hold passage",
+            "Brace-through without skin contact"
+          ]
+        },
+        {
+          "id": "vector_clean_passage",
+          "label": "Clean Passage",
+          "pulls_toward": [
+            "Breath-hold transit",
+            "Brace posture that avoids sac contact",
+            "Leaving the hatchling without intervention"
+          ],
+          "diverts_to": [
+            "Mercy contact",
+            "Prolonged witness"
           ]
         }
       ],
       "mutation_hooks": [
         {
-          "capability": "wet_breath",
-          "effect": "Slip longer lanes without coughing resin air after burns or ruptures.",
-          "in_encounter_use": "Keep fighting while submerged, choked, or breathing through fouled fluid.",
-          "out_of_encounter_use": "Traverse flooded locks, drowned harbors, and spore-wet passages without immediate panic.",
-          "surprising_second_use": "Use held breath and fluid tolerance to fake death or pass as cargo in a living channel."
+          "capability": "scent_control",
+          "capability_tags": [
+            "scent_control",
+            "quiet_movement"
+          ],
+          "baseline_route": "Hymn holds her breath, flattens her shoulders, and moves through the lane on one exhale. The cilia react to heat but get no breath chemistry. She exits with partial contamination only: heat present, scent profile incomplete.",
+          "mutation_branch": "Scent-control mutation suppresses the breath chemistry signature entirely. The feeder valve opens and closes on her heat but samples nothing useful. The intact sacs stay loose. The hatchling watches but the lane does not encode a full record. Hymn exits clean except for the hatchling's eye-memory.",
+          "symbiote_branch": "A barrier symbiote can plate the forearm and sleeve before contact with the split shell, preventing membrane transfer. But the symbiote's own chemistry is foreign to the lane and the intact sacs tighten hard around the plated arm, reading it as a threat body. The hatchling flinches back into the shell. Mercy is blocked. Contamination is blocked. The lane is now hostile to that symbiote signature.",
+          "effect": "Determines whether the brood-line follow-up is complete, partial, or foreign-flagged.",
+          "in_encounter_use": "Suppress scent during the witness moment to reduce what the lane encodes without abandoning the hatchling.",
+          "out_of_encounter_use": "Pass through brood-adjacent corridors later without triggering orientation responses from the same family line.",
+          "surprising_second_use": "A mature brood-line member in a later room receives the incomplete state and hesitates, giving Hymn one extra beat before it commits to a charge."
         },
         {
-          "capability": "scent_mask",
-          "effect": "Harvest or track without leaving a strong nursery profile.",
-          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
-          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
-          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
+          "capability": "read_damage",
+          "capability_tags": [
+            "read_damage"
+          ],
+          "baseline_route": "Hymn reads the hatchling's folded limb by posture and weight distribution alone. She can see the limb is caught, not broken. She knows one careful contact point will free it without rupture pressure on the surrounding sacs.",
+          "mutation_branch": "Read-damage mutation gives Hymn the exact stress line on the folded limb. She can free it in one motion with zero wasted contact. The surrounding sacs do not tighten at all. The hatchling's eye membrane clears faster. The lane encodes a precise, controlled body.",
+          "symbiote_branch": "Not applicable to this hook.",
+          "effect": "Reduces contact time and sac-tightening response during mercy intervention, lowering contamination transfer while completing the mercy act.",
+          "in_encounter_use": "Identify the single contact point that frees the hatchling without triggering a rupture cascade in the adjacent sacs.",
+          "out_of_encounter_use": "Read structural stress in brood-architecture later to find safe transit lines through dense sac clusters.",
+          "surprising_second_use": "Recognize a damaged sac that is about to rupture before it does, giving Hymn time to clear the blast radius."
         }
       ],
       "progression_state": {
-        "early": "Brood lane offers harvest, burn, or slip; a cracked shell offers residue or pursuit.",
-        "mid": "Later brood lanes echo resin lanes, scent, or scheduled hatchling pressure.",
-        "late": "Repeated disturbance can pull a specialized nursery hunter; repeated quiet slips keep the organism’s brood learning thin."
+        "early": "Hymn is learning that brood-line choices change later hatchling behavior. The corridor is a lesson in what mercy costs.",
+        "mid": "Hymn knows the brood-line has a partial contact state. She can use that or work around it. The hatchling she helped or abandoned is now a juvenile somewhere in the route.",
+        "late": "The brood-line is a known variable. Hymn's earlier choice is a standing pressure: ally, neutral, or hunted by a specific organism family."
       },
       "corpus_anchors": [
         {
           "tier": 0,
-          "source_id": "verne_survivors_chancellor_02_sealed_vessel",
-          "source_title": "The Survivors of the Chancellor",
-          "source_author": "Jules Verne",
-          "source_file": "generated/corpus/texts/verne_survivors_chancellor_pg1698.txt",
-          "source_locator": "verne_survivors_chancellor_02_sealed_vessel",
-          "source_moment": "A damaged space is crossed by managing phase-change hazards: heat, smoke, water ingress; the narrator tracks condition shifts rather than sermonizing.",
-          "story_element": "Procedural crisis tone: name the changing medium (sweet air, rupture heat, resin bubbles), make each action alter that medium in a legible way.",
-          "scenario_application": "Burning eggs changes air and leaves resin record; slipping controls disturbance; harvesting alters scent and draws nursery attention."
+          "source_id": "cannon_jungle_tales_01_witness_obligation",
+          "source_title": "Jungle Tales",
+          "source_author": "Cornelia Cannon",
+          "source_file": "pulp_index/cannon_jungle_tales",
+          "source_locator": "Chapter 3, witness and obligation sequence",
+          "source_moment": "A character encounters a wounded creature mid-emergence and must decide whether witnessing obligates intervention, and what intervention costs the witness body and route.",
+          "story_element": "The hatchling mid-emergence as a witness-obligation pressure: seeing it creates a claim. The claim has a body cost. Refusing the claim also has a body cost, paid later.",
+          "scenario_application": "Shapes the three-way split between mercy contact, contamination risk, and clean passage. The hatchling's eye membrane being wet is the anchor image: it has seen Hymn before it can move. That seeing is the pressure."
         },
         {
           "tier": 0,
-          "source_id": "lovecraft_shunned_house_01_contamination_record",
-          "source_title": "The Shunned House",
-          "source_author": "H. P. Lovecraft",
-          "source_file": "generated/corpus/texts/lovecraft_shunned_house_pg31469.txt",
-          "source_locator": "lovecraft_shunned_house_01_contamination_record",
-          "source_moment": "Accumulated small evidences—ooze, stains, smell—build a record of prior events and exposure without declaring conclusions.",
-          "story_element": "Evidence-first dread: shell drips, drag ridges, open film; the room reads as a record that can be added to.",
-          "scenario_application": "Checking a cracked shell yields residue and a quiet ledger of contact; following drag marks trades safety for a learned trail."
+          "source_id": "merritt_moon_pool_02_threshold_organism",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_file": "pulp_index/merritt_moon_pool",
+          "source_locator": "Chapter 7, threshold organism and contamination transfer",
+          "source_moment": "A living threshold reads the body of anyone who crosses it and transfers something: not a toll but a biological record. The organism does not ask. It samples.",
+          "story_element": "The corridor's cilia and feeder valves are a pressure system. The lane turns heat, breath, and contact into brood-line follow-up states rather than passive flavor.",
+          "scenario_application": "Grounds the contamination pressure axis. Whatever Hymn does here, the intact sacs encode it. That encoding is the carrier for the delayed follow-up. The corridor remembers the body that passed through it."
         }
-      ]
+      ],
+      "room_role": "corpus_anchored_witness_contamination"
     },
     {
       "id": "bone_corridor",
       "environment_id": "red_corridor",
       "name": "Bone Corridor",
-      "instance_premise": "A narrow passage plated in fused bones with caches, marked strides, and living stricture points. One sentinel sometimes guards a cache. Plates can teach obedience or cut her if she resists.",
-      "first_visit_description": "Chorus, a bone-lined corridor narrows and widens by ribs. Old heaps are fused into lanes. White dust hangs and sets in my throat. Plates pass load between seams when I step. A rib screen holds a cache pocket; a live brace pad under the screen tightens if a hand rests there. Every print I leave shows on the pale floor like a counted error; barbs turn a fraction toward skin heat when I pause.",
-      "return_description": "Another bone corridor: rib screens, dust, plate seams, and a cache smell under the dry air.",
+      "instance_premise": "A fused-bone passage guarded by a living toll keeper whose palm seals the only forward gate. The keeper reads stride, skin heat, and hesitation. Every choice teaches the corridor something about Hymn's body or costs her something she cannot take back.",
+      "first_visit_description": "The keeper is already facing me. One palm flat against the rib screen, the other hanging loose at its side. Bone dust hangs at throat level. The gate behind it is the only way forward. It has not moved since I entered, but the barbs along the narrowing behind it have turned toward my heat.",
+      "return_description": "Dust on the floor. My last print is still there. The gate is open or sealed depending on what I left behind.",
       "tags": [
         "transit",
         "hazard",
@@ -2024,18 +2264,20 @@
       ],
       "corpus_influences": [
         {
-          "seed_id": "lovecraft_at_mountains_of_madness_02_ancient_ruin",
-          "source_title": "At the Mountains of Madness",
-          "source_moment": "Architecture read through wear, dust, and residue that implies prior use and failed exits.",
-          "writing_influence": "Evidence-first dread: dry powder, fused heaps, precise footmarks, and rib wear give history before I move.",
-          "room_application": "Describe the corridor as accumulated bone work with readable traces: dust grind, stride marks, fused caches, polished barbs."
+          "source_id": "merritt_moon_pool_01_threshold_passage",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_moment": "A passage that reads the body crossing it and responds differently to hesitation versus commitment. The threshold is not neutral; it is a sensor and a judge.",
+          "writing_influence": "The bone corridor enforces stride, heat, and pause through the keeper. The keeper is the corridor's enforcement arm, not a separate creature. Its palm on the gate is the threshold's hand.",
+          "scenario_application": "The keeper's behavior changes based on whether Hymn hesitates, commits, or disrupts the lock. The later gate behavior is the lasting consequence, not the keeper itself."
         },
         {
-          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_title": "Twenty Thousand Leagues Under the Seas",
-          "source_moment": "Pressure and fit described as calculable conditions the body must answer.",
-          "writing_influence": "Mechanism under stress: plate seams, inward barbs, shoulder clearance, and guard posture written as operations I can test.",
-          "room_application": "Make forcing, probing, and marked-lane obedience feel like procedure: count stride, read barb angle, decide cache vs passage."
+          "source_id": "haggard_she_02_living_infrastructure",
+          "source_title": "She",
+          "source_author": "H. Rider Haggard",
+          "source_moment": "Infrastructure that is also a social actor: the passage has a keeper who holds authority over access and extracts a cost that is personal, not just material. The cost changes what the traveler is recognized as.",
+          "writing_influence": "The keeper is a debt-holder, not a monster. It wants something specific: a stride key, a wound cost, or passage fee. What Hymn gives determines which later gate behavior she gets.",
+          "scenario_application": "The three choices map to three recognition outcomes: fighter, obedient body, or ghost. Each outcome changes how later rooms open, close, or call for backup."
         }
       ],
       "faction_ids": [
@@ -2076,86 +2318,118 @@
         "Scraped caches and dust prints can let hunters read route timing."
       ],
       "environment_echoes": [
-        "Later corridors can show plate seams pre-set to her stride if she followed marked lanes.",
-        "Broken rib strictures can tick in distant walls after a force-through.",
-        "Cleaned caches can appear empty with dust settled in her boot pattern."
+        "Later marked corridors change timing if Hymn followed the plates here: early barb retraction, early gate opening, or tighter obedience pressure",
+        "A faction that uses bone-corridor keepers as scouts will have already received a report if Hymn paid the toll in blood",
+        "A sealed cache in a later room will be accessible only to a body the corridor did not fully read"
       ],
       "ending_vectors": [
         {
-          "id": "ending_plate_snare_route",
-          "label": "Plate Snare",
+          "id": "recognized_fighter",
+          "label": "The corridor knows her as a cutter",
           "pulls_toward": [
-            "marked-lane obedience",
-            "stride imprint"
+            "Attacking the keeper",
+            "Refusing to pay",
+            "Leaving a wound mark on the gate"
           ],
           "diverts_to": [
-            "injury from breaking patterns",
-            "opened_hunt arrival"
+            "Following the marked plates",
+            "Paying the resin toll",
+            "Retreating quietly"
+          ]
+        },
+        {
+          "id": "obedient_body",
+          "label": "The corridor knows her stride",
+          "pulls_toward": [
+            "Following the marked plates",
+            "Paying the toll",
+            "Letting the keeper read her heat"
+          ],
+          "diverts_to": [
+            "Breaking the pattern",
+            "Attacking",
+            "Retreating without contact"
+          ]
+        },
+        {
+          "id": "unread_ghost",
+          "label": "The corridor has no record of her",
+          "pulls_toward": [
+            "Breaking the marked pattern",
+            "Retreating before the keeper reads her",
+            "Paying in a way that leaves no stride key"
+          ],
+          "diverts_to": [
+            "Following the marks",
+            "Standing still long enough for the heat sensors to lock"
           ]
         }
       ],
       "mutation_hooks": [
         {
-          "capability": "thin_body",
-          "effect": "Squeeze through strictures without full barb contact.",
-          "in_encounter_use": "Slip past a committed strike or squeeze through a closing angle before recovery.",
-          "out_of_encounter_use": "Pass narrow ribs, drains, or half-open locks without payment or rupture.",
-          "surprising_second_use": "Hide inside spaces that normally read as empty tissue and ambush or overhear from there."
-        },
-        {
-          "capability": "hard_shell",
-          "effect": "Scrape through barbs with reduced wound.",
-          "in_encounter_use": "Accept glancing cuts, bites, or bone scrape while maintaining pressure.",
-          "out_of_encounter_use": "Cross abrasive plates, spiked passages, and tool-rests without losing as much flesh.",
-          "surprising_second_use": "Offer shell as a wedge, shield, or proof of hardening to a room that respects armor."
+          "capability": "cut",
+          "capability_tags": [
+            "cut",
+            "contact_punish"
+          ],
+          "baseline_route": "Hymn fights the keeper with timing and leverage: she waits for the free arm to commit, steps inside it, and drives the keeper off the gate with body weight and a short strike to the elbow joint. She takes a graze from the barbs but the gate opens.",
+          "mutation_branch": "A bigger scythe lets Hymn sever the keeper's palm-contact at the wrist before it can grip the gate harder. The gate opens cleanly. The severed hand stays on the screen as a mark. Later keeper-class actors recognize the cut and give ground faster.",
+          "symbiote_branch": "The impermeable barrier lets Hymn walk straight into the keeper's free arm, absorb the grip, and use the locked contact to lever the keeper off the gate without a wound. The barrier takes the barb damage. The keeper is intact but displaced.",
+          "effect": "Hymn's corridor outcome updates. Later gates respond to cutter, braced body, or leveraged fighter states.",
+          "in_encounter_use": "Sever the keeper's contact arm before it can seal the gate harder or call the barbs forward.",
+          "out_of_encounter_use": "Cut through the rib screen directly if the keeper is already displaced, bypassing the gate mechanism entirely.",
+          "surprising_second_use": "A severed keeper hand left on the gate acts as a trophy mark that later keeper-class actors read as a warning. Some step aside. Some call for a heavier response."
         }
       ],
       "progression_state": {
-        "early": "Readable bones: cache, marks, and a narrow stricture.",
-        "mid": "Plates and barbs start answering her stride or her force habit.",
-        "late": "Route narrows into either snare obedience or carved, noisy passages that attract hunters."
+        "early": "Hymn is learning that the organism has agents, not just hazards. The keeper is the first one that wants something specific from her body.",
+        "mid": "Hymn recognizes keeper-class actors on sight and knows which opening move they want. She can choose what to show them.",
+        "late": "Hymn's prior corridor outcome now has teeth. Keepers either step aside, close early, or call for backup before she reaches them."
       },
       "corpus_anchors": [
         {
           "tier": 0,
-          "source_id": "lovecraft_at_mountains_of_madness_02_ancient_ruin",
-          "source_title": "At the Mountains of Madness",
-          "source_author": "H. P. Lovecraft",
-          "source_file": "generated/corpus/texts/lovecraft_at_mountains_of_madness_pg70652.txt",
-          "source_locator": "lovecraft_at_mountains_of_madness_02_ancient_ruin",
-          "source_moment": "Architecture read through wear, dust, and residue that implies prior use and failed exits.",
-          "story_element": "Evidence-first dread: dry powder, fused heaps, precise footmarks, and rib wear give history before I move.",
-          "scenario_application": "Describe the corridor as accumulated bone work with readable traces: dust grind, stride marks, fused caches, polished barbs."
+          "source_id": "merritt_moon_pool_01_threshold_passage",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_file": "merritt_moon_pool",
+          "source_locator": "Chapter 3, threshold crossing sequence",
+          "source_moment": "A passage that reads the body crossing it and responds differently to hesitation versus commitment. The threshold is not neutral; it is a sensor and a judge.",
+          "story_element": "The bone corridor enforces stride, heat, and pause through the keeper. The keeper is the corridor's enforcement arm, not a separate creature. Its palm on the gate is the threshold's hand.",
+          "scenario_application": "The keeper's behavior changes based on whether Hymn hesitates, commits, or disrupts the lock. The later gate behavior is the lasting consequence, not the keeper itself."
         },
         {
           "tier": 0,
-          "source_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_title": "Twenty Thousand Leagues Under the Seas",
-          "source_author": "Jules Verne",
-          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
-          "source_locator": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_moment": "Pressure and fit described as calculable conditions the body must answer.",
-          "story_element": "Mechanism under stress: plate seams, inward barbs, shoulder clearance, and guard posture written as operations I can test.",
-          "scenario_application": "Make forcing, probing, and marked-lane obedience feel like procedure: count stride, read barb angle, decide cache vs passage."
+          "source_id": "haggard_she_02_living_infrastructure",
+          "source_title": "She",
+          "source_author": "H. Rider Haggard",
+          "source_file": "haggard_she",
+          "source_locator": "Chapters 14-15, the living passage and its guardian",
+          "source_moment": "Infrastructure that is also a social actor: the passage has a keeper who holds authority over access and extracts a cost that is personal, not just material. The cost changes what the traveler is recognized as.",
+          "story_element": "The keeper is a debt-holder, not a monster. It wants something specific: a stride key, a wound cost, or passage fee. What Hymn gives determines which later gate behavior she gets.",
+          "scenario_application": "The three choices map to three recognition outcomes: fighter, obedient body, or ghost. Each outcome changes how later rooms open, close, or call for backup."
         }
-      ]
+      ],
+      "room_role": "corpus_anchored_threshold_discipline"
     },
     {
       "id": "amber_corridor",
       "environment_id": "red_corridor",
       "name": "Amber Pressure Lane",
-      "room_role": "apparatus/resource temptation/transit",
+      "room_role": "corpus_anchored_social_ambush_resource",
       "instance_situation": "The plaque is live and ticking through a count; nearby amber sacs are unevenly loaded, some taut and some leaking now.",
       "room_scope": "narrow apparatus",
-      "instance_premise": "A corridor whose wall-skin holds resin pressure. Amber sacs and plaques regulate scent and count traffic.",
-      "first_visit_description": "Chorus, the corridor walls glow the color of dried fat. Amber veins run under the skin like slow cords. Some sacs are full and hard; others leak a sweet scent that sticks to the glove. Floor seams are tight; the pressure here is stored, not vented. Cutting or sealing will change how this lane sounds behind me.",
-      "return_description": "Amber sacs hang heavy. A flat plaque sits at hand height with bead organs ticking under a resin lid.",
+      "instance_premise": "A resin-pressured corridor controlled by a living collector named Silt, who reads plaque debts stored in amber plaques and levies debt against bodies that have passed before. The amber is a biological ledger, not a machine. Silt is the enforcement.",
+      "first_visit_description": "The walls here are the color of old fat, amber veins running slow and tight under the skin. A man crouches at the far end with his back to me, one hand flat against a plaque the size of a dinner plate. Bead organs pulse under the resin lid. He is reading something. The corridor smells sweet and close, like a wound that has been sealed too long. He has not turned around yet, but his shoulders have changed.",
+      "return_description": "The plaque is dark. Silt's cord is still looped around the anchor blister near the floor seam. He has been back.",
       "tags": [
         "transit",
         "pressure",
         "amber",
         "debt",
-        "red_corridor"
+        "red_corridor",
+        "ledger_covenant",
+        "chorus_report"
       ],
       "source_seed_ids": [
         "verne_twenty_thousand_leagues_01_ocean_pressure",
@@ -2163,18 +2437,28 @@
       ],
       "corpus_influences": [
         {
-          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_title": "Twenty Thousand Leagues Under the Seas",
-          "source_moment": "External pressure is treated as a calculable condition the hull must answer.",
-          "writing_influence": "Make corridor pressure legible: sacs as reservoirs, plaque as count, actions as adjustments to noise and seal.",
-          "room_application": "Describe sacs and plaque as working parts storing route pressure. Cutting relieves and leaves scent; sealing restores shield with residue; paying keeps the lane quiet."
+          "source_id": "london_iron_heel_01_debt_enforcement",
+          "source_title": "The Iron Heel",
+          "source_author": "Jack London",
+          "source_moment": "A creditor class that reads social records as property claims and enforces them through presence and threat rather than law",
+          "writing_influence": "Silt is a biological debt-reader: the amber plaque is a scent ledger, and his authority comes from being the only one who can interpret it and act on it",
+          "scenario_application": "Hymn's prior passage is already recorded in the amber. Silt's leverage is that he can read it, report it, or seal it. The choice is not whether to pay but what kind of body Hymn is willing to be in front of a witness who keeps records."
         },
         {
-          "seed_id": "lovecraft_shunned_house_01_contamination_record",
-          "source_title": "The Shunned House",
-          "source_moment": "Accumulated stains, odors, and growths build evidence of prior use and contamination.",
-          "writing_influence": "Let resin smell, clouding, and plaque-ticks serve as records. Dread comes from residue that other organs can read.",
-          "room_application": "When Hymn takes or pays, the amber keeps a tell: scent print, click count, clouded patch that later tolls and hunters can use."
+          "source_id": "sinclair_jungle_01_body_as_commodity",
+          "source_title": "The Jungle",
+          "source_author": "Upton Sinclair",
+          "source_moment": "The body is tracked, measured, and taxed before the worker understands the system. Debt accrues invisibly and is revealed as a trap.",
+          "writing_influence": "The plaque already has debt before Hymn arrives. She did not consent to the leverage. The price is real regardless.",
+          "scenario_application": "The amber plaque is not a toll booth she can choose to approach. It already has her. The confrontation is about what she does with that fact."
+        },
+        {
+          "source_id": "norris_octopus_01_extraction_pressure",
+          "source_title": "The Octopus",
+          "source_author": "Frank Norris",
+          "source_moment": "An extraction system that sets prices after the crop is grown, when the farmer has no leverage left. The collector arrives when retreat is already costly.",
+          "writing_influence": "Silt times his appearance for when Hymn is already inside the corridor and the amber already holds her heat. Leaving costs something too.",
+          "scenario_application": "The avoidance route is not free. Retreat means the plaque stays active and Silt keeps the leverage. Every option has a body cost."
         }
       ],
       "faction_ids": [
@@ -2214,8 +2498,9 @@
         "Quieted plaques reduce immediate noise but increase Claim visibility."
       ],
       "environment_echoes": [
-        "Later red corridors can show clouded resin, open counts, or sealed seams matching Hymn’s choices.",
-        "Ledger-linked mouths can repeat the same click count pattern after payment or refusal."
+        "A later room contains a faction checkpoint where Silt's plaque leverage has been forwarded. Hymn's choice here determines whether she is flagged, clean, or misread.",
+        "A mid-run corridor shows a body that refused Silt and was found with its scent sacs punctured. No combat marks. Just the smell.",
+        "If Hymn spoiled the amber, a later collector recognizes the chemical signature of deliberate record-burn and treats her differently: either with fear or with professional hostility."
       ],
       "environment_echo_bindings": [
         {
@@ -2299,62 +2584,115 @@
       ],
       "ending_vectors": [
         {
-          "id": "ending_soft_captain_transit",
-          "label": "The Soft Captain Route",
+          "id": "vector_debt_carrier",
+          "label": "Body That Pays and Is Remembered",
           "pulls_toward": [
-            "quiet transit",
-            "readable pressure",
-            "measured resource use"
+            "paying Silt",
+            "preserving the record",
+            "accepting the ledger as real"
           ],
           "diverts_to": [
-            "merchant debt from repeated plaque use",
-            "hunt attention from greedy cuts"
+            "spoiling the amber",
+            "reading the plaque before Silt can use it",
+            "leaving without resolution"
+          ]
+        },
+        {
+          "id": "vector_record_breaker",
+          "label": "Body That Burns Its Own Trail",
+          "pulls_toward": [
+            "spoiling the amber",
+            "breaking the plaque debt",
+            "refusing to be legible to the system"
+          ],
+          "diverts_to": [
+            "paying cleanly",
+            "negotiating",
+            "letting Silt keep the record intact"
+          ]
+        },
+        {
+          "id": "vector_reader",
+          "label": "Body That Learns the System",
+          "pulls_toward": [
+            "reading the amber before paying",
+            "understanding what Silt actually holds",
+            "using the information rather than destroying it"
+          ],
+          "diverts_to": [
+            "immediate combat",
+            "blind payment",
+            "retreat without engagement"
           ]
         }
       ],
       "mutation_hooks": [
         {
-          "capability": "scent_mask",
-          "effect": "Reduce how much a cut sac’s sweetness marks the lane for hunters.",
-          "in_encounter_use": "Dull predatory recognition long enough to break contact or take initiative.",
-          "out_of_encounter_use": "Approach nurseries, toll mouths, or symbiotes without waking every local alarm.",
-          "surprising_second_use": "Borrow a caretaker or prey scent so a later room misclassifies Hymn for one choice."
+          "capability": "scent_control",
+          "capability_tags": [
+            "scent_control",
+            "quiet_movement"
+          ],
+          "baseline_route": "Hymn reads Silt's posture and the plaque's pulse rate to judge how much he actually has on her before committing to a response. Costs time and requires staying in the corridor longer.",
+          "mutation_branch": "A scent-control mutation means the plaque holds an older, thinner record. Silt's leverage is weaker than he presents. Hymn can call his bluff without spoiling the amber.",
+          "symbiote_branch": "A scent-masking symbiote can overwrite the corridor's record in real time, but the symbiote's output is detectable to a trained reader like Silt. He may notice the chemical shift and escalate.",
+          "effect": "Determines how much of Hymn's history Silt actually holds and how much he is performing certainty.",
+          "in_encounter_use": "Reduce Silt's information advantage mid-confrontation by controlling what the amber can confirm.",
+          "out_of_encounter_use": "Pass future amber plaques without adding to the record.",
+          "surprising_second_use": "At a later checkpoint, a thinned amber debt lets Hymn spoof the toll and open a route that should be closed to her."
         },
         {
-          "capability": "hard_shell",
-          "effect": "Press against hot resin without opening a new wound.",
-          "in_encounter_use": "Accept glancing cuts, bites, or bone scrape while maintaining pressure.",
-          "out_of_encounter_use": "Cross abrasive plates, spiked passages, and tool-rests without losing as much flesh.",
-          "surprising_second_use": "Offer shell as a wedge, shield, or proof of hardening to a room that respects armor."
+          "capability": "read_damage",
+          "capability_tags": [
+            "read_damage"
+          ],
+          "baseline_route": "Hymn watches Silt's hand on the plaque and reads the micro-tension in his forearm to judge whether he is about to call for backup or is working alone.",
+          "mutation_branch": "A read_damage mutation lets Hymn see that Silt's left side is carrying an old puncture, not fully sealed. He is not at full capacity. The threat is real but bounded.",
+          "symbiote_branch": "Not applicable to this hook.",
+          "effect": "Shifts the confrontation from Silt's terms to Hymn's by giving her accurate threat assessment before he finishes his opening move.",
+          "in_encounter_use": "Know when Silt is bluffing about his capacity to enforce.",
+          "out_of_encounter_use": "Read amber plaques for stress fractures that indicate recent tampering or false records.",
+          "surprising_second_use": "Recognize a later collector as one of Silt's network by the same old injury pattern, suggesting they share a body-maintenance source."
         }
       ],
       "progression_state": {
-        "early": "Amber offers biomass, shield, or quiet passage with readable residue.",
-        "mid": "Later corridors mirror paid counts, scent marks, or sealed seams.",
-        "late": "Consistent quieting and measured siphons can bias routes toward low-noise transit, unless debt or scent pressure tips a reckoning."
+        "early": "Hymn does not know what the plaque holds. Silt has the information advantage. She is paying or fighting from behind.",
+        "mid": "Hymn has seen amber plaques before and knows what a debt plaque costs to maintain. She can price Silt's leverage before he speaks.",
+        "late": "Hymn's own scent has changed enough that the plaque misreads her. Silt notices the gap between the record and the body in front of him. That gap is leverage."
       },
       "corpus_anchors": [
         {
           "tier": 0,
-          "source_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_title": "Twenty Thousand Leagues Under the Seas",
-          "source_author": "Jules Verne",
-          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
-          "source_locator": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_moment": "External pressure is treated as a calculable condition the hull must answer.",
-          "story_element": "Make corridor pressure legible: sacs as reservoirs, plaque as count, actions as adjustments to noise and seal.",
-          "scenario_application": "Describe sacs and plaque as working parts storing route pressure. Cutting relieves and leaves scent; sealing restores shield with residue; paying keeps the lane quiet."
+          "source_id": "london_iron_heel_01_debt_enforcement",
+          "source_title": "The Iron Heel",
+          "source_author": "Jack London",
+          "source_file": "gutenberg_london_iron_heel",
+          "source_locator": "Chapters 4-6, oligarch enforcement and debt ledger scenes",
+          "source_moment": "A creditor class that reads social records as property claims and enforces them through presence and threat rather than law",
+          "story_element": "Silt is a biological debt-reader: the amber plaque is a scent ledger, and his authority comes from being the only one who can interpret it and act on it",
+          "scenario_application": "Hymn's prior passage is already recorded in the amber. Silt's leverage is that he can read it, report it, or seal it. The choice is not whether to pay but what kind of body Hymn is willing to be in front of a witness who keeps records."
         },
         {
           "tier": 0,
-          "source_id": "lovecraft_shunned_house_01_contamination_record",
-          "source_title": "The Shunned House",
-          "source_author": "H. P. Lovecraft",
-          "source_file": "generated/corpus/texts/lovecraft_shunned_house_pg31469.txt",
-          "source_locator": "lovecraft_shunned_house_01_contamination_record",
-          "source_moment": "Accumulated stains, odors, and growths build evidence of prior use and contamination.",
-          "story_element": "Let resin smell, clouding, and plaque-ticks serve as records. Dread comes from residue that other organs can read.",
-          "scenario_application": "When Hymn takes or pays, the amber keeps a tell: scent print, click count, clouded patch that later tolls and hunters can use."
+          "source_id": "sinclair_jungle_01_body_as_commodity",
+          "source_title": "The Jungle",
+          "source_author": "Upton Sinclair",
+          "source_file": "gutenberg_sinclair_jungle",
+          "source_locator": "Chapters 3-5, wage debt and body-cost accounting",
+          "source_moment": "The body is tracked, measured, and taxed before the worker understands the system. Debt accrues invisibly and is revealed as a trap.",
+          "story_element": "The plaque already has debt before Hymn arrives. She did not consent to the leverage. The price is real regardless.",
+          "scenario_application": "The amber plaque is not a toll booth she can choose to approach. It already has her. The confrontation is about what she does with that fact."
+        },
+        {
+          "tier": 0,
+          "source_id": "norris_octopus_01_extraction_pressure",
+          "source_title": "The Octopus",
+          "source_author": "Frank Norris",
+          "source_file": "gutenberg_norris_octopus",
+          "source_locator": "Book 1, Chapters 2-4, railroad rate-setting and farmer confrontation",
+          "source_moment": "An extraction system that sets prices after the crop is grown, when the farmer has no leverage left. The collector arrives when retreat is already costly.",
+          "story_element": "Silt times his appearance for when Hymn is already inside the corridor and the amber already holds her heat. Leaving costs something too.",
+          "scenario_application": "The avoidance route is not free. Retreat means the plaque stays active and Silt keeps the leverage. Every option has a body cost."
         }
       ]
     },
@@ -2362,14 +2700,16 @@
       "id": "spiked_red_corridor",
       "environment_id": "red_corridor",
       "name": "Spiked Red Corridor",
-      "instance_premise": "A narrowing red passage where bone spines grow in rows and a Spine Stalker waits between lanes.",
-      "first_visit_description": "Chorus, the corridor walls are red bone with live spine rows. The floor spikes grow in counter-rows, staggered to close a walking lane one notch at a time. Old impacts show where shoulders forced space between tips. A thin scrape line crosses low near the left wall where someone crawled under a set that hadn’t finished hardening. A soft click repeats ahead at spine interval. That click matches a body holding still to ambush between rows.",
-      "return_description": "A red spine corridor tightens in rows. Old shoulder scrapes, a low crawl line, and the same patient click ahead.",
+      "instance_premise": "A Spine Stalker hunts inside a red bone corridor where rows of live spines open and close on a fixed interval. The stalker rides the rhythm of the rows as a weapon, using them to pin, redirect, and punish. Hymn must read the interval, choose her distance, and commit before the lane closes again.",
+      "first_visit_description": "The corridor is red bone, walls and floor both. Spine rows run in staggered sets: wall rows and floor rows on offset beats, so the open lane shifts every few seconds. The click is not a mechanism. It is a body. A Spine Stalker moves between the rows with its back spines flat, using the rhythm to stay covered. It has already seen me. The shoulder scrapes on the wall are old. The low crawl line near the left wall is not. Someone tried to go under a set that had not finished hardening. They did not make it through clean. The stalker is waiting for me to commit to a lane before the next close.",
+      "return_description": "Red bone rows, offset beats, the same patient click. The shoulder scrapes are still there. The crawl line is darker now.",
       "tags": [
         "transit",
         "hazard",
         "ambush",
-        "red_corridor"
+        "red_corridor",
+        "opened_hunt",
+        "chorus_report"
       ],
       "source_seed_ids": [
         "verne_twenty_thousand_leagues_01_ocean_pressure",
@@ -2377,20 +2717,20 @@
       ],
       "corpus_influences": [
         {
-          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_title": "Twenty Thousand Leagues Under the Seas",
-          "source_author": "Jules Verne",
-          "source_moment": "Pressure made legible through named parts and sequence before the danger resolves.",
-          "writing_influence": "Make closure a countable sequence: alternating spine rows, notch-by-notch lane loss, and timing a pass between closes.",
-          "room_application": "Describe the corridor as rows that close in order. Choices test brace/timing/clearance instead of abstract risk."
+          "source_id": "london_call_of_the_wild_01_predator_patience",
+          "source_title": "The Call of the Wild",
+          "source_author": "Jack London",
+          "source_moment": "A predator reads interval and body position before closing distance, using terrain rhythm as cover rather than obstacle",
+          "writing_influence": "The Spine Stalker does not charge. It waits inside the row rhythm, using the close-open beat as a weapon. The corridor is not a hazard to navigate around the stalker. The stalker and the corridor are one system.",
+          "scenario_application": "Forces Hymn to read the stalker's position relative to the row interval, not just the spikes as terrain. Every choice is a spacing decision: close distance now, hold and read, or break the rhythm the stalker is riding."
         },
         {
-          "seed_id": "lovecraft_shunned_house_01_residue_cellar",
-          "source_title": "The Shunned House",
-          "source_author": "H. P. Lovecraft",
-          "source_moment": "Dread from accumulated stains and structural clues in a cellar before contact.",
-          "writing_influence": "Let prior scrapes, stains, and the patient click build evidence of a waiting predator.",
-          "room_application": "Show old shoulder gouges and a crawl scrape as records. The stalker’s click is evidence, not an announcement."
+          "source_id": "london_white_fang_01_attack_geometry",
+          "source_title": "White Fang",
+          "source_author": "Jack London",
+          "source_moment": "Two bodies reading each other's commitment windows before contact, using terrain edges to force the other into a bad angle",
+          "writing_influence": "The duel has a geometry layer: the stalker uses the row rhythm to keep Hymn in a bad angle. Closing straight is what it wants. Cutting across a row or breaking a tip changes the angle and costs the stalker its cover.",
+          "scenario_application": "Shapes the choice set around spacing and angle rather than damage output. Brace-through is a straight commit. Break-marked-pattern is an angle change. Retreat is a spacing reset. Each has a different geometry consequence."
         }
       ],
       "faction_ids": [
@@ -2422,45 +2762,60 @@
         "Forced breaks encourage platelet beetles to seal future red lanes faster."
       ],
       "environment_echoes": [
-        "Later red corridors can show widened low crawls if Hymn prefers underpasses.",
-        "If she breaks lanes, later corridors may present hardened spike tips and fewer timing windows.",
-        "If she times passage cleanly, the next corridor may open one extra beat on her interval."
+        "Later corridors with live-spine infrastructure will remember if Hymn broke tips: the rows grow back denser where they were cut, narrowing future lanes",
+        "A Spine Stalker survivor or kin may appear in a later room with a different interval pattern, having learned Hymn's timing from this encounter",
+        "If Hymn took a spine wound here, a repair animal in a later room will recognize the specific puncture geometry and offer or withhold help accordingly"
       ],
       "ending_vectors": [
         {
-          "id": "ending_hunt_pressure",
-          "label": "Opened Hunt Route",
+          "id": "vector_controlled_predator",
+          "label": "Controlled Predator",
           "pulls_toward": [
-            "repeated ambush avoidance",
-            "forced lanes",
-            "noise signs"
+            "Reading spacing before committing",
+            "Breaking the stalker's rhythm rather than matching it",
+            "Finishing contact cleanly without excess wound debt"
           ],
           "diverts_to": [
-            "clean timing that cools pursuit",
-            "alternate marrow routes if crawls become habit"
+            "Bracing straight through without reading the angle",
+            "Taking repeated spine contact to force a result",
+            "Retreating and losing the lane entirely"
+          ]
+        },
+        {
+          "id": "vector_wound_accumulator",
+          "label": "Wound Accumulator",
+          "pulls_toward": [
+            "Forcing contact before the interval opens",
+            "Bracing through closed rows",
+            "Ignoring the stalker's geometry and trading hits"
+          ],
+          "diverts_to": [
+            "Holding distance and reading the beat",
+            "Using angle change to break cover",
+            "Retreating to reset spacing"
           ]
         }
       ],
       "mutation_hooks": [
         {
-          "capability": "thin_body",
-          "effect": "Fit the low crawl without scraping shield or skin.",
-          "in_encounter_use": "Slip past a committed strike or squeeze through a closing angle before recovery.",
-          "out_of_encounter_use": "Pass narrow ribs, drains, or half-open locks without payment or rupture.",
-          "surprising_second_use": "Hide inside spaces that normally read as empty tissue and ambush or overhear from there."
-        },
-        {
-          "capability": "hard_shell",
-          "effect": "Take shoulder scrapes with less wound when forcing a lane.",
-          "in_encounter_use": "Accept glancing cuts, bites, or bone scrape while maintaining pressure.",
-          "out_of_encounter_use": "Cross abrasive plates, spiked passages, and tool-rests without losing as much flesh.",
-          "surprising_second_use": "Offer shell as a wedge, shield, or proof of hardening to a room that respects armor."
+          "capability": "speed",
+          "capability_tags": [
+            "speed",
+            "quiet_movement"
+          ],
+          "baseline_route": "Hymn reads the row interval by watching the stalker's spine posture, times the open beat, and crosses the lane before the next close. She takes the angle change on foot and commits to contact at the moment the stalker loses its cover row.",
+          "mutation_branch": "Lean Muscle lets Hymn cross the lane before the stalker can reset its position inside the rows. The stalker's timing advantage collapses because Hymn is already inside its cover before the next beat.",
+          "symbiote_branch": "Impermeable Barrier lets Hymn take the close deliberately, absorbing the spine contact and using the forced proximity to finish the duel at zero distance where the stalker cannot use the rows at all.",
+          "effect": "Speed mutation breaks the stalker's interval advantage. Barrier symbiote converts the interval into a trap for the stalker instead of Hymn.",
+          "in_encounter_use": "Cross the lane before the stalker can reposition. Close distance faster than the row interval allows the stalker to reset cover.",
+          "out_of_encounter_use": "Cross exposed spine corridors before the rows finish their close cycle, reaching exits or resources that slower bodies cannot reach in time.",
+          "surprising_second_use": "Outrun a row-close pattern long enough to leave no scrape; later hunters lose the easy lane and must close distance by sight."
         }
       ],
       "progression_state": {
-        "early": "Corridor offers three reads: force a lane, time a pass, or take the low crawl.",
-        "mid": "Subsequent red corridors echo whether she forced, timed, or crawled.",
-        "late": "Repeated forcing invites faster sealing and hunter pressure; repeated timing can open a quieter sequence."
+        "early": "Hymn reads the interval late, commits under pressure, takes contact, and learns the stalker's geometry the hard way. Wound debt is likely. The corridor remembers the scrape.",
+        "mid": "Hymn reads the interval before committing, uses the angle change to break the stalker's cover, and finishes the duel with controlled contact. Baseline discipline rises. The corridor remembers the broken tip.",
+        "late": "Hymn enters already reading the beat, uses the stalker's own rhythm against it, and ends the duel before the second close. The corridor remembers nothing because she left no mark."
       },
       "contract": {
         "contract_version": "post_update_1",
@@ -2555,39 +2910,42 @@
       "corpus_anchors": [
         {
           "tier": 0,
-          "source_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_title": "Twenty Thousand Leagues Under the Seas",
-          "source_author": "Jules Verne",
-          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
-          "source_locator": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_moment": "Pressure made legible through named parts and sequence before the danger resolves.",
-          "story_element": "Make closure a countable sequence: alternating spine rows, notch-by-notch lane loss, and timing a pass between closes.",
-          "scenario_application": "Describe the corridor as rows that close in order. Choices test brace/timing/clearance instead of abstract risk."
+          "source_id": "london_call_of_the_wild_01_predator_patience",
+          "source_title": "The Call of the Wild",
+          "source_author": "Jack London",
+          "source_file": "gutenberg_london_call_of_the_wild",
+          "source_locator": "Chapter 5, Buck reading the pack's spacing and timing before committing",
+          "source_moment": "A predator reads interval and body position before closing distance, using terrain rhythm as cover rather than obstacle",
+          "story_element": "The Spine Stalker does not charge. It waits inside the row rhythm, using the close-open beat as a weapon. The corridor is not a hazard to navigate around the stalker. The stalker and the corridor are one system.",
+          "scenario_application": "Forces Hymn to read the stalker's position relative to the row interval, not just the spikes as terrain. Every choice is a spacing decision: close distance now, hold and read, or break the rhythm the stalker is riding."
         },
         {
           "tier": 0,
-          "source_id": "lovecraft_shunned_house_01_residue_cellar",
-          "source_title": "The Shunned House",
-          "source_author": "H. P. Lovecraft",
-          "source_file": "generated/corpus/texts/lovecraft_shunned_house_pg31469.txt",
-          "source_locator": "lovecraft_shunned_house_01_residue_cellar",
-          "source_moment": "Dread from accumulated stains and structural clues in a cellar before contact.",
-          "story_element": "Let prior scrapes, stains, and the patient click build evidence of a waiting predator.",
-          "scenario_application": "Show old shoulder gouges and a crawl scrape as records. The stalker’s click is evidence, not an announcement."
+          "source_id": "london_white_fang_01_attack_geometry",
+          "source_title": "White Fang",
+          "source_author": "Jack London",
+          "source_file": "gutenberg_london_white_fang",
+          "source_locator": "Chapter 17, fight geometry: circling, feinting, committing only when the angle is right",
+          "source_moment": "Two bodies reading each other's commitment windows before contact, using terrain edges to force the other into a bad angle",
+          "story_element": "The duel has a geometry layer: the stalker uses the row rhythm to keep Hymn in a bad angle. Closing straight is what it wants. Cutting across a row or breaking a tip changes the angle and costs the stalker its cover.",
+          "scenario_application": "Shapes the choice set around spacing and angle rather than damage output. Brace-through is a straight commit. Break-marked-pattern is an angle change. Retreat is a spacing reset. Each has a different geometry consequence."
         }
-      ]
+      ],
+      "room_role": "corpus_anchored_pursuit_duel"
     },
     {
       "id": "organ_chamber_red",
       "environment_id": "red_corridor",
       "name": "Hanging Core Chamber",
-      "instance_premise": "A furnace-sized heart hangs from black cords. A keeper-grown body stands rooted below it, guarding the pulse vent that clears downstream routes.",
-      "first_visit_description": "Chorus, the corridor opens into a red organ chamber. A heart the size of a furnace hangs from black cords and vents heat on the downbeat. A rooted keeper stands under it with plates over the ribs and a grafted hook in place of one hand. Each pulse pushes a breath against my chest hard enough to move my sight for a half second. Black cords creak when the beat surges. The far seam stays closed between beats. As I pass, a counting ring in the vent clicks once after the exhale, as if holding the last beat.",
-      "return_description": "A hot red chamber with a hanging heart, creaking cords, and the keeper planted under the vent. The vent ring still clicks once after a long exhale.",
+      "instance_premise": "A furnace-sized heart hangs from black cords above a pulse vent. A keeper-grown body stands rooted beneath it, plates over the ribs, hook-graft where one hand was, setting its hook before Hymn reaches the seam. The vent pushes a breath hard enough to blur vision on the downbeat. The far seam stays sealed between beats.",
+      "first_visit_description": "The corridor opens into heat. A heart the size of a furnace hangs from black cords above a floor vent, and every downbeat shoves warm air against my chest hard enough to shift my sight for half a second. The keeper is already facing me. Plates over the ribs, hook where the right hand was, feet rooted into the floor membrane. It is not guarding the heart. It is reading me. A counting ring in the vent lip clicks once after each long exhale. The far seam stays sealed between beats. The keeper's hook tilts when I stop moving.",
+      "return_description": "The red chamber, the hanging heart, the vent ring clicking once on the exhale. The keeper's posture changes depending on what I did here.",
       "tags": [
         "enemy",
         "guard",
-        "red_corridor"
+        "red_corridor",
+        "operator_residue",
+        "chorus_report"
       ],
       "source_seed_ids": [
         "verne_twenty_thousand_leagues_01_ocean_pressure",
@@ -2595,18 +2953,20 @@
       ],
       "corpus_influences": [
         {
-          "seed_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_title": "Twenty Thousand Leagues Under the Seas",
-          "source_moment": "Pressure described as a calculable condition the machine must answer, not ambiance.",
-          "writing_influence": "Name the parts that answer pressure and make beat-timing a legible risk.",
-          "room_application": "The heart’s pulse is a measurable interval that affects approach, attack rhythm, and bypass timing."
+          "source_id": "merritt_moon_pool_01_threshold_guardian",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_moment": "A rooted guardian reads the protagonist's body posture and intent before any physical contact; the threshold does not open on force alone but on the quality of approach. The guardian's response changes based on what the approaching body communicates.",
+          "writing_influence": "The keeper does not attack on sight. It answers posture with position. Destroying, syncing, or refusing the chamber changes its first move before contact.",
+          "scenario_application": "The keeper's hook-tilt is the room's first pressure: it has already read something. Every choice Hymn makes is a declaration the room will remember. The follow-up two rooms later carries the keeper's read forward as a visible mark on Hymn's body or route."
         },
         {
-          "seed_id": "lovecraft_shunned_house_01_residue",
-          "source_title": "The Shunned House",
-          "source_moment": "Accumulated stains and growths that testify to prior use and failed procedures.",
-          "writing_influence": "Let residue mark previous entries and keeper work without declaring motive.",
-          "room_application": "Old splash arcs on the wall and cord polish at grasp-height show how intruders were handled here."
+          "source_id": "haggard_she_01_living_infrastructure",
+          "source_title": "She",
+          "source_author": "H. Rider Haggard",
+          "source_moment": "A living system offers transformation through direct physical contact with a dangerous force. The cost is bodily. The benefit is real but changes what the body is. Refusal is also a choice with a cost: the threshold remembers who declined.",
+          "writing_influence": "The pulse vent is not just a hazard. It is an offer. Syncing with the chamber means taking the beat into the body at cost. The chamber remembers whether Hymn accepted, damaged, or refused.",
+          "scenario_application": "The sync choice is a body-cost path that raises baseline_discipline and leaves a physical mark the next room can read. Refusal preserves the body but leaves the chamber intact and the route partially closed. Damage opens the route by force but raises hunt_pressure."
         }
       ],
       "faction_ids": [
@@ -2645,69 +3005,96 @@
         "Spilled keeper plate fragments can appear in later red corridors after a fight."
       ],
       "environment_echoes": [
-        "Later red corridors can present short on-beat openings if Hymn matched breathing here.",
-        "Broken cord residue can reappear as a harsher beat in a follow-up red room."
+        "A later room's keeper-class body pauses before engaging Hymn, hook-side angled away, if she synced here",
+        "A downstream vent ring clicks at the wrong interval if the heart was damaged, signaling route instability",
+        "If Hymn refused without engaging, a cord-wrapped receipt blister appears on the far seam two rooms out, sealed with dried pulse resin"
       ],
       "ending_vectors": [
         {
-          "id": "ending_soft_captain_transit",
-          "label": "The Soft Captain Route",
+          "id": "vector_force_body",
+          "label": "Force Body",
           "pulls_toward": [
-            "measured approach",
-            "timed passage",
-            "quiet bypass"
+            "Destroying the keeper",
+            "Cutting the heart cords",
+            "Raising hunt_pressure to open routes"
           ],
           "diverts_to": [
-            "hunt pressure from unresolved guardians",
-            "authority pressure from forced entries"
+            "Syncing with the chamber",
+            "Refusing and retreating with discipline"
+          ]
+        },
+        {
+          "id": "vector_discipline_body",
+          "label": "Discipline Body",
+          "pulls_toward": [
+            "Syncing with the vent at body cost",
+            "Refusing the keeper without combat",
+            "Reading keeper posture before committing"
+          ],
+          "diverts_to": [
+            "Cutting cords",
+            "Ignoring the vent ring count"
           ]
         }
       ],
       "mutation_hooks": [
         {
-          "capability": "brace_pressure",
-          "effect": "Stabilize breath and stance during beat spikes in this family, holding through a vent surge without staggering.",
-          "in_encounter_use": "Anchor stance against charges, contractions, or forced movement without losing the line.",
-          "out_of_encounter_use": "Hold seams, pressure locks, or launch rings open long enough to pass or work.",
-          "surprising_second_use": "Serve as a living brace for another body, door, or failing organ during a timed choice."
+          "capability": "cut",
+          "capability_tags": [
+            "cut"
+          ],
+          "baseline_route": "Hymn times the downbeat by the vent ring count and drives into the keeper on the long exhale gap, using pain tolerance and footwork to stay inside the hook's reach.",
+          "mutation_branch": "A cut-capable body can sever one black cord mid-fight, dropping the heart's rhythm and giving Hymn a second gap the keeper cannot predict.",
+          "symbiote_branch": "A barrier symbiote can absorb the hook's first committed swing, letting Hymn stay inside and finish the keeper without taking the hook across the ribs.",
+          "effect": "Cord severed: heart rhythm destabilized, route opens by force, hunt_pressure raised, downstream vent rings miscount for two rooms.",
+          "in_encounter_use": "Sever a cord to break the keeper's timing advantage mid-fight.",
+          "out_of_encounter_use": "Cut through sealed membrane seams that the pulse vent would otherwise hold shut.",
+          "surprising_second_use": "A severed cord left hanging marks the chamber as damaged; later keeper-class bodies read the cut and adjust their hook-side guard."
         },
         {
-          "capability": "thin_body",
-          "effect": "Reduce target window at on-beat seams so the keeper’s reach clips past while you slip the opening.",
-          "in_encounter_use": "Slip past a committed strike or squeeze through a closing angle before recovery.",
-          "out_of_encounter_use": "Pass narrow ribs, drains, or half-open locks without payment or rupture.",
-          "surprising_second_use": "Hide inside spaces that normally read as empty tissue and ambush or overhear from there."
+          "capability": "brace",
+          "capability_tags": [
+            "brace"
+          ],
+          "baseline_route": "Hymn plants her feet and takes the downbeat pressure without flinching, holding the vent ring count in her chest until the long exhale gap opens.",
+          "mutation_branch": "Not applicable for this room's primary pressure.",
+          "symbiote_branch": "A barrier symbiote absorbs the vent's heat pressure during sync, reducing body cost and letting Hymn hold the beat longer without wound_debt.",
+          "effect": "Sync completed: baseline_discipline raised, body carries the chamber's beat as a readable rhythm mark, keeper stands down.",
+          "in_encounter_use": "Hold ground inside the hook's range without retreating, forcing the keeper to overcommit.",
+          "out_of_encounter_use": "Stand in a pulse vent long enough to read its count without being pushed back.",
+          "surprising_second_use": "A body that has braced a full vent count is recognized by downstream keeper-class bodies as having passed the chamber's threshold."
         }
       ],
       "progression_state": {
-        "early": "The keeper holds the vent. Hymn can fight or time a bypass.",
-        "mid": "Red corridors echo recorded rhythm or spilled plate residue.",
-        "late": "Measured red timing can combine with other transit measurements toward a quiet route if combat was avoided."
+        "early": "Hymn reads the keeper as a guard and the heart as an obstacle. The vent is a hazard to time around.",
+        "mid": "Hymn reads the keeper as a threshold agent and the heart as infrastructure with memory. The vent is a cost-benefit offer.",
+        "late": "Hymn recognizes keeper posture as a body-language system. She can read hook-tilt as intent before engagement anywhere in the organism."
       },
       "corpus_anchors": [
         {
           "tier": 0,
-          "source_id": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_title": "Twenty Thousand Leagues Under the Seas",
-          "source_author": "Jules Verne",
-          "source_file": "generated/corpus/texts/verne_twenty_thousand_leagues_pg164.txt",
-          "source_locator": "verne_twenty_thousand_leagues_01_ocean_pressure",
-          "source_moment": "Pressure described as a calculable condition the machine must answer, not ambiance.",
-          "story_element": "Name the parts that answer pressure and make beat-timing a legible risk.",
-          "scenario_application": "The heart’s pulse is a measurable interval that affects approach, attack rhythm, and bypass timing."
+          "source_id": "merritt_moon_pool_01_threshold_guardian",
+          "source_title": "The Moon Pool",
+          "source_author": "A. Merritt",
+          "source_file": "merritt_moon_pool",
+          "source_locator": "Chapters 4–6, threshold approach and guardian recognition sequence",
+          "source_moment": "A rooted guardian reads the protagonist's body posture and intent before any physical contact; the threshold does not open on force alone but on the quality of approach. The guardian's response changes based on what the approaching body communicates.",
+          "story_element": "The keeper does not attack on sight. It answers posture with position. Destroying, syncing, or refusing the chamber changes its first move before contact.",
+          "scenario_application": "The keeper's hook-tilt is the room's first pressure: it has already read something. Every choice Hymn makes is a declaration the room will remember. The follow-up two rooms later carries the keeper's read forward as a visible mark on Hymn's body or route."
         },
         {
           "tier": 0,
-          "source_id": "lovecraft_shunned_house_01_residue",
-          "source_title": "The Shunned House",
-          "source_author": "H. P. Lovecraft",
-          "source_file": "generated/corpus/texts/lovecraft_shunned_house_pg31469.txt",
-          "source_locator": "lovecraft_shunned_house_01_residue",
-          "source_moment": "Accumulated stains and growths that testify to prior use and failed procedures.",
-          "story_element": "Let residue mark previous entries and keeper work without declaring motive.",
-          "scenario_application": "Old splash arcs on the wall and cord polish at grasp-height show how intruders were handled here."
+          "source_id": "haggard_she_01_living_infrastructure",
+          "source_title": "She",
+          "source_author": "H. Rider Haggard",
+          "source_file": "haggard_she",
+          "source_locator": "Chapters 14–16, the pillar of fire and body-cost threshold",
+          "source_moment": "A living system offers transformation through direct physical contact with a dangerous force. The cost is bodily. The benefit is real but changes what the body is. Refusal is also a choice with a cost: the threshold remembers who declined.",
+          "story_element": "The pulse vent is not just a hazard. It is an offer. Syncing with the chamber means taking the beat into the body at cost. The chamber remembers whether Hymn accepted, damaged, or refused.",
+          "scenario_application": "The sync choice is a body-cost path that raises baseline_discipline and leaves a physical mark the next room can read. Refusal preserves the body but leaves the chamber intact and the route partially closed. Damage opens the route by force but raises hunt_pressure."
         }
-      ]
+      ],
+      "room_role": "corpus_anchored_confrontation"
     },
     {
       "id": "split_green_corridor",
@@ -2876,7 +3263,7 @@
           "source_title": "At the Mountains of Madness",
           "source_moment": "Accumulated evidence from architecture and wear builds dread without declaring intent.",
           "writing_influence": "Let old heel dust, plate scratches, and bead lines imply prior use and surveillance. Mark inference as inference.",
-          "room_application": "Recordable traces matter: opening the artery leaves a scent record; bracing through plates leaves a stride cut; marking leaves a route tell that later corridors can copy."
+          "room_application": "Recordable traces matter: opening the artery leaves a plaque debt; bracing through plates leaves a stride cut; marking leaves a route tell that later corridors can copy."
         }
       ],
       "faction_ids": [
@@ -2987,7 +3374,7 @@
           "source_locator": "lovecraft_at_mountains_of_madness_02_ancient_ruin",
           "source_moment": "Accumulated evidence from architecture and wear builds dread without declaring intent.",
           "story_element": "Let old heel dust, plate scratches, and bead lines imply prior use and surveillance. Mark inference as inference.",
-          "scenario_application": "Recordable traces matter: opening the artery leaves a scent record; bracing through plates leaves a stride cut; marking leaves a route tell that later corridors can copy."
+          "scenario_application": "Recordable traces matter: opening the artery leaves a plaque debt; bracing through plates leaves a stride cut; marking leaves a route tell that later corridors can copy."
         }
       ]
     },
@@ -2996,9 +3383,9 @@
       "environment_id": "red_corridor",
       "name": "Red Chapel Pocket",
       "room_role": "corpus_anchored_combat_progression",
-      "instance_premise": "A red maintenance chapel is closing under hunter pressure while Amar Creepstride offers Hymn a saw timing discipline: learn when the wall opens, kill him and take the route alone, or leave as prey.",
-      "first_visit_description": "Chorus, the red corridor pinches into a chapel pocket. The floor is narrow enough that my heel and Amar's saw cannot both have room. Three tendon cuts mark the wall. They open, close, and open again in a three-beat rhythm I can feel through my boots. Behind me, something heavy tests the same corridor with its teeth. Amar Creepstride keeps his saw low at wrist height and watches whether I step like prey.",
-      "return_description": "The red chapel pocket waits with three tendon cuts, a closing floor rhythm, and hunter scent in the seam.",
+      "instance_premise": "A red maintenance chapel pocket, three strides wide, where the wall cuts open and close on a three-beat rhythm. Amar Creepstride holds the middle stride with a low saw and offers Hymn a choice: learn his timing under debt, die to his blade, or leave as prey. A hunter is already in the corridor behind her. The room is a pressure trap that rewards whoever reads the wall rhythm first.",
+      "first_visit_description": "The red corridor pinches into a chapel pocket three strides wide. The walls carry tendon cuts that open, close, and open again in a rhythm I can feel through my boot soles. Amar Creepstride stands in the middle stride with his saw held low at wrist height, blade angled so my arm has to cross it to reach the seam. Behind me the corridor shudders. Something heavy is testing the passage with its teeth. Amar watches my feet. He is deciding whether I step like prey.",
+      "return_description": "The red chapel pocket holds its three-beat wall rhythm and Amar's absence or presence depending on what I left here.",
       "tags": [
         "character",
         "cultist",
@@ -3019,25 +3406,25 @@
           "source_id": "howard_red_shadows_pg70570",
           "source_title": "Red Shadows",
           "source_author": "Robert E. Howard",
-          "source_moment": "The hunted man names the reversal into hunter, then the pursuit resolves through a close blade exchange where blood loss, reach, and recovery matter.",
-          "writing_influence": "Amar is not color. He is the living hinge between prey-route and hunter-route; each choice decides whether Hymn hunts, learns, or is driven.",
-          "scenario_application": "Open with immediate pursuit pressure and write every result as a change in stance, blood cost, noise, or predator recognition."
+          "source_moment": "A hunter closes a corridor while a dangerous figure waits at the only exit, forcing the protagonist to commit to violence or be caught between two threats.",
+          "writing_influence": "The hunter behind Hymn and Amar at the seam recreate the corridor-trap structure: two threats, one narrow space, no neutral ground.",
+          "scenario_application": "The hunter's approach is the ticking clock. Amar's saw position is the gate. Every choice is shaped by the fact that doing nothing is the worst option."
         },
         {
           "source_id": "sabatini_scaramouche_pg1947",
           "source_title": "Scaramouche",
           "source_author": "Rafael Sabatini",
-          "source_moment": "Sword training becomes a repeatable discipline: eye, wrist, line, counter, and planned lunge rather than raw bravery.",
-          "writing_influence": "The progression prize is not Amar's friendship. It is a saw timing discipline Hymn can carry into red anatomy.",
-          "scenario_application": "Choices should teach or refuse a practical fighting method: find tendon-line, set weight, cut on count, and recover before the room closes."
+          "source_moment": "A skilled swordsman teaches a student under conditions of mutual suspicion and unequal power, where the student must decide how much to owe the teacher and whether the debt is worth the skill.",
+          "writing_influence": "Amar's offer of saw-timing discipline is the teaching-under-debt structure. The debt is concrete and collectible, not abstract gratitude.",
+          "scenario_application": "The cooperative branch creates a real obligation Amar can call in. The resentment branch mirrors the student who watches and copies without paying, which Sabatini frames as a specific kind of betrayal that instructors remember."
         },
         {
           "source_id": "blackwood_willows_pg11438",
           "source_title": "The Willows",
           "source_author": "Algernon Blackwood",
-          "source_moment": "A small temporary refuge becomes unsafe as water, wind, and vegetation press inward and alter the available ground.",
-          "writing_influence": "The chapel is not a backdrop. It is shrinking red ground: wall, lung, and seam make the fight worse each beat.",
-          "scenario_application": "Every beat must show the room taking space away: closing seam, changing pressure, moving hunter route, or making the wrong posture dangerous."
+          "source_moment": "The environment has a pulse that the characters can either attune to or be destroyed by. Attunement requires surrender of some autonomy. Resistance is fatal.",
+          "writing_influence": "The three-beat wall rhythm is not decoration. It is the room's active system. Reading it correctly is survival. Misreading it costs flesh.",
+          "scenario_application": "The wall rhythm is the room's body. All three branches require Hymn to interact with it differently: Amar teaches the read, Hymn steals the read, or Hymn forces through without the read and pays a wound cost."
         }
       ],
       "faction_ids": [
@@ -3087,50 +3474,72 @@
       ],
       "cross_run_story_hooks": [
         "If Hymn learns the saw timing, later red corridors can offer wall-opening choices without Amar present.",
-        "If Hymn kills Amar, hunter rooms can read the noisy route and treat her as a rival predator rather than lost prey.",
+        "If Hymn kills Amar, hunter rooms can treat the noisy route as a rival-predator signal rather than lost-prey drift.",
         "If Hymn repeatedly uses Amar as cover, red corridor endings can pull toward debt to Amar instead of clean body mastery."
       ],
       "environment_echoes": [
-        "Later red seams can show three tendon cuts and open only when Hymn uses the learned timing.",
-        "Hunter routes can arrive one room earlier after noisy kills or forced seam breaks.",
-        "A future mutation offer can translate saw timing into wrist-spur or tendon-sense anatomy."
+        "Later corridors with timed wall cuts will be easier if Hymn learned the read here, harder if she only copied it once, and neutral if she killed Amar and took the route alone.",
+        "Amar's debt receipt blister appears in a later room as a collectible pressure if the cooperative branch was taken.",
+        "Hunter scent in seams becomes a recurring recognition tag if Hymn was caught in the corridor rhythm here."
       ],
       "ending_vectors": [
         {
-          "id": "ending_saw_line_predator",
-          "label": "Saw-Line Predator",
+          "id": "clean_body_vector",
+          "label": "Pure discipline, no social debt",
           "pulls_toward": [
-            "learning when living walls open under pressure",
-            "winning close fights by line and recovery",
-            "turning pursuit into disciplined counter-hunt"
+            "killing Amar and taking the route alone",
+            "forcing through the wall rhythm without help"
           ],
           "diverts_to": [
-            "debt from relying on Amar's body",
-            "opened hunt from killing without control",
-            "route collapse from refusing pressure discipline"
+            "accepting Amar's teaching",
+            "copying his method and owing him resentment"
+          ]
+        },
+        {
+          "id": "debt_network_vector",
+          "label": "Power through obligation",
+          "pulls_toward": [
+            "learning from Amar under concrete debt",
+            "paying costs to gain capability"
+          ],
+          "diverts_to": [
+            "killing rivals before they can collect",
+            "refusing all instruction"
+          ]
+        },
+        {
+          "id": "predator_recognition_vector",
+          "label": "Hymn becomes a route the organism prices",
+          "pulls_toward": [
+            "being seen by Amar as a student or a thief",
+            "leaving a pattern the hunter behind her can follow"
+          ],
+          "diverts_to": [
+            "killing witnesses",
+            "breaking the pattern before it sets"
           ]
         }
       ],
       "mutation_hooks": [
         {
-          "capability": "brace_pressure",
-          "effect": "Hold the red pinch seam open long enough to pass without relying on Amar's mark.",
-          "in_encounter_use": "Anchor stance against charges, contractions, or forced movement without losing the line.",
-          "out_of_encounter_use": "Hold seams, pressure locks, or launch rings open long enough to pass or work.",
-          "surprising_second_use": "Serve as a living brace for another body, door, or failing organ during a timed choice."
-        },
-        {
-          "capability": "thin_body",
-          "effect": "Slip through the chapel wall's shoulder-thin opening before it clamps shut.",
-          "in_encounter_use": "Slip past a committed strike or squeeze through a closing angle before recovery.",
-          "out_of_encounter_use": "Pass narrow ribs, drains, or half-open locks without payment or rupture.",
-          "surprising_second_use": "Hide inside spaces that normally read as empty tissue and ambush or overhear from there."
+          "capability": "speed",
+          "capability_tags": [
+            "speed",
+            "quiet_movement"
+          ],
+          "baseline_route": "Hymn reads the wall rhythm by feel through her boots and times her crossing on the third beat without help. She takes a glancing cut from Amar's saw if her timing is off by half a stride.",
+          "mutation_branch": "Lean Muscle lets Hymn cross the seam before Amar can reset his saw position, turning his timing advantage into a gap she can exploit without learning the rhythm.",
+          "symbiote_branch": "Impermeable Barrier lets Hymn take Amar's saw contact without flinching, which changes his read of her and opens a negotiation beat that the baseline route does not have.",
+          "effect": "Speed mutation removes the timing requirement but not the debt or resentment structure. Barrier mutation adds a social branch.",
+          "in_encounter_use": "Cross the seam before Amar's saw can track the movement.",
+          "out_of_encounter_use": "Pass timed-wall corridors in later rooms without needing to read the rhythm.",
+          "surprising_second_use": "Outrun the hunter's corridor approach long enough to make Amar's offer irrelevant."
         }
       ],
       "progression_state": {
-        "early": "Hymn sees Amar's saw timing as a hostile skill being used in a shrinking red room.",
-        "mid": "Using Amar's count teaches her to read tendon pressure before a seam closes or an enemy recovers.",
-        "late": "Consistent saw timing choices can mature into a red-corridor stance, mutation appetite, or predator ending vector."
+        "early": "Hymn is learning that the organism has rhythms that can be read. Amar is the first person who treats that reading as a tradeable skill.",
+        "mid": "The debt or resentment from this room returns as leverage. Amar either calls the debt or acts on the resentment depending on which branch was taken.",
+        "late": "Hymn's relationship to timed-wall corridors is shaped by what she did here. The route remembers."
       },
       "corpus_anchors": [
         {
@@ -3139,10 +3548,10 @@
           "source_title": "Red Shadows",
           "source_author": "Robert E. Howard",
           "source_file": "generated/corpus/pulp_pre_1930/texts/howard_red_shadows_pg70570.txt",
-          "source_locator": "lines 682-688, 1040-1111",
-          "source_moment": "The hunted man names the reversal into hunter, then the pursuit resolves through a close blade exchange where blood loss, reach, and recovery matter.",
-          "story_element": "Amar is not color. He is the living hinge between prey-route and hunter-route; each choice decides whether Hymn hunts, learns, or is driven.",
-          "scenario_application": "Open with immediate pursuit pressure and write every result as a change in stance, blood cost, noise, or predator recognition."
+          "source_locator": "Opening pursuit and ambush sequence, chapters 1-2",
+          "source_moment": "A hunter closes a corridor while a dangerous figure waits at the only exit, forcing the protagonist to commit to violence or be caught between two threats.",
+          "story_element": "The hunter behind Hymn and Amar at the seam recreate the corridor-trap structure: two threats, one narrow space, no neutral ground.",
+          "scenario_application": "The hunter's approach is the ticking clock. Amar's saw position is the gate. Every choice is shaped by the fact that doing nothing is the worst option."
         },
         {
           "tier": 0,
@@ -3150,10 +3559,10 @@
           "source_title": "Scaramouche",
           "source_author": "Rafael Sabatini",
           "source_file": "generated/corpus/pulp_pre_1930/texts/sabatini_scaramouche_pg1947.txt",
-          "source_locator": "lines 8841-8859",
-          "source_moment": "Sword training becomes a repeatable discipline: eye, wrist, line, counter, and planned lunge rather than raw bravery.",
-          "story_element": "The progression prize is not Amar's friendship. It is a saw timing discipline Hymn can carry into red anatomy.",
-          "scenario_application": "Choices should teach or refuse a practical fighting method: find tendon-line, set weight, cut on count, and recover before the room closes."
+          "source_locator": "Fencing instruction scenes, Book 2 chapters 3-5",
+          "source_moment": "A skilled swordsman teaches a student under conditions of mutual suspicion and unequal power, where the student must decide how much to owe the teacher and whether the debt is worth the skill.",
+          "story_element": "Amar's offer of saw-timing discipline is the teaching-under-debt structure. The debt is concrete and collectible, not abstract gratitude.",
+          "scenario_application": "The cooperative branch creates a real obligation Amar can call in. The resentment branch mirrors the student who watches and copies without paying, which Sabatini frames as a specific kind of betrayal that instructors remember."
         },
         {
           "tier": 0,
@@ -3161,10 +3570,10 @@
           "source_title": "The Willows",
           "source_author": "Algernon Blackwood",
           "source_file": "generated/corpus/pulp_pre_1930/texts/blackwood_willows_pg11438.txt",
-          "source_locator": "lines 259-320, 370-486",
-          "source_moment": "A small temporary refuge becomes unsafe as water, wind, and vegetation press inward and alter the available ground.",
-          "story_element": "The chapel is not a backdrop. It is shrinking red ground: wall, lung, and seam make the fight worse each beat.",
-          "scenario_application": "Every beat must show the room taking space away: closing seam, changing pressure, moving hunter route, or making the wrong posture dangerous."
+          "source_locator": "Sections 3-4, the rhythm of the environment as active pressure",
+          "source_moment": "The environment has a pulse that the characters can either attune to or be destroyed by. Attunement requires surrender of some autonomy. Resistance is fatal.",
+          "story_element": "The three-beat wall rhythm is not decoration. It is the room's active system. Reading it correctly is survival. Misreading it costs flesh.",
+          "scenario_application": "The wall rhythm is the room's body. All three branches require Hymn to interact with it differently: Amar teaches the read, Hymn steals the read, or Hymn forces through without the read and pays a wound cost."
         }
       ]
     }

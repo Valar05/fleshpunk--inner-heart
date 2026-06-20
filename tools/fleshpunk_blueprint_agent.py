@@ -140,6 +140,7 @@ def compact_project_context() -> dict[str, Any]:
             "Each scenario enriches Hymn, destabilizes Hymn, or both.",
             "Fleshpunk is martial progression fantasy: rooms pressure Hymn's current body, then remember what kind of fighter/body she becomes.",
             "Declare primary_pressure, body_path_pressure, avoidance_route, and recognition_effect. Use hunt_pressure, body_drift, baseline_discipline, wound_debt, recognition, or route_memory.",
+            "Do not overuse passive observation as consequence. Avoid defaulting to the organism reading Hymn's weight, print, scent, heat, gait, profile, or trace; use active conduct, rivalry, debt, injury, bargain, route loss, witness memory, or predator adaptation instead. If a room observes Hymn, name the concrete result: changed price, route, option, hunter tactic, follow-up event, faction leverage, or pressure counter.",
             "Every scenario must preserve a playable baseline pure-body route, then add only one or two capability-tag branches where relevant.",
             "Rooms target body capability tags first, not named upgrade lists. Use tags such as cut, brace, speed, burst, quiet_movement, read_damage, identity_spoof, scent_control, barrier, decoy, anchor, and death_intercept.",
             "Mutations are reliable always-on identity. Symbiotes are stronger but less dependable living partners with needs, cooldowns, wounds, preferences, or refusal pressure.",
@@ -150,7 +151,8 @@ def compact_project_context() -> dict[str, Any]:
             "Combat should be readable physical action: posture, distance, contact, commitment, recovery, consequence.",
             "For action-combat requests, use an active opponent and immediate pressure. Do not convert martial anatomy into a sequence puzzle, ritual lock, diagnostic test, or apparatus procedure.",
             "Progression should change how Hymn moves, fights, reads rooms, mutates, or is recognized.",
-            "Use story_followups for delayed pressure; each follow-up must be concrete and playable.",
+            "Root scenarios leave payoff_hook metadata for separately generated follow-ups; do not author the follow-up in the same pass unless the user explicitly asks for a follow-up scenario.",
+            "When wiring an already generated follow-up, use story_followups and ensure the target is concrete and playable.",
             "Glue beats are playable interventions where prior choices return with leverage: option masks, price shifts, route favors, pattern warnings, predator attention, body-path recognition, or ending pressure.",
             "Every glue beat needs a visible carrier such as a cord, receipt blister, feeder, scar mite, lens film, route packet, blood trace, symbiote twitch, or repair animal.",
         ],
@@ -222,7 +224,7 @@ def blueprint_contract() -> dict[str, Any]:
             "primary_pressure": "hunt_pressure | body_drift | baseline_discipline | wound_debt | recognition | route_memory",
             "body_path_pressure": "how this pressures mutation, symbiote, or pure-body discipline",
             "avoidance_route": "how combat can be avoided or converted into another cost",
-            "recognition_effect": "who or what learns something about Hymn",
+            "recognition_effect": "who or what actively responds to Hymn's conduct; avoid passive weight/print/scent/heat/profile reads unless essential",
             "environment_id": "room environment id",
             "infrastructure_actor": "actor/system",
             "line_1": "player-facing setup",
@@ -236,11 +238,14 @@ def blueprint_contract() -> dict[str, Any]:
                     "environment_state_changes": ["state_key"],
                     "pressure_axis_changes": ["hunt_pressure"],
                     "actor_state_changes": [],
-                    "story_followup": {
-                        "event_id": "followup_event_id",
-                        "trigger_key": "trigger_key",
-                        "delay_rooms": 2,
-                        "queued_line": "diegetic tell",
+                    "payoff_hook": {
+                        "hook_id": "unique_hook_id",
+                        "source_action": "same action id",
+                        "payoff_type": "playable_escalation | route_change | rival_pressure | price_shift | option_mask | hunter_adaptation",
+                        "promise": "what this branch promises the player will matter later",
+                        "suggested_room_id": "likely room id or environment family",
+                        "followup_pressure": "new pressure the separate follow-up should introduce",
+                        "generation_prompt": "compact prompt for the future follow-up scenario pass"
                     },
                 }
             ],
@@ -248,23 +253,7 @@ def blueprint_contract() -> dict[str, Any]:
             "possibility_tree": ["designer branch", "designer branch"],
             "progression_vector": "what Hymn gains/risks/becomes",
         },
-        "special_events": [
-            {
-                "id": "followup_event_id",
-                "type": "story",
-                "speaker": "Hymn",
-                "reactivate_on_reshuffle": False,
-                "line_1": "follow-up setup",
-                "line_2": "follow-up pressure",
-                "buttons": [
-                    {"label": "Do the thing", "action": "proceed", "voice_aliases": ["proceed"]},
-                    {"label": "Alternative", "action": "retreat", "voice_aliases": ["retreat"]},
-                ],
-                "action_results": {
-                    "proceed": {"lines": ["result"], "environment_state_changes": ["state_key"]}
-                },
-            }
-        ],
+        "special_events": [],
         "required_engine_changes": [],
         "inspiration_notes": [],
         "self_critique": [],
@@ -284,7 +273,10 @@ def build_prompt(args: argparse.Namespace) -> tuple[str, str]:
             "Do not put source names, author names, risk labels, branch labels, or stat math in player-facing text.",
             "Make the scenario understandable to a first-time player.",
             "If the request asks for action combat, the root event must start with an active threat, readable spacing, and choices that are tactics under pressure.",
-            "Use at least two choices and at least one delayed follow-up.",
+            "Avoid passive biometric follow-through: no more default weight/print/scent/heat/profile reads unless the request specifically calls for that mechanism.",
+            "Use at least two choices and at least one payoff_hook that can seed a separate follow-up generation pass.",
+            "A payoff_hook is not player-facing text. It must name the promised later pressure, the source action, the likely room/family, and a compact generation prompt for the next pass.",
+            "Only include special_events/story_followups in this blueprint when the user explicitly requests the follow-up scenario itself or asks to wire an existing generated follow-up.",
             "Keep line_1 and line_2 no more than 32 words each.",
         ]
     )
@@ -300,18 +292,26 @@ def build_prompt(args: argparse.Namespace) -> tuple[str, str]:
 
 
 def extract_json(text: str) -> dict[str, Any]:
-    stripped = text.strip()
-    if stripped.startswith("```"):
-        stripped = re.sub(r"^```(?:json)?\s*", "", stripped)
-        stripped = re.sub(r"\s*```$", "", stripped)
-    start = stripped.find("{")
-    end = stripped.rfind("}")
-    if start == -1 or end == -1 or end <= start:
-        raise SystemExit(f"Model did not return JSON:\n{text[:1200]}")
-    payload = json.loads(stripped[start:end + 1])
-    if not isinstance(payload, dict):
-        raise SystemExit("Blueprint root must be an object")
-    return payload
+	stripped = text.strip()
+	if stripped.startswith("```"):
+		stripped = re.sub(r"^```(?:json)?\s*", "", stripped)
+		stripped = re.sub(r"\s*```$", "", stripped)
+	start = stripped.find("{")
+	if start == -1:
+		raise SystemExit(f"Model did not return JSON:\n{text[:1200]}")
+	try:
+		payload, end = json.JSONDecoder().raw_decode(stripped[start:])
+	except json.JSONDecodeError as exc:
+		debug_path = GENERATED_DIR / "last_invalid_fleshpunk_blueprint_response.txt"
+		debug_path.write_text(text, encoding="utf-8")
+		raise SystemExit(f"Model did not return parseable JSON; response saved to {debug_path}: {exc}") from exc
+	trailing = stripped[start + end:].strip()
+	if trailing:
+		debug_path = GENERATED_DIR / "last_extra_fleshpunk_blueprint_response.txt"
+		debug_path.write_text(text, encoding="utf-8")
+	if not isinstance(payload, dict):
+		raise SystemExit("Blueprint root must be an object")
+	return payload
 
 
 def decode_stream(response: Any) -> dict[str, Any]:

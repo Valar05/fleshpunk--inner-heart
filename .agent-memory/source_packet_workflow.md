@@ -17,6 +17,7 @@ Use a source packet for:
 - recurring character arcs
 - ending vectors
 - delayed story follow-ups
+- payoff triage rows classified as `inserted_scenario` or `delayed_scenario`
 - prose refreshes after mechanics change
 
 Do not use this workflow for tiny non-literary glue, malformed JSON repair, tests, or engine-only changes.
@@ -49,10 +50,19 @@ generated/amar_creepstride_source_packet.md
 
 4. Save the response under `generated/` as an unapplied candidate.
 
-5. Critique and validate the candidate before applying:
+5. For existing dangling follow-ups, triage before generating:
 
 ```sh
-python tools/scenario_agent.py validate generated/SCENARIO_PATCH.json --strict-scenario-contract
+python tools/scenario_agent.py audit-feedback --json
+python tools/scenario_agent.py triage-payoffs --include-pending-hooks --out generated/payoff_triage_report.md
+```
+
+Only build Claude source packets for rows classified as `inserted_scenario` or `delayed_scenario`. Use `audit-feedback` to catch branches that advance without an acknowledgement screen even when the delayed payoff audit is clean. Rows classified as `concrete_response` or `closed_pruned` should become small integration patches with concrete result/state closure, not new scenario prose.
+
+6. Critique and validate the candidate before applying:
+
+```sh
+python tools/scenario_agent.py validate generated/SCENARIO_PATCH.json --strict-scenario-contract --strict-payoffs
 python tools/scenario_agent.py critique --patch generated/SCENARIO_PATCH.json --out generated/SCENARIO_CRITIQUE.json
 python tools/project_bootstrap.py --strict
 ```

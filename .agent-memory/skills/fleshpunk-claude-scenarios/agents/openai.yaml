@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fleshpunk Claude Scenarios"
+  short_description: "Claude scenario generation flow"
+  default_prompt: "Generate or revise a Fleshpunk scenario with Claude using the source-packet workflow, keep input under budget, validate the patch, wire it into the active deck/docs, and report the result."
